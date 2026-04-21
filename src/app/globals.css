@@ -1,26 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Urbanist:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap');
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* ============================================================
+     Dr. Pal's NewME — Official brand palette
+     Source: design.md
+     ============================================================ */
+
+  /* Primary palette */
+  --color-pine-teal: #043C39;
+  --color-light-gold: #FEF272;
+  --color-tangerine: #FF8547;
+  --color-moss-green: #519872;
+  --color-icy-aqua: #B8FFFD;
+
+  /* Derived Pine Teal surfaces */
+  --color-pine-deep: #032E2C;
+  --color-pine-card: #0A4A45;
+  --color-pine-raised: #0E5551;
+
+  /* Soft variants */
+  --color-gold-soft: #FFF8B8;
+  --color-tangerine-soft: #FFAA7A;
+  --color-aqua-soft: #D4FFFC;
+
+  /* Legacy brand tokens (kept for compatibility) */
+  --color-brand-dark: #043C39;
+  --color-brand-darker: #032E2C;
+  --color-brand-orange: #FF8547;
+  --color-brand-orange-alt: #FFAA7A;
+  --color-brand-yellow: #FEF272;
+  --color-brand-green: #519872;
+  --color-brand-green-alt: #519872;
+  --color-brand-light: #B8FFFD;
+  --color-brand-gray: #bcbcbc;
+
+  /* Typography */
+  --font-bricolage: 'Bricolage Grotesque', sans-serif;
+  --font-urbanist: 'Urbanist', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #043C39;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: #FEF272;
+  color: #043C39;
+}
+
+/* ------------- Reusable utilities ------------- */
+.font-display {
+  font-family: var(--font-bricolage);
+  letter-spacing: -0.01em;
+}
+.font-ui {
+  font-family: var(--font-urbanist);
+}
+.font-body {
+  font-family: var(--font-poppins);
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-family: var(--font-urbanist);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-pill-yellow {
+  background: #FEF272;
+  color: #043C39;
+}
+.btn-pill-yellow:hover {
+  background: #FFF8B8;
+}
+
+.btn-pill-ghost {
+  background: transparent;
+  color: #FEF272;
+  border: 1px solid rgba(254, 242, 114, 0.35);
+}
+.btn-pill-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.gradient-warm {
+  background-image: linear-gradient(90deg, #FF8547 0%, #FEF272 100%);
+}
+
+/* ------------- 8 Pillars orbit diagram (responsive radius) ------------- */
+.newme-orbit {
+  /* Radius at which orbiting icons sit (as a % of the container half-axis).
+     Kept smaller on mobile so the label text below each icon doesn't clip
+     past the container edge. */
+  --orbit-r: 38%;
+}
+@media (min-width: 768px) {
+  .newme-orbit {
+    --orbit-r: 46%;
+  }
 }

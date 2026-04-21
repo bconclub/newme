@@ -1,0 +1,95 @@
+// ============================================================
+// Dr. Pal's NewME — Page skin
+// Applied via `.newme-option1` on <html> and `.newme-page` on <main>.
+// Palette: design.md
+// ============================================================
+
+$pine-teal: #043c39;
+$pine-deep: #032e2c;
+$pine-card: #0a4a45;
+$pine-raised: #0e5551;
+
+$light-gold: #fef272;
+$gold-soft: #fff8b8;
+$tangerine: #ff8547;
+$moss-green: #519872;
+$icy-aqua: #b8fffd;
+
+.newme-option1 {
+  background: $pine-teal;
+
+  body {
+    background: $pine-teal;
+    color: #fff;
+  }
+
+  .newme-page {
+    position: relative;
+    isolation: isolate;
+    background: $pine-teal;
+    overflow: hidden;
+  }
+
+  /* Soft warm ambient glow behind the page */
+  .newme-page::before {
+    content: '';
+    position: absolute;
+    top: 40vh;
+    left: 50%;
+    width: 120vw;
+    height: 120vw;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(180px);
+    background: radial-gradient(
+      closest-side,
+      rgba(254, 242, 114, 0.12),
+      rgba(255, 133, 71, 0.08) 50%,
+      transparent 75%
+    );
+  }
+
+  .newme-page > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .newme-header a {
+    letter-spacing: 0;
+  }
+
+  .newme-section {
+    /* Only set vertical padding here — horizontal padding is owned by each
+       section's Tailwind utilities (`px-5 sm:px-6 md:px-10 lg:px-16`).
+       Using the `padding` shorthand would win on specificity and wipe them. */
+    padding-top: clamp(56px, 8vw, 120px);
+    padding-bottom: clamp(56px, 8vw, 120px);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-bricolage), sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  .accent {
+    color: $light-gold;
+  }
+
+  .newme-footer {
+    background: linear-gradient(180deg, $pine-teal 0%, $pine-deep 100%);
+    border-top: 1px solid rgba(254, 242, 114, 0.18);
+  }
+
+  .newme-footer h4 {
+    color: $light-gold;
+    font-family: var(--font-bricolage), sans-serif;
+  }
+
+  .newme-footer a:hover {
+    color: $light-gold;
+  }
+}
