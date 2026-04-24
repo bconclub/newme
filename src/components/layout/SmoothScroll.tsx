@@ -7,6 +7,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
+    // Respect reduced motion and skip Lenis in headless / automated browsers
+    // (the endless RAF loop breaks network-idle-based screenshot tools).
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const headless =
+      /HeadlessChrome|Headless|Puppeteer|Playwright/i.test(navigator.userAgent) ||
+      (navigator as Navigator & { webdriver?: boolean }).webdriver === true
+    if (reduced || headless) return
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -16,14 +24,17 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     lenisRef.current = lenis
 
-    function raf(time: number) {
+    let rafId = 0
+    const raf = (time: number) => {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      rafId = requestAnimationFrame(raf)
     }
+    rafId = requestAnimationFrame(raf)
 
-    requestAnimationFrame(raf)
-
-    return () => lenis.destroy()
+    return () => {
+      cancelAnimationFrame(rafId)
+      lenis.destroy()
+    }
   }, [])
 
   return <>{children}</>

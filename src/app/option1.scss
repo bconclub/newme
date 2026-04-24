@@ -1,7 +1,7 @@
 // ============================================================
 // Dr. Pal's NewME — Page skin
-// Applied via `.newme-option1` on <html> and `.newme-page` on <main>.
-// Palette: design.md
+// Scoped via <main class="newme-page">, so pages without that class
+// keep the white default (e.g. the wellness design at /page1).
 // ============================================================
 
 $pine-teal: #043c39;
@@ -15,57 +15,101 @@ $tangerine: #ff8547;
 $moss-green: #519872;
 $icy-aqua: #b8fffd;
 
-.newme-option1 {
+// Paint html/body teal only when a .newme-page main is present
+html:has(main.newme-page),
+html:has(main.newme-page) body {
   background: $pine-teal;
+  color: #fff;
+}
 
-  body {
-    background: $pine-teal;
-    color: #fff;
-  }
+main.newme-page {
+  position: relative;
+  isolation: isolate;
+  background: $pine-teal;
+  overflow: hidden;
 
-  .newme-page {
-    position: relative;
-    isolation: isolate;
-    background: $pine-teal;
-    overflow: hidden;
-  }
-
-  /* Soft warm ambient glow behind the page */
-  .newme-page::before {
+  /* Large decorative moss-green blob — drifts behind sections, creates the
+     organic "splash" shapes visible in the Figma reference */
+  &::before {
     content: '';
     position: absolute;
-    top: 40vh;
-    left: 50%;
-    width: 120vw;
-    height: 120vw;
-    transform: translateX(-50%);
-    border-radius: 9999px;
+    top: 20vh;
+    left: -8vw;
+    width: 70vw;
+    height: 70vw;
+    max-width: 900px;
+    max-height: 900px;
+    border-radius: 48% 52% 72% 28% / 48% 60% 40% 52%;
     pointer-events: none;
     z-index: 0;
-    filter: blur(180px);
+    filter: blur(120px);
     background: radial-gradient(
       closest-side,
-      rgba(254, 242, 114, 0.12),
-      rgba(255, 133, 71, 0.08) 50%,
+      rgba(98, 150, 117, 0.45),
+      rgba(98, 150, 117, 0.22) 45%,
       transparent 75%
     );
   }
 
-  .newme-page > * {
+  /* Film-grain noise — higher opacity to match Figma monotone noise spec
+     (#000 at 25%, density 100%, size 0.5). Fixed so it doesn't drift. */
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0.22;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 200px 200px;
+  }
+
+  /* Secondary decorative blob — right side, lower */
+  .newme-blob-2 {
+    position: absolute;
+    top: 65vh;
+    right: -10vw;
+    width: 60vw;
+    height: 60vw;
+    max-width: 720px;
+    max-height: 720px;
+    border-radius: 62% 38% 48% 52% / 40% 52% 48% 60%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(140px);
+    background: radial-gradient(
+      closest-side,
+      rgba(98, 150, 117, 0.38),
+      rgba(1, 62, 55, 0.25) 50%,
+      transparent 75%
+    );
+  }
+
+  /* Third decorative blob — further down, gold tinted */
+  .newme-blob-3 {
+    position: absolute;
+    top: 150vh;
+    left: 30vw;
+    width: 55vw;
+    height: 55vw;
+    max-width: 680px;
+    max-height: 680px;
+    border-radius: 42% 58% 38% 62% / 55% 40% 60% 45%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(150px);
+    background: radial-gradient(
+      closest-side,
+      rgba(254, 242, 114, 0.12),
+      rgba(98, 150, 117, 0.25) 45%,
+      transparent 75%
+    );
+  }
+
+  > * {
     position: relative;
     z-index: 1;
-  }
-
-  .newme-header a {
-    letter-spacing: 0;
-  }
-
-  .newme-section {
-    /* Only set vertical padding here — horizontal padding is owned by each
-       section's Tailwind utilities (`px-5 sm:px-6 md:px-10 lg:px-16`).
-       Using the `padding` shorthand would win on specificity and wipe them. */
-    padding-top: clamp(56px, 8vw, 120px);
-    padding-bottom: clamp(56px, 8vw, 120px);
   }
 
   h1,
@@ -75,21 +119,34 @@ $icy-aqua: #b8fffd;
     letter-spacing: -0.01em;
   }
 
+  .newme-section {
+    /* Only set vertical padding here — horizontal padding is owned by each
+       section's Tailwind utilities. Using the `padding` shorthand would
+       win on specificity and wipe them. */
+    padding-top: clamp(56px, 8vw, 120px);
+    padding-bottom: clamp(56px, 8vw, 120px);
+  }
+
   .accent {
     color: $light-gold;
   }
+}
 
-  .newme-footer {
-    background: linear-gradient(180deg, $pine-teal 0%, $pine-deep 100%);
-    border-top: 1px solid rgba(254, 242, 114, 0.18);
-  }
+/* Footer / header blocks only apply when inside a newme-option1 layout */
+html:has(main.newme-page) .newme-header a {
+  letter-spacing: 0;
+}
 
-  .newme-footer h4 {
-    color: $light-gold;
-    font-family: var(--font-bricolage), sans-serif;
-  }
+html:has(main.newme-page) .newme-footer {
+  background: linear-gradient(180deg, $pine-teal 0%, $pine-deep 100%);
+  border-top: 1px solid rgba(254, 242, 114, 0.18);
+}
 
-  .newme-footer a:hover {
-    color: $light-gold;
-  }
+html:has(main.newme-page) .newme-footer h4 {
+  color: $light-gold;
+  font-family: var(--font-bricolage), sans-serif;
+}
+
+html:has(main.newme-page) .newme-footer a:hover {
+  color: $light-gold;
 }

@@ -6,11 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const navLinks = [
   { label: 'Home', href: '#home' },
-  { label: 'About us', href: '#about' },
-  { label: 'Programs', href: '#programs' },
-  { label: 'Testimonials', href: '#testimonials' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'How it Works', href: '#how-it-works' },
+  { label: 'Pathways', href: '#pathways' },
+  { label: 'Virtual Clinic', href: '#virtual-clinic' },
+  { label: 'NewME Care Team', href: '#care-team' },
+  { label: 'Resources', href: '#resources' },
+  { label: 'Contact Us', href: '#contact' },
 ]
 
 export default function Header() {
@@ -32,29 +33,29 @@ export default function Header() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
           scrolled
-            ? 'bg-[#173B39]/90 backdrop-blur-md border-b border-white/5'
+            ? 'bg-[#043C39]/85 backdrop-blur-md border-b border-white/5'
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-14 h-[76px] flex items-center justify-between">
-          <a href="#home" className="flex items-center shrink-0" aria-label="NewME — home">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 h-[72px] flex items-center justify-between">
+          <a href="#home" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
             <Image
               src="/newme-logo.png"
-              alt="NewME"
+              alt="Dr. Pal's NewME"
               width={520}
               height={130}
               priority
               unoptimized
-              className="h-9 md:h-10 w-auto block"
+              className="h-10 md:h-11 w-auto block"
             />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-9">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-white/90 hover:text-white text-[14px] font-medium font-[family-name:var(--font-urbanist)] transition-colors"
+                className="text-white/85 hover:text-white text-[13px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
               >
                 {link.label}
               </a>
@@ -63,8 +64,8 @@ export default function Header() {
 
           <div className="hidden lg:flex items-center">
             <a
-              href="#enroll"
-              className="bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] px-5 py-2.5 rounded-full text-[14px] font-[family-name:var(--font-poppins)] transition-colors"
+              href="#assessment"
+              className="bg-[#FEF272] hover:bg-[#FFF8B8] text-[#043C39] px-5 py-2.5 rounded-full text-[12.5px] font-semibold transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
             >
               Start My Assessment
             </a>
@@ -98,7 +99,7 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-[#173B39] flex flex-col items-center justify-center gap-7 lg:hidden"
+            className="fixed inset-0 z-40 bg-[#043C39] flex flex-col items-center justify-center gap-7 lg:hidden"
           >
             {navLinks.map((link, i) => (
               <motion.a
@@ -114,12 +115,12 @@ export default function Header() {
               </motion.a>
             ))}
             <motion.a
-              href="#enroll"
+              href="#assessment"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navLinks.length * 0.04 }}
               onClick={() => setMobileOpen(false)}
-              className="mt-3 bg-[#FEF272] text-[#173B39] px-7 py-3 rounded-full text-base"
+              className="mt-3 bg-[#FEF272] text-[#043C39] px-7 py-3 rounded-full text-base font-semibold"
             >
               Start My Assessment
             </motion.a>

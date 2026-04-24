@@ -1,112 +1,104 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { SectionHeader } from './Programs'
 
-const testimonials = [
-  {
-    quote:
-      'Within eight weeks my HbA1c moved from 8.2 to 6.1. The weekly clinician reviews kept me honest.',
-    name: 'Anita R.',
-    meta: 'Bengaluru · 42',
-    avatar:
-      'https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=300',
-  },
-  {
-    quote:
-      'Finally a plan that reads my gut instead of guessing. The food-trigger map alone was worth it.',
-    name: 'Rohit M.',
-    meta: 'Chennai · 38',
-    avatar:
-      'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=300',
-  },
-  {
-    quote:
-      'Lost 11 kg, kept it off for a year, and my inflammation markers are back to normal.',
-    name: 'Priya S.',
-    meta: 'Hyderabad · 34',
-    avatar:
-      'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=300',
-  },
-]
+const ease = [0.22, 1, 0.36, 1] as const
 
-const ratings = [
-  { score: '4.6', label: 'Google Reviews' },
-  { score: '4.7', label: 'Trustpilot' },
+const items = [
+  {
+    title: '"I feel that I have really discovered my NewME',
+    body:
+      "Hi..I started my weight loss journey in July 2023. I was weighing 82.3 kgs then. Randomly, I bumped into one of Dr Pal's you tube videos and immediately got hooked on to his channel. Thereafter, got addicted/inspired with the various you tube videos.",
+    name: 'Kishore Raviprolu',
+    location: 'Bangalore, Karnataka',
+  },
+  {
+    title: '"The program gave my life structure again"',
+    body:
+      'The coaching and the weekly lab reviews gave me the accountability I lacked. In four months I have reversed my pre-diabetic markers and my sleep is finally consistent.',
+    name: 'Aparna Menon',
+    location: 'Chennai, Tamil Nadu',
+  },
+  {
+    title: '"More than a weight-loss program"',
+    body:
+      'The focus on gut health and the root cause made this different from any program I had tried. The team is patient and genuinely invested in the outcome.',
+    name: 'Rohit Shinde',
+    location: 'Pune, Maharashtra',
+  },
 ]
 
 export default function Testimonials() {
   return (
-    <section
-      id="testimonials"
-      className="newme-testimonials newme-section relative px-5 sm:px-6 md:px-10 lg:px-16"
-    >
-      <div className="max-w-[1200px] mx-auto">
-        <div className="grid md:grid-cols-2 gap-5 md:gap-6 items-end">
-          <div>
-            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/70 font-[family-name:var(--font-urbanist)]">
-              Outcomes
-            </span>
-            <h2 className="mt-5 font-[family-name:var(--font-bricolage)] font-semibold text-white text-[28px] sm:text-[32px] md:text-[44px] leading-[1.1] md:leading-[1.08] tracking-[-0.01em]">
-              Real Patients,
-              <br />
-              <span className="text-[#FEF272]">Real Experiences.</span>
-            </h2>
-          </div>
-          <p className="text-white/70 text-[14.5px] md:text-[15px] leading-[1.6] max-w-[520px] md:justify-self-end font-[family-name:var(--font-poppins)]">
-            Stories from people who used NewME to measurably change the way
-            their body behaves.
-          </p>
+    <section id="testimonials" className="bg-white py-20 md:py-28">
+      <div className="max-w-[1440px] mx-auto px-5 md:px-10 lg:px-14">
+        <SectionHeader eyebrow="Testimonials" />
+
+        <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-end mb-10 md:mb-14">
+          <motion.h2
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, ease }}
+            className="font-[family-name:var(--font-bricolage)] font-semibold text-[42px] md:text-[64px] leading-[1.02] tracking-[-0.012em] max-w-[560px]"
+          >
+            What our users say about us!
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.08, ease }}
+            className="text-[#444] text-[16px] md:text-[18px] leading-[1.5] font-[family-name:var(--font-bricolage)] font-light max-w-[520px]"
+          >
+            Read the experiences of users who have participated in the NewME
+            program and transformed their lives.
+          </motion.p>
         </div>
 
-        <div className="mt-10 md:mt-12 grid md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          {testimonials.map((t, i) => (
-            <motion.div
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          {items.map((t, i) => (
+            <motion.article
               key={t.name}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="rounded-[20px] bg-[#0A4A45] border border-white/10 p-5 md:p-6"
+              transition={{ duration: 0.5, delay: i * 0.08, ease }}
+              className="relative rounded-[24px] bg-[#F3F3F3] p-7 md:p-8 overflow-hidden"
             >
-              <p className="text-[#FEF272] text-lg leading-none">★★★★★</p>
-              <p className="mt-4 text-white/90 text-[14.5px] leading-[1.6] font-[family-name:var(--font-poppins)]">
-                &ldquo;{t.quote}&rdquo;
+              <Image
+                src="/swirl-cream.png"
+                alt=""
+                aria-hidden
+                width={300}
+                height={300}
+                className="absolute -bottom-6 -right-6 w-[170px] h-[170px] opacity-40"
+              />
+              <span className="absolute bottom-6 right-8 text-black text-[80px] leading-none font-[family-name:var(--font-bricolage)] font-semibold pointer-events-none">
+                &rdquo;
+              </span>
+
+              <p className="relative font-[family-name:var(--font-bricolage)] font-medium text-[17px] md:text-[18px] text-black leading-snug">
+                {t.title}
               </p>
-              <div className="mt-6 flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full bg-cover bg-center"
-                  style={{ backgroundImage: `url('${t.avatar}')` }}
-                />
+              <p className="relative mt-4 text-[#444] text-[14.5px] leading-[1.55] font-[family-name:var(--font-bricolage)] font-light line-clamp-6">
+                {t.body}
+              </p>
+
+              <div className="relative mt-8 flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-black shrink-0" />
                 <div>
-                  <p className="text-white text-[13.5px] font-semibold font-[family-name:var(--font-bricolage)] leading-none">
+                  <p className="font-[family-name:var(--font-bricolage)] font-semibold text-[15px] text-black">
                     {t.name}
                   </p>
-                  <p className="text-white/60 text-[11.5px] mt-1 font-[family-name:var(--font-poppins)]">
-                    {t.meta}
+                  <p className="text-[#666] text-[13px] font-[family-name:var(--font-urbanist)]">
+                    {t.location}
                   </p>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* ratings row */}
-        <div className="mt-10 md:mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 max-w-[720px] mx-auto">
-          {ratings.map((r) => (
-            <div
-              key={r.label}
-              className="rounded-[18px] md:rounded-[20px] bg-[#FEF272] text-[#043C39] px-4 py-4 sm:px-5 sm:py-5 md:px-6 flex items-center gap-3 md:gap-4"
-            >
-              <p className="text-[32px] sm:text-[40px] md:text-[48px] leading-none font-semibold font-[family-name:var(--font-bricolage)]">
-                {r.score}
-              </p>
-              <div className="min-w-0">
-                <p className="text-base md:text-lg leading-none tracking-wide">★★★★★</p>
-                <p className="mt-1.5 md:mt-2 text-[12px] md:text-[13px] font-medium font-[family-name:var(--font-urbanist)]">
-                  {r.label}
-                </p>
-              </div>
-            </div>
+            </motion.article>
           ))}
         </div>
       </div>

@@ -1,24 +1,26 @@
-import Header from '@/components/layout/Header'
-import Hero from '@/components/sections/Hero'
-import WhatIsNewMe from '@/components/sections/WhatIsNewMe'
-import DrPal from '@/components/sections/DrPal'
-import USPs from '@/components/sections/USPs'
-import Pathways from '@/components/sections/Pathways'
-import Stats from '@/components/sections/Stats'
-import Testimonials from '@/components/sections/Testimonials'
-import Footer from '@/components/sections/Footer'
+import Header from '@/components/option1/Header'
+import Hero from '@/components/option1/Hero'
+import WhatIsNewMe from '@/components/option1/WhatIsNewMe'
+import DrPal from '@/components/option1/DrPal'
+import Pillars from '@/components/option1/Pillars'
+import Pathways from '@/components/option1/Pathways'
+import StructuredCare from '@/components/option1/StructuredCare'
+import Testimonials from '@/components/option1/Testimonials'
+import Footer from '@/components/option1/Footer'
 
 export default function Home() {
   return (
     <>
       <Header />
       <main className="newme-page">
+        <span aria-hidden className="newme-blob-2" />
+        <span aria-hidden className="newme-blob-3" />
         <Hero />
         <WhatIsNewMe />
         <DrPal />
-        <USPs />
+        <Pillars />
         <Pathways />
-        <Stats />
+        <StructuredCare />
         <Testimonials />
       </main>
       <Footer />

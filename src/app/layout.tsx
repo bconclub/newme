@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`newme-option1 ${bricolage.variable} ${urbanist.variable} ${poppins.variable}`}
+      className={`${bricolage.variable} ${urbanist.variable} ${poppins.variable}`}
     >
       <body>
         <SmoothScroll>{children}</SmoothScroll>

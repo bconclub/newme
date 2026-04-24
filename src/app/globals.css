@@ -1,40 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Urbanist:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap');
-
 @import "tailwindcss";
 
 @theme inline {
   /* ============================================================
-     Dr. Pal's NewME — Official brand palette
-     Source: design.md
+     Dr. Pal's NewME — palette (Figma CrcIFtZCH8PDLyKHcQrRFZ)
      ============================================================ */
 
-  /* Primary palette */
-  --color-pine-teal: #043C39;
+  /* Primary */
+  --color-pine-teal: #173B39;
+  --color-pine-deep: #013E37;
+  --color-ink: #000000;
+  --color-white: #FFFFFF;
+
+  /* Accents */
   --color-light-gold: #FEF272;
+  --color-gold-soft: #FDF185;
+  --color-moss-green: #629675;
   --color-tangerine: #FF8547;
-  --color-moss-green: #519872;
-  --color-icy-aqua: #B8FFFD;
+  --color-tangerine-alt: #F08B55;
+  --color-ice-mint: #E3FFED;
+  --color-ice-aqua: #C7FDFC;
 
-  /* Derived Pine Teal surfaces */
-  --color-pine-deep: #032E2C;
-  --color-pine-card: #0A4A45;
-  --color-pine-raised: #0E5551;
+  /* Surfaces (light) */
+  --color-surface-gray: #D9D9D9;
+  --color-surface-soft: #F3F3F3;
+  --color-surface-faint: #F9F9F9;
 
-  /* Soft variants */
-  --color-gold-soft: #FFF8B8;
-  --color-tangerine-soft: #FFAA7A;
-  --color-aqua-soft: #D4FFFC;
+  /* Text on light */
+  --color-muted: #444444;
+  --color-muted-soft: #BCBCBC;
 
-  /* Legacy brand tokens (kept for compatibility) */
-  --color-brand-dark: #043C39;
-  --color-brand-darker: #032E2C;
+  /* Legacy (kept for old sections that still import them) */
+  --color-brand-dark: #173B39;
+  --color-brand-darker: #013E37;
   --color-brand-orange: #FF8547;
-  --color-brand-orange-alt: #FFAA7A;
+  --color-brand-orange-alt: #F08B55;
   --color-brand-yellow: #FEF272;
-  --color-brand-green: #519872;
-  --color-brand-green-alt: #519872;
-  --color-brand-light: #B8FFFD;
-  --color-brand-gray: #bcbcbc;
+  --color-brand-green: #629675;
+  --color-brand-light: #C7FDFC;
+  --color-brand-gray: #BCBCBC;
 
   /* Typography */
   --font-bricolage: 'Bricolage Grotesque', sans-serif;
@@ -42,10 +45,10 @@
   --font-poppins: 'Poppins', sans-serif;
 
   /* Radii */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
 }
 
 * {
@@ -54,12 +57,13 @@
 
 html {
   scroll-behavior: auto;
+  background: #FFFFFF;
 }
 
 body {
-  background-color: #043C39;
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: 'Bricolage Grotesque', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -80,72 +84,40 @@ html.lenis body {
 
 ::selection {
   background: #FEF272;
-  color: #043C39;
+  color: #173B39;
 }
 
-/* ------------- Reusable utilities ------------- */
-.font-display {
-  font-family: var(--font-bricolage);
-  letter-spacing: -0.01em;
-}
-.font-ui {
-  font-family: var(--font-urbanist);
-}
-.font-body {
-  font-family: var(--font-poppins);
-}
+/* Utilities */
+.font-display { font-family: var(--font-bricolage); letter-spacing: -0.01em; }
+.font-ui      { font-family: var(--font-urbanist); }
+.font-body    { font-family: var(--font-bricolage); }
+.font-button  { font-family: var(--font-poppins); }
 
-.btn-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 24px;
-  border-radius: 9999px;
-  font-family: var(--font-urbanist);
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 1;
-  transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
-    color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+/* Buttons */
+.btn-pine {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: 9999px;
+  background: #173B39; color: #FFFFFF;
+  font-family: var(--font-poppins); font-weight: 400; font-size: 16px; line-height: 1;
+  transition: background-color 180ms cubic-bezier(0.22,1,0.36,1);
 }
+.btn-pine:hover { background: #0E2827; }
 
-.btn-pill-yellow {
-  background: #FEF272;
-  color: #043C39;
+.btn-gold {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: 9999px;
+  background: #FEF272; color: #173B39;
+  font-family: var(--font-poppins); font-weight: 400; font-size: 16px; line-height: 1;
+  transition: background-color 180ms cubic-bezier(0.22,1,0.36,1);
 }
-.btn-pill-yellow:hover {
-  background: #FFF8B8;
-}
+.btn-gold:hover { background: #FDF185; }
 
-.btn-pill-ghost {
-  background: transparent;
-  color: #FEF272;
-  border: 1px solid rgba(254, 242, 114, 0.35);
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: 9999px;
+  background: transparent; color: #000;
+  border: 1px solid rgba(0,0,0,0.2);
+  font-family: var(--font-poppins); font-weight: 400; font-size: 16px; line-height: 1;
+  transition: background-color 180ms cubic-bezier(0.22,1,0.36,1);
 }
-.btn-pill-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.gradient-warm {
-  background-image: linear-gradient(90deg, #FF8547 0%, #FEF272 100%);
-}
-
-/* ------------- 8 Pillars orbit diagram (responsive radius) ------------- */
-.newme-orbit {
-  /* Radius at which orbiting icons sit (as a % of the container half-axis).
-     Kept smaller on mobile so the label text below each icon doesn't clip
-     past the container edge. */
-  --orbit-r: 38%;
-}
-@media (min-width: 768px) {
-  .newme-orbit {
-    --orbit-r: 46%;
-  }
-}
+.btn-ghost:hover { background: #F3F3F3; }
