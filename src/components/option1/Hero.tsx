@@ -19,10 +19,10 @@ export default function Hero() {
       }}
     >
       <div>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        {/* Hero card — no fade-in animation on outer (was causing the
+            heading text to render faded on slow/SSR-hydrated paths because
+            the parent opacity multiplied through to children). */}
+        <div
           // Figma: 1880 × 947 → aspect 1.985:1, radius 48
           className="relative overflow-hidden"
           style={{
@@ -164,7 +164,7 @@ export default function Hero() {
               </a>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
