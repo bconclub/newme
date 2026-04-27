@@ -1,18 +1,28 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 export default function WhatIsNewMe() {
   return (
-    <section id="how-it-works" className="relative px-5 sm:px-6 md:px-10 lg:px-16 py-[clamp(72px,9vw,140px)]">
+    <section
+      id="how-it-works"
+      className="relative px-5 sm:px-6 md:px-10 lg:px-16 py-[clamp(72px,9vw,140px)]"
+    >
       <div className="max-w-[1400px] mx-auto">
-        {/* Eyebrow pill */}
+        {/* Eyebrow pill — asymmetric: rounded top-left/top-right/bottom-left, square bottom-right */}
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex items-center px-4 py-2 rounded-full border border-white/25 text-[13px] md:text-[14px] text-white font-[family-name:var(--font-urbanist)]"
+          className="inline-flex items-center px-3.5 py-1.5 border border-white/25 text-[12px] md:text-[13px] text-white font-[family-name:var(--font-urbanist)]"
+          style={{
+            borderTopLeftRadius: 9999,
+            borderTopRightRadius: 9999,
+            borderBottomLeftRadius: 9999,
+            borderBottomRightRadius: 0,
+          }}
         >
           What is NewME
         </motion.span>
@@ -38,16 +48,36 @@ export default function WhatIsNewMe() {
             className="hidden md:flex items-center shrink-0 pt-3"
           >
             <div
-              className="w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-full bg-[#FF8547] flex items-center justify-center"
+              className="w-[88px] h-[88px] md:w-[104px] md:h-[104px] rounded-full bg-[#F08B55] flex items-center justify-center"
               style={{ zIndex: 2 }}
             >
-              <StickFigureRunning />
+              <Image
+                src="/icons/pillar-1.svg"
+                alt=""
+                width={56}
+                height={56}
+                className="w-[52px] h-[52px] md:w-[60px] md:h-[60px]"
+              />
             </div>
             <div
-              className="w-[72px] h-[72px] md:w-[84px] md:h-[84px] rounded-full bg-[#FEF272] flex items-center justify-center -ml-4"
+              className="w-[88px] h-[88px] md:w-[104px] md:h-[104px] rounded-full bg-[#FEF272] flex items-center justify-center -ml-5"
               style={{ zIndex: 1 }}
             >
-              <StickFigureCheer />
+              <span
+                aria-hidden
+                className="w-[52px] h-[52px] md:w-[60px] md:h-[60px] block"
+                style={{
+                  backgroundColor: '#173B39',
+                  WebkitMaskImage: 'url(/icons/pillar-5.svg)',
+                  maskImage: 'url(/icons/pillar-5.svg)',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskPosition: 'center',
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                }}
+              />
             </div>
           </motion.div>
         </div>
@@ -91,20 +121,3 @@ export default function WhatIsNewMe() {
   )
 }
 
-function StickFigureRunning() {
-  return (
-    <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <circle cx="27" cy="11" r="3.2" />
-      <path d="M23 19l3 8-4 10M26 27l6 4M23 19l-6 5M17 24l3 5" />
-    </svg>
-  )
-}
-
-function StickFigureCheer() {
-  return (
-    <svg viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#0B3532" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <circle cx="24" cy="11" r="3.2" />
-      <path d="M24 14v10M24 24l-5 12M24 24l5 12M24 16l-7-5M24 16l7-5" />
-    </svg>
-  )
-}

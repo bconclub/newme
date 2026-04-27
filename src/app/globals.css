@@ -1,35 +1,77 @@
 @import "tailwindcss";
 
-@theme inline {
-  /* ============================================================
-     Dr. Pal's NewME — palette (Figma CrcIFtZCH8PDLyKHcQrRFZ)
-     ============================================================ */
+/* ============================================================
+   Dr. Pal's NewME — Design System
+   Source: Figma file CrcIFtZCH8PDLyKHcQrRFZ
+   Tokens extracted via scripts/extract-tokens.mjs (figma/design-tokens.json)
+   Spec: design.md
+   ============================================================ */
 
-  /* Primary */
-  --color-pine-teal: #173B39;
-  --color-pine-deep: #013E37;
+@theme inline {
+  /* ──────────────────────────────────────────────
+     Color — Primary
+     ────────────────────────────────────────────── */
+  --color-pine-teal: #173B39;       /* hero bg, primary surface on dark */
+  --color-pine-deep: #013E37;       /* deeper pine — edges, accents */
+  --color-pine-darker: #0E2827;     /* hover state for pine */
+  --color-pine-card: #0A4A45;       /* raised dark card */
+  --color-pine-raised: #0E5551;     /* hover/focus for dark cards */
   --color-ink: #000000;
   --color-white: #FFFFFF;
 
-  /* Accents */
-  --color-light-gold: #FEF272;
-  --color-gold-soft: #FDF185;
-  --color-moss-green: #629675;
-  --color-tangerine: #FF8547;
-  --color-tangerine-alt: #F08B55;
-  --color-ice-mint: #E3FFED;
-  --color-ice-aqua: #C7FDFC;
+  /* ──────────────────────────────────────────────
+     Color — Accents
+     ────────────────────────────────────────────── */
+  --color-light-gold: #FEF272;      /* primary accent, CTA bg */
+  --color-gold-soft: #FDF185;       /* hover for gold */
+  --color-gold-cream: #FFF8B8;      /* light gold variant for radial fills */
+  --color-moss-green: #629675;      /* organic moss accent */
+  --color-moss-deep: #4D8060;       /* deeper moss */
+  --color-tangerine: #FF8547;       /* secondary CTA accent */
+  --color-tangerine-alt: #F08B55;   /* tangerine hover */
+  --color-tangerine-warm: #FFAA7A;  /* tangerine softer hover */
+  --color-amber: #FFD17D;           /* warm amber accent */
+  --color-ice-mint: #E3FFED;        /* mint chip / tag bg */
+  --color-ice-aqua: #C7FDFC;        /* aqua accent */
 
-  /* Surfaces (light) */
-  --color-surface-gray: #D9D9D9;
-  --color-surface-soft: #F3F3F3;
-  --color-surface-faint: #F9F9F9;
+  /* ──────────────────────────────────────────────
+     Color — Surfaces (light mode sections)
+     ────────────────────────────────────────────── */
+  --color-surface-gray: #D9D9D9;    /* program / mission card fill */
+  --color-surface-soft: #F3F3F3;    /* program outer card bg */
+  --color-surface-faint: #F9F9F9;   /* alternate section tint */
+  --color-surface-mist: #EFEFEF;    /* faintest gray */
 
-  /* Text on light */
-  --color-muted: #444444;
-  --color-muted-soft: #BCBCBC;
+  /* ──────────────────────────────────────────────
+     Color — Text
+     ────────────────────────────────────────────── */
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-light: #000000;
+  --color-muted: #444444;           /* secondary body on light */
+  --color-muted-soft: #BCBCBC;      /* tertiary copy on light */
+  --color-muted-warm: #827171;      /* warm tertiary */
 
-  /* Legacy (kept for old sections that still import them) */
+  /* ──────────────────────────────────────────────
+     Color — Semantic state
+     ────────────────────────────────────────────── */
+  --color-success: #4D8060;
+  --color-warning: #FFA033;
+  --color-error: #C0160D;
+
+  /* ──────────────────────────────────────────────
+     Color — Overlay/state tokens (with alpha)
+     ────────────────────────────────────────────── */
+  --color-white-30: rgba(255, 255, 255, 0.30);
+  --color-white-15: rgba(255, 255, 255, 0.15);
+  --color-white-12: rgba(255, 255, 255, 0.12);
+  --color-white-08: rgba(255, 255, 255, 0.08);
+  --color-white-06: rgba(255, 255, 255, 0.06);
+  --color-gold-overlay: rgba(254, 242, 114, 0.31);  /* hero stat chip */
+  --color-gold-overlay-soft: rgba(254, 242, 114, 0.18);
+
+  /* ──────────────────────────────────────────────
+     Legacy color aliases — kept while older sections migrate
+     ────────────────────────────────────────────── */
   --color-brand-dark: #173B39;
   --color-brand-darker: #013E37;
   --color-brand-orange: #FF8547;
@@ -39,17 +81,92 @@
   --color-brand-light: #C7FDFC;
   --color-brand-gray: #BCBCBC;
 
-  /* Typography */
+  /* ──────────────────────────────────────────────
+     Typography
+     ────────────────────────────────────────────── */
   --font-bricolage: 'Bricolage Grotesque', sans-serif;
   --font-urbanist: 'Urbanist', sans-serif;
   --font-poppins: 'Poppins', sans-serif;
+  --font-quote: 'Abhaya Libre ExtraBold', serif;  /* large decorative quote glyph */
 
-  /* Radii */
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 28px;
-  --radius-xl: 40px;
+  /* Type scale — desktop sizes derived from Figma tokens.
+     Mobile sizing is scoped in components via clamp() / breakpoint utilities. */
+  --text-display-xl:   80px;   /* hero H1 */
+  --text-display-l:    72px;   /* large section H2 */
+  --text-display-m:    64px;   /* page H1 / standard hero */
+  --text-display-s:    56px;   /* mid section */
+  --text-h2:           48px;
+  --text-h3:           40px;
+  --text-h4:           32px;
+  --text-h5:           24px;
+  --text-eyebrow:      20px;
+  --text-body-lg:      20px;
+  --text-body:         16px;
+  --text-body-sm:      14px;
+  --text-caption:      12px;
+
+  --leading-display:   1.04;
+  --leading-h2:        1.10;
+  --leading-h3:        1.20;
+  --leading-body:      1.55;
+  --leading-tight:     1.25;
+  --leading-loose:     1.6;
+
+  /* ──────────────────────────────────────────────
+     Layout
+     ────────────────────────────────────────────── */
+  --container-wide:    1800px;   /* edge-to-edge gray bands */
+  --container-default: 1440px;   /* most sections */
+  --container-narrow:  1200px;   /* dense content / readable text */
+  --container-tight:   720px;    /* prose */
+
+  --gutter-mobile:     20px;
+  --gutter-tablet:     56px;
+  --gutter-desktop:    96px;
+
+  --rhythm-section-mobile:  72px;
+  --rhythm-section-desktop: 120px;
+
+  /* ──────────────────────────────────────────────
+     Radii
+     ────────────────────────────────────────────── */
+  --radius-xs:    8px;
+  --radius-sm:   12px;
+  --radius-md:   20px;
+  --radius-lg:   28px;
+  --radius-xl:   40px;
+  --radius-pill: 9999px;
+
+  /* ──────────────────────────────────────────────
+     Elevation / shadows
+     ────────────────────────────────────────────── */
+  --shadow-card:     0 14px 40px -20px rgba(0, 0, 0, 0.18);
+  --shadow-card-lg:  0 24px 60px -24px rgba(0, 0, 0, 0.22);
+  --shadow-glow-gold: 0 24px 60px -12px rgba(254, 242, 114, 0.45);
+  --shadow-inset-hairline: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+
+  /* ──────────────────────────────────────────────
+     Motion
+     ────────────────────────────────────────────── */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 600ms;
+
+  /* ──────────────────────────────────────────────
+     Z-index
+     ────────────────────────────────────────────── */
+  --z-bg:       0;
+  --z-content:  1;
+  --z-overlay: 50;
+  --z-header:  60;
+  --z-modal:  100;
+  --z-grain:  200;  /* fixed page-grain stays above section content */
 }
+
+/* ============================================================
+   Base / reset
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -63,7 +180,7 @@ html {
 body {
   background-color: #FFFFFF;
   color: #000000;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-bricolage);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -83,41 +200,59 @@ html.lenis body {
 }
 
 ::selection {
-  background: #FEF272;
-  color: #173B39;
+  background: var(--color-light-gold);
+  color: var(--color-pine-teal);
 }
 
-/* Utilities */
+/* ============================================================
+   Type utility classes
+   ============================================================ */
+
 .font-display { font-family: var(--font-bricolage); letter-spacing: -0.01em; }
 .font-ui      { font-family: var(--font-urbanist); }
 .font-body    { font-family: var(--font-bricolage); }
 .font-button  { font-family: var(--font-poppins); }
 
-/* Buttons */
+/* ============================================================
+   Buttons — semantic shorthands wired to tokens
+   ============================================================ */
+
 .btn-pine {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 14px 28px; border-radius: 9999px;
-  background: #173B39; color: #FFFFFF;
-  font-family: var(--font-poppins); font-weight: 400; font-size: 16px; line-height: 1;
-  transition: background-color 180ms cubic-bezier(0.22,1,0.36,1);
+  padding: 14px 28px; border-radius: var(--radius-pill);
+  background: var(--color-pine-teal); color: var(--color-white);
+  font-family: var(--font-poppins); font-weight: 400;
+  font-size: var(--text-body); line-height: 1;
+  transition: background-color var(--duration-fast) var(--ease-out-soft);
 }
-.btn-pine:hover { background: #0E2827; }
+.btn-pine:hover { background: var(--color-pine-darker); }
 
 .btn-gold {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 14px 28px; border-radius: 9999px;
-  background: #FEF272; color: #173B39;
-  font-family: var(--font-poppins); font-weight: 400; font-size: 16px; line-height: 1;
-  transition: background-color 180ms cubic-bezier(0.22,1,0.36,1);
+  padding: 14px 28px; border-radius: var(--radius-pill);
+  background: var(--color-light-gold); color: var(--color-pine-teal);
+  font-family: var(--font-poppins); font-weight: 400;
+  font-size: var(--text-body); line-height: 1;
+  transition: background-color var(--duration-fast) var(--ease-out-soft);
 }
-.btn-gold:hover { background: #FDF185; }
+.btn-gold:hover { background: var(--color-gold-soft); }
 
 .btn-ghost {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 14px 28px; border-radius: 9999px;
-  background: transparent; color: #000;
-  border: 1px solid rgba(0,0,0,0.2);
-  font-family: var(--font-poppins); font-weight: 400; font-size: 16px; line-height: 1;
-  transition: background-color 180ms cubic-bezier(0.22,1,0.36,1);
+  padding: 14px 28px; border-radius: var(--radius-pill);
+  background: transparent; color: var(--color-ink);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  font-family: var(--font-poppins); font-weight: 400;
+  font-size: var(--text-body); line-height: 1;
+  transition: background-color var(--duration-fast) var(--ease-out-soft);
 }
-.btn-ghost:hover { background: #F3F3F3; }
+.btn-ghost:hover { background: var(--color-surface-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

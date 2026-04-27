@@ -1,9 +1,21 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 
-const quickLinks = ['Home', 'How It Works', 'Your Phase of Care', 'Results', 'Dr Pal & Team']
-const resources = ['Blog', 'Podcast', 'FAQ', 'NewME App']
+const quickLinks: { label: string; href: string }[] = [
+  { label: 'Home', href: '/' },
+  { label: 'How It Works', href: '/how-it-works' },
+  { label: 'Pathways', href: '/pathways' },
+  { label: 'Virtual Clinic', href: '/virtual-clinic' },
+  { label: 'Research Lab', href: '/research-lab' },
+]
+const resources: { label: string; href: string }[] = [
+  { label: 'Blog', href: '#' },
+  { label: 'Podcast', href: '#' },
+  { label: 'FAQ', href: '#' },
+  { label: 'NewME App', href: '#' },
+]
 
 const socials = [
   {
@@ -88,10 +100,10 @@ export default function Footer() {
             </h4>
             <ul className="mt-4 space-y-3">
               {quickLinks.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-white/65 hover:text-white text-[13px] font-[family-name:var(--font-poppins)] transition-colors">
-                    {l}
-                  </a>
+                <li key={l.label}>
+                  <Link href={l.href} className="text-white/65 hover:text-white text-[13px] font-[family-name:var(--font-poppins)] transition-colors">
+                    {l.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -104,9 +116,9 @@ export default function Footer() {
             </h4>
             <ul className="mt-4 space-y-3">
               {resources.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-white/65 hover:text-white text-[13px] font-[family-name:var(--font-poppins)] transition-colors">
-                    {l}
+                <li key={l.label}>
+                  <a href={l.href} className="text-white/65 hover:text-white text-[13px] font-[family-name:var(--font-poppins)] transition-colors">
+                    {l.label}
                   </a>
                 </li>
               ))}

@@ -1,5 +1,6 @@
 import Header from '@/components/option1/Header'
 import Hero from '@/components/option1/Hero'
+import StatsBand from '@/components/option1/StatsBand'
 import WhatIsNewMe from '@/components/option1/WhatIsNewMe'
 import DrPal from '@/components/option1/DrPal'
 import Pillars from '@/components/option1/Pillars'
@@ -16,6 +17,7 @@ export default function Home() {
         <span aria-hidden className="newme-blob-2" />
         <span aria-hidden className="newme-blob-3" />
         <Hero />
+        <StatsBand />
         <WhatIsNewMe />
         <DrPal />
         <Pillars />
