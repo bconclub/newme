@@ -42,8 +42,15 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer id="contact" className="relative px-5 sm:px-6 md:px-10 lg:px-16 pt-4 pb-8">
-      <div className="max-w-[1280px] mx-auto">
+    <footer
+      id="contact"
+      className="relative pt-4 pb-8"
+      style={{
+        paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+        paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+      }}
+    >
+      <div className="mx-auto" style={{ maxWidth: 1800 }}>
         {/* Ratings band */}
         <div
           className="relative rounded-[24px] md:rounded-[28px] overflow-hidden px-6 py-8 md:py-12"
