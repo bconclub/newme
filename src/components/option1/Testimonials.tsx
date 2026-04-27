@@ -36,25 +36,62 @@ const ratings = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="relative px-5 sm:px-6 md:px-10 lg:px-16 py-[clamp(56px,8vw,120px)]">
-      <div className="max-w-[1200px] mx-auto">
+    <section
+      id="testimonials"
+      className="relative py-[clamp(56px,8vw,120px)]"
+      style={{
+        paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+        paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+      }}
+    >
+      <div className="mx-auto" style={{ maxWidth: 1800 }}>
         <div className="grid md:grid-cols-2 gap-5 md:gap-6 items-end">
           <div>
+            {/* Eyebrow pill — matches Figma pattern (gradient border + blur). */}
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.4 }}
-              className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/70 font-[family-name:var(--font-urbanist)]"
+              className="relative inline-flex items-center justify-center w-[180px] h-[48px] rounded-full text-white font-[family-name:var(--font-bricolage)]"
+              style={{
+                fontWeight: 300,
+                fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                letterSpacing: 0,
+                backdropFilter: 'blur(4px)',
+                WebkitBackdropFilter: 'blur(4px)',
+              }}
             >
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  padding: 1,
+                  background:
+                    'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 50%)',
+                  WebkitMask:
+                    'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                  maskComposite: 'exclude',
+                }}
+              />
               Testimonials
             </motion.span>
+            {/* Heading — Bricolage SemiBold 72px lh 72. */}
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-5 font-[family-name:var(--font-bricolage)] font-semibold text-white text-[28px] sm:text-[32px] md:text-[44px] leading-[1.1] md:leading-[1.08] tracking-[-0.01em]"
+              className="font-[family-name:var(--font-bricolage)] text-white"
+              style={{
+                fontWeight: 600,
+                fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+                lineHeight: 1,
+                letterSpacing: 0,
+                marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
+              }}
             >
               Real Patients.
               <br />
