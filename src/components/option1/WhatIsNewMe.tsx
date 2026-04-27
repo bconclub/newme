@@ -24,12 +24,15 @@ export default function WhatIsNewMe() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.4 }}
-          // Figma: Bricolage Grotesque Light (300) 24px, in a 214×48 pill.
+          // Figma: 214×48 pill. Bricolage Grotesque Light 24px text.
+          // Background blur 4px (backdrop-filter blur for the frosted look).
           className="relative inline-flex items-center justify-center w-[214px] h-[48px] rounded-full text-white font-[family-name:var(--font-bricolage)]"
           style={{
             fontWeight: 300,
             fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
             letterSpacing: 0,
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
           }}
         >
           {/* Gradient border layer — punched out via mask-composite so only the
@@ -39,12 +42,14 @@ export default function WhatIsNewMe() {
             className="absolute inset-0 rounded-full pointer-events-none"
             style={{
               padding: 1,
-              // Figma: Linear Gradient #FFFFFF → #FFFFFF 0% opacity, diagonal.
-              // Solid at top-left (top + left side stay visible), fading to
-              // transparent at bottom-right. 180deg made the entire bottom
-              // edge invisible — that wasn't the reference.
+              // Figma exact: 135deg diagonal gradient, sharp falloff.
+              // Top-left = solid white (most visible). Top-right = fully
+              // transparent (fades to zero). Bottom-left = feeble/faint
+              // (still in the gradient transition). Bottom-right = fully
+              // transparent. The 50% stop makes the fade aggressive enough
+              // that top-right reaches zero before reaching the corner.
               background:
-                'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 100%)',
+                'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 50%)',
               WebkitMask:
                 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
               WebkitMaskComposite: 'xor',

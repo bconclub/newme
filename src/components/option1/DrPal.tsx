@@ -58,26 +58,68 @@ export default function DrPal() {
             }}
           />
 
-          {/* Card content. Photo is portrait (3:5) with proportional padding around it. */}
+          {/* Card content — Figma exact:
+              Photo: 667×1004 at top:60 left:60 inside 1800×1124 card.
+              Eyebrow "Meet Dr. Pal": 172×48 at top:150 left:819 (= 759 from photo right edge).
+              Heading: 840×216 at top:238 left:819, Bricolage SemiBold 72px lh 72.
+              Body: 883×170+ at top:618 left:819, Urbanist Medium 28px lh 34. */}
           <div
-            className="relative grid lg:grid-cols-[auto_1fr] gap-6 md:gap-10 lg:gap-14 xl:gap-20 items-center"
-            style={{ padding: 'clamp(16px, 3.5vw, 60px)' }}
+            className="relative grid lg:grid-cols-[667fr_1073fr] items-center"
+            style={{
+              padding: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+              gap: 'clamp(24px, calc(92 / 1920 * 100vw), 92px)', // 819 - (60 + 667) = 92px
+            }}
           >
-            {/* Photo — portrait container, capped width so aspect stays right at any viewport */}
-            <div className="w-full lg:w-[clamp(360px,32vw,560px)]">
+            {/* Photo — Figma 667×1004 at top:60 left:60 inside the card. */}
+            <div className="w-full">
               <div
-                className="relative aspect-[3/5] rounded-[18px] md:rounded-[22px] lg:rounded-[24px] overflow-hidden bg-cover bg-center"
+                className="relative aspect-[667/1004] rounded-[18px] md:rounded-[22px] lg:rounded-[24px] overflow-hidden bg-cover bg-center"
                 style={{ backgroundImage: `url('${encodeURI(PORTRAIT)}')` }}
               />
             </div>
 
             {/* Right — copy column */}
-            <div className="relative max-w-[640px] flex flex-col">
-              <span className="inline-flex w-fit items-center px-3.5 py-1.5 rounded-full border border-white/30 text-[12px] md:text-[13px] text-white font-[family-name:var(--font-urbanist)]">
+            <div className="relative flex flex-col">
+              {/* Eyebrow pill — Figma: 172×48, fill #173B39, 1px moss gradient
+                  border (#629675 → 0% opacity), radius 40 (fully rounded). */}
+              <span
+                className="relative inline-flex w-[172px] items-center justify-center h-[48px] rounded-full font-[family-name:var(--font-bricolage)] text-white"
+                style={{
+                  background: '#173B39',
+                  fontWeight: 300,
+                  fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                  letterSpacing: 0,
+                }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full pointer-events-none"
+                  style={{
+                    padding: 1,
+                    background:
+                      'linear-gradient(135deg, #629675 0%, rgba(98,150,117,0) 100%)',
+                    WebkitMask:
+                      'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                    maskComposite: 'exclude',
+                  }}
+                />
                 Meet Dr. Pal
               </span>
 
-              <h2 className="mt-5 md:mt-6 font-[family-name:var(--font-bricolage)] font-semibold text-white text-[32px] sm:text-[40px] md:text-[48px] lg:text-[56px] leading-[1.06] tracking-[-0.012em]">
+              {/* Heading — Figma: Bricolage Grotesque SemiBold 72px, lh 72, 840 wide. */}
+              <h2
+                className="font-[family-name:var(--font-bricolage)] text-white"
+                style={{
+                  fontWeight: 600,
+                  fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+                  lineHeight: 1,
+                  letterSpacing: 0,
+                  maxWidth: 840,
+                  marginTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                }}
+              >
                 Clinical Expertise,
                 <br />
                 Shaped By Real
@@ -85,15 +127,46 @@ export default function DrPal() {
                 Experience
               </h2>
 
-              <div className="mt-7 md:mt-8 h-px bg-white/25" />
+              {/* Divider — Figma Vector 216 horizontal line below heading. */}
+              <div
+                className="bg-white/30"
+                style={{
+                  height: 1,
+                  marginTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                }}
+              />
 
-              <div className="mt-6 md:mt-7 space-y-4 md:space-y-5">
-                <p className="text-white/90 text-[14px] md:text-[15.5px] leading-[1.6] font-[family-name:var(--font-poppins)] font-light">
+              <div
+                className="space-y-4 md:space-y-5"
+                style={{
+                  marginTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                }}
+              >
+                {/* Body paragraphs — Figma: Urbanist Medium 28px lh 34. */}
+                <p
+                  className="text-white font-[family-name:var(--font-urbanist)]"
+                  style={{
+                    fontWeight: 500,
+                    fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+                    lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+                    letterSpacing: 0,
+                    maxWidth: 883,
+                  }}
+                >
                   Dr. Pal is a US-based gastroenterologist whose clinical
                   perspective is shaped not just by medical training, but by
                   personal experience.
                 </p>
-                <p className="text-white/90 text-[14px] md:text-[15.5px] leading-[1.6] font-[family-name:var(--font-poppins)] font-light">
+                <p
+                  className="text-white font-[family-name:var(--font-urbanist)]"
+                  style={{
+                    fontWeight: 500,
+                    fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+                    lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+                    letterSpacing: 0,
+                    maxWidth: 883,
+                  }}
+                >
                   In his early 30s, despite professional success, his own
                   health declined due to long work hours, poor sleep, and
                   unstructured living. All of it culminated with a heart
@@ -101,7 +174,16 @@ export default function DrPal() {
                   gap: the absence of structured, sustainable approaches to
                   building long-term health.
                 </p>
-                <p className="text-white/90 text-[14px] md:text-[15.5px] leading-[1.6] font-[family-name:var(--font-poppins)] font-light">
+                <p
+                  className="text-white font-[family-name:var(--font-urbanist)]"
+                  style={{
+                    fontWeight: 500,
+                    fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+                    lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+                    letterSpacing: 0,
+                    maxWidth: 883,
+                  }}
+                >
                   This realization became the foundation of NewME. Today, Dr.
                   Pal leads a system that focuses on restoring metabolic and
                   gut regulation through structured care, guided
