@@ -97,7 +97,7 @@ export default function Hero() {
             }}
           >
             <motion.h1
-              initial={{ opacity: 0, y: 12 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
               className="font-[family-name:var(--font-bricolage)] text-white"
@@ -117,7 +117,7 @@ export default function Hero() {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18 }}
               className="text-white font-[family-name:var(--font-urbanist)]"
@@ -135,7 +135,7 @@ export default function Hero() {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.28 }}
               className="flex items-center"
