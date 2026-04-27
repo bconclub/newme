@@ -11,25 +11,28 @@ export default function DrPal() {
   return (
     <section
       id="care-team"
+      // Figma spec: width 1800, height 1124, left 60 on 1920 artboard.
+      // Gutter scales 60/1920 = 3.13vw, capped at 60px.
       className="relative py-[clamp(40px,6vw,80px)]"
       style={{
-        // Page-edge padding == card-inner padding — keeps the strip of
-        // page-bg outside the card visually equal to the strip of card
-        // gradient between the card edge and the photo.
-        paddingLeft: 'clamp(16px, 3.5vw, 60px)',
-        paddingRight: 'clamp(16px, 3.5vw, 60px)',
+        paddingLeft: 'clamp(20px, 3.13vw, 60px)',
+        paddingRight: 'clamp(20px, 3.13vw, 60px)',
       }}
     >
-      <div className="max-w-[1800px] mx-auto">
+      <div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative rounded-[24px] md:rounded-[28px] overflow-hidden"
+          className="relative overflow-hidden"
           style={{
+            // Figma spec: linear-gradient #629675 (moss) -> #013E37 (deep pine).
+            // Multi-stop ramp prevents the top-left from washing out to mint.
             background:
-              'linear-gradient(135deg, #82B292 0%, #6CA17C 22%, #4F8369 50%, #356A55 75%, #214F40 100%)',
+              'linear-gradient(135deg, #629675 0%, #4F8369 25%, #2F7269 50%, #144F49 75%, #013E37 100%)',
+            borderRadius: 'clamp(20px, 1.77vw, 34px)',
+            minHeight: 'clamp(640px, calc(1124 / 1800 * 100vw), 1124px)',
           }}
         >
           {/* Soft yellow glow on the right side — Figma highlight */}

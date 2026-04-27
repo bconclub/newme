@@ -31,13 +31,24 @@ export default function Header() {
   return (
     <>
       <header
+        // Original full-width fixed-bar behavior (transparent over hero,
+        // pine bg + blur when scrolled). Inner content is sized to the
+        // Figma spec: 1800 × 74, 60px left gutter on a 1920 artboard.
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
           scrolled
             ? 'bg-[#013E37]/90 backdrop-blur-md border-b border-white/[0.06]'
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12 h-[72px] flex items-center justify-between gap-6">
+        <div
+          className="mx-auto"
+          style={{
+            maxWidth: 1920,
+            paddingLeft: 'clamp(20px, 3.13vw, 60px)',
+            paddingRight: 'clamp(20px, 3.13vw, 60px)',
+          }}
+        >
+          <div className="relative h-[74px] flex items-center justify-between gap-6 px-6 md:px-10">
           <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
             <Image
               src="/newme-logo.png"
@@ -94,6 +105,7 @@ export default function Header() {
               className="w-6 h-0.5 bg-white block"
             />
           </button>
+          </div>
         </div>
       </header>
 

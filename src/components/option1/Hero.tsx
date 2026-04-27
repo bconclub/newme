@@ -10,14 +10,25 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative px-3 sm:px-4 md:px-6 lg:px-8 pt-[88px] md:pt-[96px] pb-3 md:pb-4"
+      // Figma spec: width 1880, left 20 on a 1920 artboard.
+      // Padding scales as 20/1920 = 1.04vw, capped at 20px.
+      className="relative pt-[88px] md:pt-[96px] pb-3 md:pb-4"
+      style={{
+        paddingLeft: 'clamp(12px, 1.04vw, 20px)',
+        paddingRight: 'clamp(12px, 1.04vw, 20px)',
+      }}
     >
-      <div className="max-w-[1440px] mx-auto">
+      <div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative rounded-[20px] md:rounded-[24px] overflow-hidden min-h-[520px] sm:min-h-[560px] md:min-h-[600px] lg:min-h-[640px]"
+          // Figma: 1880 × 947 → aspect 1.985:1, radius 48
+          className="relative overflow-hidden"
+          style={{
+            borderRadius: 'clamp(28px, 2.5vw, 48px)',
+            minHeight: 'clamp(520px, calc(947 / 1880 * 100vw), 947px)',
+          }}
         >
           {/* Background image */}
           <div
@@ -65,13 +76,38 @@ export default function Hero() {
             }}
           />
 
-          {/* Content */}
-          <div className="relative z-10 px-6 sm:px-10 md:px-14 lg:px-16 pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-10 md:pb-14 flex flex-col gap-6 md:gap-7 max-w-full md:max-w-[640px] lg:max-w-[680px]">
+          {/* Content
+              Figma exact specs (1920 artboard, hero card is 1880×947 at top:152 left:20):
+              - Heading: top 343 from card, left 100 from card, 810×276,
+                Bricolage Grotesque 600, 92px, line-height 92
+              - Body: top 651 (= heading + 32 gap), left 100, 640×60,
+                Urbanist 400, 24px, line-height 30
+              - Button group: top 735 (= body + 24 gap), left 100, 244×64
+              All values scaled with viewport using ?vw clamp so they hold
+              proportion at any width up to the 1920 artboard cap.
+          */}
+          <div
+            className="relative z-10 flex flex-col"
+            style={{
+              paddingTop: 'clamp(120px, calc(343 / 1920 * 100vw), 343px)',
+              paddingLeft: 'clamp(40px, calc(100 / 1920 * 100vw), 100px)',
+              paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
+              paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+              maxWidth: 'clamp(360px, calc(910 / 1920 * 100vw), 910px)', // 100 left pad + 810 content
+            }}
+          >
             <motion.h1
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-              className="font-[family-name:var(--font-bricolage)] font-semibold text-white text-[36px] sm:text-[44px] md:text-[58px] lg:text-[68px] leading-[1.04] tracking-[-0.018em]"
+              className="font-[family-name:var(--font-bricolage)] text-white"
+              style={{
+                fontWeight: 600,
+                fontSize: 'clamp(36px, calc(92 / 1920 * 100vw), 92px)',
+                lineHeight: 1, // Figma: line-height 92 = 1×92 = 1
+                letterSpacing: 0,
+                maxWidth: 'clamp(320px, calc(810 / 1920 * 100vw), 810px)',
+              }}
             >
               Doctor-Led Care,
               <br />
@@ -84,7 +120,15 @@ export default function Hero() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18 }}
-              className="text-white/85 text-[14px] md:text-[15px] leading-[1.6] max-w-[420px] font-[family-name:var(--font-poppins)] font-light"
+              className="text-white font-[family-name:var(--font-urbanist)]"
+              style={{
+                fontWeight: 400,
+                fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                lineHeight: 'clamp(18px, calc(30 / 1920 * 100vw), 30px)',
+                letterSpacing: 0,
+                maxWidth: 'clamp(280px, calc(640 / 1920 * 100vw), 640px)',
+                marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
+              }}
             >
               NewMe combines clinical insights with structured care to better
               understand your body and provide the care it needs.
@@ -94,7 +138,8 @@ export default function Hero() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.28 }}
-              className="flex items-center mt-1"
+              className="flex items-center"
+              style={{ marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)' }}
             >
               <a
                 href="#how-it-works"

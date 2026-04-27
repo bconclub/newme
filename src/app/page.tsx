@@ -14,16 +14,32 @@ export default function Home() {
     <>
       <Header />
       <main className="newme-page">
-        <span aria-hidden className="newme-blob-2" />
-        <span aria-hidden className="newme-blob-3" />
-        <Hero />
-        <StatsBand />
-        <WhatIsNewMe />
-        <DrPal />
-        <Pillars />
-        <Pathways />
-        <StructuredCare />
-        <Testimonials />
+        {/* Background ellipses — exact Figma spec.
+            1920-wide artboard centered on viewport, scaled down at smaller
+            widths. Two big moss→pine gradient washes (Ellipse 28 + 38) with
+            their own monotone noise overlays, plus three small gold accents
+            (Ellipse 34 / 40 / 39). See option1.scss .newme-bg. */}
+        <div className="newme-bg" aria-hidden>
+          <span className="newme-ellipse newme-ellipse-28" />
+          <span className="newme-noise newme-noise-28" />
+          <span className="newme-ellipse newme-ellipse-38" />
+          <span className="newme-noise newme-noise-38" />
+          <span className="newme-ellipse newme-ellipse-34" />
+          <span className="newme-ellipse newme-ellipse-40" />
+          <span className="newme-ellipse newme-ellipse-39" />
+        </div>
+        {/* Figma artboard cap — 1920px. Sections sit inside this and own
+            their own left/right gutter (Hero: 20, Stats/DrPal: 60). */}
+        <div className="newme-frame">
+          <Hero />
+          <StatsBand />
+          <WhatIsNewMe />
+          <DrPal />
+          <Pillars />
+          <Pathways />
+          <StructuredCare />
+          <Testimonials />
+        </div>
       </main>
       <Footer />
     </>
