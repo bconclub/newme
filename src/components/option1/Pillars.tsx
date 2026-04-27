@@ -19,27 +19,47 @@ const pillars = [
 
 export default function Pillars() {
   return (
-    <section id="pillars" className="relative px-5 sm:px-6 md:px-10 lg:px-16 py-[clamp(56px,8vw,120px)]">
-      <div className="max-w-[1200px] mx-auto text-center">
+    <section id="pillars" className="relative py-[clamp(56px,8vw,120px)]"
+      style={{
+        paddingLeft: 'clamp(20px, calc(363 / 1920 * 100vw), 363px)',
+        paddingRight: 'clamp(20px, calc(363 / 1920 * 100vw), 363px)',
+      }}
+    >
+      <div className="mx-auto text-center" style={{ maxWidth: 1194 }}>
+        {/* Heading — Figma: Bricolage Grotesque SemiBold 72px lh 72,
+            white, centered. Position from artboard top:3517 left:582. */}
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="font-[family-name:var(--font-bricolage)] font-semibold text-white text-[28px] sm:text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] md:leading-[1.06] tracking-[-0.01em]"
+          className="font-[family-name:var(--font-bricolage)] text-white"
+          style={{
+            fontWeight: 600,
+            fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+            lineHeight: 1,
+            letterSpacing: 0,
+          }}
         >
-          The 8 Pillars of <span className="text-[#FEF272]">Health</span>
+          The 8 Pillars of Health
         </motion.h2>
+        {/* Body — Figma: Urbanist Medium 28px lh 34, centered. */}
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-4 md:mt-5 text-white/75 text-[14.5px] sm:text-[15px] md:text-[16px] leading-[1.6] max-w-[640px] mx-auto font-[family-name:var(--font-poppins)]"
+          className="text-white font-[family-name:var(--font-urbanist)] mx-auto"
+          style={{
+            fontWeight: 500,
+            fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+            lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+            letterSpacing: 0,
+            marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
+            maxWidth: 1194,
+          }}
         >
-          Each of our defined pathways of care are aligned to a specific level of metabolic and
-          gastrointestinal complexity. Your assessment determines the appropriate pathway, ensuring
-          care is structured, personalized, and clinically grounded.
+          Your body comprises eight different systems working cohesively to ensure that your body runs smoothly. The NewME framework is designed keeping these 8 pillars in mind.
         </motion.p>
 
         <div className="relative mt-12 md:mt-14 mx-auto w-[min(720px,94vw)] aspect-square newme-orbit">

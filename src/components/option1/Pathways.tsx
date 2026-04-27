@@ -34,32 +34,104 @@ export default function Pathways() {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <section id="pathways" className="relative px-5 sm:px-6 md:px-10 lg:px-16 py-[clamp(56px,8vw,120px)]">
-      <div className="max-w-[1200px] mx-auto grid lg:grid-cols-[0.95fr_1.1fr] gap-8 md:gap-10 lg:gap-16 items-start">
-        {/* Left */}
+    <section
+      id="pathways"
+      // Figma: 1800 wide at left:60. Section content matches that.
+      className="relative py-[clamp(56px,8vw,120px)]"
+      style={{
+        paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+        paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+      }}
+    >
+      <div className="mx-auto grid lg:grid-cols-[640fr_1100fr] items-start"
+        style={{
+          maxWidth: 1800,
+          gap: 'clamp(24px, calc(60 / 1920 * 100vw), 60px)',
+        }}>
+        {/* Left column — Figma 640 wide */}
         <div>
-          <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] uppercase tracking-[0.14em] text-white/70 font-[family-name:var(--font-urbanist)]">
+          {/* Eyebrow pill — Figma: 149×48, Bricolage Light 24px,
+              gradient border (135deg #FFFFFF -> 0% at 50%), backdrop blur 4. */}
+          <span
+            className="relative inline-flex items-center justify-center w-[149px] h-[48px] rounded-full text-white font-[family-name:var(--font-bricolage)]"
+            style={{
+              fontWeight: 300,
+              fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+              letterSpacing: 0,
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          >
+            <span
+              aria-hidden
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{
+                padding: 1,
+                background:
+                  'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 50%)',
+                WebkitMask:
+                  'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                WebkitMaskComposite: 'xor',
+                mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                maskComposite: 'exclude',
+              }}
+            />
             Pathways
           </span>
-          <h2 className="mt-5 font-[family-name:var(--font-bricolage)] font-semibold text-white text-[26px] sm:text-[30px] md:text-[40px] lg:text-[48px] leading-[1.12] md:leading-[1.08] tracking-[-0.01em]">
-            The pathways to <span className="text-[#FEF272]">Better Health</span>
+          {/* Heading — Figma: Bricolage SemiBold 72px lh 72, white. */}
+          <h2
+            className="font-[family-name:var(--font-bricolage)] text-white"
+            style={{
+              fontWeight: 600,
+              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              lineHeight: 1,
+              letterSpacing: 0,
+              marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+            }}
+          >
+            The pathways<br />To Better Health
           </h2>
-          <p className="mt-5 text-white/75 text-[15px] md:text-[16px] leading-[1.6] max-w-[520px] font-[family-name:var(--font-poppins)]">
+          {/* Body — Figma: Urbanist Medium 28px lh 34. */}
+          <p
+            className="text-white font-[family-name:var(--font-urbanist)]"
+            style={{
+              fontWeight: 500,
+              fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+              letterSpacing: 0,
+              marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
+              maxWidth: 559,
+            }}
+          >
             Each of our defined pathways of care are aligned to a specific level of metabolic
             and gastrointestinal complexity. Your assessment determines the appropriate pathway,
             ensuring care is structured, personalized, and clinically grounded.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3">
+          {/* Pathway tabs — pill-shaped buttons */}
+          <div
+            className="flex flex-col"
+            style={{
+              gap: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
+              marginTop: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
+            }}
+          >
             {tabs.map((t, i) => (
               <button
                 key={t}
                 onClick={() => setActiveTab(i)}
-                className={`text-left px-5 py-3 rounded-full text-[13px] md:text-[14px] font-medium font-[family-name:var(--font-urbanist)] transition-all border ${
-                  i === activeTab
-                    ? 'bg-[#FEF272] text-[#043C39] border-[#FEF272]'
-                    : 'bg-transparent text-white/75 border-white/15 hover:border-white/30'
-                }`}
+                className="text-left rounded-full font-[family-name:var(--font-bricolage)] transition-all border"
+                style={{
+                  fontWeight: 300,
+                  fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                  paddingLeft: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
+                  paddingRight: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
+                  paddingTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                  paddingBottom: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                  background: i === activeTab ? 'rgba(255,255,255,0.08)' : 'transparent',
+                  borderColor: 'rgba(255,255,255,0.30)',
+                  color: '#FFFFFF',
+                }}
               >
                 {t}
               </button>
