@@ -41,8 +41,16 @@ export default function EyebrowPill({
         fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
         lineHeight: 1,
         letterSpacing: 0,
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
+        // Glassy 3D pop — frosted backdrop + a faint top-down inner light
+        // (subtle white-tint top, fading to nothing) gives the pill a sense
+        // of volume against the dark bg. A very soft outer shadow sells the
+        // "lifted off the page" feel without being visually loud.
+        backdropFilter: 'blur(8px) saturate(110%)',
+        WebkitBackdropFilter: 'blur(8px) saturate(110%)',
+        background:
+          'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0) 100%)',
+        boxShadow:
+          'inset 0 1px 0 rgba(255,255,255,0.18), 0 6px 18px -10px rgba(0,0,0,0.45)',
       }}
     >
       {/* Gradient ring — radial gradient anchored at the BOTTOM-RIGHT corner.
@@ -64,12 +72,12 @@ export default function EyebrowPill({
         style={{
           padding: 1,
           background:
-            // Ellipse 110%×90% — wider/shorter so bottom fades further while
-            // the right edge stays solid further down. Stops use a SMOOTH
-            // ramp (multiple intermediate alpha stops) so the visible border
-            // gradually thins out as it approaches the transparent zone,
-            // rather than ending at a bright "cut-off" edge.
-            'radial-gradient(ellipse 110% 90% at 100% 100%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0.25) 48%, rgba(255,255,255,0.5) 60%, rgba(255,255,255,0.75) 72%, rgba(255,255,255,0.92) 84%, #FFFFFF 95%)',
+            // Ellipse 115%×95% — slightly bigger transparent zone so MORE
+            // of the bottom edge fades into nothing while the right edge
+            // still stays solid through the upper portion. Smooth multi-
+            // stop ramp so the visible border thins out gradually instead
+            // of ending at a bright cut-off edge.
+            'radial-gradient(ellipse 115% 95% at 100% 100%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0.08) 38%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.45) 62%, rgba(255,255,255,0.7) 74%, rgba(255,255,255,0.9) 86%, #FFFFFF 96%)',
           WebkitMask:
             'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
           WebkitMaskComposite: 'xor',
