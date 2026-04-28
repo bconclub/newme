@@ -64,11 +64,12 @@ export default function EyebrowPill({
         style={{
           padding: 1,
           background:
-            // Ellipse 110%×90%: a touch wider horizontally (more of the bottom
-            // edge slips into the transparent zone — bottom fades further),
-            // a touch shorter vertically (less of the right edge is in the
-            // fade — right stays solid further down).
-            'radial-gradient(ellipse 110% 90% at 100% 100%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.6) 60%, #FFFFFF 80%)',
+            // Ellipse 110%×90% — wider/shorter so bottom fades further while
+            // the right edge stays solid further down. Stops use a SMOOTH
+            // ramp (multiple intermediate alpha stops) so the visible border
+            // gradually thins out as it approaches the transparent zone,
+            // rather than ending at a bright "cut-off" edge.
+            'radial-gradient(ellipse 110% 90% at 100% 100%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0.25) 48%, rgba(255,255,255,0.5) 60%, rgba(255,255,255,0.75) 72%, rgba(255,255,255,0.92) 84%, #FFFFFF 95%)',
           WebkitMask:
             'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
           WebkitMaskComposite: 'xor',
