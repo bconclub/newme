@@ -179,6 +179,22 @@ html:has(main.newme-page) .newme-header a {
   letter-spacing: 0;
 }
 
+/* StatsBand: Figma dividers at x=497, 915, 1371 within the 1800-wide card →
+   non-equal columns 437/418/456/489. Mobile falls back to a 2×2 grid. */
+.newme-stats-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 768px) {
+  .newme-stats-grid {
+    grid-template-columns: 437fr 418fr 456fr 489fr;
+  }
+}
+
+/* DrPal body: Figma has 16px between paragraphs (16/1920 ≈ 0.83vw). */
+.newme-drpal-body > p + p {
+  margin-top: clamp(12px, calc(16 / 1920 * 100vw), 16px);
+}
+
 html:has(main.newme-page) .newme-footer {
   background: linear-gradient(180deg, $pine-teal 0%, $pine-deep 100%);
   border-top: 1px solid rgba(254, 242, 114, 0.18);

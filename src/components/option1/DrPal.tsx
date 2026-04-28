@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import EyebrowPill from './EyebrowPill'
 
 const PORTRAIT = '/images/home/Dr Pal.webp'
 
@@ -11,10 +12,11 @@ export default function DrPal() {
   return (
     <section
       id="care-team"
-      // Figma spec: width 1800, height 1124, left 60 on 1920 artboard.
-      // Gutter scales 60/1920 = 3.13vw, capped at 60px.
-      className="relative py-[clamp(40px,6vw,80px)]"
+      // Figma spec: 1800×1124 dark card, top y=2269 with 60px gutters on the
+      // 1920 artboard. WhatIsNewMe content ends y=2149 → 120px artboard gap.
+      className="relative pb-0"
       style={{
+        paddingTop: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, 3.13vw, 60px)',
         paddingRight: 'clamp(20px, 3.13vw, 60px)',
       }}
@@ -80,33 +82,8 @@ export default function DrPal() {
 
             {/* Right — copy column */}
             <div className="relative flex flex-col">
-              {/* Eyebrow pill — Figma: 172×48, fill #173B39, 1px moss gradient
-                  border (#629675 → 0% opacity), radius 40 (fully rounded). */}
-              <span
-                className="relative inline-flex w-[172px] items-center justify-center h-[48px] rounded-full font-[family-name:var(--font-bricolage)] text-white"
-                style={{
-                  background: '#173B39',
-                  fontWeight: 300,
-                  fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  letterSpacing: 0,
-                }}
-              >
-                <span
-                  aria-hidden
-                  className="absolute inset-0 rounded-full pointer-events-none"
-                  style={{
-                    padding: 1,
-                    background:
-                      'linear-gradient(135deg, #629675 0%, rgba(98,150,117,0) 100%)',
-                    WebkitMask:
-                      'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                    WebkitMaskComposite: 'xor',
-                    mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                    maskComposite: 'exclude',
-                  }}
-                />
-                Meet Dr. Pal
-              </span>
+              {/* Eyebrow pill — shared component. */}
+              <EyebrowPill>Meet Dr. Pal</EyebrowPill>
 
               {/* Heading — Figma: Bricolage Grotesque SemiBold 72px, lh 72, 840 wide. */}
               <h2
@@ -136,8 +113,10 @@ export default function DrPal() {
                 }}
               />
 
+              {/* Figma: 40px from divider to first body p, 16px between body
+                  paragraphs (p1→p2 = 2887-(2803+68) = 16px, p2→p3 same). */}
               <div
-                className="space-y-4 md:space-y-5"
+                className="newme-drpal-body"
                 style={{
                   marginTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
                 }}

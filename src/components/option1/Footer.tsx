@@ -3,12 +3,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+// Figma "Group 139" (1:2834) at y=9054, 1920×490. Figma Quick Links column
+// labels (1:3944): Home / How it Works / Your Phase of Care / Results /
+// Dr Pal & Team.
 const quickLinks: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
-  { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Pathways', href: '/pathways' },
-  { label: 'Virtual Clinic', href: '/virtual-clinic' },
-  { label: 'Research Lab', href: '/research-lab' },
+  { label: 'How it Works', href: '/how-it-works' },
+  { label: 'Your Phase of Care', href: '/pathways' },
+  { label: 'Results', href: '#testimonials' },
+  { label: 'Dr Pal & Team', href: '/care-team' },
 ]
 const resources: { label: string; href: string }[] = [
   { label: 'Blog', href: '#' },
@@ -38,36 +41,35 @@ const socials = [
     key: 'yt',
     path: 'M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z',
   },
+  {
+    // LinkedIn — Figma shows 6 social glyphs at y=9368 (x=60..340, 56px apart).
+    key: 'li',
+    path: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
+  },
 ]
 
 export default function Footer() {
   return (
     <footer
       id="contact"
-      className="relative pt-4 pb-8"
+      className="relative"
       style={{
+        // Figma: footer rect y=9054, h=490; previous rating card ends ~y=8934
+        // → 120px artboard gap above. Inside the rect, logo top y=9117 (63px
+        // from top), bottom row y=9495 (49px to bottom of frame).
+        paddingTop: 'clamp(40px, calc(63 / 1920 * 100vw), 63px)',
+        paddingBottom: 'clamp(32px, calc(49 / 1920 * 100vw), 49px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1800 }}>
-        {/* Ratings band */}
-        <div
-          className="relative rounded-[24px] md:rounded-[28px] overflow-hidden px-6 py-8 md:py-12"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(10,74,69,0.9) 0%, rgba(4,60,57,0.9) 100%)',
-            border: '1px solid rgba(255,255,255,0.08)',
-          }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 md:divide-x md:divide-white/15">
-            <RatingBlock value="4.6" label="Patient Satisfaction on Trustpilot" />
-            <RatingBlock value="4.7" label="Program Completion Rate" />
-          </div>
-        </div>
-
-        {/* Main footer row */}
-        <div className="mt-10 md:mt-12 grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8">
+        {/* Main footer row — Figma columns:
+            Brand at x=60 (col 1, span ~340)
+            Quick Links at x=689 (col 2)
+            Resources at x=1121 (col 3)
+            Connect at x=1438 (col 4, w=422 to right edge x=1860). */}
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8">
           {/* Brand + socials */}
           <div className="col-span-2 md:col-span-4">
             <Image
@@ -159,8 +161,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom legal row */}
-        <div className="mt-12 md:mt-16 pt-5 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        {/* Bottom legal row — Figma: divider y=9471 (h=0 1px line), legal
+            text y=9495. */}
+        <div
+          className="border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"
+          style={{
+            marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+            paddingTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+          }}
+        >
           <p className="text-white/55 text-[12px] font-[family-name:var(--font-poppins)]">
             © 2026 Dr Pal&apos;s NewME. All rights reserved.
           </p>

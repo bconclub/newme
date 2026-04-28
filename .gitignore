@@ -40,6 +40,10 @@ mcp.json
 /figma/
 figma-pull.log
 
+# scratch / temp artefacts pulled from Figma MCP during dev
+.figma-*.png
+.tmp-page.html
+
 # vercel
 .vercel
 

@@ -57,16 +57,17 @@ export default function Header() {
               height={130}
               priority
               unoptimized
-              className="h-9 md:h-10 w-auto block"
+              className="h-10 md:h-12 w-auto block"
             />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          {/* Figma: nav text spans 1124px between logo and CTA, Urbanist 500 14px, 32px gap. */}
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[13px] xl:text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
+                className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
               >
                 {link.label}
                 {link.hasMenu && (
@@ -78,10 +79,19 @@ export default function Header() {
             ))}
           </nav>
 
+          {/* Figma: CTA 214×48 pill, padding 14×24.
+              Typography (verified from Figma inspect panel):
+                color: #013E37
+                font-family: Bricolage Grotesque
+                font-weight: 500 (medium)
+                font-size: 16px
+                line-height: normal
+              Background #FEF272 → #FDF185 hover. */}
           <div className="hidden lg:flex items-center">
             <a
               href="#assessment"
-              className="inline-flex items-center bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] px-5 py-2.5 rounded-full text-[13px] font-semibold transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
+              className="inline-flex items-center justify-center bg-[#FEF272] hover:bg-[#FDF185] text-[#013E37] rounded-full text-[16px] transition-colors duration-200 font-[family-name:var(--font-bricolage)]"
+              style={{ padding: '14px 24px', minHeight: 48, fontWeight: 500, lineHeight: 'normal' }}
             >
               Start My Assessment
             </a>

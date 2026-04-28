@@ -19,8 +19,10 @@ const pillars = [
 
 export default function Pillars() {
   return (
-    <section id="pillars" className="relative py-[clamp(56px,8vw,120px)]"
+    <section id="pillars" className="relative pb-0"
       style={{
+        // Figma: DrPal card ends y=3393, Pillars heading y=3517 → 124px gap.
+        paddingTop: 'clamp(60px, calc(124 / 1920 * 100vw), 124px)',
         paddingLeft: 'clamp(20px, calc(363 / 1920 * 100vw), 363px)',
         paddingRight: 'clamp(20px, calc(363 / 1920 * 100vw), 363px)',
       }}

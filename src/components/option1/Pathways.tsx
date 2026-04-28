@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import EyebrowPill from './EyebrowPill'
 
 const tabs = [
   'The Metabolic Care Pathways',
@@ -36,48 +37,25 @@ export default function Pathways() {
   return (
     <section
       id="pathways"
-      // Figma: 1800 wide at left:60. Section content matches that.
-      className="relative py-[clamp(56px,8vw,120px)]"
+      // Figma "Group 253" 1800×829 at y=5028. Section padding-top targets
+      // the artboard gap from the Pillars/Community area above.
+      className="relative pb-0"
       style={{
+        paddingTop: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
-      <div className="mx-auto grid lg:grid-cols-[640fr_1100fr] items-start"
+      <div className="mx-auto grid lg:grid-cols-[640fr_980fr] items-start"
         style={{
+          // Figma: left col 640, right col 980, gap = 880-(60+640) = 180px.
           maxWidth: 1800,
-          gap: 'clamp(24px, calc(60 / 1920 * 100vw), 60px)',
+          gap: 'clamp(24px, calc(180 / 1920 * 100vw), 180px)',
         }}>
         {/* Left column — Figma 640 wide */}
         <div>
-          {/* Eyebrow pill — Figma: 149×48, Bricolage Light 24px,
-              gradient border (135deg #FFFFFF -> 0% at 50%), backdrop blur 4. */}
-          <span
-            className="relative inline-flex items-center justify-center w-[149px] h-[48px] rounded-full text-white font-[family-name:var(--font-bricolage)]"
-            style={{
-              fontWeight: 300,
-              fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
-              letterSpacing: 0,
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
-            }}
-          >
-            <span
-              aria-hidden
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                padding: 1,
-                background:
-                  'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 50%)',
-                WebkitMask:
-                  'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                WebkitMaskComposite: 'xor',
-                mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                maskComposite: 'exclude',
-              }}
-            />
-            Pathways
-          </span>
+          {/* Eyebrow pill — shared component. */}
+          <EyebrowPill>Pathways</EyebrowPill>
           {/* Heading — Figma: Bricolage SemiBold 72px lh 72, white. */}
           <h2
             className="font-[family-name:var(--font-bricolage)] text-white"
@@ -91,7 +69,7 @@ export default function Pathways() {
           >
             The pathways<br />To Better Health
           </h2>
-          {/* Body — Figma: Urbanist Medium 28px lh 34. */}
+          {/* Body — Figma: Urbanist Medium 28px lh 34, max-width 640. */}
           <p
             className="text-white font-[family-name:var(--font-urbanist)]"
             style={{
@@ -100,7 +78,7 @@ export default function Pathways() {
               lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
               letterSpacing: 0,
               marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
-              maxWidth: 559,
+              maxWidth: 640,
             }}
           >
             Each of our defined pathways of care are aligned to a specific level of metabolic
@@ -108,12 +86,14 @@ export default function Pathways() {
             ensuring care is structured, personalized, and clinically grounded.
           </p>
 
-          {/* Pathway tabs — pill-shaped buttons */}
+          {/* Pathway tabs — Figma: 461×64 pills, padding ~60×17, Bricolage
+              Light 24px, white text on transparent / 30% white border, with
+              the active state at 8% white fill. ~50px above the first tab. */}
           <div
             className="flex flex-col"
             style={{
-              gap: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
-              marginTop: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
+              gap: 'clamp(0px, calc(-1 / 1920 * 100vw), 0px)', // tabs touch in Figma (y diff = 63 vs h=64 → ~1px overlap)
+              marginTop: 'clamp(28px, calc(50 / 1920 * 100vw), 50px)',
             }}
           >
             {tabs.map((t, i) => (
@@ -123,14 +103,15 @@ export default function Pathways() {
                 className="text-left rounded-full font-[family-name:var(--font-bricolage)] transition-all border"
                 style={{
                   fontWeight: 300,
-                  fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  paddingLeft: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
-                  paddingRight: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
-                  paddingTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                  paddingBottom: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                  fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                  width: 'clamp(280px, calc(461 / 1920 * 100vw), 461px)',
+                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                  paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+                  paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
                   background: i === activeTab ? 'rgba(255,255,255,0.08)' : 'transparent',
                   borderColor: 'rgba(255,255,255,0.30)',
                   color: '#FFFFFF',
+                  marginTop: i === 0 ? 0 : '-1px',
                 }}
               >
                 {t}
@@ -139,8 +120,15 @@ export default function Pathways() {
           </div>
         </div>
 
-        {/* Right — stacked cards */}
-        <div className="flex flex-col gap-4">
+        {/* Right — Figma: 3 cards stacked, each 980×263 with image 327×255
+            inset 4px (top/left). Title and duration pill share the top row,
+            description below. Cards stack with ~20px gap. */}
+        <div
+          className="flex flex-col"
+          style={{
+            gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+          }}
+        >
           {cards.map((card, i) => (
             <motion.div
               key={card.title}
@@ -148,23 +136,66 @@ export default function Pathways() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="relative rounded-[20px] md:rounded-[24px] border border-white/10 bg-white/[0.04] backdrop-blur-md overflow-hidden"
+              className="relative border border-white/10 bg-white/[0.04] backdrop-blur-md overflow-hidden"
+              style={{
+                borderRadius: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                minHeight: 'clamp(160px, calc(263 / 1920 * 100vw), 263px)',
+              }}
             >
-              <div className="grid sm:grid-cols-[140px_1fr] md:grid-cols-[160px_1fr] gap-0">
+              <div className="grid sm:grid-cols-[327fr_653fr] h-full" style={{ gap: 0 }}>
                 <div
-                  className="h-[140px] sm:h-full bg-cover bg-center"
-                  style={{ backgroundImage: `url('${card.image}')` }}
+                  className="h-[180px] sm:h-full bg-cover bg-center"
+                  style={{
+                    backgroundImage: `url('${card.image}')`,
+                    margin: 'clamp(0px, calc(4 / 1920 * 100vw), 4px)',
+                    borderRadius: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+                  }}
                 />
-                <div className="p-4 sm:p-5 md:p-6">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <h3 className="text-white text-[17px] md:text-[19px] font-semibold font-[family-name:var(--font-bricolage)]">
+                <div
+                  style={{
+                    paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                    paddingLeft: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                    paddingRight: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                    paddingBottom: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                  }}
+                >
+                  <div className="flex items-center flex-wrap" style={{ gap: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)' }}>
+                    {/* Figma title text height 48 → ~32px font Bricolage SemiBold */}
+                    <h3
+                      className="text-white font-[family-name:var(--font-bricolage)]"
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
+                        lineHeight: 1.5,
+                      }}
+                    >
                       {card.title}
                     </h3>
-                    <span className="px-2.5 py-1 rounded-full bg-[#FEF272]/15 text-[#FEF272] text-[11px] font-medium font-[family-name:var(--font-urbanist)]">
+                    {/* Figma duration pill 209×40, Urbanist Medium 14px, gold-on-pine. */}
+                    <span
+                      className="rounded-full bg-[#FEF272]/15 text-[#FEF272] font-medium font-[family-name:var(--font-urbanist)]"
+                      style={{
+                        fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
+                        paddingLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+                        paddingRight: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+                        paddingTop: 'clamp(6px, calc(10 / 1920 * 100vw), 10px)',
+                        paddingBottom: 'clamp(6px, calc(10 / 1920 * 100vw), 10px)',
+                      }}
+                    >
                       {card.duration}
                     </span>
                   </div>
-                  <p className="mt-2 text-white/70 text-[13px] md:text-[14px] leading-[1.55] font-[family-name:var(--font-poppins)]">
+                  {/* Figma body: Urbanist 20px lh 28, 557 wide, 2 lines (h=56),
+                      ~40px gap from title row to body. */}
+                  <p
+                    className="text-white/70 font-[family-name:var(--font-urbanist)]"
+                    style={{
+                      fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                      lineHeight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                      maxWidth: 557,
+                      marginTop: 'clamp(16px, calc(40 / 1920 * 100vw), 40px)',
+                    }}
+                  >
                     {card.desc}
                   </p>
                 </div>

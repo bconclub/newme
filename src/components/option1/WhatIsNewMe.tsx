@@ -2,63 +2,34 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import EyebrowPill from './EyebrowPill'
 
 export default function WhatIsNewMe() {
   return (
     <section
       id="how-it-works"
       // Figma spec: WhatIsNewMe content block is 1493 wide centered on 1920
-      // artboard, so each side gutter is 213px. Section starts at top:1659.
-      className="relative py-[clamp(72px,9vw,140px)]"
+      // artboard, so each side gutter is 213px. Section content y=1659–2149,
+      // with 120px artboard gap above and below — section py reflects that.
+      className="relative"
       style={{
+        paddingTop: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
+        paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(213 / 1920 * 100vw), 213px)',
         paddingRight: 'clamp(20px, calc(213 / 1920 * 100vw), 213px)',
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1493 }}>
-        {/* Eyebrow pill — Figma spec: 214×48, radius 40 (effectively fully rounded),
-            1px gradient border (#FFFFFF 100% → #FFFFFF 0%) so the border fades
-            from top-left to bottom-right. */}
-        <motion.span
+        {/* Eyebrow pill — shared component (top/left/right border solid,
+            bottom-right corner fades to transparent). */}
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.4 }}
-          // Figma: 214×48 pill. Bricolage Grotesque Light 24px text.
-          // Background blur 4px (backdrop-filter blur for the frosted look).
-          className="relative inline-flex items-center justify-center w-[214px] h-[48px] rounded-full text-white font-[family-name:var(--font-bricolage)]"
-          style={{
-            fontWeight: 300,
-            fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
-            letterSpacing: 0,
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-          }}
         >
-          {/* Gradient border layer — punched out via mask-composite so only the
-              1px ring is visible. */}
-          <span
-            aria-hidden
-            className="absolute inset-0 rounded-full pointer-events-none"
-            style={{
-              padding: 1,
-              // Figma exact: 135deg diagonal gradient, sharp falloff.
-              // Top-left = solid white (most visible). Top-right = fully
-              // transparent (fades to zero). Bottom-left = feeble/faint
-              // (still in the gradient transition). Bottom-right = fully
-              // transparent. The 50% stop makes the fade aggressive enough
-              // that top-right reaches zero before reaching the corner.
-              background:
-                'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 50%)',
-              WebkitMask:
-                'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-              WebkitMaskComposite: 'xor',
-              mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-              maskComposite: 'exclude',
-            }}
-          />
-          What is NewME
-        </motion.span>
+          <EyebrowPill>What is NewME</EyebrowPill>
+        </motion.div>
 
         {/* Heading row: H2 on left, icons on right */}
         <div className="mt-6 md:mt-8 flex items-start justify-between gap-6 md:gap-10">
@@ -93,12 +64,14 @@ export default function WhatIsNewMe() {
               filter: 'drop-shadow(-5px 4px 13.4px rgba(0, 0, 0, 0.18))',
             }}
           >
+            {/* Figma: orange (Group 154 / left circle) is BEHIND.
+                Yellow (Group 153 / right circle) overlaps on top. */}
             <div
-              className="rounded-full bg-[#F08B55] flex items-center justify-center"
+              className="relative rounded-full bg-[#F08B55] flex items-center justify-center"
               style={{
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
-                zIndex: 2,
+                zIndex: 1,
               }}
             >
               <Image
@@ -110,12 +83,12 @@ export default function WhatIsNewMe() {
               />
             </div>
             <div
-              className="rounded-full bg-[#FEF272] flex items-center justify-center"
+              className="relative rounded-full bg-[#FEF272] flex items-center justify-center"
               style={{
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 marginLeft: 'clamp(-12px, calc(-20 / 1920 * 100vw), -20px)',
-                zIndex: 1,
+                zIndex: 2,
               }}
             >
               <span
@@ -137,17 +110,22 @@ export default function WhatIsNewMe() {
           </motion.div>
         </div>
 
-        {/* Divider */}
+        {/* Divider — Figma: 40px below heading bottom (heading: y=1731-1875,
+            divider y=1915), 1px white at 20% opacity, full content width. */}
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
           whileInView={{ opacity: 1, scaleX: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-8 md:mt-10 h-px bg-white/20 origin-left"
+          className="h-px bg-white/20 origin-left"
+          style={{ marginTop: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)' }}
         />
 
-        {/* Body copy */}
-        <div className="mt-6 md:mt-8 max-w-[820px] space-y-5 md:space-y-6">
+        {/* Body copy — Figma: Urbanist Medium 28px, line-height 34, with a
+            40px gap from the divider and 24px between paragraphs. */}
+        <div
+          style={{ marginTop: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)' }}
+        >
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -157,7 +135,7 @@ export default function WhatIsNewMe() {
             style={{
               fontWeight: 500,
               fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
-              lineHeight: 'clamp(20px, calc(38 / 1920 * 100vw), 38px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
               letterSpacing: 0,
               maxWidth: 1082,
             }}
@@ -176,13 +154,14 @@ export default function WhatIsNewMe() {
             style={{
               fontWeight: 500,
               fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
-              lineHeight: 'clamp(20px, calc(38 / 1920 * 100vw), 38px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
               letterSpacing: 0,
-              maxWidth: 1082,
+              maxWidth: 1069,
+              marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
             }}
           >
             Our system brings your symptoms, history, and responses into one cohesive
-            pathway of care, instead of having to rely on isolated, short-term interventions.
+            pathway, instead of having to rely on isolated, short-term interventions.
           </motion.p>
         </div>
       </div>

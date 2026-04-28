@@ -10,10 +10,13 @@ export default function Hero() {
   return (
     <section
       id="home"
-      // Figma spec: width 1880, left 20 on a 1920 artboard.
-      // Padding scales as 20/1920 = 1.04vw, capped at 20px.
-      className="relative pt-[88px] md:pt-[96px] pb-3 md:pb-4"
+      // Figma spec: width 1880, left 20 on a 1920 artboard. Hero card top
+      // sits at y=152 with the 74px header at y=39 — the visible 39px gap
+      // between header and card requires section padding-top of 113px
+      // (74 fixed-header + 39 gap), scaled with viewport.
+      className="relative pb-3 md:pb-4"
       style={{
+        paddingTop: 'clamp(88px, calc(113 / 1920 * 100vw), 113px)',
         paddingLeft: 'clamp(12px, 1.04vw, 20px)',
         paddingRight: 'clamp(12px, 1.04vw, 20px)',
       }}
@@ -134,33 +137,68 @@ export default function Hero() {
               understand your body and provide the care it needs.
             </motion.p>
 
+            {/* Figma Group 224 (1:2744) = 244×64.
+                Render order in Figma (back → front):
+                  · Group 223 = arrow circle (node 1:2746) — BEHIND
+                  · Group 222 = yellow pill  (node 1:2749) — ON TOP
+                We render the arrow FIRST in DOM, then the pill with a
+                negative margin so it overlaps the arrow's left ~7px from
+                the front. Pill 187×64 (Bricolage 500 24px / lh 30, padding
+                28×17). Arrow circle 64×64 with a 30×30 icon. */}
             <motion.div
               initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.28 }}
-              className="flex items-center"
+              className="flex items-center flex-row-reverse justify-end"
               style={{ marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)' }}
             >
-              <a
-                href="#how-it-works"
-                className="relative z-10 inline-flex items-center h-11 md:h-12 rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] pl-6 pr-8 md:pl-7 md:pr-9 text-[14px] md:text-[15px] font-semibold tracking-[0.005em] font-[family-name:var(--font-urbanist)] transition-colors"
-              >
-                Know more
-              </a>
+              {/* Arrow circle — first child in DOM, but flex-row-reverse
+                  paints it on the RIGHT visually. Stays behind because the
+                  pill carries a higher stacking context via z-index. */}
               <a
                 href="#assessment"
                 aria-label="Start assessment"
-                className="relative z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center transition-colors shrink-0 -ml-4 md:-ml-5"
+                className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center transition-colors shrink-0"
+                style={{
+                  width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                }}
               >
-                <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden>
+                <svg
+                  viewBox="0 0 30 30"
+                  fill="none"
+                  aria-hidden
+                  style={{
+                    width: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                    height: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                  }}
+                >
                   <path
-                    d="M5 13L13 5M13 5H6.5M13 5V11.5"
+                    d="M9 21L21 9M21 9H11M21 9V19"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
+              </a>
+              {/* Yellow pill — second child in DOM, painted to the LEFT of
+                  the arrow due to flex-row-reverse. Negative margin-right
+                  pulls it onto the arrow's left edge by 7px while z:10
+                  keeps it on top. */}
+              <a
+                href="#how-it-works"
+                className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] transition-colors"
+                style={{
+                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                  paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                  paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                  fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                  lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                  marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
+                }}
+              >
+                Know more
               </a>
             </motion.div>
           </div>

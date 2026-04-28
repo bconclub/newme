@@ -1,84 +1,68 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import EyebrowPill from './EyebrowPill'
 
+// Figma "Group 252" (1:6285) at y=7744. Heading + subhead row, then 3 cards
+// 587×402 each, then 3 pagination dots, then a 1801×348 ratings card with
+// Trustpilot center.
 const testimonials = [
   {
     quote:
-      'Structured care produces measurable, sustained outcomes. These are not before-and-after stories. They are accounts of bodies returning to regulation.',
-    name: 'Prasanna Kumar',
-    meta: 'Bengaluru, Karnataka',
+      'After years of poor gut health and binge eating, my fasting blood sugar improved and my cravings completely stopped. Physically and mentally, I feel much better now.',
+    name: 'Nithya',
+    pathway: 'GI Core Pathway',
     avatar:
       'https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
     quote:
-      'I began the NewME program in April 2025 weighing around 159 pounds, with other health issues like high cholesterol and high blood pressure. Today I am at 143 pounds and my triglycerides are in the normal range.',
-    name: 'Abitha Chittilla',
-    meta: 'Bengaluru, Karnataka',
+      'In 2 years, my HbA1c dropped from 6.1 to 5.7, LDL from 146 to 86, and my liver size reduced from 16.7 cm to 14.0 cm. I feel healthier and more confident than ever.',
+    name: 'Kat',
+    pathway: 'Sustain Pathway',
     avatar:
       'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
   {
     quote:
-      'After 3 months of joining NewMe, my A1C has dropped from 6 to 5.7 and my hemoglobin level has improved from 9.9 to 13.4. My weight has also reduced from 125 lbs to 116 lbs. I have extended my program for another 3 months to maintain the healthy habits that I have learned.',
-    name: 'Manjari',
-    meta: 'Bengaluru, Karnataka',
+      'From being worried about diabetes and fatty liver, I’ve seen my HbA1c come down from 7.2 to 5.7 and my blood sugar stabilize. I’m now navigating my health with much more confidence.',
+    name: 'Thamarai',
+    pathway: 'Rebuild Pathway',
     avatar:
       'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=300',
   },
-]
-
-const ratings = [
-  { score: '4.6', label: 'Patient Satisfaction on Trustpilot' },
-  { score: '4.7', label: 'Program Completion Rate' },
 ]
 
 export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative py-[clamp(56px,8vw,120px)]"
+      className="relative pb-0"
       style={{
+        // Testimonials frame top y=7744; previous (StructuredCare cards end
+        // y=7469) → 275px artboard gap. Tuned for visual breathing.
+        paddingTop: 'clamp(80px, calc(160 / 1920 * 100vw), 160px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
-      <div className="mx-auto" style={{ maxWidth: 1800 }}>
-        <div className="grid md:grid-cols-2 gap-5 md:gap-6 items-end">
+      <div className="mx-auto" style={{ maxWidth: 1801 }}>
+        {/* Top row — Figma: heading on left (x=212), subhead on right (x=969).
+            Heading top y=7816, subhead top y=7828 (heading 12px above). */}
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
           <div>
-            {/* Eyebrow pill — matches Figma pattern (gradient border + blur). */}
-            <motion.span
+            {/* Eyebrow pill — shared component. */}
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.4 }}
-              className="relative inline-flex items-center justify-center w-[180px] h-[48px] rounded-full text-white font-[family-name:var(--font-bricolage)]"
-              style={{
-                fontWeight: 300,
-                fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
-                letterSpacing: 0,
-                backdropFilter: 'blur(4px)',
-                WebkitBackdropFilter: 'blur(4px)',
-              }}
             >
-              <span
-                aria-hidden
-                className="absolute inset-0 rounded-full pointer-events-none"
-                style={{
-                  padding: 1,
-                  background:
-                    'linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0) 50%)',
-                  WebkitMask:
-                    'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                  WebkitMaskComposite: 'xor',
-                  mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                  maskComposite: 'exclude',
-                }}
-              />
-              Testimonials
-            </motion.span>
-            {/* Heading — Bricolage SemiBold 72px lh 72. */}
+              <EyebrowPill>Testimonials</EyebrowPill>
+            </motion.div>
+            {/* Heading — Figma 1:6288: x=212, y=7816, 611×144 (2 lines × 72).
+                72 - 48 (pill) - 16 (gap) = ... actual gap from pill to heading
+                = 7816-(7744+48) = 24px. */}
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -90,78 +74,287 @@ export default function Testimonials() {
                 fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
                 lineHeight: 1,
                 letterSpacing: 0,
-                marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
+                marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                maxWidth: 611,
               }}
             >
               Real Patients.
               <br />
-              <span className="text-[#FEF272]">Real Experiences.</span>
+              Real Experiences.
             </motion.h2>
           </div>
+          {/* Subhead — Figma 1:6287: x=969, y=7828, w=698, h=90 (3 lines × 30).
+              Urbanist 24px lh 30. */}
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-white/70 text-[14.5px] md:text-[15px] leading-[1.6] max-w-[520px] md:justify-self-end font-[family-name:var(--font-poppins)]"
+            className="text-white/85 font-[family-name:var(--font-urbanist)]"
+            style={{
+              fontWeight: 400,
+              fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+              lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+              letterSpacing: 0,
+              maxWidth: 698,
+              marginTop: 'clamp(40px, calc(96 / 1920 * 100vw), 96px)', // align baseline-ish with H2
+            }}
           >
-            Structured care produces measurable, sustained outcomes. These are not
-            before-and-after stories. They are accounts of bodies returning to regulation.
+            Structured care produces measurable, sustained outcomes. These are
+            not before-and-after stories. They are accounts of bodies returning
+            to regulation.
           </motion.p>
         </div>
 
-        <div className="mt-10 md:mt-12 grid md:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+        {/* Cards row — Figma: 3 cards 587×402, gap 20px between, total 1801. */}
+        <div
+          className="grid sm:grid-cols-3"
+          style={{
+            gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+            marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
+          }}
+        >
           {testimonials.map((t, i) => (
             <motion.div
               key={t.name}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="rounded-[20px] bg-[#0A4A45] border border-white/10 p-5 md:p-6"
+              className="relative overflow-hidden border border-white/8"
+              style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
+              }}
             >
-              <p className="text-[#FEF272] text-lg leading-none">★★★★★</p>
-              <p className="mt-4 text-white/90 text-[14.5px] leading-[1.6] font-[family-name:var(--font-poppins)]">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div className="mt-6 flex items-center gap-3">
+              {/* Decorative ellipse on cards 2/3 — Figma Ellipse 55/59 */}
+              {i > 0 && (
                 <div
-                  className="w-10 h-10 rounded-full bg-cover bg-center"
-                  style={{ backgroundImage: `url('${t.avatar}')` }}
+                  aria-hidden
+                  className="absolute pointer-events-none"
+                  style={{
+                    top: 'clamp(-80px, calc(22 / 1920 * 100vw), 22px)',
+                    left: 'clamp(-60px, calc(114 / 1920 * 100vw), 114px)',
+                    width: 'clamp(180px, calc(351 / 1920 * 100vw), 351px)',
+                    height: 'clamp(180px, calc(351 / 1920 * 100vw), 351px)',
+                    borderRadius: '50%',
+                    background:
+                      'radial-gradient(circle, rgba(254,242,114,0.10) 0%, rgba(254,242,114,0) 70%)',
+                  }}
                 />
-                <div>
-                  <p className="text-white text-[13.5px] font-semibold font-[family-name:var(--font-bricolage)] leading-none">
-                    {t.name}
-                  </p>
-                  <p className="text-white/60 text-[11.5px] mt-1 font-[family-name:var(--font-poppins)]">
-                    {t.meta}
-                  </p>
+              )}
+              {/* Quote — Figma: Urbanist 24px lh 30, 491 wide, top 48px from card top */}
+              <div
+                className="relative h-full flex flex-col"
+                style={{
+                  paddingTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
+                  paddingBottom: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
+                  paddingLeft: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
+                  paddingRight: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
+                }}
+              >
+                <p
+                  className="text-white font-[family-name:var(--font-urbanist)]"
+                  style={{
+                    fontWeight: 500,
+                    fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                    lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                    maxWidth: 491,
+                  }}
+                >
+                  {t.quote}
+                </p>
+                {/* Avatar + name — Figma: avatar 64×64 at x=107 (=48 from card
+                    edge), name+meta to right. */}
+                <div
+                  className="flex items-center mt-auto"
+                  style={{
+                    gap: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+                    paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                  }}
+                >
+                  <div
+                    className="rounded-full bg-cover bg-center shrink-0"
+                    style={{
+                      width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                      height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                      backgroundImage: `url('${t.avatar}')`,
+                    }}
+                  />
+                  <div>
+                    <p
+                      className="text-white font-[family-name:var(--font-bricolage)]"
+                      style={{
+                        fontWeight: 500,
+                        fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {t.name}
+                    </p>
+                    <p
+                      className="text-white/60 font-[family-name:var(--font-urbanist)] mt-1"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {t.pathway}
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* ratings row */}
-        <div className="mt-10 md:mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 max-w-[720px] mx-auto">
-          {ratings.map((r) => (
-            <div
-              key={r.label}
-              className="rounded-[18px] md:rounded-[20px] bg-[#FEF272] text-[#043C39] px-4 py-4 sm:px-5 sm:py-5 md:px-6 flex items-center gap-3 md:gap-4"
-            >
-              <p className="text-[32px] sm:text-[40px] md:text-[48px] leading-none font-semibold font-[family-name:var(--font-bricolage)]">
-                {r.score}
-              </p>
-              <div className="min-w-0">
-                <p className="text-base md:text-lg leading-none tracking-wide">★★★★★</p>
-                <p className="mt-1.5 md:mt-2 text-[12px] md:text-[13px] font-medium font-[family-name:var(--font-urbanist)]">
-                  {r.label}
-                </p>
-              </div>
-            </div>
+        {/* Pagination dots — Figma: 3 ellipses 16×16 at y=8450 centered */}
+        <div
+          className="flex items-center justify-center"
+          style={{
+            gap: 'clamp(4px, calc(6 / 1920 * 100vw), 6px)',
+            marginTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+          }}
+        >
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              aria-hidden
+              className="block rounded-full"
+              style={{
+                width: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                height: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                background:
+                  i === 1 ? '#FEF272' : 'rgba(255, 255, 255, 0.25)',
+              }}
+            />
           ))}
         </div>
+
+        {/* Ratings card — Figma 1:3957 (Rectangle 110): 1801×348, with
+            Trustpilot logo center and 4.6 / 4.7 ratings on left/right. */}
+        <RatingsCard />
       </div>
     </section>
+  )
+}
+
+function RatingsCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
+      className="relative overflow-hidden border border-white/8"
+      style={{
+        marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+        background: 'rgba(255, 255, 255, 0.04)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+        minHeight: 'clamp(220px, calc(348 / 1920 * 100vw), 348px)',
+      }}
+    >
+      <div className="relative h-full grid grid-cols-3 items-center">
+        {/* Left rating: 4.6 — Figma at x=421, label at x=310. Block ~348 wide.
+            Stars 144×24 above, number 125×72 (= 72px font), label 28px tall. */}
+        <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
+        {/* Center: Trustpilot brand — Figma 1:3961: 225×242 icon + noun-trusted
+            172×172 badge. Use a styled trust badge as visual placeholder. */}
+        <div className="flex flex-col items-center justify-center">
+          <span
+            className="font-[family-name:var(--font-bricolage)] text-white/90 tracking-tight"
+            style={{
+              fontWeight: 600,
+              fontSize: 'clamp(28px, calc(56 / 1920 * 100vw), 56px)',
+              lineHeight: 1.05,
+            }}
+          >
+            Trusted by
+          </span>
+          <span
+            className="font-[family-name:var(--font-bricolage)] text-[#FEF272]"
+            style={{
+              fontWeight: 600,
+              fontSize: 'clamp(28px, calc(56 / 1920 * 100vw), 56px)',
+              lineHeight: 1.05,
+            }}
+          >
+            thousands
+          </span>
+          <span
+            className="text-white/60 font-[family-name:var(--font-urbanist)]"
+            style={{
+              marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
+              fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
+            }}
+          >
+            verified outcomes
+          </span>
+        </div>
+        <RatingBlock score="4.7" label="Program Completion Rate" />
+      </div>
+    </motion.div>
+  )
+}
+
+function RatingBlock({
+  score,
+  label,
+  trustpilot,
+}: {
+  score: string
+  label: string
+  trustpilot?: boolean
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center text-center px-4">
+      <div className="flex items-center" style={{ gap: 'clamp(2px, calc(4 / 1920 * 100vw), 4px)' }}>
+        {[0, 1, 2, 3, 4].map((i) => (
+          <Star key={i} size={'clamp(16px, calc(24 / 1920 * 100vw), 24px)'} />
+        ))}
+      </div>
+      <p
+        className="text-white font-[family-name:var(--font-bricolage)]"
+        style={{
+          fontWeight: 600,
+          fontSize: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
+          lineHeight: 1,
+          marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+        }}
+      >
+        {score}
+      </p>
+      <p
+        className="text-white/85 font-[family-name:var(--font-urbanist)]"
+        style={{
+          fontWeight: 500,
+          fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)',
+          lineHeight: 1.3,
+          marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+        }}
+      >
+        {label}
+        {trustpilot && (
+          <span className="ml-1 text-[#00B67A] font-semibold">Trustpilot</span>
+        )}
+      </p>
+    </div>
+  )
+}
+
+function Star({ size }: { size: string }) {
+  return (
+    <svg
+      style={{ width: size, height: size }}
+      viewBox="0 0 24 24"
+      fill="#FEF272"
+      aria-hidden
+    >
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
   )
 }
