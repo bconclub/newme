@@ -29,23 +29,24 @@ export default function DrPal() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative overflow-hidden"
           style={{
-            // Figma spec: linear-gradient #629675 (moss) -> #013E37 (deep pine).
-            // Multi-stop ramp prevents the top-left from washing out to mint.
-            background:
-              'linear-gradient(135deg, #629675 0%, #4F8369 25%, #2F7269 50%, #144F49 75%, #013E37 100%)',
+            // Figma node 1:2670 (Mask group) = Rectangle 81 + Ellipse 28.
+            // Visual: a soft radial glow that's very pale at the top-left
+            // and fades smoothly to a deep pine at the bottom-right. The
+            // ellipse in Figma is huge (4581×4607) and positioned mostly
+            // off-card to the lower-left, which produces the diffuse glow.
+            // Approximated here with two stacked radial gradients on a
+            // pine base — first gradient is the cream/mint highlight at
+            // top-left, second is a subtle moss midtone, both layered
+            // over the deep pine fill.
+            background: [
+              'radial-gradient(ellipse 95% 80% at 0% 0%, rgba(229,239,228,0.95) 0%, rgba(176,205,182,0.55) 18%, rgba(112,159,131,0.30) 35%, rgba(60,107,89,0.10) 55%, rgba(23,59,57,0) 75%)',
+              'radial-gradient(ellipse 130% 110% at 12% 18%, rgba(151,189,164,0.55) 0%, rgba(80,127,107,0.25) 35%, rgba(23,59,57,0) 70%)',
+              'linear-gradient(135deg, #356057 0%, #244B47 35%, #173B39 70%, #0E2D2C 100%)',
+            ].join(', '),
             borderRadius: 'clamp(20px, 1.77vw, 34px)',
             minHeight: 'clamp(640px, calc(1124 / 1800 * 100vw), 1124px)',
           }}
         >
-          {/* Soft yellow glow on the right side — Figma highlight */}
-          <div
-            aria-hidden
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse 50% 65% at 95% 55%, rgba(254,242,114,0.16) 0%, rgba(254,242,114,0.04) 35%, rgba(254,242,114,0) 60%)',
-            }}
-          />
 
           {/* Monotone noise — Figma effect: #000 @ 25%, density 100%, size 0.5 */}
           <div
