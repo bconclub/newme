@@ -145,20 +145,22 @@ export default function Hero() {
                 negative margin so it overlaps the arrow's left ~7px from
                 the front. Pill 187×64 (Bricolage 500 24px / lh 30, padding
                 28×17). Arrow circle 64×64 with a 30×30 icon. */}
-            <motion.div
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.28 }}
-              className="flex items-center flex-row-reverse justify-end"
+            <div
+              className="group/cta flex items-center flex-row-reverse justify-end"
               style={{ marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)' }}
             >
               {/* Arrow circle — first child in DOM, but flex-row-reverse
                   paints it on the RIGHT visually. Stays behind because the
                   pill carries a higher stacking context via z-index. */}
-              <a
+              <motion.a
                 href="#assessment"
                 aria-label="Start assessment"
-                className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center transition-colors shrink-0"
+                initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.55, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center shrink-0 transition-colors will-change-transform"
                 style={{
                   width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
                   height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
@@ -168,6 +170,7 @@ export default function Hero() {
                   viewBox="0 0 30 30"
                   fill="none"
                   aria-hidden
+                  className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
                   style={{
                     width: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
                     height: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
@@ -181,14 +184,19 @@ export default function Hero() {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </a>
+              </motion.a>
               {/* Yellow pill — second child in DOM, painted to the LEFT of
                   the arrow due to flex-row-reverse. Negative margin-right
                   pulls it onto the arrow's left edge by 7px while z:10
                   keeps it on top. */}
-              <a
+              <motion.a
                 href="#how-it-works"
-                className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] transition-colors"
+                initial={{ opacity: 0, x: -14 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.55, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
                 style={{
                   height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
                   paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
@@ -198,9 +206,9 @@ export default function Hero() {
                   marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
                 }}
               >
-                Know more
-              </a>
-            </motion.div>
+                How it works
+              </motion.a>
+            </div>
           </div>
         </div>
       </div>

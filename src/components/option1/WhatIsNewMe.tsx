@@ -9,12 +9,12 @@ export default function WhatIsNewMe() {
     <section
       id="how-it-works"
       // Figma spec: WhatIsNewMe content block is 1493 wide centered on 1920
-      // artboard, so each side gutter is 213px. Section content y=1659–2149,
-      // with 120px artboard gap above and below — section py reflects that.
-      className="relative"
+      // artboard. Section content y=1659–2149. The 120px artboard gap to
+      // the next section (DrPal) is owned by DrPal's pt, so this section
+      // only sets pt. Otherwise gaps stack to 240px.
+      className="relative pb-0"
       style={{
         paddingTop: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
-        paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(213 / 1920 * 100vw), 213px)',
         paddingRight: 'clamp(20px, calc(213 / 1920 * 100vw), 213px)',
       }}
