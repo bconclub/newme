@@ -1,8 +1,24 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
+
+/**
+ * Figma 58:2628 + 58:2640 — "Why Starting Early Matters?"
+ *
+ * Layout: image LEFT + text RIGHT (no header for the section).
+ *
+ *   Image (Mask group 58:2640) — 741×964 at (60,4604)
+ *   Right group (58:2628) — 933×724 at (921,4724):
+ *     · Eyebrow pill 58:2635 — "Why Now" (147×48 at 921,4724)
+ *     · Heading 58:2639 — "Why Starting Early Matters?" (652×144 at 921,4796)
+ *     · Body 1 58:2633 — short paragraph (933×68 at 921,4962)
+ *     · Body 2 58:2638 — long paragraph (933×170 at 921,5056)
+ *     · Bottom callout (Group 426 — 864×182 at 921,5266):
+ *         "Don't ignore the signs. The earlier you begin..."
+ */
+
+const IMAGE = '/how%20it%20works/Why%20astarting%20early%20matters.webp'
 
 export default function HIWWhyEarly() {
   return (
@@ -10,164 +26,156 @@ export default function HIWWhyEarly() {
       id="hiw-why-early"
       className="relative"
       style={{
-        paddingTop: 'clamp(72px, calc(140 / 1920 * 100vw), 140px)',
-        paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
+        // Figma: comparison ends y=4484, image starts y=4604 → 120 gap.
+        paddingTop: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
+        paddingBottom: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div
-        className="mx-auto flex flex-col lg:flex-row items-center gap-[clamp(40px,calc(80/1920*100vw),80px)]"
+        className="mx-auto flex flex-col lg:flex-row items-stretch gap-[clamp(28px,calc(60/1920*100vw),60px)]"
         style={{ maxWidth: 1800 }}
       >
-        {/* Left — text */}
+        {/* Image — Figma: 741×964, radius ~40 */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="flex-1 flex flex-col"
-          style={{ maxWidth: 740 }}
+          className="relative shrink-0 overflow-hidden"
+          style={{
+            width: '100%',
+            maxWidth: 'clamp(280px, calc(741 / 1920 * 100vw), 741px)',
+            aspectRatio: '741 / 964',
+            borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+            background:
+              'linear-gradient(135deg, #1A4F49 0%, #0E3B37 100%)',
+          }}
         >
-          <EyebrowPill>Why it matters</EyebrowPill>
-
-          <h2
-            className="font-[family-name:var(--font-bricolage)] text-white"
-            style={{
-              fontWeight: 600,
-              fontSize: 'clamp(26px, calc(64 / 1920 * 100vw), 64px)',
-              lineHeight: 1.06,
-              letterSpacing: '-0.01em',
-              marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
-            }}
-          >
-            Why Starting Early Matters
-          </h2>
-
-          {/* Divider */}
           <div
-            className="h-px bg-white/20"
-            style={{ marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)' }}
+            role="img"
+            aria-label="Doctor with patient — early intervention"
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${IMAGE}')` }}
           />
-
-          <div style={{ marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)' }}>
-            {[
-              'Metabolic and gut conditions don\'t resolve on their own — they compound. Every month without structured intervention is another month of systems drifting further from balance.',
-              'The patients who see the most durable outcomes are the ones who started before the dysfunction became entrenched. Early structured care means a shorter pathway, fewer corrections, and faster stability.',
-              'Waiting for a crisis isn\'t a strategy. A prescribed path now prevents the conditions that require far more intensive care later — and protects the quality of life in between.',
-            ].map((text, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="font-[family-name:var(--font-urbanist)] text-white/75"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  lineHeight: 1.65,
-                  marginTop: i === 0 ? 0 : 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                }}
-              >
-                {text}
-              </motion.p>
-            ))}
-          </div>
-
-          {/* Stat callouts */}
-          <div
-            className="flex flex-wrap gap-4"
-            style={{ marginTop: 'clamp(32px, calc(52 / 1920 * 100vw), 52px)' }}
-          >
-            {[
-              { stat: '3×', label: 'better outcomes with structured intake vs self-directed' },
-              { stat: '6 wks', label: 'average time to first measurable metabolic shift' },
-            ].map(({ stat, label }) => (
-              <div
-                key={stat}
-                className="flex flex-col"
-                style={{
-                  padding: 'clamp(16px, calc(24 / 1920 * 100vw), 24px) clamp(20px, calc(32 / 1920 * 100vw), 32px)',
-                  borderRadius: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  minWidth: 160,
-                }}
-              >
-                <span
-                  className="font-[family-name:var(--font-bricolage)] text-[#FEF272]"
-                  style={{ fontWeight: 600, fontSize: 'clamp(22px, calc(40 / 1920 * 100vw), 40px)', lineHeight: 1 }}
-                >
-                  {stat}
-                </span>
-                <span
-                  className="font-[family-name:var(--font-urbanist)] text-white/60"
-                  style={{ fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)', lineHeight: 1.4, marginTop: 6 }}
-                >
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
         </motion.div>
 
-        {/* Right — image */}
+        {/* Right column — text + callout */}
         <motion.div
           initial={{ opacity: 0, x: 24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex-1 w-full lg:w-auto"
+          className="flex flex-col flex-1"
           style={{
-            maxWidth: 780,
-            aspectRatio: '3 / 4',
-            borderRadius: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
-            overflow: 'hidden',
-            minHeight: 'clamp(360px, calc(640 / 1920 * 100vw), 640px)',
+            // Figma right group starts y=4724, image starts y=4604 → +120 (top
+            // alignment within larger image bounds)
+            paddingTop: 'clamp(0px, calc(120 / 1920 * 100vw), 120px)',
           }}
         >
-          <Image
-            src="/images/home/Dr Pal.webp"
-            alt="Dr. Pal — physician and co-founder of NewME"
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-          {/* Subtle gradient overlay bottom */}
-          <div
-            className="absolute inset-0 pointer-events-none"
+          <EyebrowPill>Why Now</EyebrowPill>
+
+          {/* Figma 58:2639 — "Why Starting Early Matters?" 652×144 → ~72/72 */}
+          <h2
+            className="font-[family-name:var(--font-bricolage)] text-white"
             style={{
-              background:
-                'linear-gradient(0deg, rgba(1,62,55,0.60) 0%, rgba(1,62,55,0.05) 40%, transparent 60%)',
+              fontWeight: 600,
+              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              lineHeight: 1,
+              letterSpacing: 0,
+              marginTop: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
+              maxWidth: 'clamp(320px, calc(652 / 1920 * 100vw), 652px)',
             }}
-          />
-          {/* Caption tag bottom-left */}
-          <div
-            className="absolute bottom-0 left-0"
-            style={{ padding: 'clamp(16px, calc(28/1920*100vw), 28px)' }}
           >
-            <span
-              className="inline-flex items-center gap-2 rounded-full font-[family-name:var(--font-urbanist)] text-white"
+            Why Starting Early Matters?
+          </h2>
+
+          {/* Body 1 — Figma 58:2633: 933×68, ~24/34 over 2 lines */}
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white/85"
+            style={{
+              fontWeight: 500,
+              fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+              marginTop: 'clamp(20px, calc(22 / 1920 * 100vw), 22px)',
+              maxWidth: 'clamp(320px, calc(933 / 1920 * 100vw), 933px)',
+            }}
+          >
+            Most metabolic and gut conditions don&rsquo;t appear suddenly. They
+            build gradually, often without clear signals, until they become
+            harder to reverse.
+          </p>
+
+          {/* Body 2 — Figma 58:2638: 933×170, ~22/34 over ~5 lines */}
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white/65"
+            style={{
+              fontWeight: 400,
+              fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+              marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+              maxWidth: 'clamp(320px, calc(933 / 1920 * 100vw), 933px)',
+            }}
+          >
+            Most health markers like blood sugar, cholesterol, and inflammation
+            tend to worsen progressively when left unaddressed. What begins
+            small, worsens fast. At 33, despite being a practicing doctor, Dr.
+            Pal experienced a heart attack. Not because the information
+            wasn&rsquo;t available, but because structured, sustainable health
+            wasn&rsquo;t part of the system.
+          </p>
+
+          {/*
+            Bottom callout — Figma Group 426: 864×182 at (921,5266), inner text
+            (590×102 at 961,5306) → 40px padding all around. Pine card with
+            yellow accent.
+          */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.55, delay: 0.2 }}
+            className="relative overflow-hidden"
+            style={{
+              marginTop: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
+              padding:
+                'clamp(20px, calc(40 / 1920 * 100vw), 40px) clamp(24px, calc(48 / 1920 * 100vw), 48px)',
+              borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+              background:
+                'linear-gradient(135deg, rgba(254,242,114,0.10) 0%, rgba(254,242,114,0.03) 100%)',
+              border: '1px solid rgba(254,242,114,0.30)',
+              maxWidth: 'clamp(320px, calc(864 / 1920 * 100vw), 864px)',
+            }}
+          >
+            {/* Subtle gold glow accent */}
+            <div
+              aria-hidden
+              className="absolute pointer-events-none"
               style={{
-                padding: '8px 18px',
-                fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
+                width: 220,
+                height: 220,
+                borderRadius: '50%',
+                background: '#FEF272',
+                filter: 'blur(120px)',
+                opacity: 0.18,
+                top: '-50%',
+                right: '-10%',
+              }}
+            />
+            <p
+              className="relative font-[family-name:var(--font-bricolage)] text-[#FEF272]"
+              style={{
                 fontWeight: 500,
-                background: 'rgba(1,62,55,0.75)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.15)',
+                // Figma 590×102 → ~26/34 over 3 lines
+                fontSize: 'clamp(16px, calc(26 / 1920 * 100vw), 26px)',
+                lineHeight: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
               }}
             >
-              <span
-                className="rounded-full bg-[#629675]"
-                style={{ width: 7, height: 7, display: 'inline-block', flexShrink: 0 }}
-              />
-              Dr. Palaniappan Manickam
-            </span>
-          </div>
+              Don&rsquo;t ignore the signs. The earlier you begin, the more
+              responsive your treatment is likely to be.
+            </p>
+          </motion.div>
         </motion.div>
       </div>
     </section>

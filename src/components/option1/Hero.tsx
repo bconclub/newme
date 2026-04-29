@@ -16,7 +16,7 @@ export default function Hero() {
       // (74 fixed-header + 39 gap), scaled with viewport.
       className="relative pb-3 md:pb-4"
       style={{
-        paddingTop: 'clamp(88px, calc(113 / 1920 * 100vw), 113px)',
+        paddingTop: 'clamp(66px, calc(74 / 1920 * 100vw), 74px)',
         paddingLeft: 'clamp(12px, 1.04vw, 20px)',
         paddingRight: 'clamp(12px, 1.04vw, 20px)',
       }}

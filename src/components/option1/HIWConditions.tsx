@@ -3,31 +3,57 @@
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
+/**
+ * Figma 58:1345–58:1447 — "Conditions addressed within the NewME System"
+ *
+ * Section background: Mask group 58:1345 (1800×924 at 59,6952) with
+ * Ellipse 59 (2247×1049) green-gradient blur fill, radius 34.
+ *
+ * Header (centered):
+ *   · Eyebrow 58:1349 — "Ailments" (137×48 at 892,7072)
+ *   · Heading 58:1447 — "Conditions addressed within the NewME System"
+ *     (989×144 at 466,7144)
+ *   · Body 58:1446 — long description (1181×68 at 370,7320)
+ *
+ * Pills (groups 299, 300, 414, 415, 417, 305) — 6 rows centered.
+ */
+
+// Final consolidated list, ordered as per Figma rows.
 const CONDITIONS = [
-  'Type 2 Diabetes',
-  'Pre-Diabetes',
-  'Insulin Resistance',
-  'Metabolic Syndrome',
-  'Fatty Liver (NAFLD)',
-  'IBS',
-  'SIBO',
-  'Leaky Gut',
-  'Crohn\'s Disease',
-  'Ulcerative Colitis',
-  'GERD / Acid Reflux',
-  'Hypothyroidism',
-  'Hashimoto\'s',
-  'PCOS',
-  'Hormonal Imbalance',
-  'Adrenal Fatigue',
-  'Chronic Inflammation',
-  'Obesity',
-  'High Cholesterol',
+  // Row 1 (5)
+  'Acid reflux',
+  'Autoimmune conditions',
+  'Bloating and Burping',
+  'Chronic Gastritis',
+  'Crohn’s Disease',
+  // Row 2 (5)
+  'Gestational Diabetes',
+  'Type-2 Diabetes and Prediabetes',
+  'Endometriosis',
+  'Fatty Liver',
+  'Fibromyalgia',
+  // Row 3 (5)
+  'Fissures, Piles, Anal Erosions',
+  'Food Intolerances',
+  'GERD',
+  'Hashimoto’s Thyroiditis',
+  'Heart Conditions',
+  // Row 4 (6)
+  'Hormonal Imbalances',
   'Hypertension',
-  'Chronic Fatigue',
-  'Brain Fog',
-  'Sleep Disorders',
-  'Anxiety (metabolic-linked)',
+  'IBD',
+  'IBS, IBS-D, IBS-M',
+  'Menopause',
+  'Obesity',
+  // Row 5 (6)
+  'Postpartum',
+  'Psoriasis',
+  'SIBO',
+  'Thyroid Conditions',
+  'Thyroid Nodules',
+  'Ulcerative Colitis',
+  // Row 6 (1 — Weight Gain; second pill is dup'd in Figma source)
+  'Weight Gain',
 ]
 
 export default function HIWConditions() {
@@ -36,122 +62,150 @@ export default function HIWConditions() {
       id="hiw-conditions"
       className="relative"
       style={{
-        paddingTop: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
-        paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
+        // Figma: success cards end y=6700, mask group y=6952 → 252 gap.
+        paddingTop: 'clamp(80px, calc(140 / 1920 * 100vw), 140px)',
+        paddingBottom: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1800 }}>
-        {/* Card shell */}
+        {/* Mask group with green-gradient ellipse */}
         <div
           className="relative overflow-hidden"
           style={{
-            borderRadius: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            padding: 'clamp(40px, calc(72/1920*100vw), 72px) clamp(28px, calc(64/1920*100vw), 64px)',
+            borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+            paddingTop: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
+            paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
+            paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+            paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
           }}
         >
-          {/* Gold ellipse glow top-right */}
+          {/* Ellipse 59 green gradient */}
           <div
             aria-hidden
             className="absolute pointer-events-none"
             style={{
-              width: 'clamp(300px, calc(700 / 1920 * 100vw), 700px)',
-              height: 'clamp(300px, calc(700 / 1920 * 100vw), 700px)',
+              left: 'calc(-169 / 1800 * 100%)',
+              top: 'calc(-78 / 924 * 100%)',
+              width: 'calc(2247 / 1800 * 100%)',
+              height: 'calc(1049 / 924 * 100%)',
               borderRadius: '50%',
-              background: '#FEF272',
-              filter: 'blur(clamp(120px, calc(260 / 1920 * 100vw), 260px))',
-              opacity: 0.12,
-              top: '-30%',
-              right: '-10%',
+              background: 'linear-gradient(0deg, #629675 0%, #013E37 100%)',
+              filter: 'blur(clamp(180px, calc(500 / 1920 * 100vw), 500px))',
+              opacity: 0.7,
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.25 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+              backgroundSize: '180px 180px',
+              mixBlendMode: 'overlay',
+              opacity: 0.55,
             }}
           />
 
-          {/* Header row */}
-          <div className="relative flex flex-col md:flex-row md:items-end gap-6 md:justify-between mb-[clamp(32px,calc(56/1920*100vw),56px)]">
-            <div>
-              <EyebrowPill>Conditions addressed</EyebrowPill>
-              <motion.h2
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="font-[family-name:var(--font-bricolage)] text-white"
-                style={{
-                  fontWeight: 600,
-                  fontSize: 'clamp(24px, calc(52 / 1920 * 100vw), 52px)',
-                  lineHeight: 1.08,
-                  letterSpacing: '-0.01em',
-                  marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
-                  maxWidth: 660,
-                }}
-              >
-                Conditions Addressed
-                <br />Within The NewME System
-              </motion.h2>
-            </div>
-            <p
-              className="font-[family-name:var(--font-urbanist)] text-white/55 md:text-right"
+          {/* Header — centered */}
+          <div className="relative flex flex-col items-center text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.4 }}
+            >
+              <EyebrowPill>Ailments</EyebrowPill>
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="font-[family-name:var(--font-bricolage)] text-white"
               style={{
-                fontWeight: 400,
-                fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)',
-                lineHeight: 1.55,
-                maxWidth: 340,
-                flexShrink: 0,
+                fontWeight: 600,
+                // Figma 989×144 → ~72/72
+                fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+                lineHeight: 1,
+                letterSpacing: 0,
+                marginTop: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
+                maxWidth: 'clamp(320px, calc(989 / 1920 * 100vw), 989px)',
               }}
             >
-              NewME is designed for root-cause care. These conditions are not
-              treated in isolation — they are addressed as interconnected systems.
-            </p>
+              Conditions Addressed<br />Within The NewME System
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.18 }}
+              className="text-white/80 font-[family-name:var(--font-urbanist)]"
+              style={{
+                fontWeight: 400,
+                // Figma 1181×68 → ~22/34 over 2 lines
+                fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+                lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+                marginTop: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                maxWidth: 'clamp(320px, calc(1181 / 1920 * 100vw), 1181px)',
+              }}
+            >
+              NewME works with a wide range of metabolic, gastrointestinal, and
+              hormonal conditions that are often interconnected. The complete
+              range of conditions include:
+            </motion.p>
           </div>
 
-          {/* Pill tags */}
+          {/* Pill grid — flex-wrap centered, 6 rows */}
           <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             variants={{
               hidden: {},
-              show: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
+              show: { transition: { staggerChildren: 0.025, delayChildren: 0.1 } },
             }}
-            className="relative flex flex-wrap gap-3"
+            className="relative flex flex-wrap justify-center"
+            style={{
+              gap: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
+              marginTop: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
+              maxWidth: 'clamp(320px, calc(1280 / 1920 * 100vw), 1280px)',
+              marginInline: 'auto',
+            }}
           >
             {CONDITIONS.map((condition) => (
               <motion.span
                 key={condition}
                 variants={{
-                  hidden: { opacity: 0, scale: 0.88 },
-                  show: { opacity: 1, scale: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+                  hidden: { opacity: 0, scale: 0.9 },
+                  show: {
+                    opacity: 1,
+                    scale: 1,
+                    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                  },
                 }}
-                className="inline-flex items-center rounded-full font-[family-name:var(--font-urbanist)] text-white/85"
+                className="inline-flex items-center rounded-full font-[family-name:var(--font-urbanist)] text-white"
                 style={{
-                  padding: 'clamp(7px, calc(10/1920*100vw), 10px) clamp(14px, calc(22/1920*100vw), 22px)',
-                  fontSize: 'clamp(12px, calc(15 / 1920 * 100vw), 15px)',
+                  // Figma pill: h=48, padding 20px each side
+                  height: 'clamp(36px, calc(48 / 1920 * 100vw), 48px)',
+                  padding:
+                    '0 clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                  fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
                   fontWeight: 500,
-                  background: 'rgba(255,255,255,0.07)',
-                  border: '1px solid rgba(255,255,255,0.13)',
+                  letterSpacing: 0,
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  backdropFilter: 'blur(6px)',
+                  WebkitBackdropFilter: 'blur(6px)',
                 }}
               >
                 {condition}
               </motion.span>
             ))}
           </motion.div>
-
-          {/* Bottom note */}
-          <p
-            className="relative font-[family-name:var(--font-urbanist)] text-white/35 mt-[clamp(24px,calc(36/1920*100vw),36px)]"
-            style={{
-              fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 13px)',
-              lineHeight: 1.5,
-            }}
-          >
-            This list is not exhaustive. If your condition is not listed, speak with our intake
-            team — NewME assesses eligibility on a case-by-case clinical basis.
-          </p>
         </div>
       </div>
     </section>

@@ -1,40 +1,54 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
+/**
+ * Figma 58:1448–58:1473, 58:2624 — "Structured Care Needs Human Guidance"
+ *
+ * Layout: image LEFT + text RIGHT.
+ *
+ *   Image (Mask group 58:2624) — 883×818 at (60,7996)
+ *   Right column (x=1047):
+ *     · Eyebrow 58:1448 — "Health Coach vs AI Coach" (325×48 at 1047,8076)
+ *     · Heading 58:1452 — "Structured Care Needs Human Guidance"
+ *       (676×216 at 1047,8148) — 3 lines ~72/72
+ *     · Body 58:1451 — long description (812×136 at 1047,8396)
+ *
+ * 5 rows of bullet items, divided by horizontal Vectors 250–253:
+ *   1. Reads between the lines       — "Picks up on frustration..."
+ *   2. Real accountability           — "People follow through..."
+ *   3. Judgment over data            — "Adapts plans to context..."
+ *   4. Builds lasting habits         — "Reshapes behaviour..."
+ *   5. Trusted human presence        — "A coach who knows your history..."
+ */
+
 const POINTS = [
   {
-    heading: 'A real physician reviews your case',
-    body: 'Not an algorithm. Dr. Pal\'s clinical team reviews your full intake — labs, symptoms, history — before any pathway is assigned.',
+    title: 'Reads between the lines',
+    body:
+      'Picks up on frustration, resistance, and hesitation that AI misses.',
   },
   {
-    heading: 'Care that adapts as you progress',
-    body: 'Scheduled clinical reviews at each phase milestone mean your protocol is updated as your body responds, not held static for months.',
+    title: 'Real accountability',
+    body: 'People follow through when a human is watching.',
   },
   {
-    heading: 'Coaches coordinated with clinicians',
-    body: 'Your health coach works from the same clinical record. When something needs escalation, it happens in the same system — no information lost in handoffs.',
+    title: 'Judgment over data',
+    body: 'Adapts plans to context, not just numbers.',
   },
   {
-    heading: 'Specialist access without the wait',
-    body: 'Dietitians, gastroenterologists, and metabolic specialists are part of the system — reachable when you need them, not gated behind a months-long referral.',
+    title: 'Builds lasting habits',
+    body: 'Reshapes behaviour through ongoing human guidance.',
   },
   {
-    heading: 'Accountability that holds over time',
-    body: 'NewME is designed for long-term outcomes. The structures in place ensure your momentum doesn\'t collapse when motivation fluctuates.',
+    title: 'Trusted human presence',
+    body:
+      'A coach who knows your history, goals, and setbacks builds confidence AI can’t replicate.',
   },
 ]
 
-const pointVariants = {
-  hidden: { opacity: 0, x: 16 },
-  show: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.5, delay: i * 0.09, ease: [0.22, 1, 0.36, 1] },
-  }),
-}
+const IMAGE = '/how%20it%20works/Structred%20care%20needs%20human%20guidance.webp'
 
 export default function HIWHumanGuidance() {
   return (
@@ -42,143 +56,152 @@ export default function HIWHumanGuidance() {
       id="hiw-human-guidance"
       className="relative"
       style={{
-        paddingTop: 'clamp(72px, calc(140 / 1920 * 100vw), 140px)',
-        paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
+        // Figma: ailments mask ends y=7876, image starts y=7996 → 120 gap.
+        paddingTop: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
+        paddingBottom: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div
-        className="mx-auto flex flex-col lg:flex-row items-center gap-[clamp(40px,calc(80/1920*100vw),80px)]"
+        className="mx-auto flex flex-col lg:flex-row items-stretch gap-[clamp(28px,calc(64/1920*100vw),64px)]"
         style={{ maxWidth: 1800 }}
       >
-        {/* Left — image */}
+        {/* Image LEFT — 883×818, radius ~40 */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex-1 w-full lg:w-auto shrink-0"
+          className="relative shrink-0 overflow-hidden"
           style={{
-            maxWidth: 680,
-            aspectRatio: '4 / 5',
-            borderRadius: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
-            overflow: 'hidden',
-            minHeight: 'clamp(320px, calc(600 / 1920 * 100vw), 600px)',
+            width: '100%',
+            maxWidth: 'clamp(280px, calc(883 / 1920 * 100vw), 883px)',
+            aspectRatio: '883 / 818',
+            borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+            background:
+              'linear-gradient(135deg, #1A4F49 0%, #0E3B37 100%)',
           }}
         >
-          <Image
-            src="/images/home/Hero image.webp"
-            alt="NewME care team working together"
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 1024px) 100vw, 40vw"
-          />
-          {/* Pine overlay to give it the right tint */}
           <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'linear-gradient(135deg, rgba(1,62,55,0.40) 0%, rgba(1,62,55,0.10) 50%, transparent 75%)',
-            }}
+            role="img"
+            aria-label="Health coach with patient"
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${IMAGE}')` }}
           />
         </motion.div>
 
-        {/* Right — text content */}
+        {/* Right column — text + bullet list */}
         <motion.div
           initial={{ opacity: 0, x: 24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="flex-1 flex flex-col"
-          style={{ maxWidth: 800 }}
+          className="flex flex-col flex-1"
+          style={{
+            // Figma right column starts y=8076, image starts y=7996 → +80
+            paddingTop: 'clamp(0px, calc(80 / 1920 * 100vw), 80px)',
+          }}
         >
-          <EyebrowPill>Human-first care</EyebrowPill>
+          <EyebrowPill>Health Coach vs AI Coach</EyebrowPill>
 
+          {/* Figma 58:1452 — 676×216 ~ 3 lines ~72/72 */}
           <h2
             className="font-[family-name:var(--font-bricolage)] text-white"
             style={{
               fontWeight: 600,
-              fontSize: 'clamp(26px, calc(60 / 1920 * 100vw), 60px)',
-              lineHeight: 1.06,
-              letterSpacing: '-0.01em',
-              marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
+              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              lineHeight: 1,
+              letterSpacing: 0,
+              marginTop: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
+              maxWidth: 'clamp(320px, calc(676 / 1920 * 100vw), 676px)',
             }}
           >
             Structured Care Needs Human Guidance
           </h2>
 
+          {/* Figma 58:1451 — 812×136 ~ 4 lines */}
           <p
-            className="font-[family-name:var(--font-urbanist)] text-white/65"
+            className="font-[family-name:var(--font-urbanist)] text-white/70"
             style={{
               fontWeight: 400,
-              fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
-              lineHeight: 1.65,
-              marginTop: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
-              maxWidth: 640,
+              fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+              marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
+              maxWidth: 'clamp(320px, calc(812 / 1920 * 100vw), 812px)',
             }}
           >
-            The protocols are clinical. The oversight is human. NewME puts
-            physicians, coaches, and specialists behind your pathway — not just
-            an app and a weekly check-in email.
+            AI can support planning and reminders, but structured care goes
+            beyond that. It requires interpretation, adaptation, and consistent
+            human guidance. Sustained progress depends on how guidance is
+            interpreted and applied in real life.
           </p>
 
-          {/* Bullet list */}
+          {/* 5-row bullet list with horizontal dividers */}
           <motion.ul
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }}
+            viewport={{ once: true, amount: 0.15 }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } },
+            }}
             className="flex flex-col"
             style={{
-              marginTop: 'clamp(28px, calc(44 / 1920 * 100vw), 44px)',
-              gap: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
+              marginTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
+              maxWidth: 'clamp(320px, calc(733 / 1920 * 100vw), 733px)',
             }}
           >
             {POINTS.map((point, i) => (
               <motion.li
-                key={point.heading}
-                custom={i}
+                key={point.title}
                 variants={{
-                  hidden: { opacity: 0, x: 14 },
+                  hidden: { opacity: 0, y: 10 },
                   show: {
-                    opacity: 1, x: 0,
-                    transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] },
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
-                className="flex gap-4"
+                className="flex flex-col"
+                style={{
+                  // Figma row heights: 76-104px each, separated by Vectors 250-253
+                  paddingTop:
+                    i === 0
+                      ? 0
+                      : 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                  paddingBottom:
+                    'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                  borderTop:
+                    i === 0
+                      ? 'none'
+                      : '1px solid rgba(255,255,255,0.16)',
+                }}
               >
-                {/* Dot */}
-                <span
-                  className="shrink-0 rounded-full bg-[#629675] mt-[5px]"
+                <h3
+                  className="font-[family-name:var(--font-bricolage)] text-[#FEF272]"
                   style={{
-                    width: 'clamp(8px, calc(10 / 1920 * 100vw), 10px)',
-                    height: 'clamp(8px, calc(10 / 1920 * 100vw), 10px)',
+                    fontWeight: 500,
+                    // Figma title: 40px tall block → ~28-32 px
+                    fontSize: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
+                    lineHeight: 1.2,
+                    letterSpacing: 0,
                   }}
-                />
-                <div>
-                  <p
-                    className="font-[family-name:var(--font-bricolage)] text-white"
-                    style={{
-                      fontWeight: 600,
-                      fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
-                      lineHeight: 1.25,
-                    }}
-                  >
-                    {point.heading}
-                  </p>
-                  <p
-                    className="font-[family-name:var(--font-urbanist)] text-white/55"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: 'clamp(12px, calc(15 / 1920 * 100vw), 15px)',
-                      lineHeight: 1.6,
-                      marginTop: 4,
-                    }}
-                  >
-                    {point.body}
-                  </p>
-                </div>
+                >
+                  {point.title}
+                </h3>
+                <p
+                  className="font-[family-name:var(--font-urbanist)] text-white/70"
+                  style={{
+                    fontWeight: 400,
+                    // Figma body: 28-56px h → ~18-20px
+                    fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
+                    lineHeight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    marginTop: 'clamp(4px, calc(8 / 1920 * 100vw), 8px)',
+                  }}
+                >
+                  {point.body}
+                </p>
               </motion.li>
             ))}
           </motion.ul>

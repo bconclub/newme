@@ -26,7 +26,7 @@ main.newme-page {
   position: relative;
   isolation: isolate;
   background: $pine-teal;
-  overflow-x: clip;
+  overflow: clip;
 
   /* ------------------------------------------------------------------
      Figma "Home Background" frame (15:19) — 1920×9544 artboard.
