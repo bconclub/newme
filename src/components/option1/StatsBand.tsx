@@ -53,6 +53,8 @@ export default function StatsBand() {
             // Figma 1:6261 — fixed 34px radius; do not clamp, the card is always
             // 1800px-constrained so the corners never need to shrink.
             borderRadius: 34,
+            // White glow that bleeds downward into the next section — matches Figma
+            boxShadow: '0 60px 180px 40px rgba(255,255,255,0.38), 0 20px 60px 0 rgba(255,255,255,0.25)',
           }}
         >
           {/* Cells use Figma's exact column widths via grid-template-columns:
