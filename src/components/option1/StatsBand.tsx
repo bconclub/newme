@@ -50,10 +50,9 @@ export default function StatsBand() {
           style={{
             backdropFilter: 'blur(10.25px)',
             overflow: 'clip',
-            borderRadius: 'clamp(20px, 1.77vw, 34px)',
-            // Card height is driven by the cells (padding-y 80 + content ~160 + 80
-            // = 320 at full bleed). No minHeight needed — the grid would otherwise
-            // shrink to content and leave dead space at the bottom of the card.
+            // Figma 1:6261 — fixed 34px radius; do not clamp, the card is always
+            // 1800px-constrained so the corners never need to shrink.
+            borderRadius: 34,
           }}
         >
           {/* Cells use Figma's exact column widths via grid-template-columns:
