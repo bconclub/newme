@@ -1,19 +1,19 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useCallback, useRef, useEffect } from 'react'
-import {
-  motion,
-  useMotionValue,
-  animate,
-  type MotionValue,
-} from 'framer-motion'
+import { useState, useRef } from 'react'
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 
 // ─────────────────────────────────────────────────────────────────────
-// 8-slot carousel that matches the Figma layout exactly. Each slot is
-// expressed as an (x, y) offset from the orbit center on the 1920 artboard
-// (origin at artboard 169, 4279 — Group 184 active center is +425 right).
-// 5 visible slots (2..6), 3 hidden behind the wordmark area (0, 1, 7).
+// Dial-style pillar carousel.
+//
+// Desktop: 8 icons positioned on a circular orbit to the left. A shared
+//   `discAngle` MotionValue drives every icon's (x, y) via useTransform,
+//   so all icons slide along the arc simultaneously — no straight-line jumps.
+//
+// Mobile: the same discAngle drives a half-circle arc on the left side
+//   of the screen. The arc center sits at the left edge; icons fan out to
+//   the right. Text panel occupies the right half.
 // ─────────────────────────────────────────────────────────────────────
 
 type Pillar = { name: string; desc: string; icon: string }
@@ -61,38 +61,36 @@ const PILLARS: Pillar[] = [
   },
 ]
 
-// Slot offsets (artboard px) from orbit center (169, 4279). Mapped from
-// the 8 Figma group centers via Plugin API:
-//   0 / 7 / 1 — hidden behind hub area
-//   2 / 6      — visible top / bottom
-//   3 / 5      — visible upper-right / lower-right
-//   4          — ACTIVE (right edge)
-const SLOTS: { x: number; y: number }[] = [
-  { x: -382, y: 19 },   // 0 — Group 185 (hidden)
-  { x: -251, y: -289 }, // 1 — Group 189 (hidden)
-  { x: -26, y: -462 },  // 2 — Group 182 (top, visible)
-  { x: 272, y: -344 },  // 3 — Group 186 (upper-right, visible)
-  { x: 425, y: 5 },     // 4 — Group 184 ACTIVE (right edge)
-  { x: 272, y: 339 },   // 5 — Group 187 (lower-right, visible)
-  { x: -26, y: 429 },   // 6 — Group 183 (bottom, visible)
-  { x: -281, y: 302 },  // 7 — Group 188 (hidden)
-]
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
+const N = PILLARS.length // 8
+const STEP_DEG = 360 / N // 45°
 
-const ACTIVE_SLOT = 4
-const slotForPillar = (i: number, activeIdx: number) =>
-  ((i - activeIdx) + ACTIVE_SLOT + 8) % 8
-const isVisible = (slot: number) => slot >= 2 && slot <= 6
+// Desktop orbit radius in artboard px (scales with orbit anchor's CSS scale)
+const ORBIT_R = 440
+// Mobile half-circle radius in CSS px
+const MOB_R = 130
+// Mobile badge sizes in CSS px
+const MOB_BADGE_ACTIVE = 76
+const MOB_BADGE_INACTIVE = 52
+
+/** Angle (degrees) of pillar i when discAngle=0. Pillar 0 starts at 0° (rightmost). */
+function pillarBaseDeg(i: number) {
+  return i * STEP_DEG
+}
 
 export default function Pillars() {
   const [activeIdx, setActiveIdx] = useState(0)
-  const goNext = useCallback(
-    () => setActiveIdx((i) => (i + 1) % PILLARS.length),
-    []
-  )
-  const goPrev = useCallback(
-    () => setActiveIdx((i) => (i - 1 + PILLARS.length) % PILLARS.length),
-    []
-  )
+  // Cumulative disc rotation. Increases on prev, decreases on next.
+  const discAngle = useMotionValue(0)
+  const stepRef = useRef(0)
+
+  const advance = (dir: 1 | -1) => {
+    stepRef.current += dir
+    const target = -stepRef.current * STEP_DEG
+    animate(discAngle, target, { duration: 0.65, ease: EASE })
+    setActiveIdx(((stepRef.current % N) + N) % N)
+  }
+
   const active = PILLARS[activeIdx]
 
   return (
@@ -131,181 +129,83 @@ export default function Pillars() {
         </p>
       </div>
 
-      {/* Mobile — simple card layout, hidden on md+ */}
-      <div className="block md:hidden px-6 mt-8">
+      {/* Mobile — hidden on md+ */}
+      <div className="block md:hidden">
         <MobilePillars
           active={active}
           activeIdx={activeIdx}
-          onPrev={goPrev}
-          onNext={goNext}
+          discAngle={discAngle}
+          onPrev={() => advance(-1)}
+          onNext={() => advance(1)}
         />
       </div>
 
-      {/* Desktop orbit stage, hidden on mobile */}
+      {/* Desktop — hidden on mobile */}
       <div className="hidden md:block">
-        <Stage
+        <DesktopStage
           activeIdx={activeIdx}
           active={active}
-          onNext={goNext}
-          onPrev={goPrev}
+          discAngle={discAngle}
+          onPrev={() => advance(-1)}
+          onNext={() => advance(1)}
         />
       </div>
     </section>
   )
 }
 
-function MobilePillars({
-  active,
-  activeIdx,
-  onPrev,
-  onNext,
-}: {
-  active: Pillar
-  activeIdx: number
-  onPrev: () => void
-  onNext: () => void
-}) {
-  return (
-    <div className="flex flex-col items-center text-center">
-      <motion.div
-        key={`mob-icon-${activeIdx}`}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="rounded-full flex items-center justify-center"
-        style={{ width: 96, height: 96, background: '#FEF272' }}
-      >
-        <span
-          aria-hidden
-          className="block"
-          style={{
-            width: '65%',
-            height: '65%',
-            backgroundColor: '#173B39',
-            WebkitMaskImage: `url(${active.icon})`,
-            maskImage: `url(${active.icon})`,
-            WebkitMaskRepeat: 'no-repeat',
-            maskRepeat: 'no-repeat',
-            WebkitMaskPosition: 'center',
-            maskPosition: 'center',
-            WebkitMaskSize: 'contain',
-            maskSize: 'contain',
-          }}
-        />
-      </motion.div>
-
-      <motion.h3
-        key={`mob-name-${activeIdx}`}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="font-[family-name:var(--font-bricolage)] mt-5"
-        style={{ fontWeight: 500, fontSize: 'clamp(26px, 7vw, 36px)', color: '#FEF272', lineHeight: 1.05 }}
-      >
-        {active.name}
-      </motion.h3>
-
-      <motion.p
-        key={`mob-desc-${activeIdx}`}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-        className="text-white font-[family-name:var(--font-urbanist)] mt-4"
-        style={{ fontWeight: 500, fontSize: 'clamp(15px, 4vw, 18px)', lineHeight: 1.6, maxWidth: 340 }}
-      >
-        {active.desc}
-      </motion.p>
-
-      <div className="flex items-center justify-between w-full mt-8" style={{ maxWidth: 340 }}>
-        <div className="flex gap-3">
-          <NavButton dir="prev" onClick={onPrev} />
-          <NavButton dir="next" onClick={onNext} />
-        </div>
-        <div className="flex gap-2 items-center">
-          {PILLARS.map((_, i) => (
-            <span
-              key={i}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width: i === activeIdx ? 24 : 8,
-                height: 8,
-                background: i === activeIdx ? '#FEF272' : 'rgba(255,255,255,0.25)',
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ─────────────────────────────────────────────────────────────────────
-function Stage({
+// DESKTOP
+// ─────────────────────────────────────────────────────────────────────
+function DesktopStage({
   activeIdx,
   active,
-  onNext,
+  discAngle,
   onPrev,
+  onNext,
 }: {
   activeIdx: number
   active: Pillar
-  onNext: () => void
+  discAngle: ReturnType<typeof useMotionValue<number>>
   onPrev: () => void
+  onNext: () => void
 }) {
   const orbitAnchorRef = useRef<HTMLDivElement>(null)
 
-  // Drag-to-cycle: rotational drag advances/retreats one pillar per ~22.5°.
-  const dragStateRef = useRef<{
+  // Rotational drag — advance/retreat one step per 22.5° drag
+  const dragRef = useRef<{
     pointerId: number
     startAngle: number
     accumulated: number
   } | null>(null)
 
-  const angleFromCenter = (clientX: number, clientY: number) => {
+  const angleFromCenter = (cx: number, cy: number) => {
     const el = orbitAnchorRef.current
     if (!el) return 0
-    const rect = el.getBoundingClientRect()
-    const dx = clientX - (rect.left + rect.width / 2)
-    const dy = clientY - (rect.top + rect.height / 2)
-    return (Math.atan2(dy, dx) * 180) / Math.PI
+    const r = el.getBoundingClientRect()
+    return (Math.atan2(cy - (r.top + r.height / 2), cx - (r.left + r.width / 2)) * 180) / Math.PI
   }
 
   const onPointerDown = (e: React.PointerEvent) => {
-    const t = e.target as HTMLElement
-    if (t.closest('[data-nav-button]')) return
-    dragStateRef.current = {
-      pointerId: e.pointerId,
-      startAngle: angleFromCenter(e.clientX, e.clientY),
-      accumulated: 0,
-    }
+    if ((e.target as HTMLElement).closest('[data-nav-button]')) return
+    dragRef.current = { pointerId: e.pointerId, startAngle: angleFromCenter(e.clientX, e.clientY), accumulated: 0 }
     ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   }
   const onPointerMove = (e: React.PointerEvent) => {
-    const s = dragStateRef.current
+    const s = dragRef.current
     if (!s || s.pointerId !== e.pointerId) return
-    const a = angleFromCenter(e.clientX, e.clientY)
-    let delta = a - s.startAngle
+    let delta = angleFromCenter(e.clientX, e.clientY) - s.startAngle
     if (delta > 180) delta -= 360
     if (delta < -180) delta += 360
     s.accumulated += delta
-    s.startAngle = a
-    while (s.accumulated >= 22.5) {
-      s.accumulated -= 22.5
-      onPrev()
-    }
-    while (s.accumulated <= -22.5) {
-      s.accumulated += 22.5
-      onNext()
-    }
+    s.startAngle = angleFromCenter(e.clientX, e.clientY)
+    while (s.accumulated >= 22.5) { s.accumulated -= 22.5; onPrev() }
+    while (s.accumulated <= -22.5) { s.accumulated += 22.5; onNext() }
   }
   const onPointerUp = (e: React.PointerEvent) => {
-    const s = dragStateRef.current
-    if (!s || s.pointerId !== e.pointerId) return
-    dragStateRef.current = null
-    try {
-      ;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
-    } catch {
-      /* noop */
-    }
+    if (!dragRef.current || dragRef.current.pointerId !== e.pointerId) return
+    dragRef.current = null
+    try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId) } catch { /* noop */ }
   }
 
   return (
@@ -316,9 +216,8 @@ function Stage({
         height: 'clamp(560px, calc(1000 / 1920 * 100vw), 1000px)',
       }}
     >
-      {/* Orbit anchor — exact Figma artboard position (169, vertical center).
-          Children inside use ARTBOARD PIXEL coordinates; the whole anchor
-          scales uniformly with viewport via CSS variable + transform: scale. */}
+      {/* Orbit anchor — 0×0 point at artboard-pixel (169, 50%). All child
+          positions are artboard pixels. CSS scale maps artboard→viewport. */}
       <div
         ref={orbitAnchorRef}
         className="absolute"
@@ -327,62 +226,40 @@ function Stage({
           top: '50%',
           width: 0,
           height: 0,
-          transform: 'scale(min(calc(100vw / 1920px), 1))',
+          // Use CSS scale() so it stays purely a transform and doesn't affect layout
+          transform: 'scale(min(1, calc(100vw / 1920px)))',
           transformOrigin: 'center',
         }}
       >
-        {/* Drag-catch disc (1100px artboard ≈ orbit diameter + slack). */}
+        {/* Drag-catch disc */}
         <div
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
           className="absolute rounded-full cursor-grab active:cursor-grabbing"
-          style={{
-            width: 1100,
-            height: 1100,
-            transform: 'translate(-50%, -50%)',
-            touchAction: 'none',
-            zIndex: 0,
-          }}
+          style={{ width: 1100, height: 1100, transform: 'translate(-50%,-50%)', touchAction: 'none', zIndex: 0 }}
         />
 
-        {/* Center hub — full Dr. Pal's NewME logo.
-            unoptimized is required: the 0×0 orbit anchor causes Next.js image
-            optimization to compute 0px width, collapsing the image. */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            left: 0,
-            top: 0,
-            transform: 'translate(-50%, -50%)',
-            zIndex: 5,
-          }}
-        >
-          <Image
-            src="/newme-logo.png"
-            alt="Dr. Pal's NewME"
-            width={240}
-            height={74}
-            unoptimized
-            priority
-            className="block"
-            style={{ width: 260, height: 'auto' }}
-          />
+        {/* Hub logo */}
+        <div className="absolute pointer-events-none" style={{ transform: 'translate(-50%,-50%)', zIndex: 5 }}>
+          <Image src="/newme-logo.png" alt="Dr. Pal's NewME" width={240} height={74} unoptimized priority
+            style={{ width: 260, height: 'auto' }} />
         </div>
 
-        {/* Pillars — each rendered at its current slot's (x, y) artboard offset. */}
+        {/* Pillar icons — each follows the arc via discAngle */}
         {PILLARS.map((p, i) => (
-          <PillarAtSlot
+          <DesktopPillar
             key={p.name}
             pillar={p}
-            slotIdx={slotForPillar(i, activeIdx)}
+            pillarIdx={i}
+            discAngle={discAngle}
             active={i === activeIdx}
           />
         ))}
       </div>
 
-      {/* Active text panel — Figma left=869 → 869/1920 from viewport. */}
+      {/* Active text panel */}
       <div
         className="absolute flex flex-col"
         style={{
@@ -396,13 +273,12 @@ function Stage({
           key={`name-${activeIdx}`}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.4, ease: EASE }}
           className="font-[family-name:var(--font-bricolage)]"
           style={{
             fontWeight: 500,
             fontSize: 'clamp(28px, calc(64 / 1920 * 100vw), 64px)',
             lineHeight: 1.05,
-            letterSpacing: 0,
             color: '#FEF272',
           }}
         >
@@ -412,7 +288,7 @@ function Stage({
           key={`desc-${activeIdx}`}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+          transition={{ duration: 0.45, ease: EASE, delay: 0.05 }}
           className="text-white font-[family-name:var(--font-urbanist)]"
           style={{
             fontWeight: 500,
@@ -430,100 +306,199 @@ function Stage({
             <NavButton dir="prev" onClick={onPrev} />
             <NavButton dir="next" onClick={onNext} />
           </div>
-          <div className="flex gap-2 items-center">
-            {PILLARS.map((_, i) => (
-              <span
-                key={i}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: i === activeIdx ? 28 : 8,
-                  height: 8,
-                  background: i === activeIdx ? '#FEF272' : 'rgba(255,255,255,0.25)',
-                }}
-              />
-            ))}
-          </div>
+          <Dots activeIdx={activeIdx} />
         </div>
       </div>
     </div>
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// Pillar at a specific slot — animates x/y between SLOTS as slotIdx changes.
-// Coordinates are ARTBOARD pixels (not viewport); the parent orbit anchor
-// applies the viewport scaling.
-// ─────────────────────────────────────────────────────────────────────
-function PillarAtSlot({
+function DesktopPillar({
   pillar,
-  slotIdx,
+  pillarIdx,
+  discAngle,
   active,
 }: {
   pillar: Pillar
-  slotIdx: number
+  pillarIdx: number
+  discAngle: ReturnType<typeof useMotionValue<number>>
   active: boolean
 }) {
-  const x = useMotionValue(SLOTS[slotIdx].x)
-  const y = useMotionValue(SLOTS[slotIdx].y)
+  // Derive screen angle (radians) from discAngle — all icons slide along the arc
+  const screenRad = useTransform(discAngle, (d) =>
+    ((pillarBaseDeg(pillarIdx) + d) * Math.PI) / 180
+  )
+  const x = useTransform(screenRad, (a) => ORBIT_R * Math.cos(a))
+  const y = useTransform(screenRad, (a) => ORBIT_R * Math.sin(a))
 
-  useEffect(() => {
-    const tx = animate(x, SLOTS[slotIdx].x, {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
-    })
-    const ty = animate(y, SLOTS[slotIdx].y, {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
-    })
-    return () => {
-      tx.stop()
-      ty.stop()
-    }
-  }, [slotIdx, x, y])
-
-  const visible = isVisible(slotIdx)
+  // Fade icons as they slide behind the logo hub (left side of orbit)
+  const opacity = useTransform(screenRad, (a) => {
+    const cos = Math.cos(a)
+    if (cos < -0.65) return 0
+    if (cos < -0.35) return (cos + 0.65) / 0.3
+    return 1
+  })
+  const pointerEvents = useTransform(screenRad, (a): 'auto' | 'none' =>
+    Math.cos(a) < -0.35 ? 'none' : 'auto'
+  )
 
   return (
     <motion.div
       className="absolute"
-      style={{
-        x,
-        y,
-        opacity: visible ? 1 : 0,
-        transition: 'opacity 0.45s ease',
-        pointerEvents: visible ? 'auto' : 'none',
-        zIndex: active ? 3 : 2,
-      }}
+      style={{ x, y, opacity, pointerEvents, zIndex: active ? 3 : 2 }}
     >
-      <div style={{ transform: 'translate(-50%, -50%)' }}>
+      <div style={{ transform: 'translate(-50%,-50%)' }}>
         <PillarBadge pillar={pillar} active={active} />
       </div>
     </motion.div>
   )
 }
 
+// ─────────────────────────────────────────────────────────────────────
+// MOBILE — half-circle arc on the left, text panel on the right
+// ─────────────────────────────────────────────────────────────────────
+function MobilePillars({
+  active,
+  activeIdx,
+  discAngle,
+  onPrev,
+  onNext,
+}: {
+  active: Pillar
+  activeIdx: number
+  discAngle: ReturnType<typeof useMotionValue<number>>
+  onPrev: () => void
+  onNext: () => void
+}) {
+  const arcHeight = MOB_R * 2 + MOB_BADGE_ACTIVE
+
+  return (
+    <div
+      className="flex items-center"
+      style={{ marginTop: 'clamp(24px, 6vw, 40px)', minHeight: arcHeight }}
+    >
+      {/* Left: half-circle arc — overflow hidden clips icons that cross x<0 */}
+      <div
+        className="relative shrink-0 overflow-hidden"
+        style={{ width: MOB_R + MOB_BADGE_ACTIVE / 2 + 8, height: arcHeight }}
+      >
+        {PILLARS.map((p, i) => (
+          <MobileArcPillar
+            key={p.name}
+            pillar={p}
+            pillarIdx={i}
+            discAngle={discAngle}
+            active={i === activeIdx}
+            centerY={arcHeight / 2}
+          />
+        ))}
+      </div>
+
+      {/* Right: text */}
+      <div className="flex flex-col justify-center pl-5 flex-1 pr-6">
+        <motion.h3
+          key={`mob-name-${activeIdx}`}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.35, ease: EASE }}
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{
+            fontWeight: 600,
+            fontSize: 'clamp(22px, 6vw, 32px)',
+            lineHeight: 1.1,
+            color: '#FEF272',
+          }}
+        >
+          {active.name}
+        </motion.h3>
+        <motion.p
+          key={`mob-desc-${activeIdx}`}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
+          className="text-white/85 font-[family-name:var(--font-urbanist)]"
+          style={{
+            fontWeight: 400,
+            fontSize: 'clamp(13px, 3.5vw, 17px)',
+            lineHeight: 1.6,
+            marginTop: 'clamp(10px, 2.5vw, 16px)',
+          }}
+        >
+          {active.desc}
+        </motion.p>
+
+        <div className="flex items-center gap-3 mt-5">
+          <NavButton dir="prev" onClick={onPrev} small />
+          <NavButton dir="next" onClick={onNext} small />
+        </div>
+        <div className="mt-3">
+          <Dots activeIdx={activeIdx} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MobileArcPillar({
+  pillar,
+  pillarIdx,
+  discAngle,
+  active,
+  centerY,
+}: {
+  pillar: Pillar
+  pillarIdx: number
+  discAngle: ReturnType<typeof useMotionValue<number>>
+  active: boolean
+  centerY: number
+}) {
+  // Arc center at (0, centerY). Icons fan out to the right.
+  const screenRad = useTransform(discAngle, (d) =>
+    ((pillarBaseDeg(pillarIdx) + d) * Math.PI) / 180
+  )
+  const x = useTransform(screenRad, (a) => MOB_R * Math.cos(a))
+  const y = useTransform(screenRad, (a) => centerY + MOB_R * Math.sin(a))
+
+  // Fade icons heading left (cos < 0) and at extreme top/bottom
+  const opacity = useTransform(screenRad, (a) => {
+    const cos = Math.cos(a)
+    if (cos < 0) return 0
+    const sinAbs = Math.abs(Math.sin(a))
+    if (sinAbs > 0.92) return Math.max(0, (1 - sinAbs) / 0.08)
+    return cos < 0.25 ? cos / 0.25 : 1
+  })
+
+  return (
+    <motion.div
+      className="absolute pointer-events-none"
+      style={{ left: 0, top: 0, x, y, opacity }}
+    >
+      <div style={{ transform: 'translate(-50%,-50%)' }}>
+        <MobileBadge pillar={pillar} active={active} />
+      </div>
+    </motion.div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Shared badge components
+// ─────────────────────────────────────────────────────────────────────
 function PillarBadge({ pillar, active }: { pillar: Pillar; active: boolean }) {
-  // Sizes are in ARTBOARD pixels — orbit anchor's CSS scale resizes to viewport.
   return (
     <motion.div
       animate={{
-        scale: active ? 1.6125 : 1, // 160 → 258
+        scale: active ? 1.6125 : 1,
         backgroundColor: active ? '#FEF272' : 'rgba(0,0,0,0)',
         borderColor: active ? '#FEF272' : 'rgba(255,255,255,0.85)',
       }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, ease: EASE }}
       className="rounded-full flex items-center justify-center"
-      style={{
-        width: 160,
-        height: 160,
-        border: '1px solid',
-      }}
+      style={{ width: 160, height: 160, border: '1px solid' }}
     >
       <span
         aria-hidden
         className="block"
         style={{
-          // Figma: inactive 126/160 ≈ 78%, active 180/258 ≈ 70%.
           width: active ? '70%' : '78%',
           height: active ? '70%' : '78%',
           backgroundColor: active ? '#173B39' : '#FEF272',
@@ -541,47 +516,85 @@ function PillarBadge({ pillar, active }: { pillar: Pillar; active: boolean }) {
   )
 }
 
+function MobileBadge({ pillar, active }: { pillar: Pillar; active: boolean }) {
+  const size = active ? MOB_BADGE_ACTIVE : MOB_BADGE_INACTIVE
+  return (
+    <motion.div
+      animate={{
+        backgroundColor: active ? '#FEF272' : 'rgba(0,0,0,0)',
+        borderColor: active ? '#FEF272' : 'rgba(255,255,255,0.70)',
+        width: size,
+        height: size,
+      }}
+      transition={{ duration: 0.45, ease: EASE }}
+      className="rounded-full flex items-center justify-center"
+      style={{ border: '1.5px solid', willChange: 'width, height' }}
+    >
+      <span
+        aria-hidden
+        className="block"
+        style={{
+          width: '64%',
+          height: '64%',
+          backgroundColor: active ? '#173B39' : '#FEF272',
+          WebkitMaskImage: `url(${pillar.icon})`,
+          maskImage: `url(${pillar.icon})`,
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
+          maskPosition: 'center',
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+        }}
+      />
+    </motion.div>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────
+function Dots({ activeIdx }: { activeIdx: number }) {
+  return (
+    <div className="flex gap-2 items-center">
+      {PILLARS.map((_, i) => (
+        <span
+          key={i}
+          className="rounded-full transition-all duration-300"
+          style={{
+            width: i === activeIdx ? 24 : 8,
+            height: 8,
+            background: i === activeIdx ? '#FEF272' : 'rgba(255,255,255,0.25)',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 function NavButton({
   dir,
   onClick,
+  small,
 }: {
   dir: 'prev' | 'next'
   onClick: () => void
+  small?: boolean
 }) {
+  const sz = small ? 44 : 'clamp(44px, calc(56 / 1920 * 100vw), 56px)'
   return (
     <motion.button
       type="button"
       data-nav-button
       onClick={onClick}
       aria-label={dir === 'next' ? 'Next pillar' : 'Previous pillar'}
-      whileHover={{
-        scale: 1.07,
-        backgroundColor: '#FEF272',
-        color: '#173B39',
-      }}
+      whileHover={{ scale: 1.07, backgroundColor: '#FEF272', color: '#173B39' }}
       whileTap={{ scale: 0.94 }}
-      transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-      className="rounded-full flex items-center justify-center cursor-pointer"
-      style={{
-        width: 'clamp(44px, calc(56 / 1920 * 100vw), 56px)',
-        height: 'clamp(44px, calc(56 / 1920 * 100vw), 56px)',
-        border: '1px solid #FEF272',
-        color: '#FEF272',
-        background: 'transparent',
-      }}
+      transition={{ duration: 0.18, ease: EASE }}
+      className="rounded-full flex items-center justify-center cursor-pointer shrink-0"
+      style={{ width: sz, height: sz, border: '1px solid #FEF272', color: '#FEF272', background: 'transparent' }}
     >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        style={{ transform: dir === 'prev' ? 'rotate(180deg)' : undefined }}
-      >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        style={{ transform: dir === 'prev' ? 'rotate(180deg)' : undefined }}>
         <path d="M5 12h14" />
         <path d="m13 5 7 7-7 7" />
       </svg>
