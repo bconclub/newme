@@ -102,12 +102,16 @@ export default function Testimonials() {
           </motion.p>
         </div>
 
-        {/* Cards row — Figma: 3 cards 587×402 each, gap 20px */}
+        {/* Cards row — Figma: 3 cards 587×402 each, gap 20px on desktop.
+            Mobile: horizontal scroll-snap carousel so the user can swipe
+            between testimonials instead of scrolling through 3 stacked
+            cards. */}
         <div
-          className="grid sm:grid-cols-3"
+          className="flex sm:grid sm:grid-cols-3 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none -mx-5 sm:mx-0 px-5 sm:px-0 testimonial-carousel"
           style={{
             gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
             marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
+            scrollbarWidth: 'none',
           }}
         >
           {testimonials.map((t, i) => (
@@ -117,7 +121,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="relative overflow-hidden"
+              className="relative overflow-hidden shrink-0 w-[85%] sm:w-auto snap-center sm:snap-align-none"
               style={
                 t.variant === 'white'
                   ? {
@@ -273,11 +277,11 @@ function RatingsCard() {
         WebkitBackdropFilter: 'blur(10.25px)',
       }}
     >
-      <div className="relative grid grid-cols-1 sm:grid-cols-3 items-center py-12 sm:py-14 gap-10 sm:gap-0">
+      <div className="relative grid grid-cols-3 items-center py-6 sm:py-14 gap-2 sm:gap-0">
         <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
         {/* Figma 1:6354 — shield center */}
         <div className="flex items-center justify-center">
-          <ShieldIcon size="clamp(90px, calc(130 / 1920 * 100vw), 130px)" />
+          <ShieldIcon size="clamp(48px, calc(130 / 1920 * 100vw), 130px)" />
         </div>
         <RatingBlock score="4.7" label="Program Completion Rate" />
       </div>
@@ -295,11 +299,11 @@ function RatingBlock({
   trustpilot?: boolean
 }) {
   return (
-    <div className="flex flex-col items-center justify-center text-center px-6">
+    <div className="flex flex-col items-center justify-center text-center px-2 sm:px-6">
       {/* 5 orange stars */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-[2px] sm:gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
-          <Star key={i} size="clamp(20px, calc(28 / 1920 * 100vw), 28px)" />
+          <Star key={i} size="clamp(10px, calc(28 / 1920 * 100vw), 28px)" />
         ))}
       </div>
       {/* Score — Figma: Poppins SemiBold 80px #629675 */}
@@ -308,9 +312,9 @@ function RatingBlock({
         style={{
           color: '#629675',
           fontWeight: 600,
-          fontSize: 'clamp(52px, calc(80 / 1920 * 100vw), 80px)',
+          fontSize: 'clamp(26px, calc(80 / 1920 * 100vw), 80px)',
           lineHeight: 1,
-          marginTop: 8,
+          marginTop: 4,
         }}
       >
         {score}
@@ -321,9 +325,9 @@ function RatingBlock({
         style={{
           color: '#013e37',
           fontWeight: 500,
-          fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 22px)',
+          fontSize: 'clamp(9px, calc(20 / 1920 * 100vw), 22px)',
           lineHeight: 1.3,
-          marginTop: 10,
+          marginTop: 4,
         }}
       >
         {label}
@@ -335,8 +339,8 @@ function RatingBlock({
           style={{
             color: '#191919',
             fontWeight: 400,
-            fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 22px)',
-            marginTop: 4,
+            fontSize: 'clamp(9px, calc(20 / 1920 * 100vw), 22px)',
+            marginTop: 2,
           }}
         >
           <TrustpilotStar />

@@ -198,13 +198,12 @@ main.newme-page {
       }
     }
 
-    /* Mobile: keep one atmospheric green wash (Ellipse 28) and drop the
-       rest. The 1920-wide blob layout doesn't downscale gracefully — at
-       375px the yellow accents and the second green wash bleed weirdly
-       into the wrong sections. One subtle wash reads as ambience and
-       matches the desktop intent without the noise. */
+    /* Mobile: keep the green wash (Ellipse 28) and the Pillars yellow
+       accent (Ellipse 34) so mobile mirrors the desktop atmospheric look
+       in that section. Drop the second green wash (38) and the lower
+       yellow accents (39, 40) — those didn't downscale gracefully and
+       were bleeding into the wrong sections at 375px. */
     .newme-ellipse-38,
-    .newme-ellipse-34,
     .newme-ellipse-39,
     .newme-ellipse-40,
     .newme-noise-38 {
@@ -244,6 +243,12 @@ html:has(main.newme-page) .newme-header a {
 /* DrPal body: Figma has 16px between paragraphs (16/1920 ≈ 0.83vw). */
 .newme-drpal-body > p + p {
   margin-top: clamp(12px, calc(16 / 1920 * 100vw), 16px);
+}
+
+/* Hide the scrollbar on the mobile testimonials carousel — Firefox uses
+   scrollbar-width:none (set inline), this is the WebKit/Chromium half. */
+.testimonial-carousel::-webkit-scrollbar {
+  display: none;
 }
 
 html:has(main.newme-page) .newme-footer {

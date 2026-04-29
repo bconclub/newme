@@ -33,9 +33,13 @@ export default function Hero() {
             minHeight: 'clamp(520px, calc(947 / 1880 * 100vw), 947px)',
           }}
         >
-          {/* Background image */}
+          {/* Background image — on mobile the photo is much wider than the
+              container after bg-cover scaling, so default bg-center clips the
+              subject off-screen. Shift the focal point so the subject sits
+              roughly in the visible center on phones; desktop keeps standard
+              center alignment. */}
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-[position:72%_center] md:bg-center"
             style={{ backgroundImage: `url('${HERO_IMAGE}')` }}
           />
 
@@ -92,7 +96,11 @@ export default function Hero() {
           <div
             className="relative z-10 flex flex-col"
             style={{
-              paddingTop: 'clamp(120px, calc(343 / 1920 * 100vw), 343px)',
+              /* Mobile floor bumped 120 → 280 so the hero text sits lower
+                 in the card (closer to bottom-third) instead of starting at
+                 the top with a big empty space below. Desktop value stays
+                 anchored to the Figma 343px spec. */
+              paddingTop: 'clamp(280px, calc(343 / 1920 * 100vw), 343px)',
               paddingLeft: 'clamp(40px, calc(100 / 1920 * 100vw), 100px)',
               paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
               paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',

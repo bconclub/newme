@@ -21,7 +21,7 @@ type Pillar = { name: string; desc: string; icon: string }
 const PILLARS: Pillar[] = [
   {
     name: 'Circadian Rhythm',
-    desc: "Regulates your body's internal clock, affecting energy, metabolism, and recovery.",
+    desc: "Regulates your body's internal clock — energy, metabolism, recovery.",
     icon: '/icons/pillar-1.svg',
   },
   {
@@ -31,32 +31,32 @@ const PILLARS: Pillar[] = [
   },
   {
     name: 'Stress',
-    desc: 'Impacts physical and mental well-being, as well as cardiovascular health.',
+    desc: 'Impacts physical, mental, and cardiovascular health.',
     icon: '/icons/pillar-3.svg',
   },
   {
     name: 'Digestion',
-    desc: 'Determines how effectively your body absorbs and responds to nutrition.',
+    desc: 'Determines how your body absorbs and responds to nutrition.',
     icon: '/icons/pillar-4.svg',
   },
   {
     name: 'Nutrition',
-    desc: 'Fuels metabolic stability and gut repair through personalised food protocols.',
+    desc: 'Fuels metabolic stability and gut repair through personalised protocols.',
     icon: '/icons/pillar-5.svg',
   },
   {
     name: 'Fitness',
-    desc: 'Builds strength, improves metabolic efficiency, and supports long-term health.',
+    desc: 'Builds strength, metabolic efficiency, and long-term health.',
     icon: '/icons/pillar-6.svg',
   },
   {
     name: 'Physical Therapy',
-    desc: "Ensures safe movement, injury prevention, and aligns to your body's capacity.",
+    desc: 'Ensures safe movement, injury prevention, and body capacity.',
     icon: '/icons/pillar-7.svg',
   },
   {
     name: 'Community',
-    desc: 'Shared accountability and peer support that sustains behaviour change.',
+    desc: 'Shared accountability and peer support that sustains change.',
     icon: '/icons/pillar-8.svg',
   },
 ]
@@ -71,6 +71,13 @@ const ORBIT_R = 440
 const MOB_R = 175
 const MOB_BADGE_ACTIVE = 110
 const MOB_BADGE_INACTIVE = 60
+// Shift the orbit center right so the top/bottom pillars (which sit at
+// orbit-x=0) aren't half-clipped by the container's left edge. The badge
+// half-radius + a small buffer keeps the full icon inside the viewport;
+// pillars that orbit further left (135°/-135°) still fade out gracefully
+// via the opacity transform below, so they read as "off in the distance"
+// instead of cut off at the edge.
+const MOB_CENTER_X = MOB_BADGE_INACTIVE / 2 + 6  // 36
 const MOB_CENTER_Y = MOB_R + MOB_BADGE_ACTIVE / 2 + 10  // vertical mid of arc
 // Arc container only needs space for inactive pillars at the bottom (active
 // always sits at 0°/right, never at 90°/bottom), so we tighten the bottom
@@ -105,6 +112,8 @@ export default function Pillars() {
         position: 'relative',
         paddingTop: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
         paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+        paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+        paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div className="text-center mx-auto" style={{ maxWidth: 1194 }}>
@@ -400,6 +409,28 @@ function MobilePillars({
       {/* Arc lives on top in its own fixed-height row so it can't be
           overlapped by the title/description below. */}
       <div className="relative w-full overflow-hidden pointer-events-none" style={{ height: MOB_ARC_H }}>
+        {/* Brand logo at the orbit center — mirrors the desktop hub logo
+            so the mobile arc reads as the same Dr. Pal's NewME hub. */}
+        <div
+          className="absolute pointer-events-none flex items-center justify-center"
+          style={{
+            top: MOB_CENTER_Y,
+            left: MOB_CENTER_X + 70,
+            width: 132,
+            height: 42,
+            transform: 'translate(-50%,-50%)',
+            zIndex: 1,
+          }}
+        >
+          <Image
+            src="/newme-logo.png"
+            alt="Dr. Pal's NewME"
+            width={240}
+            height={74}
+            unoptimized
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
+        </div>
         {PILLARS.map((p, i) => (
           <MobileArcPillar
             key={p.name}
@@ -412,10 +443,14 @@ function MobilePillars({
         ))}
       </div>
 
-      {/* Title + description + controls anchored bottom-right under the arc. */}
+      {/* Title + description + controls anchored bottom-right just under
+          the arc. Negative marginTop pulls the title close to the lowest
+          pillar so the dead green band between arc and text disappears.
+          Dots are hidden on mobile — the prev/next arrows are enough,
+          and 8 small dots felt cluttered at this width. */}
       <div
         className="flex flex-col items-end text-right ml-auto"
-        style={{ paddingRight: 20, paddingLeft: 24, marginTop: 8, maxWidth: 360 }}
+        style={{ paddingRight: 20, paddingLeft: 24, marginTop: -56, maxWidth: 360 }}
       >
         <motion.h3
           key={`mob-name-${activeIdx}`}
@@ -423,7 +458,7 @@ function MobilePillars({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: EASE }}
           className="font-[family-name:var(--font-bricolage)]"
-          style={{ fontWeight: 600, fontSize: 'clamp(24px, 6.5vw, 36px)', lineHeight: 1.1, color: '#FEF272' }}
+          style={{ fontWeight: 600, fontSize: 'clamp(18px, 4.8vw, 26px)', lineHeight: 1.15, color: '#FEF272' }}
         >
           {active.name}
         </motion.h3>
@@ -433,16 +468,13 @@ function MobilePillars({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
           className="text-white/85 font-[family-name:var(--font-urbanist)]"
-          style={{ fontWeight: 400, fontSize: 'clamp(13px, 3.4vw, 17px)', lineHeight: 1.55, marginTop: 10 }}
+          style={{ fontWeight: 400, fontSize: 'clamp(11px, 2.9vw, 14px)', lineHeight: 1.55, marginTop: 8 }}
         >
           {active.desc}
         </motion.p>
         <div className="flex items-center gap-2 mt-4">
           <NavButton dir="prev" onClick={onPrev} small />
           <NavButton dir="next" onClick={onNext} small />
-        </div>
-        <div className="mt-2">
-          <Dots activeIdx={activeIdx} />
         </div>
       </div>
     </div>
@@ -462,11 +494,11 @@ function MobileArcPillar({
   active: boolean
   centerY: number
 }) {
-  // Arc center at (0, centerY). Icons fan out to the right.
+  // Arc center at (MOB_CENTER_X, centerY). Icons fan out to the right.
   const screenRad = useTransform(discAngle, (d) =>
     ((pillarBaseDeg(pillarIdx) + d) * Math.PI) / 180
   )
-  const x = useTransform(screenRad, (a) => MOB_R * Math.cos(a))
+  const x = useTransform(screenRad, (a) => MOB_CENTER_X + MOB_R * Math.cos(a))
   const y = useTransform(screenRad, (a) => centerY + MOB_R * Math.sin(a))
 
   // Show ~5 pillars at once: visible across the right half plus a small
