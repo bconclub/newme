@@ -269,3 +269,86 @@ html:has(main.newme-page) .newme-footer h4 {
 html:has(main.newme-page) .newme-footer a:hover {
   color: $light-gold;
 }
+
+/* ============================================================
+   Virtual Clinic page — Figma 83:49
+   Background spec (verified from MCP design context):
+     • Page bg (Rectangle 67, 83:50): #173B39
+     • Ellipse 28 (83:51) at artboard (-1306, 1807), 4480×4480
+       green→pine linear gradient, σ=400 gaussian blur
+     • Ellipse 34 (83:2430) at (1610, 1845), 895×981
+       fill #FEF272, σ=400 gaussian blur
+     • Ellipse 39 (83:2426) at (721, 2726), 425×466
+       fill #FF8547 tangerine, σ=150 gaussian blur
+
+   Approach: drop the actual SVG exports (gradients + blur baked in) into a
+   fixed 1920×3881 frame, scaled to the viewport. Same pattern as the home
+   page's .newme-bg artboard transform.
+   ============================================================ */
+
+/* Override the base teal so vc-page reads at #173B39 (Figma Rectangle 67). */
+html:has(main.vc-page),
+html:has(main.vc-page) body {
+  background: #173B39;
+}
+
+main.vc-page {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: #173B39;
+}
+
+/* Blob container must stay absolute (the .newme-page > * rule would
+   otherwise force it to relative and its declared height would push
+   sections down). */
+main.vc-page > .vc-bg {
+  position: absolute !important;
+  z-index: 0 !important;
+  inset: 0 0 auto 0;
+  height: clamp(1800px, calc(3881 / 1920 * 100vw), 3881px);
+  overflow: hidden;
+}
+
+/* 1920×3881 artboard frame, centered and scaled to fit the viewport. */
+.vc-frame {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 3881px;
+  /* `1920px` (not bare `1920`) — both args of min() must be lengths. */
+  --vc-scale: min(1, calc(100vw / 1920px));
+  transform: translateX(-50%) scale(var(--vc-scale));
+  transform-origin: top center;
+}
+
+.vc-ellipse {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  /* Beat Tailwind's `img { max-width: 100% }` reset so the ellipse SVGs
+     can render at their full 6080px / 2495px / 1025px widths. */
+  max-width: none;
+}
+
+/* Glass card — Who It's For + Doctor Card.
+   Inset highlight + green internal glow + soft outer drop. */
+.vc-glass {
+  background:
+    radial-gradient(ellipse 90% 130% at 50% -20%,
+      rgba(98, 150, 117, 0.42) 0%,
+      rgba(98, 150, 117, 0.18) 35%,
+      rgba(13, 56, 50, 0.05) 65%,
+      transparent 100%),
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.20),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 24px 60px -24px rgba(0, 0, 0, 0.45);
+}
