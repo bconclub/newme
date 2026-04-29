@@ -26,7 +26,7 @@ main.newme-page {
   position: relative;
   isolation: isolate;
   background: $pine-teal;
-  overflow-x: hidden;
+  overflow-x: clip;
 
   /* ------------------------------------------------------------------
      Figma "Home Background" frame (15:19) — 1920×9544 artboard.
@@ -67,8 +67,8 @@ main.newme-page {
     top: 1807px;
     left: -1306px;
     background: linear-gradient(0deg, #629675 0%, #013E37 100%);
-    filter: blur(240px);
-    opacity: 0.85;
+    filter: blur(300px);
+    opacity: 0.55;
   }
 
   /* Ellipse 38 — green gradient wash behind Pathways/StructuredCare/Testimonials. */
@@ -78,43 +78,42 @@ main.newme-page {
     top: 6241px;
     left: -1306px;
     background: linear-gradient(0deg, #629675 0%, #013E37 100%);
-    filter: blur(240px);
-    opacity: 0.8;
+    filter: blur(300px);
+    opacity: 0.5;
   }
 
   /* Ellipse 34 — #FEF272 accent, RIGHT side of Pillars section.
-     Figma: 895×895 at (1371, 3462), blur=800. Scaled approximation: larger
-     element + higher blur so glow covers the right half of the section. */
+     Figma: 895×895 at (1371, 3462), blur=800. */
   .newme-ellipse-34 {
-    width: 1400px;
-    height: 1400px;
-    top: 3209px;
-    left: 1118px;
+    width: 1100px;
+    height: 1100px;
+    top: 3359px;
+    left: 1268px;
     background: #FEF272;
-    filter: blur(350px);
-    opacity: 0.65;
+    filter: blur(280px);
+    opacity: 0.5;
   }
 
   /* Ellipse 39 — #FEF272 accent, RIGHT side of Pathways section. */
   .newme-ellipse-39 {
-    width: 1400px;
-    height: 1400px;
-    top: 5586px;
-    left: 1118px;
+    width: 1100px;
+    height: 1100px;
+    top: 5736px;
+    left: 1268px;
     background: #FEF272;
-    filter: blur(350px);
-    opacity: 0.65;
+    filter: blur(280px);
+    opacity: 0.5;
   }
 
   /* Ellipse 40 — #FEF272 accent, LEFT side of Testimonials section. */
   .newme-ellipse-40 {
-    width: 1400px;
-    height: 1400px;
-    top: 7860px;
-    left: -775px;
+    width: 1100px;
+    height: 1100px;
+    top: 8010px;
+    left: -625px;
     background: #FEF272;
-    filter: blur(350px);
-    opacity: 0.65;
+    filter: blur(280px);
+    opacity: 0.5;
   }
 
   /* Monotone noise overlay on the green gradient washes only. */

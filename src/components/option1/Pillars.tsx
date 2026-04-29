@@ -225,7 +225,7 @@ function Stage({
         ref={orbitAnchorRef}
         className="absolute"
         style={{
-          left: 'calc(169 / 1920 * 100vw)',
+          left: 'calc(169 / 1920 * 100%)',
           top: '50%',
           width: 0,
           height: 0,
@@ -288,8 +288,8 @@ function Stage({
       <div
         className="absolute flex flex-col"
         style={{
-          left: 'calc(869 / 1920 * 100vw)',
-          right: 'calc(60 / 1920 * 100vw)',
+          left: 'calc(869 / 1920 * 100%)',
+          right: 'calc(60 / 1920 * 100%)',
           top: '50%',
           transform: 'translateY(-50%)',
         }}
