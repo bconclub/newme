@@ -163,21 +163,22 @@ export default function Pathways() {
 
               <button
                 onClick={handleTabClick}
-                className="absolute inset-0 rounded-full overflow-hidden border border-white/30 flex items-center"
+                className="absolute inset-0 rounded-full border border-white/30 flex items-center overflow-hidden"
                 style={{
                   paddingLeft: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
                   paddingRight: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
+                  background: 'rgba(255,255,255,0.08)',
                 }}
               >
-                {/* Green fill sweeping left→right */}
+                {/* Thin bottom-edge progress line sweeping left→right */}
                 <motion.span
                   key={activeTab}
                   aria-hidden
-                  className="absolute inset-0 bg-[#629675]"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
+                  className="absolute bottom-0 left-0 bg-[#629675]"
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
                   transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
-                  style={{ transformOrigin: 'left', borderRadius: 'inherit' }}
+                  style={{ height: 3, borderRadius: '0 0 99px 99px' }}
                 />
                 {/* Tab label crossfade */}
                 <AnimatePresence mode="wait">

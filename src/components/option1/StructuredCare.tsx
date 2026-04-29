@@ -28,7 +28,7 @@ export default function StructuredCare() {
       id="structured-care"
       className="relative"
       style={{
-        paddingTop: 'clamp(80px, calc(200 / 1920 * 100vw), 200px)',
+        paddingTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingBottom: 0,
