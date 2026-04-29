@@ -38,63 +38,75 @@ export default function StructuredCare() {
         {/*
          * Figma 1:5104 — section background
          * fills: SOLID rgba(255,255,255,0.30) + GRADIENT_LINEAR white 0.20→0
-         * stroke: GRADIENT_LINEAR (approximated as white border)
-         * effect: BACKGROUND_BLUR radius 20.5
+         * stroke: white 2px
+         * effect: BACKGROUND_BLUR radius 10.25
          * cornerRadius: 34
+         * Figma 1:5105/1:5106 — green mask group starts 180px below the
+         * section shell at x=59 y=5977, w=1800 h=1647.
          */}
         <div
           className="relative overflow-hidden"
+          data-node-id="1:5104"
           style={{
             borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
-            border: '2px solid rgba(255,255,255,0.85)',
-            backdropFilter: 'blur(20.5px)',
-            WebkitBackdropFilter: 'blur(20.5px)',
+            backdropFilter: 'blur(10.25px)',
+            WebkitBackdropFilter: 'blur(10.25px)',
             background:
-              'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 60%), ' +
+              'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), ' +
               'rgba(255,255,255,0.30)',
-            paddingTop: 'clamp(40px, calc(120 / 1920 * 100vw), 120px)',
+            paddingTop: 'clamp(120px, calc(300 / 1920 * 100vw), 300px)',
             paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
             paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
             paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
           }}
         >
           {/*
-           * Figma 1:5112 — decorative yellow blurred vector
-           * fill: #FEF272, LAYER_BLUR 50, x=710 y=6097 w=784 h=784
-           * (relative to section bg x=60,y=5797 → local x=650,y=300)
+           * Figma 1:5105 — Mask group: green gradient overlay inside section.
+           *   Ellipse 59 (1:5107): 2583×2150 ellipse. Fill GRADIENT_LINEAR
+           *     #629675 (bottom) → #013E37 (top). LAYER_BLUR 800.
+           *   Mask frame starts at y=5977 while section shell starts y=5797,
+           *   so the mask is +180px relative to this card. Ellipse top is
+           *   5698 - 5977 = -279px inside that mask.
            */}
           <div
             aria-hidden
-            className="absolute pointer-events-none"
+            className="absolute pointer-events-none overflow-hidden"
+            data-node-id="1:5105"
             style={{
-              top: 'clamp(60px, calc(180 / 1920 * 100vw), 180px)',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: 'clamp(300px, calc(784 / 1920 * 100vw), 784px)',
-              height: 'clamp(300px, calc(784 / 1920 * 100vw), 784px)',
-              background: 'rgba(254,242,114,0.18)',
-              borderRadius: '50%',
-              filter: 'blur(80px)',
+              left: '-1px',
+              right: '-1px',
+              top: 'clamp(90px, calc(180 / 1920 * 100vw), 180px)',
+              height: 'calc(100% - clamp(90px, calc(180 / 1920 * 100vw), 180px))',
+              borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
             }}
-          />
-
-          {/*
-           * Figma 1:5115 — decorative top-right yellow circle outline
-           * stroke: #FEF272, x=1339 y=5703 w=785 h=856
-           * (relative to section bg → local x≈1279, y≈-94)
-           */}
-          <div
-            aria-hidden
-            className="absolute pointer-events-none"
-            style={{
-              top: 'clamp(-60px, calc(-94 / 1920 * 100vw), -94px)',
-              right: 'clamp(-100px, calc(-281 / 1920 * 100vw), -281px)',
-              width: 'clamp(300px, calc(785 / 1920 * 100vw), 785px)',
-              height: 'clamp(300px, calc(856 / 1920 * 100vw), 856px)',
-              borderRadius: '50%',
-              border: '1px solid rgba(254,242,114,0.6)',
-            }}
-          />
+          >
+            <div
+              data-node-id="1:5107"
+              style={{
+                position: 'absolute',
+                left: 'calc(-396 / 1800 * 100%)',
+                top: 'calc(-279 / 1647 * 100%)',
+                width: 'calc(2583 / 1800 * 100%)',
+                height: 'calc(2150 / 1647 * 100%)',
+                borderRadius: '50%',
+                background: 'linear-gradient(0deg, #629675 0%, #013E37 100%)',
+                filter: 'blur(clamp(220px, calc(800 / 1920 * 100vw), 800px))',
+              }}
+            />
+            {/* Figma 1:5107 NOISE effect: MONOTONE black (α=0.25), density=1,
+                noiseSize=0.5. SVG fractalNoise approximation, soft-light blend. */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.25 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+                backgroundSize: '180px 180px',
+                mixBlendMode: 'overlay',
+                opacity: 0.6,
+              }}
+            />
+          </div>
 
           {/* Figma 1:5108/1:5109 — "USPs" pill, centered */}
           <div className="relative flex justify-center" style={{ marginBottom: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)' }}>
@@ -117,7 +129,7 @@ export default function StructuredCare() {
               fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
               lineHeight: 1,
               maxWidth: 'clamp(300px, calc(759 / 1920 * 100vw), 759px)',
-              marginBottom: 'clamp(40px, calc(100 / 1920 * 100vw), 100px)',
+              marginBottom: 'clamp(32px, calc(64 / 1920 * 100vw), 64px)',
             }}
           >
             What Structured Care<br />Looks Like
@@ -141,17 +153,17 @@ export default function StructuredCare() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6 }}
               className="flex flex-col overflow-hidden"
+              data-node-id="1:6323"
               style={{
                 flex: '573 1 0',
                 // Figma left card y=6467, right y=6377 → offset down by 90px
                 marginTop: 'clamp(45px, calc(90 / 1920 * 100vw), 90px)',
                 minHeight: 'clamp(460px, calc(920 / 1920 * 100vw), 920px)',
                 borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
-                border: '2px solid rgba(255,255,255,0.85)',
-                backdropFilter: 'blur(20.5px)',
-                WebkitBackdropFilter: 'blur(20.5px)',
+                backdropFilter: 'blur(10.25px)',
+                WebkitBackdropFilter: 'blur(10.25px)',
                 background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 60%), ' +
+                  'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), ' +
                   'rgba(255,255,255,0.30)',
               }}
             >
@@ -216,15 +228,16 @@ export default function StructuredCare() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.15 }}
               className="flex flex-col overflow-hidden"
+              data-node-id="1:6338"
               style={{
                 flex: '680 1 0',
                 // Figma right card extends 30px under the left card
                 marginLeft: 'clamp(-15px, calc(-30 / 1920 * 100vw), -30px)',
                 minHeight: 'clamp(540px, calc(1092 / 1920 * 100vw), 1092px)',
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
-                // Figma 1:6339 — SOLID white, DROP_SHADOW radius 12.7
+                // Figma 1:6339 — SOLID white, transparent shadow effect
                 background: '#ffffff',
-                boxShadow: '0 16px 48px 0 rgba(0,0,0,0.18)',
+                boxShadow: 'none',
                 zIndex: 2,
               }}
             >
