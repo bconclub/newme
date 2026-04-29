@@ -34,9 +34,12 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative pb-0"
+      className="relative"
       style={{
         paddingTop: 'clamp(80px, calc(160 / 1920 * 100vw), 160px)',
+        /* Page-bg offset between the rating card and the footer's darker bg,
+           per Figma. Without this the rating card looks fused to the footer. */
+        paddingBottom: 'clamp(48px, calc(96 / 1920 * 100vw), 96px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
@@ -124,15 +127,15 @@ export default function Testimonials() {
                       minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
                     }
                   : {
-                      /* Figma 1:6293 / 1:6294 — backdrop-blur-[10.25px]
-                         border-2 border-solid border-white rounded-[34px]
-                         gradient: linear-gradient(180deg, rgba(255,255,255,0.2) → 0)
-                                  + linear-gradient(90deg, rgba(255,255,255,0.3) → 0.3) */
+                      /* Figma 1:6293 / 1:6294 — frosted-glass over the green wash.
+                         Slight bump in white opacity + stronger blur + saturate
+                         desaturation softens the green bleed-through so the
+                         cards read as light frost (Figma) instead of full green. */
                       background:
-                        'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
-                      backdropFilter: 'blur(10.25px)',
-                      WebkitBackdropFilter: 'blur(10.25px)',
-                      border: '2px solid white',
+                        'linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.18) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
+                      backdropFilter: 'blur(18px) saturate(85%)',
+                      WebkitBackdropFilter: 'blur(18px) saturate(85%)',
+                      border: '2px solid rgba(255,255,255,0.85)',
                       borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
                       minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
                     }

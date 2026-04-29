@@ -44,7 +44,7 @@ main.newme-page {
     left: 50%;
     width: 1920px;
     height: 9544px;
-    --scale: min(1, calc(100vw / 1920));
+    --scale: min(1, calc(100vw / 1920px));
     transform: translateX(-50%) scale(var(--scale));
     transform-origin: top center;
     pointer-events: none;
@@ -60,15 +60,20 @@ main.newme-page {
   }
 
   /* Ellipse 28 — green gradient wash behind WhatIsNewMe/DrPal/Pillars.
-     Figma: GRADIENT_LINEAR bottom=#629675 → top=#013E37, LAYER_BLUR 800. */
+     Figma: GRADIENT_LINEAR top=#629675 → bottom=#013E37, LAYER_BLUR 800.
+     Low opacity + no plateau in the mask (single linear fade from center
+     to transparent) means there's no defined "blob silhouette" — just a
+     gentle directional brightening that fades smoothly into the page bg. */
   .newme-ellipse-28 {
     width: 4480px;
     height: 4480px;
     top: 1807px;
     left: -1306px;
-    background: linear-gradient(0deg, #629675 0%, #013E37 100%);
-    filter: blur(300px);
-    opacity: 0.55;
+    background: linear-gradient(180deg, #629675 0%, #013E37 100%);
+    filter: blur(280px);
+    opacity: 0.35;
+    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
   }
 
   /* Ellipse 38 — green gradient wash behind Pathways/StructuredCare/Testimonials. */
@@ -77,9 +82,11 @@ main.newme-page {
     height: 4480px;
     top: 6241px;
     left: -1306px;
-    background: linear-gradient(0deg, #629675 0%, #013E37 100%);
-    filter: blur(300px);
-    opacity: 0.5;
+    background: linear-gradient(180deg, #629675 0%, #013E37 100%);
+    filter: blur(280px);
+    opacity: 0.28;
+    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
   }
 
   /* Ellipse 34 — #FEF272 accent, RIGHT side of Pillars section.
@@ -105,7 +112,12 @@ main.newme-page {
     opacity: 0.5;
   }
 
-  /* Ellipse 40 — #FEF272 accent, LEFT side of Testimonials section. */
+  /* Ellipse 40 — #FEF272 accent, LEFT side of Testimonials section.
+     Per Figma, this blob bleeds in from just off the left edge so the
+     yellow glow appears behind the "Real Patients. Real Experiences."
+     heading, NOT on the right where 34/39 sit. Center at artboard x≈-75
+     keeps most of the blob off-canvas with the lit halo extending right
+     into the heading area. */
   .newme-ellipse-40 {
     width: 1100px;
     height: 1100px;
@@ -116,17 +128,23 @@ main.newme-page {
     opacity: 0.5;
   }
 
-  /* Monotone noise overlay on the green gradient washes only. */
+  /* Monotone noise overlay on the green gradient washes only.
+     Soft-light blend over the green ellipse lightens the covered area, so we
+     need the mask to fade out gradually — otherwise the lit-up zone reads as
+     a distinct "white circle" against the page bg. We use an explicit circle
+     of 2400px radius (large enough to cover WhatIsNewMe / Testimonials which
+     sit ~2000-2400px from the ellipse centers) with a long feathered fade,
+     and keep opacity low so the noise reads as texture, not a glow. */
   .newme-noise {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    background-size: 200px 200px;
+    background-size: 220px 220px;
     mix-blend-mode: soft-light;
-    opacity: 0.45;
-    mask-image: radial-gradient(closest-side, black 0%, black 40%, transparent 80%);
-    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 40%, transparent 80%);
+    opacity: 0.32;
+    mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
   }
   .newme-noise-28 {
     width: 4480px;
@@ -179,6 +197,19 @@ main.newme-page {
         margin-top: clamp(16px, 3vw, 24px) !important;
       }
     }
+
+    /* Mobile: keep one atmospheric green wash (Ellipse 28) and drop the
+       rest. The 1920-wide blob layout doesn't downscale gracefully — at
+       375px the yellow accents and the second green wash bleed weirdly
+       into the wrong sections. One subtle wash reads as ambience and
+       matches the desktop intent without the noise. */
+    .newme-ellipse-38,
+    .newme-ellipse-34,
+    .newme-ellipse-39,
+    .newme-ellipse-40,
+    .newme-noise-38 {
+      display: none !important;
+    }
   }
 
   .newme-section {
@@ -216,7 +247,12 @@ html:has(main.newme-page) .newme-header a {
 }
 
 html:has(main.newme-page) .newme-footer {
-  background: linear-gradient(180deg, $pine-teal 0%, $pine-deep 100%);
+  /* Footer needs a clearly darker bg than the page-bg ($pine-teal) so the
+     boundary between Testimonials and Footer is visible — otherwise the
+     rating card looks "fixed on the bottom" with no offset above the footer.
+     Start the gradient from a deeper teal than $pine-teal, so the footer
+     reads as its own distinct band. */
+  background: linear-gradient(180deg, #021f1d 0%, #011311 100%);
   border-top: 1px solid rgba(254, 242, 114, 0.18);
 }
 

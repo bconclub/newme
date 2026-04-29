@@ -19,11 +19,7 @@ export default function Home() {
             widths. Two big moss→pine gradient washes (Ellipse 28 + 38) with
             their own monotone noise overlays, plus three small gold accents
             (Ellipse 34 / 40 / 39). See option1.scss .newme-bg. */}
-        <div
-          className="newme-bg"
-          aria-hidden
-          style={{ transform: 'translateX(-50%) scale(min(calc(100vw / 1920px), 1))' }}
-        >
+        <div className="newme-bg" aria-hidden>
           <span className="newme-ellipse newme-ellipse-28" />
           <span className="newme-noise newme-noise-28" />
           <span className="newme-ellipse newme-ellipse-38" />

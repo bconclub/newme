@@ -98,7 +98,7 @@ export default function Pathways() {
       className="relative"
       style={{
         paddingTop: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
-        paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
+        paddingBottom: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}

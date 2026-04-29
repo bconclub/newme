@@ -68,11 +68,15 @@ const STEP_DEG = 360 / N // 45°
 // Desktop orbit radius in artboard px (scales with orbit anchor's CSS scale)
 const ORBIT_R = 440
 // Mobile half-circle — big arc (~80 % of phone width at 375px)
-const MOB_R = 155
-const MOB_BADGE_ACTIVE = 82
-const MOB_BADGE_INACTIVE = 56
+const MOB_R = 175
+const MOB_BADGE_ACTIVE = 110
+const MOB_BADGE_INACTIVE = 60
 const MOB_CENTER_Y = MOB_R + MOB_BADGE_ACTIVE / 2 + 10  // vertical mid of arc
-const MOB_ARC_H    = MOB_CENTER_Y * 2                   // total arc section height
+// Arc container only needs space for inactive pillars at the bottom (active
+// always sits at 0°/right, never at 90°/bottom), so we tighten the bottom
+// buffer instead of a symmetric MOB_CENTER_Y * 2 — pulls the title closer
+// to the arc instead of leaving 35px of empty green below the lowest pillar.
+const MOB_ARC_H    = MOB_CENTER_Y + MOB_R + MOB_BADGE_INACTIVE / 2 + 8
 
 /** Angle (degrees) of pillar i when discAngle=0. Pillar 0 starts at 0° (rightmost). */
 function pillarBaseDeg(i: number) {
@@ -242,10 +246,30 @@ function DesktopStage({
           style={{ width: 1100, height: 1100, transform: 'translate(-50%,-50%)', touchAction: 'none', zIndex: 0 }}
         />
 
-        {/* Hub logo */}
-        <div className="absolute pointer-events-none" style={{ transform: 'translate(-50%,-50%)', zIndex: 5 }}>
-          <Image src="/newme-logo.png" alt="Dr. Pal's NewME" width={240} height={74} unoptimized priority
-            style={{ width: 260, height: 'auto' }} />
+        {/* Hub logo — centered on the orbit anchor (0,0). Explicit size on
+            the wrapper so translate(-50%,-50%) centers correctly; without it
+            the wrapper inherits width:0 from the anchor and the logo offsets
+            to the bottom-right of the anchor instead of centering. */}
+        <div
+          className="absolute pointer-events-none flex items-center justify-center"
+          style={{
+            top: 0,
+            left: 0,
+            width: 260,
+            height: 80,
+            transform: 'translate(-50%,-50%)',
+            zIndex: 5,
+          }}
+        >
+          <Image
+            src="/newme-logo.png"
+            alt="Dr. Pal's NewME"
+            width={240}
+            height={74}
+            unoptimized
+            priority
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
         </div>
 
         {/* Pillar icons — each follows the arc via discAngle */}
@@ -373,55 +397,52 @@ function MobilePillars({
 }) {
   return (
     <div style={{ marginTop: 24 }}>
-      {/* Arc + text share one relative container so the text can overlap */}
-      <div className="relative w-full" style={{ height: MOB_ARC_H }}>
+      {/* Arc lives on top in its own fixed-height row so it can't be
+          overlapped by the title/description below. */}
+      <div className="relative w-full overflow-hidden pointer-events-none" style={{ height: MOB_ARC_H }}>
+        {PILLARS.map((p, i) => (
+          <MobileArcPillar
+            key={p.name}
+            pillar={p}
+            pillarIdx={i}
+            discAngle={discAngle}
+            active={i === activeIdx}
+            centerY={MOB_CENTER_Y}
+          />
+        ))}
+      </div>
 
-        {/* Arc icons — clipped to left half so they don't bleed right */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {PILLARS.map((p, i) => (
-            <MobileArcPillar
-              key={p.name}
-              pillar={p}
-              pillarIdx={i}
-              discAngle={discAngle}
-              active={i === activeIdx}
-              centerY={MOB_CENTER_Y}
-            />
-          ))}
-        </div>
-
-        {/* Text panel — bottom-right, overlapping the arc */}
-        <div
-          className="absolute bottom-5 right-5 flex flex-col items-end text-right"
-          style={{ maxWidth: '56%' }}
+      {/* Title + description + controls anchored bottom-right under the arc. */}
+      <div
+        className="flex flex-col items-end text-right ml-auto"
+        style={{ paddingRight: 20, paddingLeft: 24, marginTop: 8, maxWidth: 360 }}
+      >
+        <motion.h3
+          key={`mob-name-${activeIdx}`}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: EASE }}
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{ fontWeight: 600, fontSize: 'clamp(24px, 6.5vw, 36px)', lineHeight: 1.1, color: '#FEF272' }}
         >
-          <motion.h3
-            key={`mob-name-${activeIdx}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: EASE }}
-            className="font-[family-name:var(--font-bricolage)]"
-            style={{ fontWeight: 600, fontSize: 'clamp(22px, 6vw, 34px)', lineHeight: 1.1, color: '#FEF272' }}
-          >
-            {active.name}
-          </motion.h3>
-          <motion.p
-            key={`mob-desc-${activeIdx}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
-            className="text-white/85 font-[family-name:var(--font-urbanist)]"
-            style={{ fontWeight: 400, fontSize: 'clamp(12px, 3.2vw, 16px)', lineHeight: 1.55, marginTop: 10 }}
-          >
-            {active.desc}
-          </motion.p>
-          <div className="flex items-center gap-2 mt-4">
-            <NavButton dir="prev" onClick={onPrev} small />
-            <NavButton dir="next" onClick={onNext} small />
-          </div>
-          <div className="mt-2">
-            <Dots activeIdx={activeIdx} />
-          </div>
+          {active.name}
+        </motion.h3>
+        <motion.p
+          key={`mob-desc-${activeIdx}`}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
+          className="text-white/85 font-[family-name:var(--font-urbanist)]"
+          style={{ fontWeight: 400, fontSize: 'clamp(13px, 3.4vw, 17px)', lineHeight: 1.55, marginTop: 10 }}
+        >
+          {active.desc}
+        </motion.p>
+        <div className="flex items-center gap-2 mt-4">
+          <NavButton dir="prev" onClick={onPrev} small />
+          <NavButton dir="next" onClick={onNext} small />
+        </div>
+        <div className="mt-2">
+          <Dots activeIdx={activeIdx} />
         </div>
       </div>
     </div>
@@ -448,13 +469,14 @@ function MobileArcPillar({
   const x = useTransform(screenRad, (a) => MOB_R * Math.cos(a))
   const y = useTransform(screenRad, (a) => centerY + MOB_R * Math.sin(a))
 
-  // Fade icons heading left (cos < 0) and at extreme top/bottom
+  // Show ~5 pillars at once: visible across the right half plus a small
+  // sliver into the left half so cos=0 (top/bottom of arc) icons stay on.
+  // Pillars at 8 × 45° → on the right half we keep 0°/±45°/±90° (5 icons).
   const opacity = useTransform(screenRad, (a) => {
     const cos = Math.cos(a)
-    if (cos < 0) return 0
-    const sinAbs = Math.abs(Math.sin(a))
-    if (sinAbs > 0.92) return Math.max(0, (1 - sinAbs) / 0.08)
-    return cos < 0.25 ? cos / 0.25 : 1
+    if (cos < -0.25) return 0
+    if (cos < 0) return Math.max(0, (cos + 0.25) / 0.25)
+    return 1
   })
 
   return (

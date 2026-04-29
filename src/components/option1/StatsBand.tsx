@@ -99,10 +99,10 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
       // tall enough — no dead space at the bottom.
       className="relative flex flex-col items-center justify-center text-center"
       style={{
-        paddingTop: 'clamp(28px, calc(80 / 1920 * 100vw), 80px)',
-        paddingBottom: 'clamp(28px, calc(80 / 1920 * 100vw), 80px)',
-        paddingLeft: 'clamp(12px, calc(40 / 1920 * 100vw), 40px)',
-        paddingRight: 'clamp(12px, calc(40 / 1920 * 100vw), 40px)',
+        paddingTop: 'clamp(20px, calc(80 / 1920 * 100vw), 80px)',
+        paddingBottom: 'clamp(20px, calc(80 / 1920 * 100vw), 80px)',
+        paddingLeft: 'clamp(8px, calc(40 / 1920 * 100vw), 40px)',
+        paddingRight: 'clamp(8px, calc(40 / 1920 * 100vw), 40px)',
       }}
     >
       {/* Number — Poppins Light 80px (lh 72) black, suffix 40px (lh 32) #FF8547,
@@ -113,7 +113,7 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
       >
         <span
           style={{
-            fontSize: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+            fontSize: 'clamp(28px, calc(80 / 1920 * 100vw), 80px)',
             lineHeight: 'calc(72 / 80)',
             letterSpacing: 0,
           }}
@@ -124,9 +124,9 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
           className="text-[#FF8547]"
           style={{
             fontWeight: 300,
-            fontSize: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+            fontSize: 'clamp(14px, calc(40 / 1920 * 100vw), 40px)',
             lineHeight: 'calc(32 / 40)',
-            marginLeft: 'clamp(4px, calc(8 / 1920 * 100vw), 8px)',
+            marginLeft: 'clamp(3px, calc(8 / 1920 * 100vw), 8px)',
           }}
         >
           {stat.suffix}
@@ -137,9 +137,9 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
         className="font-[family-name:var(--font-urbanist)] whitespace-pre-line text-center text-black"
         style={{
           fontWeight: 500,
-          fontSize: 'clamp(13px, calc(24 / 1920 * 100vw), 24px)',
-          lineHeight: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
-          marginTop: 'clamp(12px, calc(32 / 1920 * 100vw), 32px)',
+          fontSize: 'clamp(11px, calc(24 / 1920 * 100vw), 24px)',
+          lineHeight: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+          marginTop: 'clamp(8px, calc(32 / 1920 * 100vw), 32px)',
         }}
       >
         {stat.label}
