@@ -48,7 +48,7 @@ export default function Header() {
             paddingRight: 'clamp(20px, 3.13vw, 60px)',
           }}
         >
-          <div className="relative h-[74px] flex items-center justify-between gap-6 px-6 md:px-10">
+          <div className="relative h-[62px] flex items-center justify-between gap-6 px-6 md:px-10">
           <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
             <Image
               src="/newme-logo.png"
