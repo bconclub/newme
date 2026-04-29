@@ -1,5 +1,14 @@
 import type { Metadata } from 'next'
-import PageStub from '@/components/option1/PageStub'
+import Header from '@/components/option1/Header'
+import Footer from '@/components/option1/Footer'
+import HIWHero from '@/components/option1/HIWHero'
+import HIWUnifiedSystem from '@/components/option1/HIWUnifiedSystem'
+import HIWComparison from '@/components/option1/HIWComparison'
+import HIWWhyEarly from '@/components/option1/HIWWhyEarly'
+import HIWSuccessCards from '@/components/option1/HIWSuccessCards'
+import HIWConditions from '@/components/option1/HIWConditions'
+import HIWHumanGuidance from '@/components/option1/HIWHumanGuidance'
+import HIWCTA from '@/components/option1/HIWCTA'
 
 export const metadata: Metadata = {
   title: 'How It Works | Dr. Pal\'s NewME',
@@ -9,10 +18,21 @@ export const metadata: Metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <PageStub
-      eyebrow="How It Works"
-      title="The NewME System"
-      blurb="A doctor-led, structured clinical system that brings your symptoms, history, and responses into one cohesive pathway of care."
-    />
+    <>
+      <Header />
+      <main className="newme-page">
+        <span aria-hidden className="newme-blob-2" />
+        <span aria-hidden className="newme-blob-3" />
+        <HIWHero />
+        <HIWUnifiedSystem />
+        <HIWComparison />
+        <HIWWhyEarly />
+        <HIWSuccessCards />
+        <HIWConditions />
+        <HIWHumanGuidance />
+        <HIWCTA />
+      </main>
+      <Footer />
+    </>
   )
 }
