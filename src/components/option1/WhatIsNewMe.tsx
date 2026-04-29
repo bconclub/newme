@@ -55,35 +55,62 @@ export default function WhatIsNewMe() {
           {/* Icon pair — Figma: two 120×120 circles overlapping by 20px,
               drop shadow X:-5 Y:4 blur:13.4 #000 18%. */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="hidden md:flex items-center shrink-0 pt-3"
-            style={{
-              filter: 'drop-shadow(-5px 4px 13.4px rgba(0, 0, 0, 0.18))',
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.14, delayChildren: 0.1 } },
             }}
+            className="hidden md:flex items-center shrink-0 pt-3 relative"
           >
             {/* Figma: orange (Group 154 / left circle) is BEHIND.
                 Yellow (Group 153 / right circle) overlaps on top. */}
-            <div
-              className="relative rounded-full bg-[#F08B55] flex items-center justify-center"
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.4, rotate: -25 },
+                show: {
+                  opacity: 1,
+                  scale: 1,
+                  rotate: 0,
+                  transition: { duration: 0.65, ease: [0.22, 1.2, 0.36, 1] },
+                },
+              }}
+              whileHover={{ scale: 1.07, rotate: -6, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative rounded-full bg-[#F08B55] flex items-center justify-center cursor-pointer will-change-transform"
               style={{
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 zIndex: 1,
               }}
             >
-              <Image
-                src="/icons/pillar-1.svg"
-                alt=""
-                width={64}
-                height={64}
-                className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] lg:w-[68px] lg:h-[68px]"
-              />
-            </div>
-            <div
-              className="relative rounded-full bg-[#FEF272] flex items-center justify-center"
+              <motion.div
+                whileHover={{ rotate: 8, scale: 1.08 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 16 }}
+              >
+                <Image
+                  src="/icons/pillar-1.svg"
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] lg:w-[68px] lg:h-[68px]"
+                />
+              </motion.div>
+            </motion.div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.4, rotate: 25 },
+                show: {
+                  opacity: 1,
+                  scale: 1,
+                  rotate: 0,
+                  transition: { duration: 0.65, ease: [0.22, 1.2, 0.36, 1] },
+                },
+              }}
+              whileHover={{ scale: 1.07, rotate: 6, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative rounded-full bg-[#FEF272] flex items-center justify-center cursor-pointer will-change-transform"
               style={{
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
@@ -91,8 +118,10 @@ export default function WhatIsNewMe() {
                 zIndex: 2,
               }}
             >
-              <span
+              <motion.span
                 aria-hidden
+                whileHover={{ rotate: -8, scale: 1.08 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 16 }}
                 className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] lg:w-[68px] lg:h-[68px] block"
                 style={{
                   backgroundColor: '#173B39',
@@ -106,7 +135,7 @@ export default function WhatIsNewMe() {
                   maskSize: 'contain',
                 }}
               />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 

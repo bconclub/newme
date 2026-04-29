@@ -75,8 +75,9 @@ export default function Footer() {
             <Image
               src="/newme-logo.png"
               alt="Dr. Pal's NewME"
-              width={520}
-              height={130}
+              width={240}
+              height={74}
+              unoptimized
               className="h-9 md:h-10 w-auto"
             />
             <p className="mt-4 text-white/65 text-[13px] leading-[1.6] max-w-[280px] font-[family-name:var(--font-poppins)]">

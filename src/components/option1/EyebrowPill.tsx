@@ -21,10 +21,65 @@ import type { ReactNode } from 'react'
 export default function EyebrowPill({
   children,
   className = '',
+  variant = 'light',
 }: {
   children: ReactNode
   className?: string
+  /**
+   * `light` (default): white text on dark page bg — used everywhere except DrPal.
+   * `dark`: dark pine text on the light sage DrPal card. Solid `#629675` border,
+   * no fade, no glassy backdrop — matches Figma node 1:2674.
+   */
+  variant?: 'light' | 'dark'
 }) {
+  if (variant === 'dark') {
+    // Same glassy pill + fading bottom-right border as light, but tinted for
+    // the light sage card: dark pine text, sage-green gradient border, faint
+    // dark inner tint instead of white. Border ramp uses #629675.
+    return (
+      <span
+        className={[
+          'relative inline-flex items-center justify-center rounded-full font-[family-name:var(--font-bricolage)]',
+          className,
+        ].join(' ')}
+        style={{
+          height: 48,
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingTop: 16,
+          paddingBottom: 16,
+          fontWeight: 400,
+          fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+          lineHeight: 1,
+          letterSpacing: 0,
+          color: '#173b39',
+          backdropFilter: 'blur(8px) saturate(110%)',
+          WebkitBackdropFilter: 'blur(8px) saturate(110%)',
+          background:
+            'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0) 100%)',
+          boxShadow:
+            'inset 0 1px 0 rgba(255,255,255,0.22), 0 6px 18px -10px rgba(23,59,57,0.25)',
+        }}
+      >
+        <span
+          aria-hidden
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{
+            padding: 1,
+            background:
+              'radial-gradient(ellipse 115% 95% at 100% 100%, rgba(98,150,117,0) 0%, rgba(98,150,117,0) 25%, rgba(98,150,117,0.10) 38%, rgba(98,150,117,0.28) 50%, rgba(98,150,117,0.50) 62%, rgba(98,150,117,0.72) 74%, rgba(98,150,117,0.90) 86%, #629675 96%)',
+            WebkitMask:
+              'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            WebkitMaskComposite: 'xor',
+            mask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            maskComposite: 'exclude',
+          }}
+        />
+        {children}
+      </span>
+    )
+  }
+
   return (
     <span
       className={[
@@ -41,10 +96,6 @@ export default function EyebrowPill({
         fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
         lineHeight: 1,
         letterSpacing: 0,
-        // Glassy 3D pop — frosted backdrop + a faint top-down inner light
-        // (subtle white-tint top, fading to nothing) gives the pill a sense
-        // of volume against the dark bg. A very soft outer shadow sells the
-        // "lifted off the page" feel without being visually loud.
         backdropFilter: 'blur(8px) saturate(110%)',
         WebkitBackdropFilter: 'blur(8px) saturate(110%)',
         background:
@@ -53,30 +104,12 @@ export default function EyebrowPill({
           'inset 0 1px 0 rgba(255,255,255,0.18), 0 6px 18px -10px rgba(0,0,0,0.45)',
       }}
     >
-      {/* Gradient ring — radial gradient anchored at the BOTTOM-RIGHT corner.
-          Ellipse radii 100%×100% means the gradient covers the full pill width
-          and full pill height from the BR corner inward. Around the perimeter:
-            · Top edge (all points): normalized distance ≥1 → SOLID white
-            · Left edge (all points): normalized distance ≥1 → SOLID white
-            · Right edge top portion: distance ≥0.6 → SOLID
-            · Right edge bottom portion: distance <0.6 → fades into transparent
-            · Bottom edge left portion: distance ≥0.6 → SOLID
-            · Bottom edge right portion: distance <0.6 → fades into transparent
-            · Bottom-right corner: distance 0 → fully transparent
-          Result: top/left/upper-right/lower-left visible; bottom edge & lower-
-          right edge fade out (matches the Figma reference). 1px ring punched
-          out via mask-composite. */}
       <span
         aria-hidden
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
           padding: 1,
           background:
-            // Ellipse 115%×95% — slightly bigger transparent zone so MORE
-            // of the bottom edge fades into nothing while the right edge
-            // still stays solid through the upper portion. Smooth multi-
-            // stop ramp so the visible border thins out gradually instead
-            // of ending at a bright cut-off edge.
             'radial-gradient(ellipse 115% 95% at 100% 100%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0.08) 38%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.45) 62%, rgba(255,255,255,0.7) 74%, rgba(255,255,255,0.9) 86%, #FFFFFF 96%)',
           WebkitMask:
             'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',

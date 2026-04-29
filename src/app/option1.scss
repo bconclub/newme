@@ -26,19 +26,17 @@ main.newme-page {
   position: relative;
   isolation: isolate;
   background: $pine-teal;
-  overflow: hidden;
+  overflow-x: hidden;
 
   /* ------------------------------------------------------------------
-     Figma background ellipses (5 total).
-     The home-page artboard is 1920×9544. Ellipses are positioned in
-     artboard coordinates and the whole bg layer is centered on the
-     viewport and scaled down at smaller widths via a CSS variable.
-     Ellipse 28 + 38: large 4480×4480 moss→pine gradient washes (the
-       glow visible behind WhatIsNewMe and Pillars/Pathways).
-     Ellipse 34 / 40 / 39: small 895×895 gold accents.
-     Original Figma layer blur is 800 — reduced to 200 on the big ones
-     and 150 on the small ones for browser performance; visual is
-     equivalent at the page scale we render at.
+     Figma "Home Background" frame (15:19) — 1920×9544 artboard.
+     All positions are artboard-pixel coordinates from Plugin API.
+
+     Ellipse 28 (15:21): x=-1306 y=1807 w/h=4480 — linear-gradient(0deg, #629675, #013E37), blur=800→240px
+     Ellipse 38 (15:22): x=-1306 y=6241 w/h=4480 — same gradient, blur=240px
+     Ellipse 34 (15:23): x=1371  y=3462 w/h=895  — #FEF272 RIGHT side (Pillars), blur=800→200px
+     Ellipse 39 (15:24): x=1371  y=5839 w/h=895  — #FEF272 RIGHT side (Pathways), blur=200px
+     Ellipse 40 (15:25): x=-522  y=8113 w/h=895  — #FEF272 LEFT  side (Testimonials), blur=200px
      ------------------------------------------------------------------ */
   .newme-bg {
     position: absolute;
@@ -51,6 +49,8 @@ main.newme-page {
     transform-origin: top center;
     pointer-events: none;
     z-index: 0;
+    /* clip-path clips through filter stacking contexts; overflow:hidden does not */
+    clip-path: inset(0 0 -99999px 0);
   }
 
   .newme-ellipse {
@@ -59,90 +59,75 @@ main.newme-page {
     pointer-events: none;
   }
 
-  /* Ellipse 28 — first big moss→pine gradient wash. Sits behind the
-     WhatIsNewMe / DrPal area (y=1807, h=4480 → covers y=1807–6287).
-     The Figma layer has 100% opacity + blur 800; at our render scale we
-     blur lighter and bump opacity so the moss glow reads clearly across
-     the section instead of dissolving into the dark teal background. */
+  /* Ellipse 28 — green gradient wash behind WhatIsNewMe/DrPal/Pillars.
+     Figma: GRADIENT_LINEAR bottom=#629675 → top=#013E37, LAYER_BLUR 800. */
   .newme-ellipse-28 {
     width: 4480px;
     height: 4480px;
     top: 1807px;
     left: -1306px;
-    background: radial-gradient(
-      ellipse at 55% 25%,
-      #9DC3A8 0%,
-      #6E9D80 18%,
-      #3F7568 38%,
-      #1E4A45 60%,
-      #013E37 80%
-    );
-    filter: blur(220px);
-    opacity: 0.65;
+    background: linear-gradient(0deg, #629675 0%, #013E37 100%);
+    filter: blur(240px);
+    opacity: 0.85;
   }
 
-  /* Ellipse 38 — second big moss→pine gradient (behind Pillars/Pathways/etc). */
+  /* Ellipse 38 — green gradient wash behind Pathways/StructuredCare/Testimonials. */
   .newme-ellipse-38 {
     width: 4480px;
     height: 4480px;
     top: 6241px;
     left: -1306px;
-    background: radial-gradient(
-      ellipse at 55% 25%,
-      #9DC3A8 0%,
-      #6E9D80 18%,
-      #3F7568 38%,
-      #1E4A45 60%,
-      #013E37 80%
-    );
-    filter: blur(220px);
-    opacity: 0.6;
+    background: linear-gradient(0deg, #629675 0%, #013E37 100%);
+    filter: blur(240px);
+    opacity: 0.8;
   }
 
-  /* Gold accents — small 895×895 #FEF272 with heavy blur. */
+  /* Ellipse 34 — #FEF272 accent, RIGHT side of Pillars section.
+     Figma: 895×895 at (1371, 3462), blur=800. Scaled approximation: larger
+     element + higher blur so glow covers the right half of the section. */
   .newme-ellipse-34 {
-    width: 895px;
-    height: 895px;
-    top: 3293px;
-    left: 1407px;
+    width: 1400px;
+    height: 1400px;
+    top: 3209px;
+    left: 1118px;
     background: #FEF272;
-    filter: blur(150px);
-    opacity: 0.18;
-  }
-  .newme-ellipse-40 {
-    width: 895px;
-    height: 895px;
-    top: 5991px;
-    left: 1341px;
-    background: #FEF272;
-    filter: blur(150px);
-    opacity: 0.18;
-  }
-  .newme-ellipse-39 {
-    width: 895px;
-    height: 895px;
-    top: 7792px;
-    left: -150px;
-    background: #FEF272;
-    filter: blur(150px);
-    opacity: 0.18;
+    filter: blur(350px);
+    opacity: 0.65;
   }
 
-  /* Monotone noise scoped to the two big gradient ellipses. Stronger than
-     before so the grainy texture is visibly riding on top of the moss
-     glow (matches the Figma "noise" effect on Ellipse 28). Same position/
-     size as the ellipse but with NO blur filter so the grain stays crisp.
-     The radial mask makes the grain fade to nothing where the glow fades. */
+  /* Ellipse 39 — #FEF272 accent, RIGHT side of Pathways section. */
+  .newme-ellipse-39 {
+    width: 1400px;
+    height: 1400px;
+    top: 5586px;
+    left: 1118px;
+    background: #FEF272;
+    filter: blur(350px);
+    opacity: 0.65;
+  }
+
+  /* Ellipse 40 — #FEF272 accent, LEFT side of Testimonials section. */
+  .newme-ellipse-40 {
+    width: 1400px;
+    height: 1400px;
+    top: 7860px;
+    left: -775px;
+    background: #FEF272;
+    filter: blur(350px);
+    opacity: 0.65;
+  }
+
+  /* Monotone noise overlay on the green gradient washes only. */
   .newme-noise {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    background-size: 220px 220px;
-    mix-blend-mode: overlay;
-    opacity: 0.28;
-    mask-image: radial-gradient(closest-side, black 0%, black 35%, transparent 75%);
-    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 35%, transparent 75%);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 200px 200px;
+    mix-blend-mode: soft-light;
+    opacity: 0.45;
+    mask-image: radial-gradient(closest-side, black 0%, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 40%, transparent 80%);
   }
   .newme-noise-28 {
     width: 4480px;

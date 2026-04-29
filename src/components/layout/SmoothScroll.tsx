@@ -1,12 +1,16 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const pathname = usePathname()
+  const skipLenis = pathname?.startsWith('/studio')
 
   useEffect(() => {
+    if (skipLenis) return
     // Respect reduced motion and skip Lenis in headless / automated browsers
     // (the endless RAF loop breaks network-idle-based screenshot tools).
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -35,7 +39,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       cancelAnimationFrame(rafId)
       lenis.destroy()
     }
-  }, [])
+  }, [skipLenis])
 
   return <>{children}</>
 }

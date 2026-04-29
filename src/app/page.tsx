@@ -19,14 +19,18 @@ export default function Home() {
             widths. Two big moss→pine gradient washes (Ellipse 28 + 38) with
             their own monotone noise overlays, plus three small gold accents
             (Ellipse 34 / 40 / 39). See option1.scss .newme-bg. */}
-        <div className="newme-bg" aria-hidden>
+        <div
+          className="newme-bg"
+          aria-hidden
+          style={{ transform: 'translateX(-50%) scale(min(calc(100vw / 1920px), 1))' }}
+        >
           <span className="newme-ellipse newme-ellipse-28" />
           <span className="newme-noise newme-noise-28" />
           <span className="newme-ellipse newme-ellipse-38" />
           <span className="newme-noise newme-noise-38" />
           <span className="newme-ellipse newme-ellipse-34" />
-          <span className="newme-ellipse newme-ellipse-40" />
           <span className="newme-ellipse newme-ellipse-39" />
+          <span className="newme-ellipse newme-ellipse-40" />
         </div>
         {/* Figma artboard cap — 1920px. Sections sit inside this and own
             their own left/right gutter (Hero: 20, Stats/DrPal: 60). */}
