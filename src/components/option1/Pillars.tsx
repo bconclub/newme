@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useState, useRef } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion'
 
 // ─────────────────────────────────────────────────────────────────────
 // Dial-style pillar carousel.
@@ -259,6 +259,43 @@ function DesktopStage({
         ))}
       </div>
 
+      {/* Ghost icon — large semi-transparent watermark top-right */}
+      <div
+        aria-hidden
+        className="absolute pointer-events-none overflow-hidden"
+        style={{
+          right: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+          top: '5%',
+          width: 'clamp(180px, calc(380 / 1920 * 100vw), 380px)',
+          height: 'clamp(180px, calc(380 / 1920 * 100vw), 380px)',
+          zIndex: 1,
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={`ghost-${activeIdx}`}
+            aria-hidden
+            initial={{ opacity: 0, scale: 0.88 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.08 }}
+            transition={{ duration: 0.55, ease: EASE }}
+            className="block w-full h-full"
+            style={{
+              backgroundColor: 'rgba(220, 60, 60, 0.18)',
+              WebkitMaskImage: `url(${active.icon})`,
+              maskImage: `url(${active.icon})`,
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              WebkitMaskPosition: 'center',
+              maskPosition: 'center',
+              WebkitMaskSize: 'contain',
+              maskSize: 'contain',
+              filter: 'blur(2px)',
+            }}
+          />
+        </AnimatePresence>
+      </div>
+
       {/* Active text panel */}
       <div
         className="absolute flex flex-col"
@@ -267,6 +304,7 @@ function DesktopStage({
           right: 'calc(60 / 1920 * 100%)',
           top: '50%',
           transform: 'translateY(-50%)',
+          zIndex: 2,
         }}
       >
         <motion.h3
