@@ -149,25 +149,6 @@ export default function Pathways() {
               </AnimatePresence>
             </div>
 
-            {/* Dot nav */}
-            <div className="flex items-center" style={{ gap: 8, marginTop: 14 }}>
-              {tabs.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i)}
-                  aria-label={`Show ${cards[i].title}`}
-                  className="rounded-full transition-all duration-300"
-                  style={{
-                    width: i === active ? 24 : 8,
-                    height: 8,
-                    background: i === active ? '#629675' : 'rgba(255,255,255,0.3)',
-                    border: 'none',
-                    padding: 0,
-                    cursor: 'pointer',
-                  }}
-                />
-              ))}
-            </div>
           </div>
         </div>
 

@@ -49,11 +49,6 @@ export default function StructuredCare() {
           data-node-id="1:5104"
           style={{
             borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
-            backdropFilter: 'blur(10.25px)',
-            WebkitBackdropFilter: 'blur(10.25px)',
-            background:
-              'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), ' +
-              'rgba(255,255,255,0.30)',
             paddingTop: 'clamp(120px, calc(300 / 1920 * 100vw), 300px)',
             paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
             paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
