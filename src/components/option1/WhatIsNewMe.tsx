@@ -64,8 +64,8 @@ export default function WhatIsNewMe() {
             }}
             className="hidden md:flex items-center shrink-0 pt-3 relative"
           >
-            {/* Figma: orange (Group 154 / left circle) is BEHIND.
-                Yellow (Group 153 / right circle) overlaps on top. */}
+            {/* Figma Group 154 (1:2656) — orange circle, white icon (behind)
+                Figma Group 153 (1:2662) — yellow circle, dark icon (in front) */}
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.4, rotate: -25 },
@@ -73,7 +73,7 @@ export default function WhatIsNewMe() {
                   opacity: 1,
                   scale: 1,
                   rotate: 0,
-                  transition: { duration: 0.65, ease: [0.22, 1.2, 0.36, 1] },
+                  transition: { duration: 0.65, ease: [0.22, 1.2, 0.36, 1] as [number,number,number,number] },
                 },
               }}
               whileHover={{ scale: 1.07, rotate: -6, y: -2 }}
@@ -83,18 +83,21 @@ export default function WhatIsNewMe() {
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 zIndex: 1,
+                boxShadow: '-5px 4px 13.4px rgba(0,0,0,0.18)',
               }}
             >
               <motion.div
                 whileHover={{ rotate: 8, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 16 }}
+                className="w-[52%] h-[52%]"
               >
                 <Image
-                  src="/icons/pillar-1.svg"
+                  src="/icons/whatsnewme-orange.png"
                   alt=""
                   width={64}
                   height={64}
-                  className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] lg:w-[68px] lg:h-[68px]"
+                  unoptimized
+                  className="w-full h-full object-contain"
                 />
               </motion.div>
             </motion.div>
@@ -105,7 +108,7 @@ export default function WhatIsNewMe() {
                   opacity: 1,
                   scale: 1,
                   rotate: 0,
-                  transition: { duration: 0.65, ease: [0.22, 1.2, 0.36, 1] },
+                  transition: { duration: 0.65, ease: [0.22, 1.2, 0.36, 1] as [number,number,number,number] },
                 },
               }}
               whileHover={{ scale: 1.07, rotate: 6, y: -2 }}
@@ -116,25 +119,23 @@ export default function WhatIsNewMe() {
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 marginLeft: 'clamp(-12px, calc(-20 / 1920 * 100vw), -20px)',
                 zIndex: 2,
+                boxShadow: '-5px 4px 13.4px rgba(0,0,0,0.18)',
               }}
             >
-              <motion.span
-                aria-hidden
+              <motion.div
                 whileHover={{ rotate: -8, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-                className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] lg:w-[68px] lg:h-[68px] block"
-                style={{
-                  backgroundColor: '#173B39',
-                  WebkitMaskImage: 'url(/icons/pillar-8.svg)',
-                  maskImage: 'url(/icons/pillar-8.svg)',
-                  WebkitMaskRepeat: 'no-repeat',
-                  maskRepeat: 'no-repeat',
-                  WebkitMaskPosition: 'center',
-                  maskPosition: 'center',
-                  WebkitMaskSize: 'contain',
-                  maskSize: 'contain',
-                }}
-              />
+                className="w-[52%] h-[52%]"
+              >
+                <Image
+                  src="/icons/whatsnewme-yellow.png"
+                  alt=""
+                  width={64}
+                  height={64}
+                  unoptimized
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>
