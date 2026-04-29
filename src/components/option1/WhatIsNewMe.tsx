@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
@@ -86,20 +85,23 @@ export default function WhatIsNewMe() {
                 boxShadow: '-5px 4px 13.4px rgba(0,0,0,0.18)',
               }}
             >
-              <motion.div
+              <motion.span
+                aria-hidden
                 whileHover={{ rotate: 8, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-                className="w-[52%] h-[52%]"
-              >
-                <Image
-                  src="/icons/whatsnewme-orange.png"
-                  alt=""
-                  width={64}
-                  height={64}
-                  unoptimized
-                  className="w-full h-full object-contain"
-                />
-              </motion.div>
+                className="block w-[54%] h-[54%]"
+                style={{
+                  backgroundColor: '#fff',
+                  WebkitMaskImage: 'url(/icons/pillar-8.svg)',
+                  maskImage: 'url(/icons/pillar-8.svg)',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskPosition: 'center',
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                }}
+              />
             </motion.div>
             <motion.div
               variants={{
@@ -122,20 +124,23 @@ export default function WhatIsNewMe() {
                 boxShadow: '-5px 4px 13.4px rgba(0,0,0,0.18)',
               }}
             >
-              <motion.div
+              <motion.span
+                aria-hidden
                 whileHover={{ rotate: -8, scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-                className="w-[52%] h-[52%]"
-              >
-                <Image
-                  src="/icons/whatsnewme-yellow.png"
-                  alt=""
-                  width={64}
-                  height={64}
-                  unoptimized
-                  className="w-full h-full object-contain"
-                />
-              </motion.div>
+                className="block w-[54%] h-[54%]"
+                style={{
+                  backgroundColor: '#173B39',
+                  WebkitMaskImage: 'url(/icons/pillar-1.svg)',
+                  maskImage: 'url(/icons/pillar-1.svg)',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskPosition: 'center',
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                }}
+              />
             </motion.div>
           </motion.div>
         </div>

@@ -67,11 +67,12 @@ const STEP_DEG = 360 / N // 45°
 
 // Desktop orbit radius in artboard px (scales with orbit anchor's CSS scale)
 const ORBIT_R = 440
-// Mobile half-circle radius in CSS px
-const MOB_R = 130
-// Mobile badge sizes in CSS px
-const MOB_BADGE_ACTIVE = 76
-const MOB_BADGE_INACTIVE = 52
+// Mobile half-circle — big arc (~80 % of phone width at 375px)
+const MOB_R = 155
+const MOB_BADGE_ACTIVE = 82
+const MOB_BADGE_INACTIVE = 56
+const MOB_CENTER_Y = MOB_R + MOB_BADGE_ACTIVE / 2 + 10  // vertical mid of arc
+const MOB_ARC_H    = MOB_CENTER_Y * 2                   // total arc section height
 
 /** Angle (degrees) of pillar i when discAngle=0. Pillar 0 starts at 0° (rightmost). */
 function pillarBaseDeg(i: number) {
@@ -355,7 +356,7 @@ function DesktopPillar({
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// MOBILE — half-circle arc on the left, text panel on the right
+// MOBILE — large arc fills the section, text sits bottom-right
 // ─────────────────────────────────────────────────────────────────────
 function MobilePillars({
   active,
@@ -370,69 +371,57 @@ function MobilePillars({
   onPrev: () => void
   onNext: () => void
 }) {
-  const arcHeight = MOB_R * 2 + MOB_BADGE_ACTIVE
-
   return (
-    <div
-      className="flex items-center"
-      style={{ marginTop: 'clamp(24px, 6vw, 40px)', minHeight: arcHeight }}
-    >
-      {/* Left: half-circle arc — overflow hidden clips icons that cross x<0 */}
-      <div
-        className="relative shrink-0 overflow-hidden"
-        style={{ width: MOB_R + MOB_BADGE_ACTIVE / 2 + 8, height: arcHeight }}
-      >
-        {PILLARS.map((p, i) => (
-          <MobileArcPillar
-            key={p.name}
-            pillar={p}
-            pillarIdx={i}
-            discAngle={discAngle}
-            active={i === activeIdx}
-            centerY={arcHeight / 2}
-          />
-        ))}
-      </div>
+    <div style={{ marginTop: 24 }}>
+      {/* Arc + text share one relative container so the text can overlap */}
+      <div className="relative w-full" style={{ height: MOB_ARC_H }}>
 
-      {/* Right: text */}
-      <div className="flex flex-col justify-center pl-5 flex-1 pr-6">
-        <motion.h3
-          key={`mob-name-${activeIdx}`}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.35, ease: EASE }}
-          className="font-[family-name:var(--font-bricolage)]"
-          style={{
-            fontWeight: 600,
-            fontSize: 'clamp(22px, 6vw, 32px)',
-            lineHeight: 1.1,
-            color: '#FEF272',
-          }}
-        >
-          {active.name}
-        </motion.h3>
-        <motion.p
-          key={`mob-desc-${activeIdx}`}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
-          className="text-white/85 font-[family-name:var(--font-urbanist)]"
-          style={{
-            fontWeight: 400,
-            fontSize: 'clamp(13px, 3.5vw, 17px)',
-            lineHeight: 1.6,
-            marginTop: 'clamp(10px, 2.5vw, 16px)',
-          }}
-        >
-          {active.desc}
-        </motion.p>
-
-        <div className="flex items-center gap-3 mt-5">
-          <NavButton dir="prev" onClick={onPrev} small />
-          <NavButton dir="next" onClick={onNext} small />
+        {/* Arc icons — clipped to left half so they don't bleed right */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {PILLARS.map((p, i) => (
+            <MobileArcPillar
+              key={p.name}
+              pillar={p}
+              pillarIdx={i}
+              discAngle={discAngle}
+              active={i === activeIdx}
+              centerY={MOB_CENTER_Y}
+            />
+          ))}
         </div>
-        <div className="mt-3">
-          <Dots activeIdx={activeIdx} />
+
+        {/* Text panel — bottom-right, overlapping the arc */}
+        <div
+          className="absolute bottom-5 right-5 flex flex-col items-end text-right"
+          style={{ maxWidth: '56%' }}
+        >
+          <motion.h3
+            key={`mob-name-${activeIdx}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{ fontWeight: 600, fontSize: 'clamp(22px, 6vw, 34px)', lineHeight: 1.1, color: '#FEF272' }}
+          >
+            {active.name}
+          </motion.h3>
+          <motion.p
+            key={`mob-desc-${activeIdx}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
+            className="text-white/85 font-[family-name:var(--font-urbanist)]"
+            style={{ fontWeight: 400, fontSize: 'clamp(12px, 3.2vw, 16px)', lineHeight: 1.55, marginTop: 10 }}
+          >
+            {active.desc}
+          </motion.p>
+          <div className="flex items-center gap-2 mt-4">
+            <NavButton dir="prev" onClick={onPrev} small />
+            <NavButton dir="next" onClick={onNext} small />
+          </div>
+          <div className="mt-2">
+            <Dots activeIdx={activeIdx} />
+          </div>
         </div>
       </div>
     </div>
