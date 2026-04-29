@@ -263,20 +263,24 @@ function RatingsCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden bg-white"
+      /* Figma 1:3957 — bg-white border-2 border-white backdrop-blur-[10.25px]
+         overflow-clip rounded-[34px] h=348 w=1801 */
+      className="relative overflow-hidden bg-white border-2 border-white"
       style={{
         marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-        borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+        borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+        backdropFilter: 'blur(10.25px)',
+        WebkitBackdropFilter: 'blur(10.25px)',
         minHeight: 'clamp(180px, calc(348 / 1920 * 100vw), 348px)',
       }}
     >
-      <div className="relative grid grid-cols-1 sm:grid-cols-3 items-center py-8 sm:py-0 sm:h-full gap-8 sm:gap-0">
+      <div className="relative grid grid-cols-1 sm:grid-cols-3 items-center py-10 sm:py-0 sm:h-full gap-10 sm:gap-0">
+        {/* Figma 1:3980 — left block: 5 orange stars, 4.6 in #629675 Poppins 80px,
+            "Patient Satisfaction on" + Trustpilot logo in Urbanist Medium 24px #013e37 */}
         <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
-        {/* Shield — Figma 1:6354 noun-trusted-1902111: dark green #013e37, white badge+checkmark */}
+        {/* Figma 1:6354 — shield center */}
         <div className="flex items-center justify-center">
-          <ShieldIcon
-            size="clamp(80px, calc(130 / 1920 * 100vw), 130px)"
-          />
+          <ShieldIcon size="clamp(80px, calc(130 / 1920 * 100vw), 130px)" />
         </div>
         <RatingBlock score="4.7" label="Program Completion Rate" />
       </div>
@@ -295,48 +299,68 @@ function RatingBlock({
 }) {
   return (
     <div className="flex flex-col items-center justify-center text-center px-4">
-      {/* Orange stars — Figma #FF8547 */}
+      {/* 5 orange stars — Figma star vectors fill #FF8547 */}
       <div
         className="flex items-center"
-        style={{ gap: 'clamp(2px, calc(4 / 1920 * 100vw), 4px)' }}
+        style={{ gap: 'clamp(3px, calc(6 / 1920 * 100vw), 6px)' }}
       >
         {[0, 1, 2, 3, 4].map((i) => (
-          <Star key={i} size="clamp(16px, calc(24 / 1920 * 100vw), 24px)" />
+          <Star key={i} size="clamp(18px, calc(28 / 1920 * 100vw), 28px)" />
         ))}
       </div>
-      {/* Score */}
+      {/* Score — Figma: Poppins SemiBold 80px #629675 */}
       <p
-        className="font-[family-name:var(--font-bricolage)]"
+        className="font-[family-name:var(--font-poppins)]"
         style={{
-          color: '#FF8547',
+          color: '#629675',
           fontWeight: 600,
-          fontSize: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
+          fontSize: 'clamp(48px, calc(80 / 1920 * 100vw), 80px)',
           lineHeight: 1,
-          marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
+          marginTop: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
         }}
       >
         {score}
       </p>
-      {/* Label */}
+      {/* Label — Figma: Urbanist Medium 24px #013e37 */}
       <p
         className="font-[family-name:var(--font-urbanist)]"
         style={{
           color: '#013e37',
           fontWeight: 500,
-          fontSize: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
-          lineHeight: 1.3,
-          marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
+          fontSize: 'clamp(13px, calc(24 / 1920 * 100vw), 24px)',
+          lineHeight: 1.2,
+          marginTop: 'clamp(6px, calc(12 / 1920 * 100vw), 12px)',
         }}
       >
         {label}
         {trustpilot && (
-          <>
-            <br />
-            <span className="text-[#00B67A] font-semibold">★ Trustpilot</span>
-          </>
+          /* Figma: Trustpilot logo — black ★ + "Trustpilot" in Poppins */
+          <span
+            className="font-[family-name:var(--font-poppins)] inline-flex items-center gap-1"
+            style={{ color: '#191919', fontWeight: 400, display: 'inline-flex', marginLeft: 4 }}
+          >
+            <TrustpilotStar />
+            Trustpilot
+          </span>
         )}
       </p>
     </div>
+  )
+}
+
+/* Trustpilot logo star — exact Trustpilot green #00B67A */
+function TrustpilotStar() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="#00B67A"
+      aria-hidden
+      style={{ display: 'inline', verticalAlign: 'middle', flexShrink: 0 }}
+    >
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
   )
 }
 
