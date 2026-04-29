@@ -30,6 +30,11 @@ export const metadata: Metadata = {
   description:
     'NewMe combines clinical insights with structured care to better understand your body and provide the care it needs. A doctor-led clinical system for metabolic and gut regulation.',
   keywords: ['metabolic health', 'gut health', 'Dr Pal', 'NewMe', 'clinical care'],
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
   openGraph: {
     title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
     description:
