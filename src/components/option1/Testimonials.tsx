@@ -9,8 +9,7 @@ const testimonials = [
       'After years of poor gut health and binge eating, my fasting blood sugar improved and my cravings completely stopped. Physically and mentally, I feel much better now.',
     name: 'Nithya',
     pathway: 'GI Core Pathway',
-    avatar:
-      'https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=300',
+    avatar: '/testimonials/nithya.jpg',
     variant: 'white' as const,
   },
   {
@@ -18,8 +17,7 @@ const testimonials = [
       'In 2 years, my HbA1c dropped from 6.1 to 5.7, LDL from 146 to 86, and my liver size reduced from 16.7 cm to 14.0 cm. I feel healthier and more confident than ever.',
     name: 'Kat',
     pathway: 'Sustain Pathway',
-    avatar:
-      'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=300',
+    avatar: '/testimonials/kat.jpg',
     variant: 'glass' as const,
   },
   {
@@ -27,8 +25,7 @@ const testimonials = [
       "From being worried about diabetes and fatty liver, I've seen my HbA1c come down from 7.2 to 5.7 and my blood sugar stabilize. I'm now navigating my health with much more confidence.",
     name: 'Thamarai',
     pathway: 'Rebuild Pathway',
-    avatar:
-      'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=300',
+    avatar: '/testimonials/thamarai.jpg',
     variant: 'glass' as const,
   },
 ]
