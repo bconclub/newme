@@ -50,7 +50,7 @@ main.newme-page {
     pointer-events: none;
     z-index: 0;
     /* clip-path clips through filter stacking contexts; overflow:hidden does not */
-    clip-path: inset(0 0 -99999px 0);
+    clip-path: inset(0 -200vw -99999px -200vw);
   }
 
   .newme-ellipse {
@@ -160,6 +160,25 @@ main.newme-page {
   h3 {
     font-family: var(--font-bricolage), sans-serif;
     letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 767px) {
+    .newme-compare-wrap {
+      flex-direction: column !important;
+
+      .newme-typical-col {
+        flex: none !important;
+        width: 100% !important;
+        margin-top: 0 !important;
+      }
+
+      .newme-newme-col {
+        flex: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: clamp(16px, 3vw, 24px) !important;
+      }
+    }
   }
 
   .newme-section {

@@ -29,6 +29,9 @@ export default function DrPal() {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative overflow-hidden"
         style={{
+          maxWidth: 1800,
+          marginLeft: 'auto',
+          marginRight: 'auto',
           borderRadius: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
           minHeight: 'clamp(480px, calc(1124 / 1800 * 100vw), 1124px)',
           // Figma node 1:2670 — light sage-green gradient. Top edge is the

@@ -138,8 +138,8 @@ export default function StructuredCare() {
            * Overlap: left right-edge=922, right left-edge=892 → 30px overlap
            */}
           <div
-            className="relative mx-auto flex items-start"
-            style={{ maxWidth: 'clamp(600px, calc(1223 / 1920 * 100vw), 1223px)' }}
+            className="relative mx-auto flex items-start newme-compare-wrap"
+            style={{ maxWidth: 1223 }}
           >
             {/* Left — Typical Wellness Program (1:6323/1:6324) */}
             <motion.div
@@ -147,7 +147,7 @@ export default function StructuredCare() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6 }}
-              className="flex flex-col overflow-hidden"
+              className="flex flex-col overflow-hidden newme-typical-col"
               data-node-id="1:6323"
               style={{
                 flex: '573 1 0',
@@ -222,7 +222,7 @@ export default function StructuredCare() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex flex-col overflow-hidden"
+              className="flex flex-col overflow-hidden newme-newme-col"
               data-node-id="1:6338"
               style={{
                 flex: '680 1 0',

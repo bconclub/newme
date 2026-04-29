@@ -131,13 +131,111 @@ export default function Pillars() {
         </p>
       </div>
 
-      <Stage
-        activeIdx={activeIdx}
-        active={active}
-        onNext={goNext}
-        onPrev={goPrev}
-      />
+      {/* Mobile — simple card layout, hidden on md+ */}
+      <div className="block md:hidden px-6 mt-8">
+        <MobilePillars
+          active={active}
+          activeIdx={activeIdx}
+          onPrev={goPrev}
+          onNext={goNext}
+        />
+      </div>
+
+      {/* Desktop orbit stage, hidden on mobile */}
+      <div className="hidden md:block">
+        <Stage
+          activeIdx={activeIdx}
+          active={active}
+          onNext={goNext}
+          onPrev={goPrev}
+        />
+      </div>
     </section>
+  )
+}
+
+function MobilePillars({
+  active,
+  activeIdx,
+  onPrev,
+  onNext,
+}: {
+  active: Pillar
+  activeIdx: number
+  onPrev: () => void
+  onNext: () => void
+}) {
+  return (
+    <div className="flex flex-col items-center text-center">
+      <motion.div
+        key={`mob-icon-${activeIdx}`}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="rounded-full flex items-center justify-center"
+        style={{ width: 96, height: 96, background: '#FEF272' }}
+      >
+        <span
+          aria-hidden
+          className="block"
+          style={{
+            width: '65%',
+            height: '65%',
+            backgroundColor: '#173B39',
+            WebkitMaskImage: `url(${active.icon})`,
+            maskImage: `url(${active.icon})`,
+            WebkitMaskRepeat: 'no-repeat',
+            maskRepeat: 'no-repeat',
+            WebkitMaskPosition: 'center',
+            maskPosition: 'center',
+            WebkitMaskSize: 'contain',
+            maskSize: 'contain',
+          }}
+        />
+      </motion.div>
+
+      <motion.h3
+        key={`mob-name-${activeIdx}`}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="font-[family-name:var(--font-bricolage)] mt-5"
+        style={{ fontWeight: 500, fontSize: 'clamp(26px, 7vw, 36px)', color: '#FEF272', lineHeight: 1.05 }}
+      >
+        {active.name}
+      </motion.h3>
+
+      <motion.p
+        key={`mob-desc-${activeIdx}`}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        className="text-white font-[family-name:var(--font-urbanist)] mt-4"
+        style={{ fontWeight: 500, fontSize: 'clamp(15px, 4vw, 18px)', lineHeight: 1.6, maxWidth: 340 }}
+      >
+        {active.desc}
+      </motion.p>
+
+      <div className="flex items-center justify-between w-full mt-8" style={{ maxWidth: 340 }}>
+        <div className="flex gap-3">
+          <NavButton dir="prev" onClick={onPrev} />
+          <NavButton dir="next" onClick={onNext} />
+        </div>
+        <div className="flex gap-2 items-center">
+          {PILLARS.map((_, i) => (
+            <span
+              key={i}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width: i === activeIdx ? 24 : 8,
+                height: 8,
+                background: i === activeIdx ? '#FEF272' : 'rgba(255,255,255,0.25)',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -3,9 +3,6 @@
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
-// Figma "Group 252" (1:6285) at y=7744. Heading + subhead row, then 3 cards
-// 587×402 each, then 3 pagination dots, then a 1801×348 ratings card with
-// Trustpilot center.
 const testimonials = [
   {
     quote:
@@ -14,6 +11,7 @@ const testimonials = [
     pathway: 'GI Core Pathway',
     avatar:
       'https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=300',
+    variant: 'white' as const,
   },
   {
     quote:
@@ -22,14 +20,16 @@ const testimonials = [
     pathway: 'Sustain Pathway',
     avatar:
       'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=300',
+    variant: 'glass' as const,
   },
   {
     quote:
-      'From being worried about diabetes and fatty liver, I’ve seen my HbA1c come down from 7.2 to 5.7 and my blood sugar stabilize. I’m now navigating my health with much more confidence.',
+      "From being worried about diabetes and fatty liver, I've seen my HbA1c come down from 7.2 to 5.7 and my blood sugar stabilize. I'm now navigating my health with much more confidence.",
     name: 'Thamarai',
     pathway: 'Rebuild Pathway',
     avatar:
       'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=300',
+    variant: 'glass' as const,
   },
 ]
 
@@ -39,30 +39,27 @@ export default function Testimonials() {
       id="testimonials"
       className="relative pb-0"
       style={{
-        // Testimonials frame top y=7744; previous (StructuredCare cards end
-        // y=7469) → 275px artboard gap. Tuned for visual breathing.
         paddingTop: 'clamp(80px, calc(160 / 1920 * 100vw), 160px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1801 }}>
-        {/* Top row — Figma: heading on left (x=212), subhead on right (x=969).
-            Heading top y=7816, subhead top y=7828 (heading 12px above). */}
+        {/* Header row — eyebrow + heading left, body text right */}
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
           <div>
-            {/* Eyebrow pill — shared component. */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.4 }}
             >
+              {/* Figma 1:6291 — Bricolage Light 24px white, pill: backdrop-blur-[2px]
+                  border border-solid border-white h-[48px] rounded-[40px] w-[179px] */}
               <EyebrowPill>Testimonials</EyebrowPill>
             </motion.div>
-            {/* Heading — Figma 1:6288: x=212, y=7816, 611×144 (2 lines × 72).
-                72 - 48 (pill) - 16 (gap) = ... actual gap from pill to heading
-                = 7816-(7744+48) = 24px. */}
+
+            {/* Figma 1:6288 — Bricolage SemiBold 72px white, 2 lines */}
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -83,8 +80,8 @@ export default function Testimonials() {
               Real Experiences.
             </motion.h2>
           </div>
-          {/* Subhead — Figma 1:6287: x=969, y=7828, w=698, h=90 (3 lines × 30).
-              Urbanist 24px lh 30. */}
+
+          {/* Figma 1:6287 — Urbanist Regular 24px / lh 30px white, 698px wide */}
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -95,9 +92,8 @@ export default function Testimonials() {
               fontWeight: 400,
               fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
               lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
-              letterSpacing: 0,
               maxWidth: 698,
-              marginTop: 'clamp(40px, calc(96 / 1920 * 100vw), 96px)', // align baseline-ish with H2
+              marginTop: 'clamp(40px, calc(96 / 1920 * 100vw), 96px)',
             }}
           >
             Structured care produces measurable, sustained outcomes. These are
@@ -106,7 +102,7 @@ export default function Testimonials() {
           </motion.p>
         </div>
 
-        {/* Cards row — Figma: 3 cards 587×402, gap 20px between, total 1801. */}
+        {/* Cards row — Figma: 3 cards 587×402 each, gap 20px */}
         <div
           className="grid sm:grid-cols-3"
           style={{
@@ -121,31 +117,42 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="relative overflow-hidden border border-white/8"
-              style={{
-                background: 'rgba(255, 255, 255, 0.04)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-                minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
-              }}
+              className="relative overflow-hidden"
+              style={
+                t.variant === 'white'
+                  ? {
+                      /* Figma 1:6292 — bg-white rounded-[40px] */
+                      background: '#FFFFFF',
+                      borderRadius: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
+                      minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
+                    }
+                  : {
+                      /* Figma 1:6293 / 1:6294 — backdrop-blur-[10.25px]
+                         border-2 border-solid border-white rounded-[34px]
+                         gradient: linear-gradient(180deg, rgba(255,255,255,0.2) → 0)
+                                  + linear-gradient(90deg, rgba(255,255,255,0.3) → 0.3) */
+                      background:
+                        'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
+                      backdropFilter: 'blur(10.25px)',
+                      WebkitBackdropFilter: 'blur(10.25px)',
+                      border: '2px solid white',
+                      borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+                      minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
+                    }
+              }
             >
-              {/* Decorative ellipse on cards 2/3 — Figma Ellipse 55/59 */}
+              {/* Decorative ellipse glow behind glass cards */}
               {i > 0 && (
                 <div
                   aria-hidden
-                  className="absolute pointer-events-none"
+                  className="absolute pointer-events-none inset-0"
                   style={{
-                    top: 'clamp(-80px, calc(22 / 1920 * 100vw), 22px)',
-                    left: 'clamp(-60px, calc(114 / 1920 * 100vw), 114px)',
-                    width: 'clamp(180px, calc(351 / 1920 * 100vw), 351px)',
-                    height: 'clamp(180px, calc(351 / 1920 * 100vw), 351px)',
-                    borderRadius: '50%',
                     background:
-                      'radial-gradient(circle, rgba(254,242,114,0.10) 0%, rgba(254,242,114,0) 70%)',
+                      'radial-gradient(ellipse 120% 110% at 50% 30%, rgba(254,242,114,0.07) 0%, transparent 70%)',
                   }}
                 />
               )}
-              {/* Quote — Figma: Urbanist 24px lh 30, 491 wide, top 48px from card top */}
+
               <div
                 className="relative h-full flex flex-col"
                 style={{
@@ -155,10 +162,12 @@ export default function Testimonials() {
                   paddingRight: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 }}
               >
+                {/* Quote — Figma: Urbanist Regular 24px / lh 30px, 491px wide */}
                 <p
-                  className="text-white font-[family-name:var(--font-urbanist)]"
+                  className="font-[family-name:var(--font-urbanist)]"
                   style={{
-                    fontWeight: 500,
+                    color: t.variant === 'white' ? '#000000' : '#FFFFFF',
+                    fontWeight: 400,
                     fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
                     lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
                     maxWidth: 491,
@@ -166,12 +175,12 @@ export default function Testimonials() {
                 >
                   {t.quote}
                 </p>
-                {/* Avatar + name — Figma: avatar 64×64 at x=107 (=48 from card
-                    edge), name+meta to right. */}
+
+                {/* Avatar + name — Figma: avatar 64×64 masked circle */}
                 <div
                   className="flex items-center mt-auto"
                   style={{
-                    gap: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+                    gap: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
                     paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
                   }}
                 >
@@ -184,21 +193,27 @@ export default function Testimonials() {
                     }}
                   />
                   <div>
+                    {/* Figma: name in Bricolage Light 24px
+                        Card 1 → black; Cards 2&3 → #fef272 yellow */}
                     <p
-                      className="text-white font-[family-name:var(--font-bricolage)]"
+                      className="font-[family-name:var(--font-bricolage)]"
                       style={{
-                        fontWeight: 500,
-                        fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-                        lineHeight: 1.2,
+                        color: t.variant === 'white' ? '#000000' : '#FEF272',
+                        fontWeight: 300,
+                        fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                        lineHeight: 1,
                       }}
                     >
                       {t.name}
                     </p>
+                    {/* Figma: pathway in Bricolage Regular 16px
+                        Card 1 → #629675; Cards 2&3 → white */}
                     <p
-                      className="text-white/60 font-[family-name:var(--font-urbanist)] mt-1"
+                      className="font-[family-name:var(--font-bricolage)] mt-1"
                       style={{
+                        color: t.variant === 'white' ? '#629675' : '#FFFFFF',
                         fontWeight: 400,
-                        fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
+                        fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
                         lineHeight: 1.2,
                       }}
                     >
@@ -211,7 +226,8 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Pagination dots — Figma: 3 ellipses 16×16 at y=8450 centered */}
+        {/* Pagination dots — Figma 1:6319 (yellow active) 1:6320 1:6321 (grey)
+            Order: grey | yellow | grey. Middle dot is active. */}
         <div
           className="flex items-center justify-center"
           style={{
@@ -227,15 +243,13 @@ export default function Testimonials() {
               style={{
                 width: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
                 height: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                background:
-                  i === 1 ? '#FEF272' : 'rgba(255, 255, 255, 0.25)',
+                background: i === 1 ? '#FEF272' : 'rgba(255,255,255,0.30)',
               }}
             />
           ))}
         </div>
 
-        {/* Ratings card — Figma 1:3957 (Rectangle 110): 1801×348, with
-            Trustpilot logo center and 4.6 / 4.7 ratings on left/right. */}
+        {/* Ratings card — solid white bg, shield center, orange stars+scores */}
         <RatingsCard />
       </div>
     </section>
@@ -249,51 +263,20 @@ function RatingsCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden border border-white/8"
+      className="relative overflow-hidden bg-white"
       style={{
         marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-        background: 'rgba(255, 255, 255, 0.04)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-        minHeight: 'clamp(220px, calc(348 / 1920 * 100vw), 348px)',
+        borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+        minHeight: 'clamp(180px, calc(348 / 1920 * 100vw), 348px)',
       }}
     >
-      <div className="relative h-full grid grid-cols-3 items-center">
-        {/* Left rating: 4.6 — Figma at x=421, label at x=310. Block ~348 wide.
-            Stars 144×24 above, number 125×72 (= 72px font), label 28px tall. */}
+      <div className="relative grid grid-cols-1 sm:grid-cols-3 items-center py-8 sm:py-0 sm:h-full gap-8 sm:gap-0">
         <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
-        {/* Center: Trustpilot brand — Figma 1:3961: 225×242 icon + noun-trusted
-            172×172 badge. Use a styled trust badge as visual placeholder. */}
-        <div className="flex flex-col items-center justify-center">
-          <span
-            className="font-[family-name:var(--font-bricolage)] text-white/90 tracking-tight"
-            style={{
-              fontWeight: 600,
-              fontSize: 'clamp(28px, calc(56 / 1920 * 100vw), 56px)',
-              lineHeight: 1.05,
-            }}
-          >
-            Trusted by
-          </span>
-          <span
-            className="font-[family-name:var(--font-bricolage)] text-[#FEF272]"
-            style={{
-              fontWeight: 600,
-              fontSize: 'clamp(28px, calc(56 / 1920 * 100vw), 56px)',
-              lineHeight: 1.05,
-            }}
-          >
-            thousands
-          </span>
-          <span
-            className="text-white/60 font-[family-name:var(--font-urbanist)]"
-            style={{
-              marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
-              fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
-            }}
-          >
-            verified outcomes
-          </span>
+        {/* Shield — Figma 1:6354 noun-trusted-1902111: dark green #013e37, white badge+checkmark */}
+        <div className="flex items-center justify-center">
+          <ShieldIcon
+            size="clamp(80px, calc(130 / 1920 * 100vw), 130px)"
+          />
         </div>
         <RatingBlock score="4.7" label="Program Completion Rate" />
       </div>
@@ -312,34 +295,45 @@ function RatingBlock({
 }) {
   return (
     <div className="flex flex-col items-center justify-center text-center px-4">
-      <div className="flex items-center" style={{ gap: 'clamp(2px, calc(4 / 1920 * 100vw), 4px)' }}>
+      {/* Orange stars — Figma #FF8547 */}
+      <div
+        className="flex items-center"
+        style={{ gap: 'clamp(2px, calc(4 / 1920 * 100vw), 4px)' }}
+      >
         {[0, 1, 2, 3, 4].map((i) => (
-          <Star key={i} size={'clamp(16px, calc(24 / 1920 * 100vw), 24px)'} />
+          <Star key={i} size="clamp(16px, calc(24 / 1920 * 100vw), 24px)" />
         ))}
       </div>
+      {/* Score */}
       <p
-        className="text-white font-[family-name:var(--font-bricolage)]"
+        className="font-[family-name:var(--font-bricolage)]"
         style={{
+          color: '#FF8547',
           fontWeight: 600,
           fontSize: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
           lineHeight: 1,
-          marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+          marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
         }}
       >
         {score}
       </p>
+      {/* Label */}
       <p
-        className="text-white/85 font-[family-name:var(--font-urbanist)]"
+        className="font-[family-name:var(--font-urbanist)]"
         style={{
+          color: '#013e37',
           fontWeight: 500,
-          fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)',
+          fontSize: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
           lineHeight: 1.3,
-          marginTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+          marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
         }}
       >
         {label}
         {trustpilot && (
-          <span className="ml-1 text-[#00B67A] font-semibold">Trustpilot</span>
+          <>
+            <br />
+            <span className="text-[#00B67A] font-semibold">★ Trustpilot</span>
+          </>
         )}
       </p>
     </div>
@@ -351,10 +345,41 @@ function Star({ size }: { size: string }) {
     <svg
       style={{ width: size, height: size }}
       viewBox="0 0 24 24"
-      fill="#FEF272"
+      fill="#FF8547"
       aria-hidden
     >
       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  )
+}
+
+/* Figma 1:6354 — noun-trusted-1902111 3
+   Shield: #013e37 fill, white circle badge with #013e37 checkmark.
+   Group inset: 5% top, 14.91% right, 6% bottom, 14% left. */
+function ShieldIcon({ size }: { size: string }) {
+  return (
+    <svg
+      style={{ width: size, height: size }}
+      viewBox="0 0 200 226"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      {/* Shield body */}
+      <path
+        d="M100 6L188 36V108C188 162 150 206 100 220C50 206 12 162 12 108V36L100 6Z"
+        fill="#013e37"
+      />
+      {/* White circle badge */}
+      <circle cx="100" cy="130" r="52" fill="white" />
+      {/* Checkmark */}
+      <path
+        d="M76 130L92 147L126 112"
+        stroke="#013e37"
+        strokeWidth="12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
