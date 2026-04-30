@@ -356,10 +356,10 @@ main.newme-page .hiw-bg {
   }
 
   /* Section-light accent — recreates Figma's hidden Vector 58:1237 at
-     (709.65, 6097) 962×962 that was producing the soft pale-sage bloom
-     centered on the "Designed To Help You Succeed" section. Without
-     this, the section reads flat dark green vs. Figma's diffused light.
-     Pale sage radial gradient with heavy blur for the diffused look. */
+     (709.65, 6097) 962×962. Gradient stops are spread out gradually so
+     the alpha falls smoothly from 0.55 → 0 across the full radius, with
+     no hard edge boundary that would otherwise read as a visible
+     circle outline. */
   .hiw-section-light {
     width: 962px;
     height: 962px;
@@ -369,9 +369,11 @@ main.newme-page .hiw-bg {
     background: radial-gradient(
       circle at center,
       rgba(210, 235, 220, 0.55) 0%,
-      rgba(170, 210, 185, 0.30) 35%,
-      rgba(120, 175, 145, 0.12) 65%,
-      rgba(98, 150, 117, 0) 90%
+      rgba(180, 220, 195, 0.40) 20%,
+      rgba(150, 200, 175, 0.25) 40%,
+      rgba(120, 175, 145, 0.12) 60%,
+      rgba(98, 150, 117, 0.04) 80%,
+      rgba(98, 150, 117, 0) 100%
     );
     filter: blur(120px);
     opacity: 0.85;
@@ -433,7 +435,9 @@ main.newme-page .hiw-bg {
 
   /* Monotone noise overlay on the green gradient washes — matches the
      home page's .newme-noise recipe (soft-light blend, low opacity, large
-     feathered radial mask) so the texture reads as grain, not a glow. */
+     feathered radial mask) so the texture reads as grain, not a glow.
+     Mask uses `farthest-side` instead of a fixed 2400px circle to avoid
+     a visible edge boundary intersecting the viewport. */
   .hiw-noise {
     position: absolute;
     border-radius: 50%;
@@ -442,8 +446,8 @@ main.newme-page .hiw-bg {
     background-size: 220px 220px;
     mix-blend-mode: soft-light;
     opacity: 0.32;
-    mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
+    mask-image: radial-gradient(farthest-side, black 0%, rgba(0,0,0,0.85) 25%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.2) 80%, transparent 100%);
+    -webkit-mask-image: radial-gradient(farthest-side, black 0%, rgba(0,0,0,0.85) 25%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.2) 80%, transparent 100%);
   }
   .hiw-noise-28 {
     width: 4480px;
