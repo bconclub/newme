@@ -71,12 +71,10 @@ const ORBIT_R = 440
 const MOB_R = 175
 const MOB_BADGE_ACTIVE = 110
 const MOB_BADGE_INACTIVE = 60
-// Shift the orbit center right so the top/bottom pillars (which sit at
-// orbit-x=0) aren't half-clipped by the container's left edge. The badge
-// half-radius + a small buffer keeps the full icon inside the viewport;
-// pillars that orbit further left (135°/-135°) still fade out gracefully
-// via the opacity transform below, so they read as "off in the distance"
-// instead of cut off at the edge.
+// Arc center sits near the left edge of the viewport so the active pillar
+// (rightmost point of the arc — angle 0°) ends up centered on the screen,
+// with the NewME logo just to its left and the inactive pillars fanning
+// out to the upper-left, top, bottom, and lower-left.
 const MOB_CENTER_X = MOB_BADGE_INACTIVE / 2 + 6  // 36
 const MOB_CENTER_Y = MOB_R + MOB_BADGE_ACTIVE / 2 + 10  // vertical mid of arc
 // Arc container only needs space for inactive pillars at the bottom (active
@@ -409,16 +407,19 @@ function MobilePillars({
       {/* Arc lives on top in its own fixed-height row so it can't be
           overlapped by the title/description below. */}
       <div className="relative w-full overflow-hidden pointer-events-none" style={{ height: MOB_ARC_H }}>
-        {/* Brand logo at the orbit center — mirrors the desktop hub logo
-            so the mobile arc reads as the same Dr. Pal's NewME hub. */}
+        {/* Brand logo — anchored near the left edge of the screen so it
+            never overlaps the active pillar (which sits at the right end of
+            the arc, x ≈ 211 with a 110px badge). Logo width 120, left-anchor
+            16 → spans 16–136, well clear of the active pillar's left edge
+            (~156) with a comfortable 20px gap. */}
         <div
           className="absolute pointer-events-none flex items-center justify-center"
           style={{
             top: MOB_CENTER_Y,
-            left: MOB_CENTER_X + 70,
-            width: 132,
-            height: 42,
-            transform: 'translate(-50%,-50%)',
+            left: 16,
+            width: 120,
+            height: 38,
+            transform: 'translateY(-50%)',
             zIndex: 1,
           }}
         >
@@ -446,11 +447,11 @@ function MobilePillars({
       {/* Title + description + controls anchored bottom-right just under
           the arc. Negative marginTop pulls the title close to the lowest
           pillar so the dead green band between arc and text disappears.
-          Dots are hidden on mobile — the prev/next arrows are enough,
-          and 8 small dots felt cluttered at this width. */}
+          (Inactive bottom-vertical pillar sits at x=36 (left), so it doesn't
+          collide with the right-anchored text.) */}
       <div
         className="flex flex-col items-end text-right ml-auto"
-        style={{ paddingRight: 20, paddingLeft: 24, marginTop: -56, maxWidth: 360 }}
+        style={{ paddingRight: 20, paddingLeft: 24, marginTop: -16, maxWidth: 240 }}
       >
         <motion.h3
           key={`mob-name-${activeIdx}`}
@@ -458,7 +459,7 @@ function MobilePillars({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: EASE }}
           className="font-[family-name:var(--font-bricolage)]"
-          style={{ fontWeight: 600, fontSize: 'clamp(18px, 4.8vw, 26px)', lineHeight: 1.15, color: '#FEF272' }}
+          style={{ fontWeight: 600, fontSize: 'clamp(22px, 6vw, 30px)', lineHeight: 1.15, color: '#FEF272' }}
         >
           {active.name}
         </motion.h3>
@@ -467,8 +468,8 @@ function MobilePillars({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE, delay: 0.06 }}
-          className="text-white/85 font-[family-name:var(--font-urbanist)]"
-          style={{ fontWeight: 400, fontSize: 'clamp(11px, 2.9vw, 14px)', lineHeight: 1.55, marginTop: 8 }}
+          className="text-white/90 font-[family-name:var(--font-urbanist)]"
+          style={{ fontWeight: 400, fontSize: 'clamp(13px, 3.6vw, 16px)', lineHeight: 1.45, marginTop: 8 }}
         >
           {active.desc}
         </motion.p>
@@ -494,16 +495,18 @@ function MobileArcPillar({
   active: boolean
   centerY: number
 }) {
-  // Arc center at (MOB_CENTER_X, centerY). Icons fan out to the right.
+  // Arc center at (MOB_CENTER_X, centerY). Active pillar lives at angle 0°
+  // (right end of arc), inactives fan out across the upper-left, top,
+  // bottom, and lower-left. Mirrors the desktop orbit.
   const screenRad = useTransform(discAngle, (d) =>
     ((pillarBaseDeg(pillarIdx) + d) * Math.PI) / 180
   )
   const x = useTransform(screenRad, (a) => MOB_CENTER_X + MOB_R * Math.cos(a))
   const y = useTransform(screenRad, (a) => centerY + MOB_R * Math.sin(a))
 
-  // Show ~5 pillars at once: visible across the right half plus a small
-  // sliver into the left half so cos=0 (top/bottom of arc) icons stay on.
-  // Pillars at 8 × 45° → on the right half we keep 0°/±45°/±90° (5 icons).
+  // Show ~5 pillars: the active (angle 0°, cos=1) plus the four neighbours
+  // at ±45° and ±90°. Hide the left half of the arc (cos < -0.25) since
+  // those pillars sit "behind" the hub from the user's view.
   const opacity = useTransform(screenRad, (a) => {
     const cos = Math.cos(a)
     if (cos < -0.25) return 0
