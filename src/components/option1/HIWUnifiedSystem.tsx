@@ -66,7 +66,8 @@ const CARDS: Card[] = [
   },
   {
     title: '',
-    body: "See how NewME's structured approach applies to your body.",
+    // Figma 58:1319 forces a line break after "structured".
+    body: "See how NewME's structured approach applies to your body.",
     cta: true,
   },
 ]
@@ -196,15 +197,34 @@ function UnifiedCard({ card, delay }: { card: Card; delay: number }) {
         minHeight: isCta
           ? 'clamp(140px, calc(192 / 1920 * 100vw), 192px)'
           : 'clamp(220px, calc(292 / 1920 * 100vw), 292px)',
-        borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+        // Figma 58:1304 — radius 24, NOT 28.
+        borderRadius: 'clamp(18px, calc(24 / 1920 * 100vw), 24px)',
+        // Figma 58:1304 recipe for body cards:
+        //   linear-gradient(rgba(255,255,255,0.20) → 0)  +  rgba(255,255,255,0.30) base
+        //   2px solid white border, backdrop-blur 10.25px.
+        // The sage tone comes from the page bg showing through the 30% white
+        // wash; backdrop-blur softens whatever's behind so the card reads as
+        // a frosted sage panel rather than a green-tinted glass.
+        // The top-left "glow" comes from a radial highlight tucked into that
+        // corner — boosts the Figma 0.20→0 vertical fade so the brighter
+        // edge actually reads on screen instead of vanishing into the bg.
         background: isCta
-          ? 'linear-gradient(135deg, rgba(254,242,114,0.12) 0%, rgba(254,242,114,0.04) 100%)'
-          : 'rgba(255,255,255,0.04)',
+          ? '#ffffff'
+          : 'radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+        // Figma renders the card outline as a soft ~30% white edge — the
+        // spec says `border-2 solid white` but the alpha channel is lost in
+        // the export. Trust the visual: 1.5px solid rgba(255,255,255,0.30)
+        // gives the same "barely-there" outline.
         border: isCta
-          ? '1px solid rgba(254,242,114,0.32)'
-          : '1px solid rgba(255,255,255,0.10)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
+          ? '1px solid rgba(255,255,255,0.30)'
+          : '1.5px solid rgba(255,255,255,0.30)',
+        backdropFilter: isCta ? undefined : 'blur(10.25px)',
+        WebkitBackdropFilter: isCta ? undefined : 'blur(10.25px)',
+        // Inner top highlight = the "glow" intensity the Figma pickup misses
+        // when the page bg ellipses don't sit directly behind a card.
+        boxShadow: isCta
+          ? '0 24px 60px -24px rgba(0, 0, 0, 0.35)'
+          : 'inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.05)',
       }}
     >
       {/* Image — Figma: 215px wide on LEFT edge of card */}
@@ -263,21 +283,33 @@ function UnifiedCard({ card, delay }: { card: Card; delay: number }) {
           </h3>
         )}
         <p
-          className="font-[family-name:var(--font-urbanist)]"
+          className={
+            isCta
+              ? 'font-[family-name:var(--font-bricolage)] text-center'
+              : 'font-[family-name:var(--font-urbanist)]'
+          }
           style={{
-            fontWeight: 400,
-            // Figma body: ~20/30 (498×136 ~ 7 lines, 509×170 ~ 7 lines)
+            // Figma 58:1319 — CTA: Bricolage Grotesque SemiBold 32/40 #173B39.
+            // Figma 58:1310 — Body: Urbanist Medium 28/34 pure white.
+            fontWeight: isCta ? 600 : 500,
             fontSize: isCta
-              ? 'clamp(15px, calc(24 / 1920 * 100vw), 24px)'
-              : 'clamp(13px, calc(20 / 1920 * 100vw), 20px)',
+              ? 'clamp(17px, calc(32 / 1920 * 100vw), 32px)'
+              : 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
             lineHeight: isCta
-              ? 'clamp(20px, calc(32 / 1920 * 100vw), 32px)'
-              : 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-            color: isCta ? '#FEF272' : 'rgba(255,255,255,0.78)',
+              ? 'clamp(22px, calc(40 / 1920 * 100vw), 40px)'
+              : 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+            color: isCta ? '#173B39' : '#ffffff',
             marginTop: isCta ? 0 : 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
           }}
         >
-          {card.body}
+          {isCta ? (
+            <>
+              See how NewME&rsquo;s structured<br />
+              approach applies to your body.
+            </>
+          ) : (
+            card.body
+          )}
         </p>
       </div>
     </motion.div>

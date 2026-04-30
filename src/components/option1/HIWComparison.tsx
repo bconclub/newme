@@ -127,7 +127,7 @@ export default function HIWComparison() {
                 maxWidth: 'clamp(320px, calc(1011 / 1920 * 100vw), 1011px)',
               }}
             >
-              Unstructured Care Hasn&rsquo;t Led<br />To Results, Right?
+              Unstructured Care Hasn&rsquo;t<br />Led To Results, Right?
             </motion.h2>
 
             <motion.p
@@ -159,19 +159,21 @@ export default function HIWComparison() {
               · Right left-edge x=901 overlaps left right-edge x=941 by 40px
           */}
           <div
-            className="relative mx-auto flex flex-col md:flex-row items-stretch"
+            className="relative mx-auto flex flex-col md:flex-row items-start"
             style={{
               maxWidth: 'clamp(560px, calc(1241 / 1920 * 100vw), 1241px)',
               marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
             }}
           >
-            {/* Left — What Most People Are Doing (Group 261) */}
+            {/* Left — What Most People Are Doing (Group 261). Figma 601×1202.
+                Right card is 158px taller and extends 79 above + 79 below this
+                one; left card is offset down 79 inside the row. */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6 }}
-              className="flex flex-col overflow-hidden md:mt-[clamp(40px,calc(79/1920*100vw),79px)]"
+              className="flex flex-col overflow-hidden md:mt-[clamp(40px,calc(79/1920*100vw),79px)] md:h-[clamp(680px,calc(1202/1920*100vw),1202px)]"
               style={{
                 flex: '601 1 0',
                 borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
@@ -224,10 +226,10 @@ export default function HIWComparison() {
                       className="font-[family-name:var(--font-urbanist)] text-white"
                       style={{
                         fontWeight: 500,
-                        // Figma items ~24px / line-height ~31
-                        fontSize: 'clamp(13px, calc(22 / 1920 * 100vw), 22px)',
-                        lineHeight: 1.3,
-                        opacity: 0.9,
+                        // Figma 58:1269 — Urbanist Medium 24.75/30.05 white
+                        fontSize: 'clamp(14px, calc(24.75 / 1920 * 100vw), 24.75px)',
+                        lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                        opacity: 0.92,
                       }}
                     >
                       {item}
@@ -237,17 +239,18 @@ export default function HIWComparison() {
               </ul>
             </motion.div>
 
-            {/* Right — The NewME Approach (Group 262) */}
+            {/* Right — The NewME Approach (Group 262). Figma 680×1360, top
+                aligned with row top so it extends 79px above the left card
+                and 79px below it. Overlaps the left card by 40px on its left
+                edge (left ends x=941, right starts x=901). */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex flex-col overflow-hidden mt-4 md:mt-0"
+              className="flex flex-col overflow-hidden mt-4 md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
               style={{
                 flex: '680 1 0',
-                // Right left edge x=901 vs left right edge x=941 → -40 overlap
-                marginLeft: 'clamp(-20px, calc(-40 / 1920 * 100vw), -40px)',
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 background: '#ffffff',
                 zIndex: 2,
@@ -269,10 +272,10 @@ export default function HIWComparison() {
                 <h3
                   className="font-[family-name:var(--font-bricolage)]"
                   style={{
-                    fontWeight: 700,
-                    // Figma 58:1303 — 410×96 → ~40/48
-                    fontSize: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
-                    lineHeight: 1.2,
+                    // Figma 58:1303 — Bricolage Grotesque SemiBold 40/48 #FEF272
+                    fontWeight: 600,
+                    fontSize: 'clamp(22px, calc(40 / 1920 * 100vw), 40px)',
+                    lineHeight: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
                     color: '#FEF272',
                   }}
                 >
@@ -297,10 +300,10 @@ export default function HIWComparison() {
                     <span
                       className="font-[family-name:var(--font-urbanist)]"
                       style={{
+                        // Figma 58:1288 — Urbanist SemiBold 28/34 #013E37
                         fontWeight: 600,
-                        // Figma items ~28px
-                        fontSize: 'clamp(13px, calc(24 / 1920 * 100vw), 24px)',
-                        lineHeight: 1.3,
+                        fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
+                        lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
                         color: '#013e37',
                       }}
                     >

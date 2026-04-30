@@ -271,6 +271,147 @@ html:has(main.newme-page) .newme-footer a:hover {
 }
 
 /* ============================================================
+   How It Works page — Figma 58:20 (1920×10892 artboard).
+   Background ellipses (artboard-pixel positions from MCP metadata):
+     • Ellipse 28 (58:22) at (-1306, 1807) 4480×4480
+       linear-gradient(180deg, #629675 → #013E37), σ=400 blur
+     • Ellipse 34 (58:1252) at (1407, 2007) 895×895
+       fill #FEF272, σ=400 blur — yellow accent right of "Unified System"
+     • Ellipse 39 (58:23) at (-555, 3809) 895×895
+       fill #FEF272, σ=400 blur — yellow accent LEFT of "Why Starting Early"
+     • Ellipse 38 (58:24) at (-1306, 6241) 4480×4480
+       same green gradient, σ=400 blur
+     • Ellipse 67 (58:25) at (182, 7732) 895×895
+       fill #FEF272, σ=400 blur — yellow accent center-left of "Conditions"
+
+   Same approach as .newme-bg: 1920×10892 frame, scaled to viewport,
+   positioned absolute behind the page content.
+   ============================================================ */
+main.newme-page .hiw-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 10892px;
+  --scale: min(1, calc(100vw / 1920px));
+  transform: translateX(-50%) scale(var(--scale));
+  transform-origin: top center;
+  pointer-events: none;
+  z-index: 0;
+  clip-path: inset(0 -200vw -99999px -200vw);
+
+  .hiw-ellipse {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Ellipse 28 — green gradient wash behind Unified System / Comparison.
+     Same gradient/blur recipe as the home page top wash. */
+  .hiw-ellipse-28 {
+    width: 4480px;
+    height: 4480px;
+    top: 1807px;
+    left: -1306px;
+    background: linear-gradient(180deg, #629675 0%, #013E37 100%);
+    filter: blur(280px);
+    opacity: 0.35;
+    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+  }
+
+  /* Ellipse 38 — green gradient wash behind Designed To Help You Succeed
+     and Conditions. Slightly lower opacity per Figma. */
+  .hiw-ellipse-38 {
+    width: 4480px;
+    height: 4480px;
+    top: 6241px;
+    left: -1306px;
+    background: linear-gradient(180deg, #629675 0%, #013E37 100%);
+    filter: blur(280px);
+    opacity: 0.28;
+    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+  }
+
+  /* Ellipse 34 — yellow accent on the RIGHT, behind the
+     "A Unified System Of Care" section. */
+  .hiw-ellipse-34 {
+    width: 1100px;
+    height: 1100px;
+    top: 1904px;
+    left: 1304px;
+    background: #FEF272;
+    filter: blur(280px);
+    opacity: 0.5;
+  }
+
+  /* Ellipse 39 — yellow accent on the LEFT, behind the
+     "Why Starting Early Matters" section. Center at artboard x=-108
+     so the lit halo bleeds in from the left edge into the heading area. */
+  .hiw-ellipse-39 {
+    width: 1100px;
+    height: 1100px;
+    top: 3706px;
+    left: -658px;
+    background: #FEF272;
+    filter: blur(280px);
+    opacity: 0.5;
+  }
+
+  /* Ellipse 67 — yellow accent center-left behind the
+     "Conditions addressed within the NewME System" section. */
+  .hiw-ellipse-67 {
+    width: 1100px;
+    height: 1100px;
+    top: 7629px;
+    left: 79px;
+    background: #FEF272;
+    filter: blur(280px);
+    opacity: 0.45;
+  }
+
+  /* Monotone noise overlay on the green gradient washes — matches the
+     home page's .newme-noise recipe (soft-light blend, low opacity, large
+     feathered radial mask) so the texture reads as grain, not a glow. */
+  .hiw-noise {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 220px 220px;
+    mix-blend-mode: soft-light;
+    opacity: 0.32;
+    mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
+  }
+  .hiw-noise-28 {
+    width: 4480px;
+    height: 4480px;
+    top: 1807px;
+    left: -1306px;
+  }
+  .hiw-noise-38 {
+    width: 4480px;
+    height: 4480px;
+    top: 6241px;
+    left: -1306px;
+  }
+}
+
+/* HIW mobile: keep top green wash + nearest yellow accent so the page reads
+   atmospheric, hide the lower wash + lower yellow accents that don't
+   downscale gracefully on a 375px viewport. */
+@media (max-width: 767px) {
+  main.newme-page .hiw-bg .hiw-ellipse-38,
+  main.newme-page .hiw-bg .hiw-ellipse-39,
+  main.newme-page .hiw-bg .hiw-ellipse-67,
+  main.newme-page .hiw-bg .hiw-noise-38 {
+    display: none !important;
+  }
+}
+
+/* ============================================================
    Virtual Clinic page — Figma 83:49
    Background spec (verified from MCP design context):
      • Page bg (Rectangle 67, 83:50): #173B39

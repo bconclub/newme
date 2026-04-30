@@ -70,11 +70,18 @@ export default function HIWConditions() {
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1800 }}>
-        {/* Mask group with green-gradient ellipse */}
+        {/*
+          Mask group + Rectangle 126 (Figma 58:1346 + 58:1348):
+          1800×924 rounded-34 panel with 1px solid rgba(255,255,255,0.28)
+          border, green-gradient Ellipse 59 inside, soft fractal noise on top.
+          The faded white outline is the "short border" the user noticed —
+          it defines the panel even when the green wash is dim.
+        */}
         <div
           className="relative overflow-hidden"
           style={{
             borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+            border: '1px solid rgba(255,255,255,0.28)',
             paddingTop: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
             paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
             paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
@@ -187,19 +194,31 @@ export default function HIWConditions() {
                     transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
-                className="inline-flex items-center rounded-full font-[family-name:var(--font-urbanist)] text-white"
+                // Hover light-up — bg + border + tiny scale lift. Matches the
+                // "if I hover over anything, it should light up" behavior.
+                whileHover={{
+                  backgroundColor: 'rgba(254, 242, 114, 0.16)',
+                  borderColor: '#FEF272',
+                  scale: 1.04,
+                  transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] },
+                }}
+                className="inline-flex items-center rounded-full font-[family-name:var(--font-bricolage)] text-white cursor-default whitespace-nowrap"
                 style={{
-                  // Figma pill: h=48, padding 20px each side
-                  height: 'clamp(36px, calc(48 / 1920 * 100vw), 48px)',
+                  // Figma 58:1354 — pill: 1px solid white on transparent fill
+                  // with 2px backdrop blur, h=48.
+                  // Figma 58:1387 — text: Bricolage Grotesque Light 24/14 white.
+                  // (Was Urbanist 14 before, way too small.)
+                  height: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
                   padding:
-                    '0 clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
-                  fontWeight: 500,
+                    '0 clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                  fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                  fontWeight: 300,
+                  lineHeight: 1,
                   letterSpacing: 0,
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  backdropFilter: 'blur(6px)',
-                  WebkitBackdropFilter: 'blur(6px)',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.92)',
+                  backdropFilter: 'blur(2px)',
+                  WebkitBackdropFilter: 'blur(2px)',
                 }}
               >
                 {condition}

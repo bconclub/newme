@@ -120,12 +120,12 @@ export default function HIWHumanGuidance() {
             Structured Care Needs Human Guidance
           </h2>
 
-          {/* Figma 58:1451 — 812×136 ~ 4 lines */}
+          {/* Figma 58:1451 — Urbanist Medium 28/34 white, 812 wide */}
           <p
-            className="font-[family-name:var(--font-urbanist)] text-white/70"
+            className="font-[family-name:var(--font-urbanist)] text-white"
             style={{
-              fontWeight: 400,
-              fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+              fontWeight: 500,
+              fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
               lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
               marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
               maxWidth: 'clamp(320px, calc(812 / 1920 * 100vw), 812px)',
@@ -181,22 +181,23 @@ export default function HIWHumanGuidance() {
                 <h3
                   className="font-[family-name:var(--font-bricolage)] text-[#FEF272]"
                   style={{
-                    fontWeight: 500,
-                    // Figma title: 40px tall block → ~28-32 px
-                    fontSize: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
-                    lineHeight: 1.2,
+                    // Figma 58:1457 — Bricolage Grotesque SemiBold 32/40 #FEF272
+                    fontWeight: 600,
+                    fontSize: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
+                    lineHeight: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
                     letterSpacing: 0,
                   }}
                 >
                   {point.title}
                 </h3>
                 <p
-                  className="font-[family-name:var(--font-urbanist)] text-white/70"
+                  className="font-[family-name:var(--font-urbanist)]"
                   style={{
-                    fontWeight: 400,
-                    // Figma body: 28-56px h → ~18-20px
-                    fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
+                    // Figma 58:1456 — Urbanist Medium 24/28 #E2E2E2
+                    fontWeight: 500,
+                    fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
                     lineHeight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    color: '#E2E2E2',
                     marginTop: 'clamp(4px, calc(8 / 1920 * 100vw), 8px)',
                   }}
                 >

@@ -74,7 +74,12 @@ export default function HIWWhyEarly() {
             paddingTop: 'clamp(0px, calc(120 / 1920 * 100vw), 120px)',
           }}
         >
-          <EyebrowPill>Why Now</EyebrowPill>
+          {/* `self-start` keeps the inline-flex pill from being stretched by
+              the flex-col parent. Without it the pill spans the full width of
+              the text column, breaking the compact 147×48 Figma sizing. */}
+          <span className="self-start">
+            <EyebrowPill>Why Now</EyebrowPill>
+          </span>
 
           {/* Figma 58:2639 — "Why Starting Early Matters?" 652×144 → ~72/72 */}
           <h2
@@ -131,6 +136,11 @@ export default function HIWWhyEarly() {
             (590×102 at 961,5306) → 40px padding all around. Pine card with
             yellow accent.
           */}
+          {/*
+            Figma Group 426 (58:2629): 864×182 sage-green panel, left-aligned
+            yellow body. Matches the same translucent sage recipe as the
+            unified-system cards above so the page rhythm stays consistent.
+          */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -143,28 +153,17 @@ export default function HIWWhyEarly() {
                 'clamp(20px, calc(40 / 1920 * 100vw), 40px) clamp(24px, calc(48 / 1920 * 100vw), 48px)',
               borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
               background:
-                'linear-gradient(135deg, rgba(254,242,114,0.10) 0%, rgba(254,242,114,0.03) 100%)',
-              border: '1px solid rgba(254,242,114,0.30)',
+                'radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+              backdropFilter: 'blur(10.25px)',
+              WebkitBackdropFilter: 'blur(10.25px)',
+              border: '2px solid rgba(255,255,255,0.92)',
+              boxShadow:
+                'inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.05)',
               maxWidth: 'clamp(320px, calc(864 / 1920 * 100vw), 864px)',
             }}
           >
-            {/* Subtle gold glow accent */}
-            <div
-              aria-hidden
-              className="absolute pointer-events-none"
-              style={{
-                width: 220,
-                height: 220,
-                borderRadius: '50%',
-                background: '#FEF272',
-                filter: 'blur(120px)',
-                opacity: 0.18,
-                top: '-50%',
-                right: '-10%',
-              }}
-            />
             <p
-              className="relative font-[family-name:var(--font-bricolage)] text-[#FEF272]"
+              className="relative font-[family-name:var(--font-urbanist)] text-[#FEF272]"
               style={{
                 fontWeight: 500,
                 // Figma 590×102 → ~26/34 over 3 lines
@@ -172,8 +171,9 @@ export default function HIWWhyEarly() {
                 lineHeight: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
               }}
             >
-              Don&rsquo;t ignore the signs. The earlier you begin, the more
-              responsive your treatment is likely to be.
+              Don&rsquo;t ignore the signs.<br />
+              The earlier you begin, the more responsive your treatment is
+              likely to be.
             </p>
           </motion.div>
         </motion.div>
