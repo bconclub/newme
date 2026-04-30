@@ -76,12 +76,18 @@ export default function HIWConditions() {
           border, green-gradient Ellipse 59 inside, soft fractal noise on top.
           The faded white outline is the "short border" the user noticed —
           it defines the panel even when the green wash is dim.
+
+          Per user feedback: card should be TRANSLUCENT, not transparent.
+          A semi-opaque dark-pine fill dims the page-bg yellow (Ellipse 67)
+          so it only bleeds in subtly at the bottom edge per Figma, instead
+          of shining through at full intensity.
         */}
         <div
           className="relative overflow-hidden"
           style={{
             borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
             border: '1px solid rgba(255,255,255,0.28)',
+            background: 'rgba(4, 60, 57, 0.55)',
             paddingTop: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
             paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
             paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
@@ -194,13 +200,16 @@ export default function HIWConditions() {
                     transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
-                // Hover light-up — bg + border + tiny scale lift. Matches the
-                // "if I hover over anything, it should light up" behavior.
+                // Hover state per Figma 58:1372 — chip flips to solid
+                // white bg with dark-green #013E37 text. Long-ish duration
+                // (0.45s) with smooth ease so the chip-to-chip motion
+                // creates a trail instead of a hard snap.
                 whileHover={{
-                  backgroundColor: 'rgba(254, 242, 114, 0.16)',
-                  borderColor: '#FEF272',
+                  backgroundColor: '#ffffff',
+                  borderColor: '#ffffff',
+                  color: '#013E37',
                   scale: 1.04,
-                  transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] },
+                  transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
                 }}
                 className="inline-flex items-center rounded-full font-[family-name:var(--font-bricolage)] text-white cursor-default whitespace-nowrap"
                 style={{

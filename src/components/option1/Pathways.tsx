@@ -3,7 +3,17 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
-import Link from 'next/link'
+
+// Placeholder images — using assets from /public/how it works for now
+// since /images/pathways/* don't exist yet. Will swap to real pathway
+// images later.
+const PLACEHOLDER_IMAGES = [
+  '/how%20it%20works/Assesment.png',
+  '/how%20it%20works/Prescription.png',
+  '/how%20it%20works/Structured%20Care.png',
+  '/how%20it%20works/MOnitoring.png',
+  '/how%20it%20works/Continuity.png',
+]
 
 const tabGroups = [
   {
@@ -13,19 +23,19 @@ const tabGroups = [
         title: 'Reset',
         duration: 'Duration: 4 Weeks',
         desc: 'A lifestyle stabilisation for early-stage imbalance or inconsistent habits and patterns.',
-        image: '/images/pathways/Reset.webp',
+        image: PLACEHOLDER_IMAGES[0],
       },
       {
         title: 'Rebuild',
         duration: 'Duration: 12 Weeks',
         desc: 'A structured metabolic correction for those with stable foundations.',
-        image: '/images/pathways/Rebuild.webp',
+        image: PLACEHOLDER_IMAGES[1],
       },
       {
         title: 'Sustain',
         duration: 'Duration: 24 Weeks',
         desc: 'A consolidated approach to metabolic & gut stability that reinforces good habits for the long run.',
-        image: '/images/pathways/Sustain.webp',
+        image: PLACEHOLDER_IMAGES[2],
       },
     ],
   },
@@ -36,13 +46,13 @@ const tabGroups = [
         title: 'GI Core',
         duration: 'Duration: 4 Weeks',
         desc: 'Prescribed for moderate digestive dysfunction impacting overall metabolic stability.',
-        image: '/images/pathways/GI-Core.webp',
+        image: PLACEHOLDER_IMAGES[3],
       },
       {
         title: 'GI Advanced',
         duration: 'Duration: 4 Weeks',
         desc: 'A clinically supervised pathway for complex and/or long-standing gastrointestinal conditions.',
-        image: '/images/pathways/GI-Advanced.webp',
+        image: PLACEHOLDER_IMAGES[4],
       },
     ],
   },
@@ -53,13 +63,13 @@ const tabGroups = [
         title: 'NewME 360',
         duration: 'Duration: 12 / 52 Weeks',
         desc: 'Structured continuation for long-term metabolic & gut stability.',
-        image: '/images/pathways/NewME-360.webp',
+        image: PLACEHOLDER_IMAGES[0],
       },
       {
         title: 'NewME Movement',
         duration: 'Duration: 12 / 52 Weeks',
         desc: 'A carefully crafted fitness regiment designed to focus on physical performance and strength building.',
-        image: '/images/pathways/NewME-Movement.webp',
+        image: PLACEHOLDER_IMAGES[1],
       },
     ],
   },
@@ -281,39 +291,6 @@ export default function Pathways() {
         </AnimatePresence>
       </div>
 
-      {/* Centered CTA */}
-      <div
-        className="mx-auto flex flex-col items-center text-center"
-        style={{
-          maxWidth: 1800,
-          marginTop: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
-        }}
-      >
-        <Link
-          href="/pathways"
-          className="inline-flex items-center justify-center font-[family-name:var(--font-bricolage)] text-[#013E37] rounded-full bg-[#FEF272] hover:bg-[#FDF185] transition-colors"
-          style={{
-            fontWeight: 500,
-            fontSize: 'clamp(14px, calc(16 / 1920 * 100vw), 16px)',
-            paddingLeft: 'clamp(24px, calc(36 / 1920 * 100vw), 36px)',
-            paddingRight: 'clamp(24px, calc(36 / 1920 * 100vw), 36px)',
-            height: 'clamp(48px, calc(56 / 1920 * 100vw), 56px)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          Start My Assessment
-        </Link>
-        <p
-          className="font-[family-name:var(--font-urbanist)] text-white/50"
-          style={{
-            fontWeight: 400,
-            fontSize: 'clamp(12px, calc(15 / 1920 * 100vw), 15px)',
-            marginTop: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-          }}
-        >
-          Take the assessment to find the pathway best suited for your needs.
-        </p>
-      </div>
     </section>
   )
 }

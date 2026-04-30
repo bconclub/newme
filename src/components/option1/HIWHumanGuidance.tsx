@@ -56,18 +56,23 @@ export default function HIWHumanGuidance() {
       id="hiw-human-guidance"
       className="relative"
       style={{
-        // Figma: ailments mask ends y=7876, image starts y=7996 → 120 gap.
-        paddingTop: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
-        paddingBottom: 'clamp(80px, calc(120 / 1920 * 100vw), 120px)',
+        // Figma gap between Conditions panel (ends y=7876) and image
+        // (starts y=7996) = 120px. The Conditions section already
+        // contributes 120px paddingBottom, so this section starts flush.
+        paddingTop: 0,
+        paddingBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div
-        className="mx-auto flex flex-col lg:flex-row items-stretch gap-[clamp(28px,calc(64/1920*100vw),64px)]"
+        className="mx-auto flex flex-col lg:flex-row items-start gap-[clamp(28px,calc(64/1920*100vw),64px)]"
         style={{ maxWidth: 1800 }}
       >
-        {/* Image LEFT — 883×818, radius ~40 */}
+        {/* Image LEFT — Figma 58:2624 mask group, 883×818 (roughly square,
+            883/818 ≈ 1.08). Items-start (not stretch) so the image keeps its
+            natural square aspect instead of being pulled tall by the text
+            column on the right. */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -75,8 +80,7 @@ export default function HIWHumanGuidance() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="relative shrink-0 overflow-hidden"
           style={{
-            width: '100%',
-            maxWidth: 'clamp(280px, calc(883 / 1920 * 100vw), 883px)',
+            width: 'clamp(280px, calc(883 / 1920 * 100vw), 883px)',
             aspectRatio: '883 / 818',
             borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
             background:
@@ -103,7 +107,11 @@ export default function HIWHumanGuidance() {
             paddingTop: 'clamp(0px, calc(80 / 1920 * 100vw), 80px)',
           }}
         >
-          <EyebrowPill>Health Coach vs AI Coach</EyebrowPill>
+          {/* `self-start` keeps the inline-flex pill from being stretched
+              by the flex-col parent. Same fix as the "Why Now" pill. */}
+          <span className="self-start">
+            <EyebrowPill>Health Coach vs AI Coach</EyebrowPill>
+          </span>
 
           {/* Figma 58:1452 — 676×216 ~ 3 lines ~72/72 */}
           <h2
@@ -207,6 +215,24 @@ export default function HIWHumanGuidance() {
             ))}
           </motion.ul>
         </motion.div>
+      </div>
+      {/* Figma Vector 255 (58:1344) — full-width 1800px divider at the
+          bottom of this section (y=9344), separating Human Guidance from
+          the CTA section below. */}
+      <div
+        className="mx-auto"
+        style={{
+          maxWidth: 1800,
+          marginTop: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            height: 1,
+            background: 'rgba(255,255,255,0.18)',
+          }}
+        />
       </div>
     </section>
   )

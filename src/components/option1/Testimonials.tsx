@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
+// All 3 cards share the same default state: glass with sage green ellipse
+// tint behind. On hover the card flips to solid white per Figma.
 const testimonials = [
   {
     quote:
@@ -10,7 +12,6 @@ const testimonials = [
     name: 'Nithya',
     pathway: 'GI Core Pathway',
     avatar: '/testimonials/nithya.jpg',
-    variant: 'white' as const,
   },
   {
     quote:
@@ -18,7 +19,6 @@ const testimonials = [
     name: 'Kat',
     pathway: 'Sustain Pathway',
     avatar: '/testimonials/kat.jpg',
-    variant: 'glass' as const,
   },
   {
     quote:
@@ -26,7 +26,6 @@ const testimonials = [
     name: 'Thamarai',
     pathway: 'Rebuild Pathway',
     avatar: '/testimonials/thamarai.jpg',
-    variant: 'glass' as const,
   },
 ]
 
@@ -115,118 +114,7 @@ export default function Testimonials() {
           }}
         >
           {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="relative overflow-hidden shrink-0 w-[85%] sm:w-auto snap-center sm:snap-align-none"
-              style={
-                t.variant === 'white'
-                  ? {
-                      /* Figma 1:6292 — bg-white rounded-[40px] */
-                      background: '#FFFFFF',
-                      borderRadius: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
-                      minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
-                    }
-                  : {
-                      /* Figma 1:6293 / 1:6294 — frosted-glass over the green wash.
-                         Slight bump in white opacity + stronger blur + saturate
-                         desaturation softens the green bleed-through so the
-                         cards read as light frost (Figma) instead of full green. */
-                      background:
-                        'linear-gradient(180deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.18) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
-                      backdropFilter: 'blur(18px) saturate(85%)',
-                      WebkitBackdropFilter: 'blur(18px) saturate(85%)',
-                      border: '2px solid rgba(255,255,255,0.85)',
-                      borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
-                      minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
-                    }
-              }
-            >
-              {/* Decorative ellipse glow behind glass cards */}
-              {i > 0 && (
-                <div
-                  aria-hidden
-                  className="absolute pointer-events-none inset-0"
-                  style={{
-                    background:
-                      'radial-gradient(ellipse 120% 110% at 50% 30%, rgba(254,242,114,0.07) 0%, transparent 70%)',
-                  }}
-                />
-              )}
-
-              <div
-                className="relative h-full flex flex-col"
-                style={{
-                  paddingTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
-                  paddingBottom: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
-                  paddingLeft: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
-                  paddingRight: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
-                }}
-              >
-                {/* Quote — Figma: Urbanist Regular 24px / lh 30px, 491px wide */}
-                <p
-                  className="font-[family-name:var(--font-urbanist)]"
-                  style={{
-                    color: t.variant === 'white' ? '#000000' : '#FFFFFF',
-                    fontWeight: 400,
-                    fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
-                    lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
-                    maxWidth: 491,
-                  }}
-                >
-                  {t.quote}
-                </p>
-
-                {/* Avatar + name — Figma: avatar 64×64 masked circle */}
-                <div
-                  className="flex items-center mt-auto"
-                  style={{
-                    gap: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                    paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
-                  }}
-                >
-                  <div
-                    className="rounded-full bg-cover bg-center shrink-0"
-                    style={{
-                      width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-                      height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-                      backgroundImage: `url('${t.avatar}')`,
-                    }}
-                  />
-                  <div>
-                    {/* Figma: name in Bricolage Light 24px
-                        Card 1 → black; Cards 2&3 → #fef272 yellow */}
-                    <p
-                      className="font-[family-name:var(--font-bricolage)]"
-                      style={{
-                        color: t.variant === 'white' ? '#000000' : '#FEF272',
-                        fontWeight: 300,
-                        fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
-                        lineHeight: 1,
-                      }}
-                    >
-                      {t.name}
-                    </p>
-                    {/* Figma: pathway in Bricolage Regular 16px
-                        Card 1 → #629675; Cards 2&3 → white */}
-                    <p
-                      className="font-[family-name:var(--font-bricolage)] mt-1"
-                      style={{
-                        color: t.variant === 'white' ? '#629675' : '#FFFFFF',
-                        fontWeight: 400,
-                        fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      {t.pathway}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <TestimonialCard key={t.name} testimonial={t} index={i} />
           ))}
         </div>
 
@@ -257,6 +145,138 @@ export default function Testimonials() {
         <RatingsCard />
       </div>
     </section>
+  )
+}
+
+/**
+ * Single testimonial card with default-glass / hover-white state per Figma.
+ *
+ * Default state (Figma 1:6293):
+ *   • backdrop-blur 10.25px
+ *   • bg: linear-gradient(white 0.2 → 0) + solid white 0.30
+ *   • 2px solid white border (dialed back to 30% opacity to match the
+ *     softer rendered look — Figma export says solid white)
+ *   • rounded-[34px]
+ *   • Sage green Ellipse 55 (Figma 1:6296) tint baked into the middle
+ *
+ * Hover state (Figma 1:6292):
+ *   • Solid white bg, dark text, yellow→green accent for the byline
+ */
+function TestimonialCard({
+  testimonial: t,
+  index: i,
+}: {
+  testimonial: (typeof testimonials)[number]
+  index: number
+}) {
+  // CSS-only hover state via the `group` pattern + plain CSS transitions.
+  // Avoids conflict between Framer's whileInView (entry) and animate (hover).
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: i * 0.08 }}
+      className="testimonial-card group relative overflow-hidden shrink-0 w-[85%] sm:w-auto snap-center sm:snap-align-none cursor-default"
+      style={{
+        // Default GLASS state per Figma 1:6293. CSS class overrides on hover.
+        backgroundImage:
+          'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
+        backdropFilter: 'blur(10.25px)',
+        WebkitBackdropFilter: 'blur(10.25px)',
+        border: '2px solid rgba(255,255,255,0.30)',
+        borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+        minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
+        transition:
+          'background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-image 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+      }}
+    >
+      {/* Sage green Ellipse 55 tint (Figma 1:6296) — fades out on hover */}
+      <div
+        aria-hidden
+        className="testimonial-tint absolute pointer-events-none"
+        style={{
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '85%',
+          height: '85%',
+          borderRadius: '50%',
+          background:
+            'radial-gradient(ellipse 90% 75% at 50% 50%, rgba(125, 175, 145, 0.55) 0%, rgba(98, 150, 117, 0.30) 35%, rgba(98, 150, 117, 0.10) 65%, rgba(98, 150, 117, 0) 88%)',
+          filter: 'blur(40px)',
+          opacity: 1,
+          transition: 'opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+        }}
+      />
+
+      <div
+        className="relative h-full flex flex-col"
+        style={{
+          paddingTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
+          paddingBottom: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
+          paddingLeft: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
+          paddingRight: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
+        }}
+      >
+        <p
+          className="testimonial-quote font-[family-name:var(--font-urbanist)]"
+          style={{
+            color: '#FFFFFF',
+            fontWeight: 400,
+            fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+            lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+            maxWidth: 491,
+            transition: 'color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
+        >
+          {t.quote}
+        </p>
+
+        <div
+          className="flex items-center mt-auto"
+          style={{
+            gap: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+            paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+          }}
+        >
+          <div
+            className="rounded-full bg-cover bg-center shrink-0"
+            style={{
+              width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+              height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+              backgroundImage: `url('${t.avatar}')`,
+            }}
+          />
+          <div>
+            <p
+              className="testimonial-name font-[family-name:var(--font-bricolage)]"
+              style={{
+                color: '#FEF272',
+                fontWeight: 300,
+                fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+                lineHeight: 1,
+                transition: 'color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+            >
+              {t.name}
+            </p>
+            <p
+              className="testimonial-pathway font-[family-name:var(--font-bricolage)] mt-1"
+              style={{
+                color: '#FFFFFF',
+                fontWeight: 400,
+                fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+                lineHeight: 1.2,
+                transition: 'color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+            >
+              {t.pathway}
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   )
 }
 

@@ -5,13 +5,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 
-type NavLink = { label: string; href: string; hasMenu?: boolean }
+type NavLink = { label: string; href: string; hasMenu?: boolean; live?: boolean }
 
+// Only Home, How It Works, and Virtual Clinic are live pages right now.
+// The rest are rendered grayed-out (lighten on hover) and click is prevented.
 const navLinks: NavLink[] = [
-  { label: 'Home', href: '/' },
-  { label: 'How It Works', href: '/how-it-works' },
+  { label: 'Home', href: '/', live: true },
+  { label: 'How It Works', href: '/how-it-works', live: true },
   { label: 'Pathways', href: '/pathways' },
-  { label: 'Virtual Clinic', href: '/virtual-clinic' },
+  { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
   { label: 'NewME Care Team', href: '/care-team' },
   { label: 'Resources', href: '#resources', hasMenu: true },
   { label: 'Contact Us', href: '#contact' },
@@ -40,6 +42,11 @@ export default function Header() {
             : 'bg-transparent'
         }`}
       >
+        {/* Figma 58:132 — Header is 1800×74 inside the 1920 artboard with a
+            60px gutter on each side (1920 − 1800 = 120 / 2 = 60). The inner
+            row had an extra `px-6 md:px-10` that was eating another 80px of
+            content width, compressing the nav/CTA. Drop that so the row uses
+            the full 1800px max-width per Figma. */}
         <div
           className="mx-auto"
           style={{
@@ -48,7 +55,7 @@ export default function Header() {
             paddingRight: 'clamp(20px, 3.13vw, 60px)',
           }}
         >
-          <div className="relative h-[62px] flex items-center justify-between gap-6 px-6 md:px-10">
+          <div className="relative h-[62px] flex items-center justify-between gap-6">
           <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
             <Image
               src="/newme-logo.png"
@@ -61,22 +68,41 @@ export default function Header() {
             />
           </Link>
 
-          {/* Figma: nav text spans 1124px between logo and CTA, Urbanist 500 14px, 32px gap. */}
+          {/* Figma: nav text spans 1124px between logo and CTA, Urbanist 500 14px, 32px gap.
+              Only `live` links are real <Link>s; the rest render as <span> with
+              gray text, no cursor, and a small lighten-on-hover so the user
+              still gets feedback even though the click is a no-op. */}
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
-              >
-                {link.label}
-                {link.hasMenu && (
-                  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-70">
-                    <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.live ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
+                >
+                  {link.label}
+                  {link.hasMenu && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-70">
+                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </Link>
+              ) : (
+                <span
+                  key={link.href}
+                  aria-disabled="true"
+                  title="Coming soon"
+                  className="inline-flex items-center gap-1 text-white/35 hover:text-white/55 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] cursor-not-allowed select-none"
+                >
+                  {link.label}
+                  {link.hasMenu && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-50">
+                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </span>
+              )
+            )}
           </nav>
 
           {/* Figma: CTA 214×48 pill, padding 14×24.

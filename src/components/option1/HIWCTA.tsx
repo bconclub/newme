@@ -50,7 +50,12 @@ export default function HIWCTA() {
               maxWidth: 'clamp(320px, calc(828 / 1920 * 100vw), 828px)',
             }}
           >
-            <EyebrowPill>Let&rsquo;s Begin</EyebrowPill>
+            {/* `self-start` keeps the inline-flex pill from being stretched
+                by the flex-col parent. Same fix as "Why Now" / "Health
+                Coach vs AI Coach" pills elsewhere on the page. */}
+            <span className="self-start">
+              <EyebrowPill>Let&rsquo;s Begin</EyebrowPill>
+            </span>
 
             {/* Figma 58:1487 — 801×216, 3 lines, ~72/72 */}
             <h2

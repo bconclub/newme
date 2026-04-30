@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
@@ -75,6 +76,11 @@ const cardVariants = {
 }
 
 export default function HIWSuccessCards() {
+  // No tile is featured at rest — all three top-row items look like plain
+  // centered text. The glass card + white bloom + yellow title appear only
+  // when the user hovers a tile. Mouse-leave on the row clears state.
+  const [featuredIdx, setFeaturedIdx] = useState<number | null>(null)
+
   return (
     <section
       id="hiw-success"
@@ -88,6 +94,24 @@ export default function HIWSuccessCards() {
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1800 }}>
+        {/* Figma Vector 254 (58:1343) — full-width 1800px divider line at
+            y=5688, sits 120px above the "What It Includes?" eyebrow pill
+            (eyebrow at y=5808) and separates this section from "Why Early"
+            above. */}
+        <motion.div
+          aria-hidden
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6 }}
+          className="origin-left"
+          style={{
+            height: 1,
+            background: 'rgba(255,255,255,0.18)',
+            marginBottom: 'clamp(60px, calc(120 / 1920 * 100vw), 120px)',
+          }}
+        />
+
         {/* Header — centered */}
         <div className="flex flex-col items-center text-center">
           <motion.div
@@ -118,24 +142,22 @@ export default function HIWSuccessCards() {
           </motion.h2>
         </div>
 
-        {/* Top horizontal divider (Vector 254) */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6 }}
-          className="origin-left"
+        {/* Top row — 3 cards. Tic-tac-toe grid: only internal dividers
+            (vertical between columns + horizontal between rows). No outer
+            top/bottom/left/right borders. The "featured" treatment (glass
+            card + bloom + yellow title) follows the cursor; on mouse-leave
+            of the row state clears. */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-3"
           style={{
-            // Figma top divider y=5688 is above the heading. Place it just below.
+            minHeight: 'clamp(280px, calc(347 / 1920 * 100vw), 347px)',
             marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-            height: 1,
-            background: 'rgba(255,255,255,0.18)',
           }}
-        />
-
-        {/* Top row — 3 cards (middle is featured yellow card with image) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3" style={{ minHeight: 'clamp(280px, calc(347 / 1920 * 100vw), 347px)' }}>
-          {TOP_ROW.map((card, i) => (
+          onMouseLeave={() => setFeaturedIdx(null)}
+        >
+          {TOP_ROW.map((card, i) => {
+            const isFeatured = i === featuredIdx
+            return (
             <motion.div
               key={card.title}
               custom={i}
@@ -143,104 +165,153 @@ export default function HIWSuccessCards() {
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
               variants={cardVariants}
-              className={`relative flex ${
-                card.featured
-                  ? 'flex-row items-center'
-                  : 'flex-col justify-center'
+              whileHover={
+                isFeatured
+                  ? { scale: 1.02, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+                  : undefined
+              }
+              onMouseEnter={() => setFeaturedIdx(i)}
+              className={`relative overflow-hidden flex flex-col justify-center text-center items-center cursor-default ${
+                isFeatured ? 'group' : ''
               }`}
               style={{
-                padding: card.featured
-                  ? 'clamp(20px, calc(28 / 1920 * 100vw), 28px) clamp(20px, calc(36 / 1920 * 100vw), 36px)'
-                  : 'clamp(28px, calc(56 / 1920 * 100vw), 56px) clamp(20px, calc(40 / 1920 * 100vw), 40px)',
-                background: card.featured ? '#FEF272' : 'transparent',
-                borderRadius: card.featured
-                  ? 'clamp(20px, calc(28 / 1920 * 100vw), 28px)'
-                  : 0,
-                // Right-side vertical lines: between col 1-2 and col 2-3
+                padding:
+                  'clamp(28px, calc(56 / 1920 * 100vw), 56px) clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                // Tic-tac-toe pattern: only internal vertical dividers
+                // (between columns 1-2 and 2-3), nothing on the outer edges.
                 borderRight:
-                  !card.featured && i === 0
-                    ? '1px solid rgba(255,255,255,0.18)'
-                    : 'none',
-                borderLeft:
-                  !card.featured && i === 2
-                    ? '1px solid rgba(255,255,255,0.18)'
-                    : 'none',
+                  i < 2 ? '1px solid rgba(255,255,255,0.18)' : 'none',
               }}
             >
-              {card.featured ? (
+              {/*
+                Featured tile = Rectangle 127 (Figma 58:1329):
+                STRAIGHT-EDGED card (Figma export has no rounded class) with
+                a soft sage-green glass tint, a centered white Ellipse 55
+                (Figma 58:1330) bloom behind the title, plus a faint green
+                vignette around the edges. Grainy fractal-noise overlay
+                gives the surface its frosted texture.
+
+                Hover: the white bloom expands and the card lifts subtly,
+                giving the user the "slide into focus" feedback they asked
+                for.
+              */}
+              {isFeatured && (
                 <>
-                  {/* Featured card — text + circular image (Ellipse 55 271×271) */}
-                  <div className="flex flex-col flex-1">
-                    <h3
-                      className="font-[family-name:var(--font-bricolage)] text-[#173B39]"
-                      style={{
-                        fontWeight: 600,
-                        // Figma 430×96 → ~36/40 over 2 lines
-                        fontSize: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                        lineHeight: 1.18,
-                        letterSpacing: 0,
-                      }}
-                    >
-                      {card.title}
-                    </h3>
-                    <p
-                      className="font-[family-name:var(--font-urbanist)]"
-                      style={{
-                        fontWeight: 500,
-                        fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-                        lineHeight: 1.5,
-                        color: 'rgba(14,40,39,0.78)',
-                        marginTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                      }}
-                    >
-                      {card.body}
-                    </p>
-                  </div>
-                  {/* Circular image (Ellipse 55) */}
+                  {/* Ellipse 55 (Figma 58:1330) — sage GREEN bloom centered
+                      on the tile. Per the Figma screenshot the ellipse is
+                      green, not white. The diffused radial gives the
+                      "highlight" feel without showing a hard shape. */}
+                  <motion.div
+                    aria-hidden
+                    className="absolute pointer-events-none"
+                    initial={false}
+                    animate={{}}
+                    style={{
+                      // Figma 58:1330 — EXACT spec from MCP:
+                      //   Position: (833, 6082)  Size: 271 × 271
+                      //   Fill: #55936C (darker sage)
+                      //   Opacity: 100%   Effect: Layer blur (Gaussian)
+                      // Solid color + heavy blur replicates Figma's layer
+                      // blur. zIndex 3 so the green tint sits OVER the
+                      // glass card's white wash. The card has
+                      // overflow:hidden so the blur can't bleed outside.
+                      width: 'clamp(180px, calc(271 / 1920 * 100vw), 271px)',
+                      height: 'clamp(180px, calc(271 / 1920 * 100vw), 271px)',
+                      left: '50%',
+                      top: '50%',
+                      x: '-50%',
+                      y: '-50%',
+                      borderRadius: '50%',
+                      background: '#55936C',
+                      filter: 'blur(80px)',
+                      opacity: 1,
+                      zIndex: 3,
+                    }}
+                    whileHover={{}}
+                  />
+                  {/*
+                    Glass card per Figma 58:1329 EXACT recipe:
+                      backdrop-blur-[17.2px]
+                      border-2 border-solid border-white
+                      bg: linear-gradient(white 0.2 → 0) + solid white 0.30
+                      no border-radius (straight corners), no mask
+                  */}
                   <div
                     aria-hidden
-                    className="shrink-0 rounded-full overflow-hidden"
+                    className="absolute inset-0 pointer-events-none"
                     style={{
-                      width: 'clamp(110px, calc(180 / 1920 * 100vw), 180px)',
-                      height: 'clamp(110px, calc(180 / 1920 * 100vw), 180px)',
-                      marginLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-                      background: '#173B39',
-                      backgroundImage: "url('/dr-pal-portrait.png')",
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      boxShadow: 'inset 0 0 0 4px rgba(23,59,57,0.10)',
+                      // Glass card per Figma 58:1329 but with a much
+                      // lighter white wash so the sage-green Ellipse 55
+                      // (rendered ABOVE this layer at zIndex 3) can tint
+                      // the card properly. White-30 was drowning the green.
+                      background:
+                        'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.08)',
+                      backdropFilter: 'blur(17.2px)',
+                      WebkitBackdropFilter: 'blur(17.2px)',
+                      border: '1.5px solid rgba(255,255,255,0.30)',
+                      zIndex: 2,
+                    }}
+                  />
+                  {/* Grain overlay — fractal noise inside the card, soft-light
+                      blend at low opacity so it reads as frosted-glass
+                      texture, not visible dots. */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+                      backgroundSize: '220px 220px',
+                      mixBlendMode: 'soft-light',
+                      opacity: 0.55,
+                      zIndex: 3,
                     }}
                   />
                 </>
-              ) : (
-                <>
-                  <h3
-                    className="font-[family-name:var(--font-bricolage)] text-white"
-                    style={{
-                      fontWeight: 600,
-                      fontSize: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                      lineHeight: 1.18,
-                      letterSpacing: 0,
-                    }}
-                  >
-                    {card.title}
-                  </h3>
-                  <p
-                    className="font-[family-name:var(--font-urbanist)] text-white/65"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-                      lineHeight: 1.55,
-                      marginTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                      maxWidth: 'clamp(280px, calc(471 / 1920 * 100vw), 471px)',
-                    }}
-                  >
-                    {card.body}
-                  </p>
-                </>
               )}
+              <h3
+                className="relative font-[family-name:var(--font-bricolage)] transition-colors duration-300"
+                style={{
+                  // Figma 58:1333 — Bricolage SemiBold 40/48 #FEF272 centered
+                  // (when featured/hovered). Title size also bumps slightly
+                  // when promoted so the hovered tile stands out.
+                  fontWeight: 600,
+                  fontSize: isFeatured
+                    ? 'clamp(20px, calc(40 / 1920 * 100vw), 40px)'
+                    : 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
+                  lineHeight: isFeatured
+                    ? 'clamp(26px, calc(48 / 1920 * 100vw), 48px)'
+                    : 1.18,
+                  letterSpacing: 0,
+                  color: isFeatured ? '#FEF272' : '#ffffff',
+                  // Above bloom (3) so title sits cleanly on top of the green.
+                  zIndex: 4,
+                }}
+              >
+                {card.title}
+              </h3>
+              <p
+                className="relative font-[family-name:var(--font-urbanist)] transition-colors duration-300"
+                style={{
+                  fontWeight: isFeatured ? 500 : 400,
+                  fontSize: isFeatured
+                    ? 'clamp(14px, calc(24 / 1920 * 100vw), 24px)'
+                    : 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
+                  lineHeight: isFeatured
+                    ? 'clamp(18px, calc(32 / 1920 * 100vw), 32px)'
+                    : 1.55,
+                  color: isFeatured ? '#ffffff' : 'rgba(255,255,255,0.65)',
+                  marginTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                  maxWidth: 'clamp(280px, calc(471 / 1920 * 100vw), 471px)',
+                  // Above bloom (3) so body sits cleanly on top of the green.
+                  zIndex: 4,
+                }}
+              >
+                {card.body}
+              </p>
             </motion.div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Middle horizontal divider (Vector 246 + Vector 1342) */}
@@ -252,49 +323,116 @@ export default function HIWSuccessCards() {
           }}
         />
 
-        {/* Bottom row — 3 cards with vertical dividers (Vectors 244 + 245) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3" style={{ minHeight: 'clamp(220px, calc(280 / 1920 * 100vw), 280px)' }}>
-          {BOTTOM_ROW.map((card, i) => (
-            <motion.div
-              key={card.title}
-              custom={i + 3}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={cardVariants}
-              className="relative flex flex-col justify-center"
-              style={{
-                padding:
-                  'clamp(28px, calc(56 / 1920 * 100vw), 56px) clamp(20px, calc(40 / 1920 * 100vw), 40px)',
-                borderRight:
-                  i < 2 ? '1px solid rgba(255,255,255,0.18)' : 'none',
-              }}
-            >
-              <h3
-                className="font-[family-name:var(--font-bricolage)] text-white"
+        {/* Bottom row — 3 cards with vertical dividers (Vectors 244 + 245).
+            Same hover treatment as the top row: at rest it's plain centered
+            text, on hover the tile lights up with the green bloom + glass
+            card + yellow heading. State indices 3, 4, 5 follow on from the
+            top row's 0, 1, 2. */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-3"
+          style={{ minHeight: 'clamp(220px, calc(280 / 1920 * 100vw), 280px)' }}
+          onMouseLeave={() => setFeaturedIdx(null)}
+        >
+          {BOTTOM_ROW.map((card, i) => {
+            const tileIdx = i + 3
+            const isFeatured = tileIdx === featuredIdx
+            return (
+              <motion.div
+                key={card.title}
+                custom={tileIdx}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={cardVariants}
+                onMouseEnter={() => setFeaturedIdx(tileIdx)}
+                className="relative overflow-hidden flex flex-col justify-center text-center items-center cursor-default"
                 style={{
-                  fontWeight: 600,
-                  fontSize: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                  lineHeight: 1.18,
-                  letterSpacing: 0,
+                  padding:
+                    'clamp(28px, calc(56 / 1920 * 100vw), 56px) clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                  borderRight:
+                    i < 2 ? '1px solid rgba(255,255,255,0.18)' : 'none',
                 }}
               >
-                {card.title}
-              </h3>
-              <p
-                className="font-[family-name:var(--font-urbanist)] text-white/65"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-                  lineHeight: 1.55,
-                  marginTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                  maxWidth: 'clamp(280px, calc(471 / 1920 * 100vw), 471px)',
-                }}
-              >
-                {card.body}
-              </p>
-            </motion.div>
-          ))}
+                {isFeatured && (
+                  <>
+                    <motion.div
+                      aria-hidden
+                      className="absolute pointer-events-none"
+                      initial={false}
+                      animate={{}}
+                      style={{
+                        // Figma 58:1330 — Ellipse 55, 271×271 with SVG
+                        // inset[-36.9%] → effective bloom 471×471. zIndex 3
+                        // so it tints OVER the white-30 glass card.
+                        width: 'clamp(260px, calc(471 / 1920 * 100vw), 471px)',
+                        height: 'clamp(260px, calc(471 / 1920 * 100vw), 471px)',
+                        left: '50%',
+                        top: '50%',
+                        x: '-50%',
+                        y: '-50%',
+                        borderRadius: '50%',
+                        background:
+                          'radial-gradient(circle at 50% 50%, rgba(140, 185, 155, 0.85) 0%, rgba(110, 165, 132, 0.55) 35%, rgba(98, 150, 117, 0.22) 65%, rgba(98, 150, 117, 0) 88%)',
+                        filter: 'blur(28px)',
+                        zIndex: 3,
+                      }}
+                    />
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        // Lighter white wash so the green bloom (zIndex 3)
+                        // can tint through. Was white-30 which obscured it.
+                        background:
+                          'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.08)',
+                        backdropFilter: 'blur(17.2px)',
+                        WebkitBackdropFilter: 'blur(17.2px)',
+                        border: '1.5px solid rgba(255,255,255,0.30)',
+                        zIndex: 2,
+                      }}
+                    />
+                  </>
+                )}
+                <h3
+                  className="relative font-[family-name:var(--font-bricolage)] transition-colors duration-300"
+                  style={{
+                    fontWeight: 600,
+                    fontSize: isFeatured
+                      ? 'clamp(20px, calc(40 / 1920 * 100vw), 40px)'
+                      : 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
+                    lineHeight: isFeatured
+                      ? 'clamp(26px, calc(48 / 1920 * 100vw), 48px)'
+                      : 1.18,
+                    letterSpacing: 0,
+                    color: isFeatured ? '#FEF272' : '#ffffff',
+                    // Above bloom (3) so title sits cleanly on top of the green.
+                    zIndex: 4,
+                  }}
+                >
+                  {card.title}
+                </h3>
+                <p
+                  className="relative font-[family-name:var(--font-urbanist)] transition-colors duration-300"
+                  style={{
+                    fontWeight: isFeatured ? 500 : 400,
+                    fontSize: isFeatured
+                      ? 'clamp(14px, calc(24 / 1920 * 100vw), 24px)'
+                      : 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
+                    lineHeight: isFeatured
+                      ? 'clamp(18px, calc(32 / 1920 * 100vw), 32px)'
+                      : 1.55,
+                    color: isFeatured ? '#ffffff' : 'rgba(255,255,255,0.65)',
+                    marginTop: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                    maxWidth: 'clamp(280px, calc(471 / 1920 * 100vw), 471px)',
+                    // Above bloom (3) so body sits cleanly on top of the green.
+                    zIndex: 4,
+                  }}
+                >
+                  {card.body}
+                </p>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

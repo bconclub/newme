@@ -96,12 +96,12 @@ export default function HIWWhyEarly() {
             Why Starting Early Matters?
           </h2>
 
-          {/* Body 1 — Figma 58:2633: 933×68, ~24/34 over 2 lines */}
+          {/* Body 1 — Figma 58:2633 — Urbanist Medium 28/34 pure white */}
           <p
-            className="font-[family-name:var(--font-urbanist)] text-white/85"
+            className="font-[family-name:var(--font-urbanist)] text-white"
             style={{
               fontWeight: 500,
-              fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
+              fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
               lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
               marginTop: 'clamp(20px, calc(22 / 1920 * 100vw), 22px)',
               maxWidth: 'clamp(320px, calc(933 / 1920 * 100vw), 933px)',
@@ -112,12 +112,12 @@ export default function HIWWhyEarly() {
             harder to reverse.
           </p>
 
-          {/* Body 2 — Figma 58:2638: 933×170, ~22/34 over ~5 lines */}
+          {/* Body 2 — Figma 58:2638 — Urbanist Medium 28/34 pure white */}
           <p
-            className="font-[family-name:var(--font-urbanist)] text-white/65"
+            className="font-[family-name:var(--font-urbanist)] text-white"
             style={{
-              fontWeight: 400,
-              fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+              fontWeight: 500,
+              fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
               lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
               marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
               maxWidth: 'clamp(320px, calc(933 / 1920 * 100vw), 933px)',
@@ -152,22 +152,26 @@ export default function HIWWhyEarly() {
               padding:
                 'clamp(20px, calc(40 / 1920 * 100vw), 40px) clamp(24px, calc(48 / 1920 * 100vw), 48px)',
               borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+              // Figma 58:1304 / 58:2629 recipe: linear top→0 + 30% white base
+              // + 2px solid white-92 border + ~10px backdrop-blur. The "glow"
+              // sits as a soft top-edge highlight evenly across the box, not
+              // pinned to a corner.
               background:
-                'radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+                'radial-gradient(150% 60% at 50% 0%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
               backdropFilter: 'blur(10.25px)',
               WebkitBackdropFilter: 'blur(10.25px)',
-              border: '2px solid rgba(255,255,255,0.92)',
+              border: '1.5px solid rgba(255,255,255,0.30)',
               boxShadow:
-                'inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.05)',
+                'inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -1px 0 rgba(0,0,0,0.05)',
               maxWidth: 'clamp(320px, calc(864 / 1920 * 100vw), 864px)',
             }}
           >
             <p
               className="relative font-[family-name:var(--font-urbanist)] text-[#FEF272]"
               style={{
+                // Figma 58:2631 — Urbanist Medium 28/34 #FEF272
                 fontWeight: 500,
-                // Figma 590×102 → ~26/34 over 3 lines
-                fontSize: 'clamp(16px, calc(26 / 1920 * 100vw), 26px)',
+                fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
                 lineHeight: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
               }}
             >

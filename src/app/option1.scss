@@ -251,13 +251,34 @@ html:has(main.newme-page) .newme-header a {
   display: none;
 }
 
+/* Testimonial card hover state per Figma 1:6292 — flips from glass to
+   solid white. The default glass styling is set inline; these rules only
+   override on hover. */
+.testimonial-card:hover {
+  background-image: none !important;
+  background-color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0) !important;
+}
+.testimonial-card:hover .testimonial-tint {
+  opacity: 0;
+}
+.testimonial-card:hover .testimonial-quote {
+  color: #000000 !important;
+}
+.testimonial-card:hover .testimonial-name {
+  color: #000000 !important;
+}
+.testimonial-card:hover .testimonial-pathway {
+  color: #629675 !important;
+}
+
 html:has(main.newme-page) .newme-footer {
-  /* Footer needs a clearly darker bg than the page-bg ($pine-teal) so the
-     boundary between Testimonials and Footer is visible — otherwise the
-     rating card looks "fixed on the bottom" with no offset above the footer.
-     Start the gradient from a deeper teal than $pine-teal, so the footer
-     reads as its own distinct band. */
-  background: linear-gradient(180deg, #021f1d 0%, #011311 100%);
+  /* Figma 58:1492 — Rectangle 53 footer bg:
+     `bg-gradient-to-r from-[#173b39] to-[#0c2e2a]`
+     i.e. HORIZONTAL gradient left → right, from #173b39 to #0c2e2a.
+     (Was a vertical #021f1d → #011311 which read too dark and the wrong
+     direction.) */
+  background: linear-gradient(90deg, #173b39 0%, #0c2e2a 100%);
   border-top: 1px solid rgba(254, 242, 114, 0.18);
 }
 
@@ -334,6 +355,30 @@ main.newme-page .hiw-bg {
     -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
   }
 
+  /* Section-light accent — recreates Figma's hidden Vector 58:1237 at
+     (709.65, 6097) 962×962 that was producing the soft pale-sage bloom
+     centered on the "Designed To Help You Succeed" section. Without
+     this, the section reads flat dark green vs. Figma's diffused light.
+     Pale sage radial gradient with heavy blur for the diffused look. */
+  .hiw-section-light {
+    width: 962px;
+    height: 962px;
+    top: 6097px;
+    left: 709.65px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(210, 235, 220, 0.55) 0%,
+      rgba(170, 210, 185, 0.30) 35%,
+      rgba(120, 175, 145, 0.12) 65%,
+      rgba(98, 150, 117, 0) 90%
+    );
+    filter: blur(120px);
+    opacity: 0.85;
+    pointer-events: none;
+    position: absolute;
+  }
+
   /* Ellipse 34 — yellow accent on the RIGHT, behind the
      "A Unified System Of Care" section. */
   .hiw-ellipse-34 {
@@ -346,29 +391,44 @@ main.newme-page .hiw-bg {
     opacity: 0.5;
   }
 
-  /* Ellipse 39 — yellow accent on the LEFT, behind the
-     "Why Starting Early Matters" section. Center at artboard x=-108
-     so the lit halo bleeds in from the left edge into the heading area. */
+  /* Ellipse 39 — yellow halo on the LEFT, peaking at the boundary between
+     the Comparison panel and the "Why Starting Early Matters" section.
+     User asked for the glow to push towards bottom-right and be brighter at
+     the section start, so we shift the artboard position down (3809→4100)
+     and right (-555→-350), and use a radial gradient with a brighter core
+     so the glow reads strong without going washed-out. Bloom still extends
+     well past the 895 box via the gradient falloff + soft blur. */
   .hiw-ellipse-39 {
-    width: 1100px;
-    height: 1100px;
-    top: 3706px;
-    left: -658px;
-    background: #FEF272;
-    filter: blur(280px);
-    opacity: 0.5;
+    width: 895px;
+    height: 895px;
+    top: 4100px;
+    left: -350px;
+    background: radial-gradient(
+      circle at center,
+      rgba(254, 242, 114, 1) 0%,
+      rgba(254, 242, 114, 0.85) 18%,
+      rgba(254, 242, 114, 0.55) 35%,
+      rgba(254, 242, 114, 0.25) 55%,
+      rgba(254, 242, 114, 0.08) 75%,
+      rgba(254, 242, 114, 0) 90%
+    );
+    filter: blur(60px);
+    opacity: 0.80;
   }
 
-  /* Ellipse 67 — yellow accent center-left behind the
-     "Conditions addressed within the NewME System" section. */
+  /* Ellipse 67 — based on Figma 58:25 (x=182, y=7732, 895×895, #FEF272).
+     User asked for a noticeably larger glow, so the box is upsized to
+     1200×1200 with the center kept at Figma's (629.5, 8179.5) so the
+     bloom origin doesn't shift. Combined with blur 384 + opacity 1, the
+     warm halo now reads as a wide, bright diffused glow. */
   .hiw-ellipse-67 {
-    width: 1100px;
-    height: 1100px;
-    top: 7629px;
-    left: 79px;
+    width: 1200px;
+    height: 1200px;
+    top: 7820px;   /* shifted 240px down (20% of 1200) per user request */
+    left: 30px;    /* center x unchanged */
     background: #FEF272;
-    filter: blur(280px);
-    opacity: 0.45;
+    filter: blur(384px);
+    opacity: 1;
   }
 
   /* Monotone noise overlay on the green gradient washes — matches the

@@ -6,14 +6,19 @@ import Link from 'next/link'
 // Figma "Group 139" (1:2834) at y=9054, 1920×490. Figma Quick Links column
 // labels (1:3944): Home / How it Works / Your Phase of Care / Results /
 // Dr Pal & Team.
-const quickLinks: { label: string; href: string }[] = [
-  { label: 'Home', href: '/' },
-  { label: 'How it Works', href: '/how-it-works' },
+//
+// `live: true` means the page exists and the link is clickable. Non-live
+// items render grayed out with a no-op click and a small lighten-on-hover.
+type FooterLink = { label: string; href: string; live?: boolean }
+
+const quickLinks: FooterLink[] = [
+  { label: 'Home', href: '/', live: true },
+  { label: 'How it Works', href: '/how-it-works', live: true },
   { label: 'Your Phase of Care', href: '/pathways' },
   { label: 'Results', href: '#testimonials' },
   { label: 'Dr Pal & Team', href: '/care-team' },
 ]
-const resources: { label: string; href: string }[] = [
+const resources: FooterLink[] = [
   { label: 'Blog', href: '#' },
   { label: 'Podcast', href: '#' },
   { label: 'FAQ', href: '#' },
@@ -84,7 +89,7 @@ export default function Footer() {
               width={240}
               height={74}
               unoptimized
-              className="h-9 md:h-10 w-auto"
+              className="h-10 md:h-[52px] w-auto"
             />
             <p className="mt-4 text-white/65 text-[13px] leading-[1.6] max-w-[280px] font-[family-name:var(--font-poppins)]">
               A doctor-led clinical system for metabolic and gut regulation.
@@ -97,15 +102,18 @@ export default function Footer() {
             >
               Follow us on
             </p>
-            <div className="mt-3 flex items-center gap-3">
+            {/* Figma social icons (58:1493–58:1498): 24×24 each, white fill,
+                spaced 56px center-to-center → 32px gap between adjacent
+                icons. Order: FB, X, IG, LI, WA, YT. */}
+            <div className="mt-4 flex items-center gap-8">
               {socials.map((s) => (
                 <a
                   key={s.key}
                   href="#"
-                  aria-label={s.key}
-                  className="text-white/70 hover:text-white transition-colors"
+                  aria-label={s.label}
+                  className="text-white hover:text-[#FEF272] transition-colors"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d={s.path} />
                   </svg>
                 </a>
@@ -126,13 +134,24 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {quickLinks.map((l) => (
                 <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    className="text-white/65 hover:text-white font-[family-name:var(--font-poppins)] transition-colors"
-                    style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
-                  >
-                    {l.label}
-                  </Link>
+                  {l.live ? (
+                    <Link
+                      href={l.href}
+                      className="text-white/65 hover:text-white font-[family-name:var(--font-poppins)] transition-colors"
+                      style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
+                    >
+                      {l.label}
+                    </Link>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      title="Coming soon"
+                      className="text-white/30 hover:text-white/50 font-[family-name:var(--font-poppins)] transition-colors cursor-not-allowed select-none"
+                      style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
+                    >
+                      {l.label}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -151,13 +170,15 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {resources.map((l) => (
                 <li key={l.label}>
-                  <a
-                    href={l.href}
-                    className="text-white/65 hover:text-white font-[family-name:var(--font-poppins)] transition-colors"
+                  {/* All Resources items are unbuilt — render as disabled. */}
+                  <span
+                    aria-disabled="true"
+                    title="Coming soon"
+                    className="text-white/30 hover:text-white/50 font-[family-name:var(--font-poppins)] transition-colors cursor-not-allowed select-none"
                     style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
                   >
                     {l.label}
-                  </a>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -175,18 +196,45 @@ export default function Footer() {
             <p className="mt-4 text-white/65 text-[13px] leading-[1.55] font-[family-name:var(--font-poppins)] max-w-[280px]">
               Receive structured health insights from Dr Pal&apos;s clinical team. No spam. Just science.
             </p>
+            {/*
+              Figma 58:2604 — Subscribe pill: 417×64 outer container with
+              bg #629675 rounded-60. Inside on the right sits Figma 58:2606
+              — Subscribe button: 128×56 white pill inside the green pill.
+              The input is the green pill itself (placeholder text inside),
+              with the button overlapping the right side.
+            */}
             <form
-              className="mt-5 flex items-center gap-2"
+              className="mt-5 relative flex items-center"
               onSubmit={(e) => e.preventDefault()}
+              style={{
+                background: '#629675',
+                borderRadius: 9999,
+                height: 64,
+                paddingLeft: 24,
+                paddingRight: 4,
+                maxWidth: 417,
+              }}
             >
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 min-w-0 bg-white/5 border border-white/15 rounded-full px-4 py-2.5 text-[13px] text-white placeholder:text-white/40 font-[family-name:var(--font-poppins)] focus:outline-none focus:border-[#FEF272]/40"
+                className="flex-1 min-w-0 bg-transparent text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none"
+                style={{
+                  fontSize: 14,
+                  paddingRight: 8,
+                }}
               />
               <button
                 type="submit"
-                className="shrink-0 bg-white text-[#043C39] px-5 py-2.5 rounded-full text-[13px] font-medium font-[family-name:var(--font-urbanist)] hover:bg-white/90 transition-colors"
+                className="shrink-0 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors"
+                style={{
+                  height: 56,
+                  paddingLeft: 24,
+                  paddingRight: 24,
+                  borderRadius: 9999,
+                  fontSize: 14,
+                  fontWeight: 500,
+                }}
               >
                 Subscribe
               </button>
@@ -194,10 +242,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom legal row — Figma: divider y=9471 (h=0 1px line), legal
-            text y=9495. */}
+        {/* Bottom legal row — Figma 58:2612 uses a DASHED divider line, not
+            a solid one. Tailwind's border-dashed gives the right visual. */}
         <div
-          className="border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"
+          className="border-t border-dashed border-white/25 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"
           style={{
             marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
             paddingTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',

@@ -33,6 +33,11 @@ export default function HowItWorksPage() {
           <span className="hiw-ellipse hiw-ellipse-34" />
           <span className="hiw-ellipse hiw-ellipse-39" />
           <span className="hiw-ellipse hiw-ellipse-67" />
+          {/* Pale sage bloom centered on the "Designed To Help You Succeed"
+              section — recreates Figma's hidden Vector 58:1237 at
+              (709.65, 6097) 962×962 that was producing the missing white-ish
+              light diffused into this section's background. */}
+          <span className="hiw-section-light" />
         </div>
         <div className="newme-frame">
           <HIWHero />
