@@ -172,7 +172,21 @@ export default function HIWConditions() {
             </motion.p>
           </div>
 
-          {/* Pill grid — flex-wrap centered, 6 rows */}
+          {/*
+            Pill grid — desktop renders as a centered flex-wrap blob (max
+            1280px). On mobile (<md) the inner blob is forced to 640px
+            min-width and the outer wrapper scrolls horizontally — so the
+            user swipes left/right through a wider word-blob instead of
+            scrolling vertically through 7+ stacked rows. Mobile-only
+            scrollbar is hidden via the `condition-pills-scroll` class.
+          */}
+          <div
+            className="condition-pills-scroll relative md:overflow-visible overflow-x-auto -mx-5 md:mx-0"
+            style={{
+              marginTop: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
+              scrollbarWidth: 'none',
+            }}
+          >
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -181,12 +195,10 @@ export default function HIWConditions() {
               hidden: {},
               show: { transition: { staggerChildren: 0.025, delayChildren: 0.1 } },
             }}
-            className="relative flex flex-wrap justify-center"
+            className="relative flex flex-wrap justify-center min-w-[640px] md:min-w-0 mx-5 md:mx-auto"
             style={{
               gap: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
-              marginTop: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
               maxWidth: 'clamp(320px, calc(1280 / 1920 * 100vw), 1280px)',
-              marginInline: 'auto',
             }}
           >
             {CONDITIONS.map((condition) => (
@@ -234,6 +246,7 @@ export default function HIWConditions() {
               </motion.span>
             ))}
           </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -61,19 +61,20 @@ main.newme-page {
 
   /* Ellipse 28 — green gradient wash behind WhatIsNewMe/DrPal/Pillars.
      Figma: GRADIENT_LINEAR top=#629675 → bottom=#013E37, LAYER_BLUR 800.
-     Low opacity + no plateau in the mask (single linear fade from center
-     to transparent) means there's no defined "blob silhouette" — just a
-     gentle directional brightening that fades smoothly into the page bg. */
+     The mask uses a multi-stop falloff (instead of a single linear ramp)
+     so the eye can't lock onto a specific arc where alpha crosses some
+     threshold — boundaries dissolve into the page bg. Heavier blur
+     (440px, closer to Figma's σ=800) further smears the edge. */
   .newme-ellipse-28 {
     width: 4480px;
     height: 4480px;
     top: 1807px;
     left: -1306px;
     background: linear-gradient(180deg, #629675 0%, #013E37 100%);
-    filter: blur(280px);
-    opacity: 0.35;
-    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    filter: blur(440px);
+    opacity: 0.40;
+    mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
   }
 
   /* Ellipse 38 — green gradient wash behind Pathways/StructuredCare/Testimonials. */
@@ -83,10 +84,10 @@ main.newme-page {
     top: 6241px;
     left: -1306px;
     background: linear-gradient(180deg, #629675 0%, #013E37 100%);
-    filter: blur(280px);
-    opacity: 0.28;
-    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    filter: blur(440px);
+    opacity: 0.32;
+    mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
   }
 
   /* Ellipse 34 — #FEF272 accent, RIGHT side of Pillars section.
@@ -129,12 +130,12 @@ main.newme-page {
   }
 
   /* Monotone noise overlay on the green gradient washes only.
-     Soft-light blend over the green ellipse lightens the covered area, so we
-     need the mask to fade out gradually — otherwise the lit-up zone reads as
-     a distinct "white circle" against the page bg. We use an explicit circle
-     of 2400px radius (large enough to cover WhatIsNewMe / Testimonials which
-     sit ~2000-2400px from the ellipse centers) with a long feathered fade,
-     and keep opacity low so the noise reads as texture, not a glow. */
+     Grain is critical here: it breaks up the soft-edged ellipse boundary so
+     the eye can't lock onto a curved seam between wash and page bg. Plateau
+     extends to 65% of the box (≈1450px from center) so WhatIsNewMe and
+     equivalent off-center sections actually receive textured grain, then
+     fades softly to transparent. Higher opacity (0.45) gives the grain
+     enough amplitude to camouflage the gradient threshold. */
   .newme-noise {
     position: absolute;
     border-radius: 50%;
@@ -142,9 +143,9 @@ main.newme-page {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
     background-size: 220px 220px;
     mix-blend-mode: soft-light;
-    opacity: 0.32;
-    mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle 2400px at center, black 0%, black 35%, transparent 100%);
+    opacity: 0.45;
+    mask-image: radial-gradient(closest-side, black 0%, black 65%, rgba(0,0,0,0.6) 82%, rgba(0,0,0,0.25) 92%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 65%, rgba(0,0,0,0.6) 82%, rgba(0,0,0,0.25) 92%, transparent 100%);
   }
   .newme-noise-28 {
     width: 4480px;
@@ -251,6 +252,11 @@ html:has(main.newme-page) .newme-header a {
   display: none;
 }
 
+/* Same for the mobile-only horizontal scroll on Conditions pills. */
+.condition-pills-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Testimonial card hover state per Figma 1:6292 — flips from glass to
    solid white. The default glass styling is set inline; these rules only
    override on hover. */
@@ -328,17 +334,19 @@ main.newme-page .hiw-bg {
   }
 
   /* Ellipse 28 — green gradient wash behind Unified System / Comparison.
-     Same gradient/blur recipe as the home page top wash. */
+     Same gradient/blur recipe as the home page top wash. Multi-stop mask
+     with inner plateau + heavier blur (440px) keeps the ellipse boundary
+     dissolved into the page bg with no perceptible curved seam. */
   .hiw-ellipse-28 {
     width: 4480px;
     height: 4480px;
     top: 1807px;
     left: -1306px;
     background: linear-gradient(180deg, #629675 0%, #013E37 100%);
-    filter: blur(280px);
-    opacity: 0.35;
-    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    filter: blur(440px);
+    opacity: 0.40;
+    mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
   }
 
   /* Ellipse 38 — green gradient wash behind Designed To Help You Succeed
@@ -349,10 +357,10 @@ main.newme-page .hiw-bg {
     top: 6241px;
     left: -1306px;
     background: linear-gradient(180deg, #629675 0%, #013E37 100%);
-    filter: blur(280px);
-    opacity: 0.28;
-    mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(closest-side, black 0%, transparent 100%);
+    filter: blur(440px);
+    opacity: 0.32;
+    mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
   }
 
   /* Section-light accent — recreates Figma's hidden Vector 58:1237 at
@@ -445,9 +453,9 @@ main.newme-page .hiw-bg {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
     background-size: 220px 220px;
     mix-blend-mode: soft-light;
-    opacity: 0.32;
-    mask-image: radial-gradient(farthest-side, black 0%, rgba(0,0,0,0.85) 25%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.2) 80%, transparent 100%);
-    -webkit-mask-image: radial-gradient(farthest-side, black 0%, rgba(0,0,0,0.85) 25%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.2) 80%, transparent 100%);
+    opacity: 0.45;
+    mask-image: radial-gradient(closest-side, black 0%, black 65%, rgba(0,0,0,0.6) 82%, rgba(0,0,0,0.25) 92%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, black 0%, black 65%, rgba(0,0,0,0.6) 82%, rgba(0,0,0,0.25) 92%, transparent 100%);
   }
   .hiw-noise-28 {
     width: 4480px;
@@ -536,6 +544,72 @@ main.vc-page > .vc-bg {
   /* Beat Tailwind's `img { max-width: 100% }` reset so the ellipse SVGs
      can render at their full 6080px / 2495px / 1025px widths. */
   max-width: none;
+}
+
+/* CSS-driven ellipses for the Virtual Clinic page — replaces the pre-baked
+   SVG approach. The SVGs had visible curved seams where the σ=400 gaussian
+   halo terminated; the CSS recipe (multi-stop mask + heavier blur) lets the
+   boundary dissolve smoothly into the page bg, matching the home/HIW fix.
+   Positions use the raw artboard ellipse coords (no halo padding). */
+main.vc-page .vc-bg-ellipse {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Ellipse 28 — green wash. Figma 83:51 at artboard (-1306, 1807) 4480×4480,
+   linear-gradient(180deg, #629675 → #013E37), σ=400 blur. */
+main.vc-page .vc-bg-ellipse-28 {
+  width: 4480px;
+  height: 4480px;
+  left: -1306px;
+  top: 1807px;
+  background: linear-gradient(180deg, #629675 0%, #013E37 100%);
+  filter: blur(440px);
+  opacity: 0.42;
+  mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.2) 92%, transparent 100%);
+}
+
+/* Ellipse 34 — gold accent on the right. Figma 83:2430 at (1610, 1845)
+   895×981, fill #FEF272, σ=400. */
+main.vc-page .vc-bg-ellipse-34 {
+  width: 895px;
+  height: 981px;
+  left: 1610px;
+  top: 1845px;
+  background: #FEF272;
+  filter: blur(280px);
+  opacity: 0.5;
+}
+
+/* Ellipse 39 — tangerine bloom under the doctor card. Figma 83:2426 at
+   (721, 2726) 425×466, fill #FF8547, σ=150. */
+main.vc-page .vc-bg-ellipse-39 {
+  width: 425px;
+  height: 466px;
+  left: 721px;
+  top: 2726px;
+  background: #FF8547;
+  filter: blur(140px);
+  opacity: 0.55;
+}
+
+/* Soft monotone noise on the green wash to break up the boundary. */
+main.vc-page .vc-bg-noise-28 {
+  position: absolute;
+  width: 4480px;
+  height: 4480px;
+  left: -1306px;
+  top: 1807px;
+  border-radius: 50%;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  mix-blend-mode: soft-light;
+  opacity: 0.45;
+  mask-image: radial-gradient(closest-side, black 0%, black 65%, rgba(0,0,0,0.6) 82%, rgba(0,0,0,0.25) 92%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, black 0%, black 65%, rgba(0,0,0,0.6) 82%, rgba(0,0,0,0.25) 92%, transparent 100%);
 }
 
 /* Glass card — Who It's For + Doctor Card.

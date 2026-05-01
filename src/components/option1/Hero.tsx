@@ -214,7 +214,7 @@ export default function Hero() {
                   marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
                 }}
               >
-                How it works
+                Know more
               </motion.a>
             </div>
           </div>

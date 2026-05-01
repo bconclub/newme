@@ -2,7 +2,14 @@
 
 import Image from 'next/image'
 import { useState, useRef } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  useScroll,
+  useSpring,
+} from 'framer-motion'
 
 // ─────────────────────────────────────────────────────────────────────
 // Dial-style pillar carousel.
@@ -94,6 +101,30 @@ export default function Pillars() {
   const discAngle = useMotionValue(0)
   const stepRef = useRef(0)
 
+  // Scroll-driven subtle orbit drift. Spring-smoothed so the dial lags
+  // behind scroll, giving a gentle "settles into place" feel rather than
+  // tracking the wheel 1:1. Range ±22.5° = half a click on each side as
+  // the section transits from off-screen-bottom to off-screen-top, so the
+  // total visible motion across a full scroll-through is roughly one click.
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+  const smoothed = useSpring(scrollYProgress, {
+    stiffness: 50,
+    damping: 22,
+    mass: 0.8,
+  })
+  const scrollAngle = useTransform(smoothed, [0, 1], [-22.5, 22.5])
+  // Combine click-driven rotation with scroll-driven drift; children read
+  // this combined value for visual positioning. advance() still mutates
+  // discAngle directly so click navigation behaves exactly as before.
+  const totalAngle = useTransform(
+    [discAngle, scrollAngle],
+    ([d, s]: number[]) => d + s,
+  )
+
   const advance = (dir: 1 | -1) => {
     stepRef.current += dir
     const target = -stepRef.current * STEP_DEG
@@ -105,6 +136,7 @@ export default function Pillars() {
 
   return (
     <section
+      ref={sectionRef}
       id="pillars"
       style={{
         position: 'relative',
@@ -146,7 +178,7 @@ export default function Pillars() {
         <MobilePillars
           active={active}
           activeIdx={activeIdx}
-          discAngle={discAngle}
+          discAngle={totalAngle}
           onPrev={() => advance(-1)}
           onNext={() => advance(1)}
         />
@@ -157,7 +189,7 @@ export default function Pillars() {
         <DesktopStage
           activeIdx={activeIdx}
           active={active}
-          discAngle={discAngle}
+          discAngle={totalAngle}
           onPrev={() => advance(-1)}
           onNext={() => advance(1)}
         />

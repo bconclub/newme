@@ -167,15 +167,17 @@ export default function HIWComparison() {
           >
             {/* Left — What Most People Are Doing (Group 261). Figma 601×1202.
                 Right card is 158px taller and extends 79 above + 79 below this
-                one; left card is offset down 79 inside the row. */}
+                one; left card is offset down 79 inside the row.
+                NOTE: flex-grow ratios only on md+ — on mobile the column
+                stack uses natural content height (avoiding h=0 collapse
+                from flex-basis:0 in flex-col direction). */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6 }}
-              className="flex flex-col overflow-hidden md:mt-[clamp(40px,calc(79/1920*100vw),79px)] md:h-[clamp(680px,calc(1202/1920*100vw),1202px)]"
+              className="w-full flex flex-col overflow-hidden md:flex-[601_1_0] md:mt-[clamp(40px,calc(79/1920*100vw),79px)] md:h-[clamp(680px,calc(1202/1920*100vw),1202px)]"
               style={{
-                flex: '601 1 0',
                 borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
@@ -242,15 +244,15 @@ export default function HIWComparison() {
             {/* Right — The NewME Approach (Group 262). Figma 680×1360, top
                 aligned with row top so it extends 79px above the left card
                 and 79px below it. Overlaps the left card by 40px on its left
-                edge (left ends x=941, right starts x=901). */}
+                edge (left ends x=941, right starts x=901).
+                NOTE: same mobile fix — flex ratio only on md+. */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex flex-col overflow-hidden mt-4 md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
+              className="w-full flex flex-col overflow-hidden mt-4 md:flex-[680_1_0] md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
               style={{
-                flex: '680 1 0',
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 background: '#ffffff',
                 zIndex: 2,

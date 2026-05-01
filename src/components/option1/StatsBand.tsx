@@ -42,10 +42,10 @@ export default function StatsBand() {
           #193D3A, FULL card height (320).
         */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative bg-white"
           style={{
             backdropFilter: 'blur(10.25px)',
@@ -90,10 +90,10 @@ export default function StatsBand() {
 function StatCell({ stat, index }: { stat: Stat; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.5, delay: 0.06 * index }}
+      transition={{ duration: 0.4, delay: 0.06 * index }}
       // Figma cell vertical layout: 80 top + 160 content + 80 bottom = 320
       // (= card height). Padding-y replaces minHeight so the card is exactly
       // tall enough — no dead space at the bottom.

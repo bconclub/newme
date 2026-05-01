@@ -56,27 +56,14 @@ function VCBlobs() {
       className="vc-bg pointer-events-none absolute inset-x-0 top-0 z-0"
     >
       <div className="vc-frame">
-        {/* Ellipse 28 — green→pine wash */}
-        <img
-          src="/clinic/ellipse-28.svg"
-          alt=""
-          className="vc-ellipse"
-          style={{ left: -2106, top: 1007, width: 6080, height: 6080 }}
-        />
-        {/* Ellipse 34 — gold accent on right */}
-        <img
-          src="/clinic/ellipse-34.svg"
-          alt=""
-          className="vc-ellipse"
-          style={{ left: 810, top: 1045, width: 2495, height: 2581.94 }}
-        />
-        {/* Ellipse 39 — tangerine bloom under doctor card */}
-        <img
-          src="/clinic/ellipse-39.svg"
-          alt=""
-          className="vc-ellipse"
-          style={{ left: 421, top: 2426, width: 1025, height: 1066 }}
-        />
+        {/* CSS-driven ellipses (recipes in option1.scss). The pre-baked SVGs
+            had visible curved seams where the σ=400 halo terminated — the
+            CSS approach uses multi-stop masks + heavier blur so the wash
+            dissolves smoothly into the page bg. */}
+        <span className="vc-bg-ellipse vc-bg-ellipse-28" />
+        <span className="vc-bg-noise-28" />
+        <span className="vc-bg-ellipse vc-bg-ellipse-34" />
+        <span className="vc-bg-ellipse vc-bg-ellipse-39" />
       </div>
     </div>
   )
@@ -105,15 +92,15 @@ function VCHero() {
           background: '#0E2827',
         }}
       >
-        {/* Doctor photo — covers the right half of the card. */}
+        {/* Doctor photo — pre-cropped to 1880×694 (Figma 83:62). */}
         <div className="absolute inset-0">
           <Image
-            src="/clinic/doctor-hero.png"
+            src="/clinic/virtual-clinic-hero.webp"
             alt="NewME clinician on a virtual consultation"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 1880px"
-            className="object-cover object-right"
+            className="object-cover [object-position:65%_center] md:object-center"
           />
         </div>
 
@@ -239,7 +226,7 @@ function VCHero() {
                 paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
                 fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
                 lineHeight: 1,
-                marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
+                marginRight: 'clamp(-12px, calc(-9 / 1920 * 100vw), -9px)',
               }}
             >
               Book A Consultation
@@ -513,7 +500,7 @@ function VCDoctorCard() {
               fontWeight: 600,
               color: '#FEF272',
               fontSize: 'clamp(34px, calc(80 / 1920 * 100vw), 80px)',
-              lineHeight: 1.1,
+              lineHeight: 0.9,
               letterSpacing: '-0.015em',
               maxWidth: 'clamp(280px, calc(1011 / 1920 * 100vw), 1011px)',
             }}
