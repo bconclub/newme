@@ -177,8 +177,13 @@ export default function MediaArticles() {
               minHeight: 'clamp(420px, calc(637 / 1920 * 100vw), 637px)',
             }}
           >
-            {/* Image — 571×320 inside the 8px padded card */}
+            {/* Default image — top portion of card, 571×320 inside 8px padding.
+                Stays in normal flow so it pushes the text block to its
+                resting position. On hover the FILL layer below crossfades in
+                over the entire card; the text block does NOT move — only its
+                color transitions and the scrim provides legibility. */}
             <div
+              aria-hidden
               className="relative overflow-hidden bg-cover bg-center w-full"
               style={{
                 borderRadius: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
@@ -187,21 +192,21 @@ export default function MediaArticles() {
               }}
             />
 
-            {/* Hover overlay — same image but full-card, with dark bottom
-                gradient + white text. Crossfades over the default layout
-                so the card "opens up" gracefully on hover. */}
+            {/* Fill layer — absolute, full card area inside padding. Image
+                + bottom scrim fade in together on hover. Sits BEHIND the
+                text (lower z-index) so the text overlays it. */}
             <div
               aria-hidden
-              className="absolute opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 pointer-events-none overflow-hidden"
+              className="absolute pointer-events-none opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
               style={{
                 inset: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
                 borderRadius: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
                 backgroundImage: `url('${a.image}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                zIndex: 1,
               }}
             >
-              {/* Bottom-anchored dark gradient for legibility */}
               <div
                 className="absolute inset-0"
                 style={{
@@ -209,97 +214,25 @@ export default function MediaArticles() {
                     'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%)',
                 }}
               />
-              {/* Hover text block — same content, white tone */}
-              <div
-                className="absolute left-0 right-0 bottom-0 flex flex-col"
-                style={{
-                  padding: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-                  gap: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                }}
-              >
-                <h3
-                  className="font-[family-name:var(--font-bricolage)] text-white"
-                  style={{
-                    fontWeight: 600,
-                    fontSize: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                    lineHeight: 'clamp(22px, calc(32 / 1920 * 100vw), 32px)',
-                    letterSpacing: 0,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 4,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {a.title}
-                </h3>
-                <p
-                  className="font-[family-name:var(--font-urbanist)] text-white/85"
-                  style={{
-                    fontWeight: 400,
-                    fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-                    lineHeight: 'clamp(17px, calc(22 / 1920 * 100vw), 22px)',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {a.summary}
-                </p>
-                <div
-                  className="flex items-center"
-                  style={{
-                    marginTop: 'clamp(4px, calc(8 / 1920 * 100vw), 8px)',
-                    gap: 'clamp(10px, calc(12 / 1920 * 100vw), 12px)',
-                  }}
-                >
-                  <div
-                    className="rounded-full overflow-hidden bg-cover bg-center shrink-0 ring-2 ring-white/30"
-                    style={{
-                      width: 'clamp(36px, calc(44 / 1920 * 100vw), 44px)',
-                      height: 'clamp(36px, calc(44 / 1920 * 100vw), 44px)',
-                      backgroundImage: `url('${a.avatar}')`,
-                    }}
-                  />
-                  <div className="flex flex-col min-w-0">
-                    <span
-                      className="font-[family-name:var(--font-bricolage)] text-white truncate"
-                      style={{
-                        fontWeight: 500,
-                        fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-                        lineHeight: 1,
-                      }}
-                    >
-                      {a.authorName}
-                    </span>
-                    <span
-                      className="font-[family-name:var(--font-bricolage)] text-white/80"
-                      style={{
-                        fontWeight: 300,
-                        fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
-                        lineHeight: 1,
-                        marginTop: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
-                      }}
-                    >
-                      {a.city + ' ' + a.date}
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* Text block — 24px below image, 32px inset L/R inside card */}
+            {/* Text block — single instance, in normal flow below the
+                default image. Position never changes. Only the colors
+                transition on group-hover so the same text reads on the
+                white default and the dark hover image. */}
             <div
-              className="flex flex-col flex-1"
+              className="relative flex flex-col flex-1"
               style={{
+                zIndex: 2,
                 paddingLeft: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
                 paddingRight: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
                 paddingTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
                 paddingBottom: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
               }}
             >
-              {/* Title — Bricolage SemiBold 28/32 #013E37, 4-line clamp */}
+              {/* Title — #013E37 → white on hover */}
               <h3
-                className="font-[family-name:var(--font-bricolage)] text-[#013E37]"
+                className="font-[family-name:var(--font-bricolage)] text-[#013E37] transition-colors duration-500 ease-out group-hover:text-white"
                 style={{
                   fontWeight: 600,
                   fontSize: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
@@ -314,9 +247,9 @@ export default function MediaArticles() {
                 {a.title}
               </h3>
 
-              {/* Summary — Urbanist Regular 20/24 #444 — single line truncate */}
+              {/* Summary — #444 → white/85 on hover */}
               <p
-                className="font-[family-name:var(--font-urbanist)] text-[#444]"
+                className="font-[family-name:var(--font-urbanist)] text-[#444] transition-colors duration-500 ease-out group-hover:text-white/85"
                 style={{
                   fontWeight: 400,
                   fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
@@ -339,7 +272,7 @@ export default function MediaArticles() {
                 }}
               >
                 <div
-                  className="rounded-full overflow-hidden bg-cover bg-center shrink-0"
+                  className="rounded-full overflow-hidden bg-cover bg-center shrink-0 ring-0 ring-white/30 transition-[box-shadow] duration-500 ease-out group-hover:ring-2"
                   style={{
                     width: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
                     height: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
@@ -348,9 +281,9 @@ export default function MediaArticles() {
                   aria-hidden
                 />
                 <div className="flex flex-col min-w-0">
-                  {/* Name — Bricolage Regular 20/20 black */}
+                  {/* Name — black → white on hover */}
                   <span
-                    className="font-[family-name:var(--font-bricolage)] text-black truncate"
+                    className="font-[family-name:var(--font-bricolage)] text-black transition-colors duration-500 ease-out group-hover:text-white truncate"
                     style={{
                       fontWeight: 400,
                       fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
@@ -359,9 +292,9 @@ export default function MediaArticles() {
                   >
                     {a.authorName}
                   </span>
-                  {/* Date — Bricolage Regular 16 black + Light 16 #333 */}
+                  {/* Date — city black + date #333; both → white/80 on hover */}
                   <span
-                    className="font-[family-name:var(--font-bricolage)] text-black"
+                    className="font-[family-name:var(--font-bricolage)] text-black transition-colors duration-500 ease-out group-hover:text-white/80"
                     style={{
                       fontWeight: 400,
                       fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
@@ -370,7 +303,10 @@ export default function MediaArticles() {
                     }}
                   >
                     {a.city + ' '}
-                    <span style={{ fontWeight: 300, color: '#333' }}>
+                    <span
+                      className="text-[#333] transition-colors duration-500 ease-out group-hover:text-white/80"
+                      style={{ fontWeight: 300 }}
+                    >
                       {a.date}
                     </span>
                   </span>
