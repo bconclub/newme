@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
 type Article = {
+  slug: string
   image: string
   title: string
   summary: string
@@ -31,6 +33,7 @@ const AVATAR = {
 
 const articles: Article[] = [
   {
+    slug: 'gastroenterologist-key-mistake-weight-loss',
     image: IMG.weightLoss,
     title:
       'Make sure you don’t repeat it’: Gastroenterologist reveals key mistake made during weight loss journey',
@@ -41,6 +44,7 @@ const articles: Article[] = [
     date: 'Apr 11, 2026 05:02 PM',
   },
   {
+    slug: 'dr-pal-stress-management-habits',
     image: IMG.media03,
     title:
       'Stop blaming your boss: Dr. Pal’s 5 stress management habits for working professionals to reclaim mental peace',
@@ -51,6 +55,7 @@ const articles: Article[] = [
     date: 'Apr 11, 2026 05:02 PM',
   },
   {
+    slug: 'gastroenterologist-warns-aging-gut',
     image: IMG.virtualClinic,
     title:
       'Gastroenterologist warns against common habit that ages the gut, and one simple solution for the problem',
@@ -61,6 +66,7 @@ const articles: Article[] = [
     date: 'Dec 19, 2025 01:11 pm',
   },
   {
+    slug: 'gastroenterologist-sleep-not-optional',
     image: IMG.weightLoss,
     title:
       'Gastroenterologist explains why sleep is not optional: ‘It is an active phase for…’',
@@ -71,6 +77,7 @@ const articles: Article[] = [
     date: 'Jan 11, 2026 04:24',
   },
   {
+    slug: 'gastroenterologist-7-daily-habits-block-weight-loss',
     image: IMG.media03,
     title:
       'Gastroenterologist reveals 7 daily habits that block weight loss, explains how eating less is a bad strategy',
@@ -81,6 +88,7 @@ const articles: Article[] = [
     date: 'Dec 20, 2025 08:17',
   },
   {
+    slug: 'gastroenterologist-classic-breakfasts-harm-gut',
     image: IMG.virtualClinic,
     title:
       'Gastroenterologist reveals 5 classic breakfasts that secretly harm the gut: Bread and butter, instant noodles, and more',
@@ -164,7 +172,7 @@ export default function MediaArticles() {
       >
         {articles.map((a, i) => (
           <motion.article
-            key={i}
+            key={a.slug}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -177,6 +185,15 @@ export default function MediaArticles() {
               minHeight: 'clamp(420px, calc(637 / 1920 * 100vw), 637px)',
             }}
           >
+            {/* Stretched link — covers the entire card, accessible label,
+                doesn't trap text selection thanks to z-index 10 + flow content
+                kept above at z-index 2 (this overlays nothing interactive). */}
+            <Link
+              href={`/media/${a.slug}`}
+              aria-label={a.title}
+              className="absolute inset-0 z-10"
+            />
+
             {/* Default image — top portion of card, 571×320 inside 8px padding.
                 Stays in normal flow so it pushes the text block to its
                 resting position. On hover the FILL layer below crossfades in

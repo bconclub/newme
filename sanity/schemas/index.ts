@@ -1,5 +1,6 @@
 import type { SchemaTypeDefinition } from "sanity";
 
+import article from "./article";
 import author from "./author";
 import faq from "./faq";
 import hero from "./hero";
@@ -9,6 +10,7 @@ import teamMember from "./teamMember";
 import testimonial from "./testimonial";
 
 export const schemaTypes: SchemaTypeDefinition[] = [
+  article,
   post,
   author,
   testimonial,

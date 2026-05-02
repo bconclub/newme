@@ -1,5 +1,47 @@
 import { groq } from "next-sanity";
 
+// Media articles ----------------------------------------------------------
+
+export const articleSlugsQuery = groq`
+  *[_type == "article" && defined(slug.current)][].slug.current
+`;
+
+export const articlesQuery = groq`
+  *[_type == "article" && defined(slug.current)] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    summary,
+    subtitle,
+    publishedAt,
+    city,
+    heroImage,
+    "author": author->{ name, role, avatar }
+  }
+`;
+
+export const articleBySlugQuery = groq`
+  *[_type == "article" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    summary,
+    subtitle,
+    publishedAt,
+    city,
+    heroImage,
+    intro,
+    sectionTitle,
+    sectionLead,
+    habits,
+    disclaimer,
+    tags,
+    "author": author->{ name, role, avatar, bio }
+  }
+`;
+
+// Blog posts --------------------------------------------------------------
+
 export const postsQuery = groq`
   *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
     _id,
