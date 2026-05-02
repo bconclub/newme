@@ -1,12 +1,17 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
 type Stat = {
   value: string
   suffix: string
   label: string
 }
+
+const parseValue = (v: string) => parseInt(v.replace(/,/g, ''), 10)
+const formatValue = (n: number, original: string) =>
+  original.includes(',') ? n.toLocaleString('en-US') : String(n)
 
 const stats: Stat[] = [
   { value: '6,000', suffix: '+', label: 'Clients with at least one or\nmore clinical outcomes' },
@@ -88,8 +93,59 @@ export default function StatsBand() {
 }
 
 function StatCell({ stat, index }: { stat: Stat; index: number }) {
+  const target = parseValue(stat.value)
+  // Tick only the last ~1.2% (min 8) so the visible motion is the last
+  // couple of digits — no zero-to-target ramp, no layout shift.
+  const delta = Math.max(Math.round(target * 0.012), 8)
+  const from = Math.max(target - delta, 0)
+  const [value, setValue] = useState(from)
+  const ref = useRef<HTMLDivElement>(null)
+  const startedRef = useRef(false)
+
+  useEffect(() => {
+    if (startedRef.current) return
+    const el = ref.current
+    if (!el) return
+    const startAnim = () => {
+      if (startedRef.current) return
+      startedRef.current = true
+      const duration = 1000 + index * 80
+      const t0 = performance.now()
+      const tick = (t: number) => {
+        const p = Math.min((t - t0) / duration, 1)
+        const eased = 1 - Math.pow(1 - p, 3)
+        setValue(Math.round(from + (target - from) * eased))
+        if (p < 1) requestAnimationFrame(tick)
+        else setValue(target)
+      }
+      requestAnimationFrame(tick)
+    }
+    // Already in view at mount? Fire now. Otherwise wait until 40% visible.
+    const rect = el.getBoundingClientRect()
+    const inView =
+      rect.top < window.innerHeight * 0.9 && rect.bottom > window.innerHeight * 0.1
+    if (inView) {
+      startAnim()
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+            startAnim()
+            io.disconnect()
+          }
+        }
+      },
+      { threshold: [0, 0.4, 1] }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [from, target, index])
+
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.4 }}
@@ -116,9 +172,11 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
             fontSize: 'clamp(28px, calc(80 / 1920 * 100vw), 80px)',
             lineHeight: 'calc(72 / 80)',
             letterSpacing: 0,
+            // Fixed digit width keeps the text from shifting as digits change.
+            fontVariantNumeric: 'tabular-nums',
           }}
         >
-          {stat.value}
+          {formatValue(value, stat.value)}
         </span>
         <span
           className="text-[#FF8547]"
