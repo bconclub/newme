@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { articleCards } from '@/lib/articles'
-import { client } from '@/lib/sanity/client'
-import { articlesQuery } from '@/lib/sanity/queries'
 
 export const metadata: Metadata = {
   title: "Admin — Pages | Dr. Pal's NewME",
@@ -37,14 +35,23 @@ const STATIC_PAGES: Page[] = [
 ]
 
 export default async function AdminPage() {
-  // Pull Sanity articles; fall back to in-code list if Sanity isn't reachable.
+  // Only attempt a Sanity fetch when the project env vars are present.
+  // We use a dynamic import so the Sanity client module is never evaluated
+  // at build time on environments that don't have the vars configured —
+  // a top-level import would throw inside env.ts before any try/catch runs.
   let cmsArticles: SanityArticle[] = []
   let sanityOk = false
-  try {
-    cmsArticles = await client.fetch<SanityArticle[]>(articlesQuery)
-    sanityOk = true
-  } catch {
-    // Studio isn't connected yet — leave cmsArticles empty.
+  if (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+    try {
+      const [{ client }, { articlesQuery }] = await Promise.all([
+        import('@/lib/sanity/client'),
+        import('@/lib/sanity/queries'),
+      ])
+      cmsArticles = await client.fetch<SanityArticle[]>(articlesQuery)
+      sanityOk = true
+    } catch {
+      // Sanity not reachable (CORS / token missing) — leave cmsArticles empty.
+    }
   }
 
   // Merge CMS + in-code articles, dedup by slug. CMS wins on title/source.
