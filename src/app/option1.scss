@@ -246,6 +246,16 @@ html:has(main.newme-page) .newme-header a {
   margin-top: clamp(12px, calc(16 / 1920 * 100vw), 16px);
 }
 
+/* DrPal photo column: drop right padding at lg+ so the photo butts cleanly
+   against the content column (Figma desktop spec). On mobile/tablet the
+   columns stack and the inline symmetric padding stays so the photo doesn't
+   bleed to the card's right edge. */
+@media (min-width: 1024px) {
+  .newme-drpal-photo {
+    padding-right: 0 !important;
+  }
+}
+
 /* Hide the scrollbar on the mobile testimonials carousel — Firefox uses
    scrollbar-width:none (set inline), this is the WebKit/Chromium half. */
 .testimonial-carousel::-webkit-scrollbar {

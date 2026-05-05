@@ -64,7 +64,9 @@ export default function Header() {
               height={130}
               priority
               unoptimized
-              className="h-10 md:h-12 w-auto block"
+              /* h-10 (40px) on mobile fell below the 44px tap-target floor.
+                 h-11 = 44px exactly, then h-12 (48px) at md+ matches Figma. */
+              className="h-11 md:h-12 w-auto block"
             />
           </Link>
 
@@ -125,7 +127,9 @@ export default function Header() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-2"
+            /* min-h/w 44 to clear the WCAG tap-target floor (was 40×34
+               from p-2 + 6×0.5 stack which is unreachable for big thumbs). */
+            className="lg:hidden flex flex-col items-center justify-center gap-1.5 min-w-[44px] min-h-[44px]"
             aria-label="Toggle menu"
           >
             <motion.span

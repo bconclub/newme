@@ -66,12 +66,15 @@ export default function DrPal() {
           {/* ── Photo column ─────────────────────────────────────────── */}
           {/* Figma: 667×1004 portrait with rounded corners. Photo padded
               60px from card top/left/bottom. No fade — clean rectangular
-              photo with a subtle grain matching the card. */}
+              photo with a subtle grain matching the card.
+              Mobile (single-column stack) gets symmetric padding so the
+              photo doesn't bleed to the right edge. The .newme-drpal-photo
+              class drops paddingRight to 0 at lg+ where the columns sit
+              side-by-side and the photo wants to butt against the content. */}
           <div
-            className="relative min-h-[360px] lg:min-h-full"
+            className="newme-drpal-photo relative min-h-[360px] lg:min-h-full"
             style={{
               padding: 'clamp(16px, calc(60 / 1920 * 100vw), 60px)',
-              paddingRight: 0,
             }}
           >
             <div

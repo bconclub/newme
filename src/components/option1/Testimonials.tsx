@@ -16,7 +16,7 @@ const testimonials = [
   {
     quote:
       'In 2 years, my HbA1c dropped from 6.1 to 5.7, LDL from 146 to 86, and my liver size reduced from 16.7 cm to 14.0 cm. I feel healthier and more confident than ever.',
-    name: 'Kat',
+    name: 'Karan',
     pathway: 'Sustain Pathway',
     avatar: '/testimonials/kat.jpg',
   },

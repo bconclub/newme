@@ -397,10 +397,14 @@ function PageBtn({
   // bg + #E9E9E9 1px border + #313131 text. From Figma 100:3383..3388.
   const base =
     'inline-flex items-center justify-center font-[family-name:var(--font-urbanist)] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+  // Tap-target floor: page-number buttons must stay ≥44×44 even inside a
+  // flex row that might otherwise shrink them. minWidth + boxSizing pin
+  // the button to a minimum 44 and prevent the inline padding from being
+  // counted as content-area space.
   const sizing =
     variant === 'ctrl'
-      ? { gap: 6, height: 48, padding: '10px 16px', fontSize: 18, fontWeight: 400 as const }
-      : { width: 44, height: 48, padding: '10px 14px', fontSize: 18, fontWeight: active ? 700 : 400 as const }
+      ? { gap: 6, height: 48, padding: '10px 16px', fontSize: 18, fontWeight: 400 as const, minHeight: 44, boxSizing: 'border-box' as const }
+      : { width: 48, minWidth: 48, height: 48, padding: '10px 14px', fontSize: 18, fontWeight: active ? 700 : 400 as const, boxSizing: 'border-box' as const, flex: '0 0 auto' }
   const colorStyles = active
     ? { background: '#013E37', color: '#FFFFFF', border: '0' }
     : { background: '#FFFFFF', color: '#313131', border: '1px solid #E9E9E9' }

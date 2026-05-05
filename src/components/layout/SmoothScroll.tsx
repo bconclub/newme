@@ -19,11 +19,20 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       (navigator as Navigator & { webdriver?: boolean }).webdriver === true
     if (reduced || headless) return
 
+    // Lerp mode (not duration/easing) — frame-based linear interpolation that
+    // follows input velocity directly. Feels physics-based: scroll fast and it
+    // moves fast; stop and it settles quickly. Removes the long exponential
+    // tail of duration:1.2s that read as "lazy."
+    //
+    // lerp 0.12 sits a touch snappier than Lenis's 0.1 default. wheelMultiplier
+    // 1.15 sharpens wheel response without overshooting; touchMultiplier 1.8
+    // keeps mobile feeling immediate without being twitchy.
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
+      lerp: 0.12,
       smoothWheel: true,
+      wheelMultiplier: 1.15,
+      touchMultiplier: 1.8,
+      orientation: 'vertical',
     })
 
     lenisRef.current = lenis

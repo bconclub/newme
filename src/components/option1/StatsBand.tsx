@@ -178,10 +178,13 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
         >
           {formatValue(value, stat.value)}
         </span>
+        {/* Suffix (+, %, +, Kg) — per client feedback, bumped from Poppins
+            Light 300 to SemiBold 600 so the unit reads with stronger emphasis
+            against the large numeral. */}
         <span
           className="text-[#FF8547]"
           style={{
-            fontWeight: 300,
+            fontWeight: 600,
             fontSize: 'clamp(14px, calc(40 / 1920 * 100vw), 40px)',
             lineHeight: 'calc(32 / 40)',
             marginLeft: 'clamp(3px, calc(8 / 1920 * 100vw), 8px)',
@@ -190,13 +193,16 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
           {stat.suffix}
         </span>
       </p>
-      {/* Label — Urbanist Medium 24px lh 28 black, centered, 32px above. */}
+      {/* Label — Urbanist Medium 24px lh 28 black, centered, 32px above.
+          Mobile floor 12px (was 11) so the sub-label clears the legibility
+          floor on phones. Line-height floor bumped to 16px to keep the
+          two-line label from cramping. */}
       <p
         className="font-[family-name:var(--font-urbanist)] whitespace-pre-line text-center text-black"
         style={{
           fontWeight: 500,
-          fontSize: 'clamp(11px, calc(24 / 1920 * 100vw), 24px)',
-          lineHeight: 'clamp(14px, calc(28 / 1920 * 100vw), 28px)',
+          fontSize: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+          lineHeight: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
           marginTop: 'clamp(8px, calc(32 / 1920 * 100vw), 32px)',
         }}
       >

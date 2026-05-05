@@ -101,7 +101,11 @@ export default function Hero() {
                  the top with a big empty space below. Desktop value stays
                  anchored to the Figma 343px spec. */
               paddingTop: 'clamp(280px, calc(343 / 1920 * 100vw), 343px)',
-              paddingLeft: 'clamp(40px, calc(100 / 1920 * 100vw), 100px)',
+              /* Mobile floor 24px (was 40px) so the heading anchors to the
+                 left edge of the card rather than reading as centered between
+                 the card edge and the doctor portrait. Desktop spec stays at
+                 the Figma 100px. */
+              paddingLeft: 'clamp(24px, calc(100 / 1920 * 100vw), 100px)',
               paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
               paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
               maxWidth: 'clamp(360px, calc(910 / 1920 * 100vw), 910px)', // 100 left pad + 810 content

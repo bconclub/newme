@@ -75,7 +75,10 @@ const tabGroups = [
   },
 ]
 
-const TAB_MS = 4000
+// Auto-advance interval. 4s was too quick to read each pathway's body copy
+// and CTA — bumped to 8s per client feedback so users can actually scan
+// what's on screen before the next tab takes over.
+const TAB_MS = 8000
 const ease = [0.22, 1, 0.36, 1] as const
 
 export default function Pathways() {
@@ -261,12 +264,14 @@ export default function Pathways() {
                         className="rounded-full font-[family-name:var(--font-bricolage)] inline-flex items-center shrink-0"
                         style={{
                           fontWeight: 400,
-                          fontSize: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                          /* Mobile floor 12px (was 10) so the duration badge
+                             clears the legibility floor on phones. */
+                          fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
                           background: '#e3ffed',
                           color: '#162e20',
                           paddingLeft: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
                           paddingRight: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
-                          height: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
+                          height: 'clamp(24px, calc(34 / 1920 * 100vw), 34px)',
                         }}
                       >
                         {card.duration}

@@ -19,6 +19,7 @@ import EyebrowPill from './EyebrowPill'
  */
 
 // Final consolidated list, ordered as per Figma rows.
+// Per client feedback: Fibromyalgia and Weight Gain removed; Grave's Disease added.
 const CONDITIONS = [
   // Row 1 (5)
   'Acid reflux',
@@ -26,12 +27,12 @@ const CONDITIONS = [
   'Bloating and Burping',
   'Chronic Gastritis',
   'Crohn’s Disease',
-  // Row 2 (5)
+  // Row 2 (5) — Fibromyalgia removed; replaced with Grave's Disease.
   'Gestational Diabetes',
   'Type-2 Diabetes and Prediabetes',
   'Endometriosis',
   'Fatty Liver',
-  'Fibromyalgia',
+  'Grave’s Disease',
   // Row 3 (5)
   'Fissures, Piles, Anal Erosions',
   'Food Intolerances',
@@ -52,8 +53,7 @@ const CONDITIONS = [
   'Thyroid Conditions',
   'Thyroid Nodules',
   'Ulcerative Colitis',
-  // Row 6 (1 — Weight Gain; second pill is dup'd in Figma source)
-  'Weight Gain',
+  // (Weight Gain removed per client feedback.)
 ]
 
 export default function HIWConditions() {

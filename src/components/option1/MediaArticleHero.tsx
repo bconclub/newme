@@ -198,11 +198,13 @@ export default function MediaArticleHero({ article }: { article: Article }) {
               >
                 {article.authorName}
               </span>
+              {/* Mobile floor 12px (was 11) so the city + date line clears
+                  the legibility floor on phones. */}
               <span
                 className="font-[family-name:var(--font-urbanist)] text-white/70"
                 style={{
                   fontWeight: 300,
-                  fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
+                  fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
                   lineHeight: 1.1,
                   marginTop: 6,
                 }}
