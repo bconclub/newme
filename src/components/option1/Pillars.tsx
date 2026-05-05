@@ -25,52 +25,63 @@ import {
 
 type Pillar = { name: string; desc: string; icon: string }
 
+// ── 9-Pillar order per brand sheet ────────────────────────────────────
+// Fitness → Mobility → Sleep → Circadian → Stress →
+// Digestion → Metabolism → Community → Nutrition
+//
+// Icon filenames use the semantic names the client renamed them to.
+// (metabolism.svg + fitness.svg are new additions to the icons folder.)
 const PILLARS: Pillar[] = [
   {
-    name: 'Circadian Rhythm',
-    desc: "Regulates your body's internal clock — energy, metabolism, recovery.",
-    icon: '/icons/pillar-1.svg',
+    name: 'Fitness',
+    desc: 'Builds strength, metabolic efficiency, and long-term health.',
+    icon: '/icons/fitness.svg',
+  },
+  {
+    name: 'Mobility',
+    desc: 'Maintains joint range, functional movement, and physical independence.',
+    icon: '/icons/mobility.svg',
   },
   {
     name: 'Sleep',
     desc: 'Regulates hormones, recovery, and insulin sensitivity overnight.',
-    icon: '/icons/pillar-2.svg',
+    icon: '/icons/sleep.svg',
+  },
+  {
+    name: 'Circadian Rhythm',
+    desc: "Regulates your body's internal clock — energy, metabolism, recovery.",
+    icon: '/icons/circadian.svg',
   },
   {
     name: 'Stress',
     desc: 'Impacts physical, mental, and cardiovascular health.',
-    icon: '/icons/pillar-3.svg',
+    icon: '/icons/stress.svg',
   },
   {
     name: 'Digestion',
     desc: 'Determines how your body absorbs and responds to nutrition.',
-    icon: '/icons/pillar-4.svg',
+    icon: '/icons/digestion.svg',
   },
   {
-    name: 'Nutrition',
-    desc: 'Fuels metabolic stability and gut repair through personalised protocols.',
-    icon: '/icons/pillar-5.svg',
-  },
-  {
-    name: 'Fitness',
-    desc: 'Builds strength, metabolic efficiency, and long-term health.',
-    icon: '/icons/pillar-6.svg',
-  },
-  {
-    name: 'Physical Therapy',
-    desc: 'Ensures safe movement, injury prevention, and body capacity.',
-    icon: '/icons/pillar-7.svg',
+    name: 'Metabolism',
+    desc: 'The engine behind energy production, weight regulation, and cellular repair.',
+    icon: '/icons/metabolism.svg',
   },
   {
     name: 'Community',
     desc: 'Shared accountability and peer support that sustains change.',
-    icon: '/icons/pillar-8.svg',
+    icon: '/icons/community.svg',
+  },
+  {
+    name: 'Nutrition',
+    desc: 'Fuels metabolic stability and gut repair through personalised protocols.',
+    icon: '/icons/nutrition.svg',
   },
 ]
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
-const N = PILLARS.length // 8
-const STEP_DEG = 360 / N // 45°
+const N = PILLARS.length // 9
+const STEP_DEG = 360 / N // 40°
 
 // Desktop orbit radius in artboard px (scales with orbit anchor's CSS scale)
 const ORBIT_R = 440
@@ -156,7 +167,7 @@ export default function Pillars() {
             letterSpacing: 0,
           }}
         >
-          The 8 Pillars of Health
+          The 9 Pillars of Health
         </h2>
         <p
           className="text-white font-[family-name:var(--font-urbanist)]"
@@ -167,9 +178,9 @@ export default function Pillars() {
             marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          Your body comprises eight different systems working cohesively to
+          Your body comprises nine interconnected systems working cohesively to
           ensure that your body runs smoothly. The NewME framework is designed
-          keeping these 8 pillars in mind.
+          keeping these 9 pillars in mind.
         </p>
       </div>
 

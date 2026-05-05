@@ -114,15 +114,20 @@ export default function Header() {
                 font-weight: 500 (medium)
                 font-size: 16px
                 line-height: normal
-              Background #FEF272 → #FDF185 hover. */}
+              Background #FEF272 → #FDF185 hover.
+              Added subtle scale + shadow lift so the CTA pops against the
+              dark header without leaving the Figma spec. */}
           <div className="hidden lg:flex items-center">
-            <a
+            <motion.a
               href="#assessment"
-              className="inline-flex items-center justify-center bg-[#FEF272] hover:bg-[#FDF185] text-[#013E37] rounded-full text-[16px] transition-colors duration-200 font-[family-name:var(--font-bricolage)]"
+              whileHover={{ scale: 1.04, boxShadow: '0 4px 20px rgba(254,242,114,0.40)' }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-flex items-center justify-center bg-[#FEF272] text-[#013E37] rounded-full text-[16px] font-[family-name:var(--font-bricolage)]"
               style={{ padding: '14px 24px', minHeight: 48, fontWeight: 500, lineHeight: 'normal' }}
             >
               Start My Assessment
-            </a>
+            </motion.a>
           </div>
 
           <button
@@ -178,9 +183,11 @@ export default function Header() {
               href="#assessment"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
+              whileTap={{ scale: 0.96 }}
               transition={{ delay: navLinks.length * 0.04 }}
               onClick={() => setMobileOpen(false)}
-              className="mt-3 bg-[#FEF272] text-[#173B39] px-7 py-3 rounded-full text-base font-semibold"
+              className="mt-3 inline-flex items-center justify-center bg-[#FEF272] text-[#013E37] rounded-full font-[family-name:var(--font-bricolage)]"
+              style={{ padding: '14px 28px', minHeight: 52, fontWeight: 500, fontSize: 16 }}
             >
               Start My Assessment
             </motion.a>

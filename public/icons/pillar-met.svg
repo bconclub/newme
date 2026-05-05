@@ -1,0 +1,13 @@
+<svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip_met)">
+  <!-- Outer flame silhouette — represents metabolic heat & energy burn -->
+  <path d="M65 22C65 22 76 39 78 55C83 45 82 32 77 25C90 34 98 50 96 67C100 59 99 47 94 39C106 53 108 72 102 87C102 87 107 81 107 71C107 89 98 103 84 109C88 102 88 93 83 86C79 96 73 104 65 108C57 104 51 96 47 86C42 93 42 102 46 109C32 103 23 89 23 71C23 81 28 87 28 87C22 72 24 53 36 39C31 47 30 59 34 67C32 50 40 34 53 25C48 32 47 45 52 55C54 39 65 22 65 22Z" fill="white"/>
+  <!-- Inner flame (slightly offset upward — creates layered depth) -->
+  <path d="M65 47C65 47 72 58 73 67C77 60 76 51 73 46C80 53 82 63 80 73C82 69 82 63 80 57C86 65 86 76 81 84C83 81 83 77 82 73C80 81 75 87 65 90C55 87 50 81 48 73C47 77 47 81 49 84C44 76 44 65 50 57C48 63 48 69 50 73C48 63 50 53 57 46C54 51 53 60 57 67C58 58 65 47 65 47Z" fill="white" fill-opacity="0.55"/>
+</g>
+<defs>
+  <clipPath id="clip_met">
+    <rect width="84" height="87" fill="white" transform="translate(23 22)"/>
+  </clipPath>
+</defs>
+</svg>

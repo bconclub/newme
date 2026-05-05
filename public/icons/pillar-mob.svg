@@ -1,0 +1,21 @@
+<svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip_mob)">
+  <!-- Head -->
+  <circle cx="71" cy="31" r="11" fill="white"/>
+  <!-- Torso (leaning slightly forward) -->
+  <path d="M63 43C63 41 67 40 71 40C75 40 78 41 78 43L77 66C75 69 70 70 66 69L62 66Z" fill="white"/>
+  <!-- Left arm (forward swing — toward right) -->
+  <path d="M64 50C59 56 51 65 44 75C42 78 43 82 46 84C49 85 53 83 55 80C61 70 68 61 73 55Z" fill="white"/>
+  <!-- Right arm (back swing — toward left) -->
+  <path d="M77 50C82 55 89 62 95 71C98 74 97 78 94 80C91 82 87 80 85 77C79 68 74 61 73 55Z" fill="white"/>
+  <!-- Right leg (forward stride) -->
+  <path d="M70 68C73 77 77 89 82 101C84 105 82 108 79 108C76 108 74 106 73 103L67 91L66 70Z" fill="white"/>
+  <!-- Left leg (back stride) -->
+  <path d="M69 68C66 77 62 89 57 101C55 105 57 108 60 108C63 109 65 107 66 104L72 91L73 70Z" fill="white"/>
+</g>
+<defs>
+  <clipPath id="clip_mob">
+    <rect width="78" height="87" fill="white" transform="translate(26 22)"/>
+  </clipPath>
+</defs>
+</svg>
