@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
@@ -30,6 +31,58 @@ const testimonials = [
 ]
 
 export default function Testimonials() {
+  const [activeIdx, setActiveIdx] = useState(0)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // On mobile the carousel is a scroll container — track which card is
+  // snapped to the viewport centre and update the active dot.
+  const onScroll = useCallback(() => {
+    const el = carouselRef.current
+    if (!el) return
+    const cardW = el.scrollWidth / testimonials.length
+    const idx = Math.round(el.scrollLeft / cardW)
+    setActiveIdx(Math.max(0, Math.min(idx, testimonials.length - 1)))
+  }, [])
+
+  // Auto-advance only on desktop (where the 3-col grid doesn't scroll).
+  // Cycles the active highlight dot every 5 s.
+  const startDesktopTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setActiveIdx(prev => (prev + 1) % testimonials.length)
+    }, 5000)
+  }, [])
+
+  useEffect(() => {
+    // Only start auto-advance when wider than mobile breakpoint.
+    const mq = window.matchMedia('(min-width: 640px)')
+    if (mq.matches) startDesktopTimer()
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) startDesktopTimer()
+      else { if (timerRef.current) clearInterval(timerRef.current) }
+    }
+    mq.addEventListener('change', onChange)
+    return () => {
+      mq.removeEventListener('change', onChange)
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
+  }, [startDesktopTimer])
+
+  // Dot click: on mobile scroll to card; on desktop set active + restart timer.
+  const goTo = (idx: number) => {
+    const el = carouselRef.current
+    if (el && el.scrollWidth > el.clientWidth + 4) {
+      // Mobile scroll container
+      const cardW = el.scrollWidth / testimonials.length
+      el.scrollTo({ left: cardW * idx, behavior: 'smooth' })
+    } else {
+      // Desktop — just flip the highlighted dot and restart timer
+      setActiveIdx(idx)
+      startDesktopTimer()
+    }
+  }
+
   return (
     <section
       id="testimonials"
@@ -106,6 +159,8 @@ export default function Testimonials() {
             between testimonials instead of scrolling through 3 stacked
             cards. */}
         <div
+          ref={carouselRef}
+          onScroll={onScroll}
           className="flex sm:grid sm:grid-cols-3 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none -mx-5 sm:mx-0 px-5 sm:px-0 testimonial-carousel"
           style={{
             gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
@@ -114,12 +169,11 @@ export default function Testimonials() {
           }}
         >
           {testimonials.map((t, i) => (
-            <TestimonialCard key={t.name} testimonial={t} index={i} />
+            <TestimonialCard key={t.name} testimonial={t} index={i} activeOnDesktop={i === activeIdx} />
           ))}
         </div>
 
-        {/* Pagination dots — Figma 1:6319 (yellow active) 1:6320 1:6321 (grey)
-            Order: grey | yellow | grey. Middle dot is active. */}
+        {/* Pagination dots — clickable, track real activeIdx */}
         <div
           className="flex items-center justify-center"
           style={{
@@ -127,15 +181,19 @@ export default function Testimonials() {
             marginTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
           }}
         >
-          {[0, 1, 2].map((i) => (
-            <span
+          {testimonials.map((_, i) => (
+            <button
               key={i}
-              aria-hidden
-              className="block rounded-full"
+              onClick={() => goTo(i)}
+              aria-label={`Go to testimonial ${i + 1}`}
+              className="rounded-full transition-all duration-300 cursor-pointer"
               style={{
-                width: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                width: i === activeIdx ? 'clamp(18px, calc(28 / 1920 * 100vw), 28px)' : 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
                 height: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                background: i === 1 ? '#FEF272' : 'rgba(255,255,255,0.30)',
+                background: i === activeIdx ? '#FEF272' : 'rgba(255,255,255,0.30)',
+                border: 'none',
+                padding: 0,
+                minWidth: 10,
               }}
             />
           ))}
@@ -165,9 +223,11 @@ export default function Testimonials() {
 function TestimonialCard({
   testimonial: t,
   index: i,
+  activeOnDesktop,
 }: {
   testimonial: (typeof testimonials)[number]
   index: number
+  activeOnDesktop?: boolean
 }) {
   // CSS-only hover state via the `group` pattern + plain CSS transitions.
   // Avoids conflict between Framer's whileInView (entry) and animate (hover).
@@ -177,6 +237,13 @@ function TestimonialCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, delay: i * 0.08 }}
+      // On desktop (sm+), when this card is the auto-cycle active one, show a
+      // subtle white glow border so the user can track which dot is lit.
+      animate={{
+        boxShadow: activeOnDesktop
+          ? '0 0 0 2px rgba(254,242,114,0.65), 0 8px 32px rgba(0,0,0,0.18)'
+          : '0 0 0 0px rgba(254,242,114,0), 0 4px 16px rgba(0,0,0,0.10)',
+      }}
       className="testimonial-card group relative overflow-hidden shrink-0 w-[85%] sm:w-auto snap-center sm:snap-align-none cursor-default"
       style={{
         // Default GLASS state per Figma 1:6293. CSS class overrides on hover.
