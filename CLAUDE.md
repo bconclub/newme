@@ -37,6 +37,8 @@ src/
 │   ├── pathways/page.tsx       # /pathways (+ /metabolic, /gi, /continuity)
 │   ├── virtual-clinic/page.tsx
 │   ├── research-lab/page.tsx
+│   ├── media/[slug]/page.tsx   # Individual media/article pages (Sanity-backed)
+│   ├── admin/page.tsx          # Internal page directory (noindex) — lists all routes + Sanity status
 │   ├── studio/                 # Sanity mount
 │   ├── sitemap.ts, robots.ts
 │   └── page1/                  # Standalone wellness design (NOT newme-page scope)
@@ -51,14 +53,30 @@ src/
 │   ├── layout/SmoothScroll.tsx # Lenis wrapper
 │   ├── sections/               # (currently empty / shared)
 │   └── ui/                     # (currently empty / shared)
-├── hooks/, lib/, types/        # General utilities
+├── lib/
+│   └── sanity/
+│       ├── client.ts           # createClient() — reads env vars via env.ts
+│       ├── env.ts              # softRequired() — warns, never throws, returns '' if absent
+│       └── queries.ts          # GROQ queries (articlesQuery, etc.)
+├── hooks/, types/              # General utilities
 └── ...
 public/
 ├── newme-logo.png
 ├── dr-pal-portrait.png
 ├── images/home/, images/pathways/
 ├── testimonials/{nithya,kat,thamarai}.jpg
-└── icons/pillar-{1..8}.svg
+└── icons/
+    ├── fitness.svg             # Person-reaching figure
+    ├── mobility.svg            # Walking/running figure
+    ├── sleep.svg               # Sleep icon
+    ├── circadian.svg           # Circadian rhythm icon
+    ├── stress.svg              # Stress icon
+    ├── digestion.svg           # Digestion icon
+    ├── metabolism.svg          # Flame icon (copy of pillar-met.svg)
+    ├── community.svg           # Community icon
+    ├── nutrition.svg           # Exercise/globe icon
+    ├── pillar-met.svg          # Flame SVG backup (white paths, 130×130)
+    └── pillar-mob.svg          # Walking figure SVG backup (white paths, 130×130)
 ```
 
 ---
@@ -132,11 +150,42 @@ transition: { duration: 0.5, delay: i * 0.08 }
 Wrap these in `<motion.h2>`, `<motion.p>`, `<motion.div>`. Always use
 `whileInView` + `viewport: { once: true }` so reveals don't replay on scroll.
 
-### 7. Don't introduce dependencies
+### 7. Sanity — build-safe pattern
+
+`src/lib/sanity/env.ts` uses `softRequired()` which **warns and returns `''`**
+instead of throwing when env vars are absent. Never change it back to throwing —
+Next.js evaluates every module during the "collect page data" build phase before
+any component `try/catch` can run.
+
+For any server component that calls `client.fetch()`, guard the import
+**and** the call together inside an env var check + try/catch:
+
+```ts
+// ✅ CORRECT — build-safe
+let data = []
+if (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+  try {
+    const [{ client }, { myQuery }] = await Promise.all([
+      import('@/lib/sanity/client'),
+      import('@/lib/sanity/queries'),
+    ])
+    data = await client.fetch(myQuery)
+  } catch { /* Sanity not reachable */ }
+}
+
+// ❌ WRONG — top-level import crashes the build if vars are absent
+import { client } from '@/lib/sanity/client'
+```
+
+The dynamic `import()` inside the `if` block is what prevents the Sanity
+client module from being evaluated at build time on environments without the
+vars (e.g. Vercel preview deploys that don't have the Sanity vars set).
+
+### 8. Don't introduce dependencies
 
 Stack is fixed. Don't `npm install` new libs without asking.
 
-### 8. Line endings
+### 9. Line endings
 
 Windows checkout — files have CRLF on disk, LF in git. Don't fight the
 auto-conversion warnings; they're harmless.
@@ -220,6 +269,13 @@ the `@media (max-width: 767px)` block at the bottom of
   if the page has heavy `filter: blur(>200px)` on large elements — the
   rasterizer times out. Verify via `preview_eval` (DOM inspection) or have
   the user check the live page.
+- **Don't add top-level Sanity imports in server components.** Use the guarded
+  dynamic import pattern (§7 above). A top-level `import { client }` will crash
+  the Vercel build on any environment where `NEXT_PUBLIC_SANITY_PROJECT_ID` is
+  not set.
+- **Don't make `env.ts` throw.** The `softRequired()` pattern (warn + return `''`)
+  exists for a reason — throwing fires before any try/catch can catch it during
+  Next.js module evaluation.
 
 ---
 

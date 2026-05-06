@@ -31,6 +31,7 @@ const STATIC_PAGES: Page[] = [
   { group: 'Marketing', name: 'Pathways · Continuity', path: '/pathways/continuity', source: 'Code' },
   { group: 'Marketing', name: 'Virtual Clinic', path: '/virtual-clinic', source: 'Code' },
   { group: 'Marketing', name: 'Research Lab', path: '/research-lab', source: 'Code' },
+  { group: 'Marketing', name: 'Assessment', path: '/assessment', source: 'Code', note: 'Wizard — pathway recommendation engine' },
   { group: 'Content', name: 'Media (listing)', path: '/media', source: 'Code', note: 'Cards still hardcoded — Sanity wiring pending' },
 ]
 

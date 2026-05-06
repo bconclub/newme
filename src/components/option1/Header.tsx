@@ -5,6 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// motion-enhanced Link — avoids the deprecated legacyBehavior wrapper pattern
+const MotionLink = motion(Link)
+
 type NavLink = { label: string; href: string; hasMenu?: boolean; live?: boolean }
 
 // Only Home, How It Works, and Virtual Clinic are live pages right now.
@@ -118,16 +121,22 @@ export default function Header() {
               Added subtle scale + shadow lift so the CTA pops against the
               dark header without leaving the Figma spec. */}
           <div className="hidden lg:flex items-center">
-            <motion.a
-              href="#assessment"
+            <MotionLink
+              href="/assessment"
               whileHover={{ scale: 1.04, boxShadow: '0 4px 20px rgba(254,242,114,0.40)' }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
               className="inline-flex items-center justify-center bg-[#FEF272] text-[#013E37] rounded-full text-[16px] font-[family-name:var(--font-bricolage)]"
-              style={{ padding: '14px 24px', minHeight: 48, fontWeight: 500, lineHeight: 'normal' }}
+              style={{
+                width: 214,
+                height: 48,
+                borderRadius: 60,
+                fontWeight: 500,
+                lineHeight: 'normal',
+              }}
             >
               Start My Assessment
-            </motion.a>
+            </MotionLink>
           </div>
 
           <button
@@ -179,8 +188,8 @@ export default function Header() {
                 </Link>
               </motion.div>
             ))}
-            <motion.a
-              href="#assessment"
+            <MotionLink
+              href="/assessment"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               whileTap={{ scale: 0.96 }}
@@ -190,7 +199,7 @@ export default function Header() {
               style={{ padding: '14px 28px', minHeight: 52, fontWeight: 500, fontSize: 16 }}
             >
               Start My Assessment
-            </motion.a>
+            </MotionLink>
           </motion.div>
         )}
       </AnimatePresence>

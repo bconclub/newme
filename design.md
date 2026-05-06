@@ -19,7 +19,7 @@ spec; CLAUDE.md is the how-to.
 | React | 19.2.4 | Server components by default; mark `'use client'` only when needed |
 | Tailwind CSS | v4 (PostCSS) | Tokens declared in `@theme inline { … }`, NOT `tailwind.config` |
 | Framer Motion | 12.x | Animations + `useTransform` / `useMotionValue` orbits |
-| Lenis | 1.3.x | Smooth scroll wrapper at root (`SmoothScroll` in `layout.tsx`) |
+| Lenis | 1.3.x | Smooth scroll wrapper at root (`SmoothScroll` in `layout.tsx`). Config: `{ lerp: 0.12, smoothWheel: true, wheelMultiplier: 1.15, touchMultiplier: 1.8 }` — lerp-based (no `duration`). |
 | GSAP | 3.15.x | Available; used sparingly |
 | Sanity | 5.x | CMS, mounted at `/studio` |
 | SCSS | dart-sass | Reserved for page-skin files (ellipses, complex selectors) |
@@ -295,6 +295,19 @@ runs along the top/left/right but **fades through the bottom-right corner**
 via a radial gradient mask — that asymmetric fade is the hallmark of the
 component.
 
+**Animation sequence** (all Framer Motion, `whileInView`, `once: true`):
+
+1. **Outer pill** rises from `y:14` + `opacity:0` to rest over `550ms`.
+2. **SVG stroke border** (`motion.rect`, `pathLength: 0 → 1`) draws around the
+   pill over `700ms` with a `150ms` delay, then fades out at `750ms` once the
+   settled border takes over.
+3. **Settled border** (`motion.span` with the gradient mask) fades in at
+   `delay: 750ms` / `duration: 300ms`.
+4. **Text** fades in at `delay: 450ms` / `duration: 350ms`.
+
+Do not simplify this to a plain opacity reveal — the stroke-draw step is
+intentional brand motion and must be preserved.
+
 ### Section template
 
 The standard section in `src/components/option1/*.tsx` follows this shape:
@@ -354,6 +367,45 @@ export default function MySection() {
 - H2: `opacity 0→1, y 16→0`, `duration 0.6`, `ease [0.22, 1, 0.36, 1]`, `amount: 0.5`.
 - Body paragraph: `opacity 0→1, y 12→0`, `duration 0.5`, `delay 0.1–0.2`.
 - Cards row: stagger via `delay: i * 0.08`.
+
+### Header CTA (`motion.a`)
+
+The desktop "Start My Assessment" CTA in `Header.tsx` is a `motion.a` (not a
+plain `<a>`) to enable hover lift and glow:
+
+```tsx
+<motion.a
+  href="#assessment"
+  whileHover={{ scale: 1.04, boxShadow: '0 4px 20px rgba(254,242,114,0.40)' }}
+  whileTap={{ scale: 0.97 }}
+  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+  className="inline-flex items-center justify-center bg-[#FEF272] text-[#013E37] rounded-full text-[16px] font-[family-name:var(--font-bricolage)]"
+  style={{ padding: '14px 24px', minHeight: 48, fontWeight: 500, lineHeight: 'normal' }}
+>
+  Start My Assessment
+</motion.a>
+```
+
+Mobile menu CTA uses the same gold pill at `minHeight: 52`, `padding: '14px 28px'`.
+
+### Testimonials interactive state
+
+`Testimonials.tsx` tracks the active card with a single `activeIdx` state
+and drives two behaviours from it:
+
+- **Mobile scroll tracking**: An `onScroll` handler on the scroll container
+  calculates `Math.round(scrollLeft / (scrollWidth / N))` and calls
+  `setActiveIdx`.
+- **Desktop auto-cycle**: A `MediaQueryList` for `(min-width: 640px)` starts
+  a `setInterval` at 5 000 ms on mount; each tick advances `activeIdx` by 1
+  (wrapping). Clicking a dot restarts the timer.
+- **Pagination dots**: Each dot is a `<button>` that calls `goTo(i)`. Active
+  dot expands to a wider pill via `width: activeIdx === i ? 20 : 8`. Color
+  is `#FEF272` (gold) when active, `rgba(255,255,255,0.35)` otherwise.
+- **Active card glow** (desktop): `animate={{ boxShadow: isActive ? '0 8px 40px rgba(254,242,114,0.30)' : 'none' }}`.
+
+Pattern: `activeIdx` is the single source of truth — scroll position and
+auto-cycle both converge on it. Never sync the two separately.
 
 ### Glass card (testimonials, NewME hero card frame)
 
@@ -442,7 +494,7 @@ ratio.
 3. **StatsBand** — 4-column white card (`6,000+ / 100% / 5,000+ / 20,000Kg`)
 4. **WhatIsNewMe** — heading + 2 paragraphs + the orange/yellow icon pair
 5. **DrPal** — sage card with portrait + bio
-6. **Pillars** — 8-pillar dial (orbital arc; mobile = arc + tab below)
+6. **Pillars** — 9-pillar dial (orbital arc; mobile = arc + tab below)
 7. **Pathways** — tabbed program list with image cards
 8. **StructuredCare** — comparison: Typical vs NewME Method
 9. **Testimonials** — 3 testimonial cards + RatingsCard (4.6 / shield / 4.7)
@@ -459,10 +511,13 @@ All assets are in `/public`:
 - `/images/home/Hero image.webp` — hero photo
 - `/images/pathways/{Reset, Rebuild, Sustain, GI-Core, GI-Advanced, NewME-360, NewME-Movement}.webp`
 - `/testimonials/{nithya, kat, thamarai}.jpg`
-- `/icons/pillar-{1..8}.svg` — pillar icon masks (used as CSS `mask-image`)
+- `/icons/{fitness,mobility,sleep,circadian,stress,digestion,metabolism,community,nutrition}.svg`
+  — 9 pillar icon masks (130×130, white-fill paths, used as CSS `mask-image`)
 
-Pillar icons are rendered via `WebkitMaskImage: url('/icons/pillar-X.svg')`
+Pillar icons are rendered via `WebkitMaskImage: url('/icons/<name>.svg')`
 + a `backgroundColor` so the icon takes on the active/inactive color.
+The order in `PILLARS[]` is: Fitness → Mobility → Sleep → Circadian Rhythm →
+Stress → Digestion → Metabolism → Community → Nutrition (`N=9`, `STEP_DEG=40°`).
 
 ---
 
