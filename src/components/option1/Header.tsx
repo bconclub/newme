@@ -10,16 +10,14 @@ const MotionLink = motion(Link)
 
 type NavLink = { label: string; href: string; hasMenu?: boolean; live?: boolean }
 
-// Only Home, How It Works, and Virtual Clinic are live pages right now.
-// The rest are rendered grayed-out (lighten on hover) and click is prevented.
 const navLinks: NavLink[] = [
   { label: 'Home', href: '/', live: true },
   { label: 'How It Works', href: '/how-it-works', live: true },
   { label: 'Pathways', href: '/pathways', live: true },
   { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
-  { label: 'NewME Care Team', href: '/care-team' },
-  { label: 'Resources', href: '#resources', hasMenu: true },
-  { label: 'Contact Us', href: '#contact' },
+  { label: 'NewME Care Team', href: '/team', live: true },
+  { label: 'Resources', href: '/faq', live: true },
+  { label: 'Contact Us', href: '/contact', live: true },
 ]
 
 export default function Header() {

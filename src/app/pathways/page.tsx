@@ -92,29 +92,65 @@ export default function PathwaysPage() {
                 NewME is a structured clinical system. Your assessment maps your health patterns and guides you into the pathway designed for your body&apos;s needs.
               </motion.p>
 
-              {/* CTA — gold pill + arrow */}
+              {/* CTA — gold pill + tangerine arrow circle (homepage pattern).
+                  flex-row-reverse: arrow first in DOM → right visually, pill left.
+                  Negative marginRight on pill overlaps onto arrow's left edge.
+                  Individual whileHover on each piece for micro-animation. */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, ease: EASE, delay: 0.28 }}
-                style={{ display: 'flex', alignItems: 'center' }}
+                className="group/cta flex items-center flex-row-reverse justify-end"
               >
-                <Link
+                {/* Arrow circle — first in DOM, visually RIGHT */}
+                <motion.a
                   href="/assessment"
-                  style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none' }}
+                  aria-hidden
+                  tabIndex={-1}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center shrink-0 transition-colors will-change-transform"
+                  style={{
+                    width: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
+                    height: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
+                  }}
                 >
-                  <span
-                    className="font-[family-name:var(--font-bricolage)]"
-                    style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FEF272', color: '#013E37', borderRadius: 9999, fontSize: 'clamp(13px,0.83vw,16px)', fontWeight: 600, padding: '0 clamp(18px,1.4vw,26px)', height: 'clamp(44px,3.33vw,64px)', zIndex: 1 }}
+                  <svg
+                    viewBox="0 0 30 30"
+                    fill="none"
+                    aria-hidden
+                    className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
+                    style={{
+                      width: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                      height: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    }}
                   >
-                    Find Your Pathway
-                  </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FF8547', borderRadius: '50%', width: 'clamp(44px,3.33vw,64px)', height: 'clamp(44px,3.33vw,64px)', marginLeft: -8, flexShrink: 0 }}>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-                      <path d="M4 10h12M11 5l5 5-5 5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                </Link>
+                    <path
+                      d="M9 21L21 9M21 9H11M21 9V19"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </motion.a>
+                {/* Pill — second in DOM, visually LEFT. Negative marginRight overlaps arrow */}
+                <motion.a
+                  href="/assessment"
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#013E37] font-semibold font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
+                  style={{
+                    height: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
+                    paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+                    lineHeight: 1.3,
+                    marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
+                  }}
+                >
+                  Find Your Pathway
+                </motion.a>
               </motion.div>
             </div>
           </div>
