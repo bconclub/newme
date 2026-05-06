@@ -79,7 +79,7 @@ function VCHero() {
     <section
       className="relative"
       style={{
-        paddingTop: 'clamp(88px, calc(113 / 1920 * 100vw), 113px)',
+        paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)',
         paddingLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
         paddingRight: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
       }}
