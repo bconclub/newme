@@ -7,85 +7,69 @@ import Footer from '@/components/option1/Footer'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-// ─── Team data from Figma 122:10180 ──────────────────────────────────────────
-// Cards: 435×540px in a 4-column grid, 3 rows. x positions: 60, 515, 970, 1425
-// Row 1 (y=1330): Founders & Leadership
-// Row 2 (y=1890): Clinical Team
-// Row 3 (y=2450): Specialists
-const TEAM = [
+type TeamMember = {
+  name: string
+  role: string
+  photo: string
+  special?: boolean
+  bio?: string
+}
+
+const TEAM: TeamMember[] = [
   // Row 1 — Leadership
   {
     name: 'Dr. Palaniappan Manickam',
     role: 'Founder',
-    initials: 'PM',
-    color: '#1a5a4a',
-    photo: null,
+    photo: '/images/team/dr-palaniappan.jpg',
   },
   {
     name: 'Priya Pal',
     role: 'Co Founder',
-    initials: 'PP',
-    color: '#2d6b58',
-    photo: null,
+    photo: '/images/team/priya-pal.jpg',
   },
   {
     name: 'Shakeela',
     role: 'CEO',
-    initials: 'SK',
-    color: '#1e5c4a',
-    photo: null,
-    featured: true,
+    photo: '/images/team/shakeela.jpg',
+    special: true,
+    bio: 'Shakeela oversees operations and system execution across NewME. She brings a deep understanding of both client care and operational efficiency to ensure consistent, measurable outcomes.',
   },
   {
     name: 'Karthik Ravi',
     role: 'Head of Business Operations',
-    initials: 'KR',
-    color: '#245040',
-    photo: null,
+    photo: '/images/team/karthik-ravi.jpg',
   },
   // Row 2 — Clinical
   {
     name: 'Gayatri Rajamani',
     role: 'Head of Clinical Nutrition',
-    initials: 'GR',
-    color: '#2a6454',
-    photo: null,
+    photo: '/images/team/gayatri-rajamani.jpg',
   },
   {
-    name: 'Rashmi Sinha',
+    name: 'Reshmi Sinha',
     role: 'Clinical Nutrition Lead',
-    initials: 'RS',
-    color: '#1f5746',
-    photo: null,
+    photo: '/images/team/reshmi-sinha.jpg',
   },
   {
     name: 'Devi Palaniappan',
     role: 'Head of Coaching',
-    initials: 'DP',
-    color: '#275a4a',
-    photo: null,
+    photo: '/images/team/devi-palaniappan.jpg',
   },
   {
     name: 'Namratha Nataraj',
     role: 'Head of Research & QA',
-    initials: 'NN',
-    color: '#234e40',
-    photo: null,
+    photo: '/images/team/namratha-nataraj.jpg',
   },
   // Row 3 — Specialists
   {
-    name: 'Dr. Indira MD DNB',
-    role: 'General Medicine',
-    initials: 'IN',
-    color: '#1e5040',
-    photo: null,
-  },
-  {
     name: 'Ashwini Saras',
     role: 'Operation Lead',
-    initials: 'AS',
-    color: '#265a48',
-    photo: null,
+    photo: '/images/team/ashwini-saras.jpg',
+  },
+  {
+    name: 'Dr. Indira. MD, DNB',
+    role: 'General Medicine',
+    photo: '/images/team/dr-indira.jpg',
   },
 ]
 
@@ -103,8 +87,7 @@ export default function TeamPage() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Hero — Figma 122:10180 — 1880×694 card
-// "Meet The Clinical Team Behind Your Care."
+// Hero — Figma 122:10180
 // ─────────────────────────────────────────────────────────────────────────────
 function TeamHero() {
   return (
@@ -137,7 +120,7 @@ function TeamHero() {
           />
         </div>
 
-        {/* Pine gradient wash — heavier coverage for team page */}
+        {/* Pine gradient wash */}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -156,7 +139,8 @@ function TeamHero() {
         <div
           className="relative z-10 flex flex-col justify-end h-full"
           style={{
-            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(120 / 1920 * 100vw), 120px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
+            padding:
+              'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(120 / 1920 * 100vw), 120px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
           }}
         >
           <motion.p
@@ -189,7 +173,9 @@ function TeamHero() {
               maxWidth: 'clamp(300px, calc(900 / 1920 * 100vw), 900px)',
             }}
           >
-            Meet The Clinical Team<br />Behind Your Care.
+            Meet The Clinical Team
+            <br />
+            Behind Your Care.
           </motion.h1>
 
           <motion.p
@@ -216,7 +202,7 @@ function TeamHero() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Team grid — Figma: 4 columns, 435×540 cards, 3 rows
+// Team grid
 // ─────────────────────────────────────────────────────────────────────────────
 function TeamGrid() {
   return (
@@ -224,7 +210,8 @@ function TeamGrid() {
       style={{
         position: 'relative',
         zIndex: 1,
-        padding: 'clamp(60px, calc(100 / 1920 * 100vw), 100px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
+        padding:
+          'clamp(60px, calc(100 / 1920 * 100vw), 100px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
       }}
     >
       {/* Section heading */}
@@ -233,7 +220,10 @@ function TeamGrid() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.6, ease: EASE }}
-        style={{ textAlign: 'center', marginBottom: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)' }}
+        style={{
+          textAlign: 'center',
+          marginBottom: 'clamp(40px, calc(72 / 1920 * 100vw), 72px)',
+        }}
       >
         <h2
           className="font-[family-name:var(--font-bricolage)] text-white"
@@ -266,25 +256,33 @@ function TeamGrid() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, clamp(200px, calc(435 / 1920 * 100vw), 435px)), 1fr))',
+          gridTemplateColumns:
+            'repeat(auto-fill, minmax(min(100%, clamp(200px, calc(435 / 1920 * 100vw), 435px)), 1fr))',
           gap: 'clamp(16px, calc(20 / 1920 * 100vw), 20px)',
           maxWidth: 1800,
           margin: '0 auto',
         }}
       >
-        {TEAM.map((member, i) => (
-          <TeamCard key={member.name} member={member} index={i} />
-        ))}
+        {TEAM.map((member, i) =>
+          member.special ? (
+            <ShakeelaCard key={member.name} member={member} index={i} />
+          ) : (
+            <TeamCard key={member.name} member={member} index={i} />
+          )
+        )}
       </div>
     </section>
   )
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Standard photo card — photo fills card, dark pill overlay at bottom
+// ─────────────────────────────────────────────────────────────────────────────
 function TeamCard({
   member,
   index,
 }: {
-  member: (typeof TEAM)[number]
+  member: TeamMember
   index: number
 }) {
   return (
@@ -298,98 +296,216 @@ function TeamCard({
         overflow: 'hidden',
         aspectRatio: '435 / 540',
         position: 'relative',
-        background: member.color,
+        background: '#013E37',
       }}
     >
-      {/* Placeholder gradient (replace with actual <Image> when photos are ready) */}
+      {/* Photo */}
+      <Image
+        src={member.photo}
+        alt={member.name}
+        fill
+        className="object-cover object-top"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+      />
+
+      {/* Subtle gradient at bottom for better contrast */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(ellipse at 60% 30%, ${member.color}cc 0%, #013E37 80%)`,
+          inset: '50% 0 0 0',
+          background:
+            'linear-gradient(0deg, rgba(1,62,55,0.55) 0%, rgba(1,62,55,0) 100%)',
+          pointerEvents: 'none',
         }}
       />
 
-      {/* Initials — shown while no photo */}
+      {/* Name + role pill at bottom */}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
+          bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
+          left: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
+          right: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
+          background: '#013E37',
+          borderRadius: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
+          padding:
+            'clamp(12px, calc(18 / 1920 * 100vw), 18px) clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <span
-          className="font-[family-name:var(--font-bricolage)]"
-          style={{
-            fontSize: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-            fontWeight: 700,
-            color: 'rgba(255,255,255,0.18)',
-            letterSpacing: '0.05em',
-            userSelect: 'none',
-          }}
-        >
-          {member.initials}
-        </span>
-      </div>
-
-      {/* Name + role overlay at bottom */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          background: 'linear-gradient(0deg, rgba(1,62,55,0.96) 0%, rgba(1,62,55,0.70) 60%, rgba(1,62,55,0) 100%)',
-          padding: 'clamp(36px, calc(60 / 1920 * 100vw), 60px) clamp(18px, calc(28 / 1920 * 100vw), 28px) clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+          flexDirection: 'column',
+          gap: 'clamp(3px, calc(5 / 1920 * 100vw), 5px)',
         }}
       >
         <p
           className="font-[family-name:var(--font-bricolage)] text-white"
           style={{
             fontWeight: 600,
-            fontSize: 'clamp(15px, calc(22 / 1920 * 100vw), 22px)',
+            fontSize: 'clamp(13px, calc(22 / 1920 * 100vw), 22px)',
             lineHeight: 1.2,
-            marginBottom: 'clamp(4px, calc(6 / 1920 * 100vw), 6px)',
           }}
         >
           {member.name}
         </p>
         <p
-          className="font-[family-name:var(--font-urbanist)]"
+          className="font-[family-name:var(--font-bricolage)]"
           style={{
-            fontSize: 'clamp(12px, calc(15 / 1920 * 100vw), 15px)',
+            fontSize: 'clamp(11px, calc(16 / 1920 * 100vw), 16px)',
             color: 'rgba(255,255,255,0.65)',
             fontWeight: 400,
+            lineHeight: 1.3,
           }}
         >
           {member.role}
         </p>
       </div>
+    </motion.div>
+  )
+}
 
-      {/* Featured badge (CEO card) */}
-      {member.featured && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-            right: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-            background: '#FEF272',
-            color: '#013E37',
-            borderRadius: 9999,
-            padding: '4px clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-            fontSize: 'clamp(10px, calc(12 / 1920 * 100vw), 12px)',
-            fontWeight: 700,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-          }}
-          className="font-[family-name:var(--font-bricolage)]"
-        >
-          Leadership
+// ─────────────────────────────────────────────────────────────────────────────
+// Shakeela special card — dark bg, photo right side, text + bio + social left
+// ─────────────────────────────────────────────────────────────────────────────
+function ShakeelaCard({
+  member,
+  index,
+}: {
+  member: TeamMember
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.55, ease: EASE, delay: (index % 4) * 0.07 }}
+      style={{
+        borderRadius: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+        overflow: 'hidden',
+        aspectRatio: '435 / 540',
+        position: 'relative',
+        background: '#013E37',
+      }}
+    >
+      {/* Photo — right side, shows through dark bg */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '70%',
+          height: '100%',
+        }}
+      >
+        <Image
+          src={member.photo}
+          alt={member.name}
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 640px) 70vw, (max-width: 1024px) 35vw, 18vw"
+        />
+      </div>
+
+      {/* Left-to-right dark fade so text stays readable */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(95deg, #013E37 42%, rgba(1,62,55,0.80) 62%, rgba(1,62,55,0.15) 80%, rgba(1,62,55,0) 100%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Content */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding:
+            'clamp(20px, calc(32 / 1920 * 100vw), 32px) clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+        }}
+      >
+        <div>
+          {/* Yellow name */}
+          <p
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{
+              fontWeight: 500,
+              fontSize: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
+              color: '#FEF272',
+              lineHeight: 1.2,
+              marginBottom: 'clamp(4px, calc(6 / 1920 * 100vw), 6px)',
+            }}
+          >
+            {member.name}
+          </p>
+
+          {/* White role */}
+          <p
+            className="font-[family-name:var(--font-bricolage)] text-white"
+            style={{
+              fontSize: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+              fontWeight: 400,
+              marginBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
+              opacity: 0.90,
+            }}
+          >
+            {member.role}
+          </p>
+
+          {/* Bio text */}
+          {member.bio && (
+            <p
+              className="font-[family-name:var(--font-bricolage)] text-white"
+              style={{
+                fontSize: 'clamp(10px, calc(15 / 1920 * 100vw), 15px)',
+                fontWeight: 400,
+                lineHeight: 1.65,
+                opacity: 0.80,
+                maxWidth: '75%',
+              }}
+            >
+              {member.bio}
+            </p>
+          )}
         </div>
-      )}
+
+        {/* Social icons */}
+        <div style={{ display: 'flex', gap: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)', alignItems: 'center' }}>
+          {/* Facebook */}
+          <a href="#" aria-label="Facebook" style={{ color: 'rgba(255,255,255,0.70)', transition: 'color 0.2s' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+          {/* X / Twitter */}
+          <a href="#" aria-label="X / Twitter" style={{ color: 'rgba(255,255,255,0.70)', transition: 'color 0.2s' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+          </a>
+          {/* Instagram */}
+          <a href="#" aria-label="Instagram" style={{ color: 'rgba(255,255,255,0.70)', transition: 'color 0.2s' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          {/* LinkedIn */}
+          <a href="#" aria-label="LinkedIn" style={{ color: 'rgba(255,255,255,0.70)', transition: 'color 0.2s' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+              <rect x="2" y="9" width="4" height="12" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+          </a>
+        </div>
+      </div>
     </motion.div>
   )
 }
