@@ -8,16 +8,6 @@ import Footer from '@/components/option1/Footer'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-function AtmoBg() {
-  return (
-    <div aria-hidden style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #013E37 0%, rgba(1,62,55,0.6) 35%, transparent 60%)' }} />
-      <div style={{ position: 'absolute', width: '200vw', height: '200vw', left: '-30%', top: '-40vw', background: 'radial-gradient(ellipse, #629675 0%, #013E37 65%)', borderRadius: '50%', filter: 'blur(clamp(160px,20vw,300px))', opacity: 0.35 }} />
-      <div style={{ position: 'absolute', width: 'clamp(260px,45vw,680px)', height: 'clamp(260px,45vw,680px)', right: 'clamp(-200px,-12vw,-60px)', top: '8%', background: '#FEF272', borderRadius: '50%', filter: 'blur(clamp(120px,15vw,220px))', opacity: 0.18 }} />
-    </div>
-  )
-}
-
 // ── Types ─────────────────────────────────────────────────────────────────
 
 type CareItem = { num: string; title: string; desc: string }
@@ -348,8 +338,22 @@ function PhaseSection({ phase }: { phase: Phase }) {
 
 export default function MetabolicPathwayPage() {
   return (
-    <main style={{ background: '#013E37', color: '#fff', overflowX: 'hidden' }}>
-      <AtmoBg />
+    <main className="pathway-page">
+      {/* ── Atmospheric background — 1920px artboard, scrolls with page ── */}
+      <div className="pathway-bg" aria-hidden style={{ height: 8000 }}>
+        {/* Green wash 1 — behind hero + Reset phase */}
+        <span className="pathway-ellipse pathway-green-wash" style={{ top: 600, opacity: 0.40 }} />
+        <span className="pathway-noise pathway-green-noise" style={{ top: 600 }} />
+        {/* Gold accent — top right */}
+        <span className="pathway-ellipse pathway-gold-accent" style={{ top: 400, left: 1268 }} />
+        {/* Green wash 2 — behind Rebuild + Sustain phases */}
+        <span className="pathway-ellipse pathway-green-wash pathway-green-wash-2" style={{ top: 4200, opacity: 0.32 }} />
+        <span className="pathway-noise pathway-green-noise pathway-green-noise-2" style={{ top: 4200 }} />
+        {/* Gold accent — mid page left */}
+        <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-2" style={{ top: 3900, left: -625 }} />
+        {/* Gold accent — lower right */}
+        <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-3" style={{ top: 6800, left: 1268, opacity: 0.4 }} />
+      </div>
       <Header />
 
       {/* Hero */}

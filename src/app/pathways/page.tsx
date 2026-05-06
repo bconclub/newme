@@ -41,20 +41,17 @@ export default function PathwaysPage() {
   const [hoveredTab, setHoveredTab] = useState<Tab | null>(null)
 
   return (
-    <main style={{ background: '#013E37', color: '#fff', overflowX: 'hidden' }}>
-      <Header />
-
-      {/* ─── ATMOSPHERIC BACKGROUND ─────────────────────────────────── */}
-      <div aria-hidden style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-        {/* Top dark gradient */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #013E37 0%, rgba(1,62,55,0.6) 35%, transparent 60%)' }} />
-        {/* Large green wash blob */}
-        <div style={{ position: 'absolute', width: '200vw', height: '200vw', left: '-30%', top: '-40vw', background: 'radial-gradient(ellipse, #629675 0%, #013E37 65%)', borderRadius: '50%', filter: 'blur(clamp(160px,20vw,300px))', opacity: 0.35 }} />
-        {/* Gold glow — right side */}
-        <div style={{ position: 'absolute', width: 'clamp(260px,45vw,680px)', height: 'clamp(260px,45vw,680px)', right: 'clamp(-200px,-12vw,-60px)', top: '8%', background: '#FEF272', borderRadius: '50%', filter: 'blur(clamp(120px,15vw,220px))', opacity: 0.22 }} />
-        {/* Mid-page blob */}
-        <div style={{ position: 'absolute', width: '160vw', height: '160vw', left: '-30%', top: '60%', background: 'radial-gradient(ellipse, #629675 0%, #013E37 60%)', borderRadius: '50%', filter: 'blur(clamp(140px,18vw,280px))', opacity: 0.30 }} />
+    <main className="pathway-page">
+      {/* ─── ATMOSPHERIC BACKGROUND — 1920px artboard, scrolls with page ─── */}
+      <div className="pathway-bg" aria-hidden style={{ height: 5000 }}>
+        <span className="pathway-ellipse pathway-green-wash" style={{ top: 400, opacity: 0.40 }} />
+        <span className="pathway-noise pathway-green-noise" style={{ top: 400 }} />
+        <span className="pathway-ellipse pathway-gold-accent" style={{ top: 200, left: 1268 }} />
+        <span className="pathway-ellipse pathway-green-wash pathway-green-wash-2" style={{ top: 2800, opacity: 0.32 }} />
+        <span className="pathway-noise pathway-green-noise pathway-green-noise-2" style={{ top: 2800 }} />
+        <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-2" style={{ top: 2500, left: -625 }} />
       </div>
+      <Header />
 
       {/* ─── HERO SECTION ────────────────────────────────────────────── */}
       <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(90px,9.5vw,130px)' }}>
@@ -112,9 +109,9 @@ export default function PathwaysPage() {
                   >
                     Find Your Pathway
                   </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FEF272', borderRadius: '50%', width: 'clamp(44px,3.33vw,64px)', height: 'clamp(44px,3.33vw,64px)', marginLeft: -8, flexShrink: 0 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FF8547', borderRadius: '50%', width: 'clamp(44px,3.33vw,64px)', height: 'clamp(44px,3.33vw,64px)', marginLeft: -8, flexShrink: 0 }}>
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-                      <path d="M4 10h12M11 5l5 5-5 5" stroke="#013E37" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M4 10h12M11 5l5 5-5 5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
                 </Link>
