@@ -560,93 +560,98 @@ export default function AssessmentPage() {
         <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <AssessmentHeader showProgress={true} />
 
-          {/* ── Hero number — compact ── */}
-          <div style={{ padding: '20px 24px 16px', textAlign: 'center', flexShrink: 0 }}>
-            <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 10, color: '#629675', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', marginBottom: 8 }}>Dr. Pal's NewME · Clinical Outcomes</p>
-            <div className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(52px,14vw,80px)', fontWeight: 800, color: '#FEF272', lineHeight: 1, letterSpacing: '-.04em' }}>
-              {heroCount >= 10000 ? '10,000+' : heroCount.toLocaleString()}
-            </div>
-            <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(13px,2.2vw,16px)', color: 'rgba(255,255,255,0.6)', marginTop: 6, lineHeight: 1.35 }}>
-              clients helped across metabolic, hormonal and gut health
-            </p>
-            {/* Two top-line stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 14, maxWidth: 360, marginLeft: 'auto', marginRight: 'auto' }}>
-              {[{ n:'91%', l:'Gut symptoms improved' }, { n:'100%', l:'HbA1c reduced' }].map((c, i) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: 12, padding: '10px 8px', backdropFilter: 'blur(12px)' }}>
-                  <div className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(18px,4vw,22px)', fontWeight: 800, color: '#FEF272', lineHeight: 1 }}>{c.n}</div>
-                  <div className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 9, color: '#629675', fontWeight: 600, marginTop: 4, letterSpacing: '.03em', textTransform: 'uppercase' }}>{c.l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Centered content column — max 520px so cards stay compact on desktop */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', width: '100%', maxWidth: 520, marginLeft: 'auto', marginRight: 'auto' }}>
 
-          {/* ── Condition cards carousel ── */}
-          <div style={{ padding: '0 24px 6px', flexShrink: 0 }}>
-            <p className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(15px,3vw,18px)', fontWeight: 700, color: '#fff', lineHeight: 1.25, letterSpacing: '-.01em' }}>
-              Real outcomes. Documented. Across the board.
-            </p>
-          </div>
-
-          {/* Snap-scroll carousel — each page is a pair of cards side-by-side */}
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              overflowX: 'auto',
-              overflowY: 'hidden',
-              scrollSnapType: 'x mandatory',
-              scrollbarWidth: 'none',
-              gap: 0,
-              padding: '8px 0',
-            }}
-            onScroll={e => {
-              const el = e.currentTarget
-              const page = Math.round(el.scrollLeft / el.offsetWidth)
-              setCondPage(page)
-            }}
-          >
-            {cardPages.map((pair, pi) => (
-              <div
-                key={pi}
-                style={{
-                  minWidth: '100%',
-                  scrollSnapAlign: 'start',
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 8,
-                  padding: '0 24px',
-                  boxSizing: 'border-box',
-                  alignContent: 'start',
-                }}
-              >
-                {pair.map((c, i) => (
-                  <div key={i} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: 14, padding: '14px 12px', backdropFilter: 'blur(12px)' }}>
-                    <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 9, color: '#629675', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 4 }}>{c.name}</p>
-                    <p className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(24px,7vw,32px)', fontWeight: 800, color: '#FEF272', lineHeight: 1, letterSpacing: '-.02em' }}>{c.stat}</p>
-                    <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', lineHeight: 1.4, marginTop: 4 }}>{c.desc}</p>
+            {/* ── Hero number — compact ── */}
+            <div style={{ padding: '20px 24px 16px', textAlign: 'center', flexShrink: 0 }}>
+              <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 10, color: '#629675', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', marginBottom: 8 }}>Dr. Pal&apos;s NewME · Clinical Outcomes</p>
+              <div className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(52px,14vw,80px)', fontWeight: 800, color: '#FEF272', lineHeight: 1, letterSpacing: '-.04em' }}>
+                {heroCount >= 10000 ? '10,000+' : heroCount.toLocaleString()}
+              </div>
+              <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(13px,2.2vw,16px)', color: 'rgba(255,255,255,0.6)', marginTop: 6, lineHeight: 1.35 }}>
+                clients helped across metabolic, hormonal and gut health
+              </p>
+              {/* Two top-line stats */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 14 }}>
+                {[{ n:'91%', l:'Gut symptoms improved' }, { n:'100%', l:'HbA1c reduced' }].map((c, i) => (
+                  <div key={i} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: 12, padding: '10px 8px', backdropFilter: 'blur(12px)' }}>
+                    <div className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 22, fontWeight: 800, color: '#FEF272', lineHeight: 1 }}>{c.n}</div>
+                    <div className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 9, color: '#629675', fontWeight: 600, marginTop: 4, letterSpacing: '.03em', textTransform: 'uppercase' }}>{c.l}</div>
                   </div>
                 ))}
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Dot indicators */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 6, padding: '6px 0 10px', flexShrink: 0 }}>
-            {cardPages.map((_, pi) => (
-              <div key={pi} style={{ width: condPage === pi ? 18 : 6, height: 6, borderRadius: 9999, background: condPage === pi ? '#FEF272' : 'rgba(255,255,255,0.25)', transition: 'all .25s' }} />
-            ))}
-          </div>
+            {/* ── Condition cards carousel ── */}
+            <div style={{ padding: '0 24px 6px', flexShrink: 0 }}>
+              <p className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 18, fontWeight: 700, color: '#fff', lineHeight: 1.25, letterSpacing: '-.01em' }}>
+                Real outcomes. Documented. Across the board.
+              </p>
+            </div>
 
-          {/* ── Sticky CTA ── */}
-          <div style={{ padding: '8px 24px 16px', flexShrink: 0, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <button
-              onClick={() => { setScreen('q'); setStep(s => s + 1) }}
-              className="font-[family-name:var(--font-bricolage)]"
-              style={{ width: '100%', background: '#FEF272', color: '#013E37', border: 'none', borderRadius: 9999, fontSize: 16, fontWeight: 700, padding: '15px', cursor: 'pointer' }}
+            {/* Snap-scroll carousel — each page is a pair of cards side-by-side */}
+            <div
+              style={{
+                flex: 1,
+                display: 'flex',
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                scrollSnapType: 'x mandatory',
+                scrollbarWidth: 'none',
+                gap: 0,
+                padding: '8px 0',
+              }}
+              onScroll={e => {
+                const el = e.currentTarget
+                const page = Math.round(el.scrollLeft / el.offsetWidth)
+                setCondPage(page)
+              }}
             >
-              Continue →
-            </button>
-            <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginTop: 8 }}>Based on documented client outcomes across NewME programs.</p>
+              {cardPages.map((pair, pi) => (
+                <div
+                  key={pi}
+                  style={{
+                    minWidth: '100%',
+                    scrollSnapAlign: 'start',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 8,
+                    padding: '0 24px',
+                    boxSizing: 'border-box',
+                    alignContent: 'start',
+                  }}
+                >
+                  {pair.map((c, i) => (
+                    <div key={i} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: 14, padding: '14px 12px', backdropFilter: 'blur(12px)' }}>
+                      <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 9, color: '#629675', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 4 }}>{c.name}</p>
+                      <p className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 32, fontWeight: 800, color: '#FEF272', lineHeight: 1, letterSpacing: '-.02em' }}>{c.stat}</p>
+                      <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', lineHeight: 1.4, marginTop: 4 }}>{c.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Dot indicators */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 6, padding: '6px 0 10px', flexShrink: 0 }}>
+              {cardPages.map((_, pi) => (
+                <div key={pi} style={{ width: condPage === pi ? 18 : 6, height: 6, borderRadius: 9999, background: condPage === pi ? '#FEF272' : 'rgba(255,255,255,0.25)', transition: 'all .25s' }} />
+              ))}
+            </div>
+
+            {/* ── Sticky CTA ── */}
+            <div style={{ padding: '8px 24px 16px', flexShrink: 0, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <button
+                onClick={() => { setScreen('q'); setStep(s => s + 1) }}
+                className="font-[family-name:var(--font-bricolage)]"
+                style={{ width: '100%', background: '#FEF272', color: '#013E37', border: 'none', borderRadius: 9999, fontSize: 16, fontWeight: 700, padding: '15px', cursor: 'pointer' }}
+              >
+                Continue →
+              </button>
+              <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginTop: 8 }}>Based on documented client outcomes across NewME programs.</p>
+            </div>
+
           </div>
         </div>
       </div>
