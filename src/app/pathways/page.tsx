@@ -41,7 +41,9 @@ export default function PathwaysPage() {
   const [hoveredTab, setHoveredTab] = useState<Tab | null>(null)
 
   return (
-    <main className="pathway-page">
+    <>
+      <Header />
+      <main className="pathway-page">
       {/* ─── ATMOSPHERIC BACKGROUND — 1920px artboard, scrolls with page ─── */}
       <div className="pathway-bg" aria-hidden style={{ height: 5000 }}>
         <span className="pathway-ellipse pathway-green-wash" style={{ top: 400, opacity: 0.40 }} />
@@ -51,10 +53,9 @@ export default function PathwaysPage() {
         <span className="pathway-noise pathway-green-noise pathway-green-noise-2" style={{ top: 2800 }} />
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-2" style={{ top: 2500, left: -625 }} />
       </div>
-      <Header />
 
       {/* ─── HERO SECTION ────────────────────────────────────────────── */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(90px,9.5vw,130px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)' }}>
 
         {/* Hero image — rounded panel */}
         <div style={{ margin: '0 auto', maxWidth: 'clamp(300px,calc(1880/1920*100vw),1880px)', padding: '0 clamp(12px,1.04vw,20px)' }}>
@@ -332,5 +333,6 @@ export default function PathwaysPage() {
       {/* ─── FOOTER ──────────────────────────────────────────────────── */}
       <Footer />
     </main>
+    </>
   )
 }

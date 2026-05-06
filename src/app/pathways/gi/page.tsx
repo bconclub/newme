@@ -282,7 +282,9 @@ function PhaseSection({ phase }: { phase: Phase }) {
 
 export default function GIPathwayPage() {
   return (
-    <main className="pathway-page">
+    <>
+      <Header />
+      <main className="pathway-page">
       {/* ── Atmospheric background — 1920px artboard, scrolls with page ── */}
       <div className="pathway-bg" aria-hidden style={{ height: 6500 }}>
         {/* Green wash 1 — behind hero + GI Core phase */}
@@ -298,10 +300,9 @@ export default function GIPathwayPage() {
         {/* Gold accent — lower right */}
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-3" style={{ top: 5500, left: 1268, opacity: 0.4 }} />
       </div>
-      <Header />
 
       {/* Hero */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(80px,7.29vw,120px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)' }}>
         <div style={{ position: 'relative', margin: '0 clamp(12px,1.04vw,20px)', borderRadius: 'clamp(16px,1.25vw,24px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
           <Image
             src="/images/pathways/gi-hero.jpg"
@@ -375,5 +376,6 @@ export default function GIPathwayPage() {
 
       <Footer />
     </main>
+    </>
   )
 }

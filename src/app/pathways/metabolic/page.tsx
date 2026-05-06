@@ -338,7 +338,9 @@ function PhaseSection({ phase }: { phase: Phase }) {
 
 export default function MetabolicPathwayPage() {
   return (
-    <main className="pathway-page">
+    <>
+      <Header />
+      <main className="pathway-page">
       {/* ── Atmospheric background — 1920px artboard, scrolls with page ── */}
       <div className="pathway-bg" aria-hidden style={{ height: 8000 }}>
         {/* Green wash 1 — behind hero + Reset phase */}
@@ -354,10 +356,9 @@ export default function MetabolicPathwayPage() {
         {/* Gold accent — lower right */}
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-3" style={{ top: 6800, left: 1268, opacity: 0.4 }} />
       </div>
-      <Header />
 
       {/* Hero */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(80px,7.29vw,120px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)' }}>
         <div style={{
           position: 'relative',
           margin: '0 clamp(12px,1.04vw,20px)',
@@ -371,7 +372,7 @@ export default function MetabolicPathwayPage() {
             fill
             unoptimized
             priority
-            style={{ objectFit: 'cover', objectPosition: 'center 25%' }}
+            style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
           />
           {/* Left gradient overlay */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.92) 0%, rgba(1,62,55,0.65) 40%, rgba(1,62,55,0.10) 70%, transparent 100%)' }} />
@@ -440,5 +441,6 @@ export default function MetabolicPathwayPage() {
 
       <Footer />
     </main>
+    </>
   )
 }
