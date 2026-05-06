@@ -144,7 +144,7 @@ function ContactBody() {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
-          gap: 'clamp(48px, calc(80 / 1920 * 100vw), 80px)',
+          gap: 'clamp(48px, calc(110 / 1920 * 100vw), 110px)',
           alignItems: 'start',
           maxWidth: 1800,
           margin: '0 auto',
@@ -152,28 +152,30 @@ function ContactBody() {
       >
         {/* ── Left column — contact info ── */}
         <div>
-          {/* Reach Out pill */}
+          {/* Reach Out pill — Figma: 155×48, backdropBlur 2px, border solid white, rounded-[40px], 24px Bricolage Light */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.4 }}
-            style={{ marginBottom: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)' }}
+            style={{ marginBottom: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)' }}
           >
             <span
               className="font-[family-name:var(--font-bricolage)]"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                border: '1px solid rgba(255,255,255,0.50)',
-                borderRadius: 9999,
+                justifyContent: 'center',
+                border: '1px solid #ffffff',
+                borderRadius: 40,
+                height: 'clamp(38px, calc(48 / 1920 * 100vw), 48px)',
+                minWidth: 'clamp(110px, calc(155 / 1920 * 100vw), 155px)',
                 padding: '0 clamp(16px, calc(20 / 1920 * 100vw), 20px)',
-                height: 44,
-                fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
-                fontWeight: 400,
-                color: 'rgba(255,255,255,0.90)',
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
+                fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                fontWeight: 300,
+                color: '#ffffff',
+                backdropFilter: 'blur(2px)',
+                WebkitBackdropFilter: 'blur(2px)',
               }}
             >
               Reach Out
@@ -181,6 +183,7 @@ function ContactBody() {
           </motion.div>
 
           {/* Heading */}
+          {/* "We're Here To Help." — Figma: 72px SemiBold, line-height 72px */}
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -189,10 +192,10 @@ function ContactBody() {
             className="font-[family-name:var(--font-bricolage)] text-white"
             style={{
               fontWeight: 600,
-              fontSize: 'clamp(26px, calc(56 / 1920 * 100vw), 56px)',
-              lineHeight: 1.1,
+              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              lineHeight: 1.0,
               letterSpacing: '-0.01em',
-              marginBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
+              marginBottom: 'clamp(20px, calc(36 / 1920 * 100vw), 36px)',
             }}
           >
             We&rsquo;re Here<br />To Help.
@@ -259,6 +262,7 @@ function ContactBody() {
         </div>
 
         {/* ── Right column — form card ── */}
+        {/* Form card — Figma: w=890 h=902, rounded-[48px], border 1px solid rgba(255,255,255,0.28), padding 96px */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -268,9 +272,9 @@ function ContactBody() {
             background: 'linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)',
             backdropFilter: 'blur(20px) saturate(85%)',
             WebkitBackdropFilter: 'blur(20px) saturate(85%)',
-            border: '1.5px solid rgba(255,255,255,0.18)',
-            borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
-            padding: 'clamp(28px, calc(60 / 1920 * 100vw), 60px)',
+            border: '1px solid rgba(255,255,255,0.28)',
+            borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
+            padding: 'clamp(36px, calc(96 / 1920 * 100vw), 96px)',
           }}
         >
           <h2
@@ -314,79 +318,77 @@ function ContactBody() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)' }}>
-              {/* Name */}
-              <div>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  required
-                  value={form.name}
-                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none"
-                  style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1.5px solid rgba(255,255,255,0.18)',
-                    borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                    padding: 'clamp(14px, calc(22 / 1920 * 100vw), 22px) clamp(16px, calc(22 / 1920 * 100vw), 22px)',
-                    fontSize: 'clamp(14px, calc(16 / 1920 * 100vw), 16px)',
-                  }}
-                />
-              </div>
+              {/* Name — Figma: h=72, w=698 */}
+              <input
+                type="text"
+                placeholder="Name"
+                required
+                value={form.name}
+                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  borderRadius: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+                  height: 'clamp(52px, calc(72 / 1920 * 100vw), 72px)',
+                  padding: '0 clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                }}
+              />
 
-              {/* Email */}
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  required
-                  value={form.email}
-                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                  className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none"
-                  style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1.5px solid rgba(255,255,255,0.18)',
-                    borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                    padding: 'clamp(14px, calc(22 / 1920 * 100vw), 22px) clamp(16px, calc(22 / 1920 * 100vw), 22px)',
-                    fontSize: 'clamp(14px, calc(16 / 1920 * 100vw), 16px)',
-                  }}
-                />
-              </div>
+              {/* Email — Figma: h=72, w=698 */}
+              <input
+                type="email"
+                placeholder="Email address"
+                required
+                value={form.email}
+                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  borderRadius: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+                  height: 'clamp(52px, calc(72 / 1920 * 100vw), 72px)',
+                  padding: '0 clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                }}
+              />
 
-              {/* Message */}
-              <div>
-                <textarea
-                  placeholder="Leave a Message"
-                  required
-                  rows={5}
-                  value={form.message}
-                  onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                  className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none resize-none"
-                  style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1.5px solid rgba(255,255,255,0.18)',
-                    borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                    padding: 'clamp(14px, calc(22 / 1920 * 100vw), 22px) clamp(16px, calc(22 / 1920 * 100vw), 22px)',
-                    fontSize: 'clamp(14px, calc(16 / 1920 * 100vw), 16px)',
-                  }}
-                />
-              </div>
+              {/* Message — Figma: h=208, w=698 */}
+              <textarea
+                placeholder="Leave a Message"
+                required
+                value={form.message}
+                onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none resize-none"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  borderRadius: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+                  height: 'clamp(130px, calc(208 / 1920 * 100vw), 208px)',
+                  padding: 'clamp(16px, calc(24 / 1920 * 100vw), 24px) clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                }}
+              />
 
-              {/* Send Now */}
+              {/* Send Now — Figma: bg-white, text-black, 197×72px, rounded-[60px], 24px Medium */}
               <button
                 type="submit"
                 disabled={sending}
-                className="font-[family-name:var(--font-bricolage)] self-start"
+                className="font-[family-name:var(--font-bricolage)]"
                 style={{
-                  background: sending ? 'rgba(254,242,114,0.6)' : '#FEF272',
-                  color: '#013E37',
+                  background: sending ? 'rgba(255,255,255,0.7)' : '#ffffff',
+                  color: '#000000',
                   border: 'none',
-                  borderRadius: 9999,
-                  padding: 'clamp(14px, calc(20 / 1920 * 100vw), 20px) clamp(28px, calc(44 / 1920 * 100vw), 44px)',
-                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
-                  fontWeight: 600,
+                  borderRadius: 60,
+                  width: 'clamp(150px, calc(197 / 1920 * 100vw), 197px)',
+                  height: 'clamp(52px, calc(72 / 1920 * 100vw), 72px)',
+                  fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                  fontWeight: 500,
                   cursor: sending ? 'not-allowed' : 'pointer',
                   transition: 'background 0.2s, transform 0.15s',
-                  marginTop: 'clamp(4px, calc(8 / 1920 * 100vw), 8px)',
+                  marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
+                  flexShrink: 0,
                 }}
               >
                 {sending ? 'Sending…' : 'Send Now'}

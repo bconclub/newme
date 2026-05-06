@@ -214,7 +214,19 @@ function FAQSections() {
       }}
     >
       {SECTIONS.map((section, si) => (
-        <FAQSection key={section.id} section={section} index={si} />
+        <div key={section.id}>
+          <FAQSection section={section} index={si} />
+          {/* Figma: full-width hairline dividers at y=1950 (after section 1) and y=3354 (after section 2) */}
+          {si < SECTIONS.length - 1 && (
+            <div
+              style={{
+                borderTop: '1px solid rgba(255,255,255,0.18)',
+                marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+                marginBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+              }}
+            />
+          )}
+        </div>
       ))}
     </div>
   )
@@ -238,7 +250,6 @@ function FAQSection({
       style={{
         maxWidth: 1193,
         margin: '0 auto',
-        marginBottom: 'clamp(60px, calc(100 / 1920 * 100vw), 100px)',
       }}
     >
       {/* Section header */}
