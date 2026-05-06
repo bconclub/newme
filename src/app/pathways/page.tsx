@@ -1,18 +1,339 @@
-import type { Metadata } from 'next'
-import PageStub from '@/components/option1/PageStub'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Pathways | Dr. Pal\'s NewME',
-  description:
-    'Three structured pathways of care — Metabolic, Gastrointestinal, and Continuity — each aligned to a specific level of complexity.',
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import Header from '@/components/option1/Header'
+import Footer from '@/components/option1/Footer'
+
+const EASE = [0.22, 1, 0.36, 1] as const
+
+// Images downloaded from Figma
+const HERO_IMG = '/images/pathways/hero-doctor.jpg'
+const SECTION_IMG = '/images/pathways/section-clinical.jpg'
+
+type Tab = 'metabolic' | 'gi' | 'continuity'
+
+const TABS: { id: Tab; label: string; href: string }[] = [
+  { id: 'metabolic',   label: 'Metabolic Care Pathway',       href: '/pathways/metabolic' },
+  { id: 'gi',          label: 'GastroIntestinal Care Pathway', href: '/pathways/gi' },
+  { id: 'continuity',  label: 'Continuity Pathways',           href: '/pathways/continuity' },
+]
+
+const SUB_PILLS: Record<Tab, { label: string; href: string }[]> = {
+  metabolic: [
+    { label: 'Reset',   href: '/pathways/metabolic#reset' },
+    { label: 'Rebuild', href: '/pathways/metabolic#rebuild' },
+    { label: 'Sustain', href: '/pathways/metabolic#sustain' },
+  ],
+  gi: [
+    { label: 'GastroIntestinal Core',     href: '/pathways/gi#core' },
+    { label: 'GastroIntestinal Advanced', href: '/pathways/gi#advanced' },
+  ],
+  continuity: [
+    { label: 'NewME 360',      href: '/pathways/continuity#360' },
+    { label: 'NewME Movement', href: '/pathways/continuity#movement' },
+  ],
 }
 
 export default function PathwaysPage() {
+  const [hoveredTab, setHoveredTab] = useState<Tab | null>(null)
+
   return (
-    <PageStub
-      eyebrow="Pathways"
-      title="The Pathways To Better Health"
-      blurb="Each defined pathway of care is aligned to a specific level of metabolic and gastrointestinal complexity. Your assessment determines the pathway."
-    />
+    <main style={{ background: '#013E37', color: '#fff', overflowX: 'hidden' }}>
+      <Header />
+
+      {/* ─── ATMOSPHERIC BACKGROUND ─────────────────────────────────── */}
+      <div aria-hidden style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
+        {/* Top dark gradient */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #013E37 0%, rgba(1,62,55,0.6) 35%, transparent 60%)' }} />
+        {/* Large green wash blob */}
+        <div style={{ position: 'absolute', width: '200vw', height: '200vw', left: '-30%', top: '-40vw', background: 'radial-gradient(ellipse, #629675 0%, #013E37 65%)', borderRadius: '50%', filter: 'blur(clamp(160px,20vw,300px))', opacity: 0.35 }} />
+        {/* Gold glow — right side */}
+        <div style={{ position: 'absolute', width: 'clamp(260px,45vw,680px)', height: 'clamp(260px,45vw,680px)', right: 'clamp(-200px,-12vw,-60px)', top: '8%', background: '#FEF272', borderRadius: '50%', filter: 'blur(clamp(120px,15vw,220px))', opacity: 0.22 }} />
+        {/* Mid-page blob */}
+        <div style={{ position: 'absolute', width: '160vw', height: '160vw', left: '-30%', top: '60%', background: 'radial-gradient(ellipse, #629675 0%, #013E37 60%)', borderRadius: '50%', filter: 'blur(clamp(140px,18vw,280px))', opacity: 0.30 }} />
+      </div>
+
+      {/* ─── HERO SECTION ────────────────────────────────────────────── */}
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(90px,9.5vw,130px)' }}>
+
+        {/* Hero image — rounded panel */}
+        <div style={{ margin: '0 auto', maxWidth: 'clamp(300px,calc(1880/1920*100vw),1880px)', padding: '0 clamp(12px,1.04vw,20px)' }}>
+          <div style={{ position: 'relative', borderRadius: 'clamp(16px,1.56vw,30px)', overflow: 'hidden', height: 'clamp(260px,calc(694/1920*100vw),694px)' }}>
+            <Image
+              src={HERO_IMG}
+              alt="Dr. Pal with patient"
+              fill
+              priority
+              unoptimized
+              style={{ objectFit: 'cover', objectPosition: '60% center' }}
+            />
+            {/* Dark overlay — left-half gradient so white text reads cleanly */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.88) 0%, rgba(1,62,55,0.55) 48%, transparent 75%)' }} />
+
+            {/* Text + CTA overlaid on hero image */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(20px,7.29vw,140px)' }}>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: EASE }}
+                className="font-[family-name:var(--font-bricolage)]"
+                style={{ fontSize: 'clamp(26px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, maxWidth: 'clamp(260px,calc(1086/1920*100vw),1086px)', marginBottom: 'clamp(12px,1.3vw,24px)' }}
+              >
+                You Don&apos;t Choose A Program. You&apos;re Prescribed A Path.
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: EASE, delay: 0.15 }}
+                className="font-[family-name:var(--font-urbanist)]"
+                style={{ fontSize: 'clamp(14px,1.25vw,24px)', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, maxWidth: 'clamp(240px,calc(783/1920*100vw),783px)', marginBottom: 'clamp(20px,2.08vw,40px)' }}
+              >
+                NewME is a structured clinical system. Your assessment maps your health patterns and guides you into the pathway designed for your body&apos;s needs.
+              </motion.p>
+
+              {/* CTA — gold pill + arrow */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, ease: EASE, delay: 0.28 }}
+                style={{ display: 'flex', alignItems: 'center' }}
+              >
+                <Link
+                  href="/assessment"
+                  style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none' }}
+                >
+                  <span
+                    className="font-[family-name:var(--font-bricolage)]"
+                    style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FEF272', color: '#013E37', borderRadius: 9999, fontSize: 'clamp(13px,0.83vw,16px)', fontWeight: 600, padding: '0 clamp(18px,1.4vw,26px)', height: 'clamp(44px,3.33vw,64px)', zIndex: 1 }}
+                  >
+                    Find Your Pathway
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FEF272', borderRadius: '50%', width: 'clamp(44px,3.33vw,64px)', height: 'clamp(44px,3.33vw,64px)', marginLeft: -8, flexShrink: 0 }}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+                      <path d="M4 10h12M11 5l5 5-5 5" stroke="#013E37" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── INTRODUCTION SECTION ────────────────────────────────────── */}
+      <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(60px,5.2vw,100px) clamp(20px,10.4vw,200px)' }}>
+
+        {/* Eyebrow pill */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.4 }}
+          style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(16px,1.25vw,24px)' }}
+        >
+          <span
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 9999, backdropFilter: 'blur(2px)', padding: '0 clamp(16px,1.04vw,20px)', height: 48, fontSize: 'clamp(13px,1.25vw,24px)', fontWeight: 300, color: '#fff', letterSpacing: '0.01em' }}
+          >
+            Introduction To The Pathways
+          </span>
+        </motion.div>
+
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', textAlign: 'center', lineHeight: 1.1, marginBottom: 'clamp(20px,1.56vw,30px)' }}
+        >
+          One System. Multiple Pathways.
+        </motion.h2>
+
+        {/* Body paragraph 1 */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.1 }}
+          className="font-[family-name:var(--font-urbanist)]"
+          style={{ fontSize: 'clamp(15px,1.46vw,28px)', fontWeight: 500, color: '#fff', textAlign: 'center', lineHeight: 1.45, maxWidth: 'clamp(280px,calc(1275/1920*100vw),1275px)', marginLeft: 'auto', marginRight: 'auto', marginBottom: 'clamp(32px,3.13vw,60px)' }}
+        >
+          NewME is designed as a structured clinical system where care is delivered through distinct pathways. Each pathway is built for a different level of metabolic, gastrointestinal, or long-term support.
+        </motion.p>
+
+        {/* Interior photo */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.65, ease: EASE }}
+          style={{ margin: '0 auto clamp(32px,3.13vw,60px)', maxWidth: 'clamp(280px,calc(1194/1920*100vw),1194px)', borderRadius: 'clamp(14px,1.04vw,20px)', overflow: 'hidden', aspectRatio: '1194/533' }}
+        >
+          <Image
+            src={SECTION_IMG}
+            alt="Clinical team reviewing patient data"
+            width={1194}
+            height={533}
+            unoptimized
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </motion.div>
+
+        {/* Body paragraph 2 */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.1 }}
+          className="font-[family-name:var(--font-urbanist)]"
+          style={{ fontSize: 'clamp(14px,1.25vw,24px)', fontWeight: 400, color: 'rgba(255,255,255,0.75)', textAlign: 'center', lineHeight: 1.55, maxWidth: 'clamp(280px,calc(1275/1920*100vw),1275px)', marginLeft: 'auto', marginRight: 'auto' }}
+        >
+          Some individuals require foundational stabilization. Others need deeper metabolic correction or focused gastrointestinal support. Each pathway is defined by its purpose, duration, and level of clinical involvement.
+        </motion.p>
+      </section>
+
+      {/* ─── PATHWAY SELECTOR ────────────────────────────────────────── */}
+      <section style={{ position: 'relative', zIndex: 1, padding: '0 clamp(20px,10.4vw,200px) clamp(60px,5.2vw,100px)' }}>
+
+        {/* "Pathways" label box */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(20px,1.56vw,30px)' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.4 }}
+            style={{ border: '1px solid rgba(255,255,255,0.3)', borderRadius: 12, padding: 'clamp(10px,0.83vw,16px) clamp(20px,1.87vw,36px)', backdropFilter: 'blur(8px)' }}
+          >
+            <span className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(18px,2.08vw,40px)', fontWeight: 600, color: '#fff' }}>Pathways</span>
+          </motion.div>
+        </div>
+
+        {/* Connector: vertical line from box → horizontal branch */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+          <div style={{ width: 1, height: 'clamp(24px,2.08vw,40px)', background: 'rgba(255,255,255,0.25)' }} />
+        </div>
+        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+          {/* Horizontal bar spanning all 3 columns */}
+          <div style={{ position: 'absolute', top: 0, left: '16.67%', right: '16.67%', height: 1, background: 'rgba(255,255,255,0.25)' }} />
+        </div>
+        {/* 3 vertical drops from horizontal bar */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
+          {TABS.map((t) => (
+            <div key={t.id} style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: 1, height: 'clamp(18px,1.56vw,30px)', background: 'rgba(255,255,255,0.25)' }} />
+            </div>
+          ))}
+        </div>
+
+        {/* Dots above cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
+          {TABS.map((t) => (
+            <div key={t.id} style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.5)', background: 'transparent' }} />
+            </div>
+          ))}
+        </div>
+
+        {/* ── 3 Pathway cards ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'clamp(8px,0.625vw,12px)', marginBottom: 'clamp(10px,0.83vw,16px)' }}>
+          {TABS.map((t, i) => {
+            const isActive = hoveredTab === t.id
+            return (
+              <motion.div
+                key={t.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.5, ease: EASE, delay: i * 0.08 }}
+                onMouseEnter={() => setHoveredTab(t.id)}
+                onMouseLeave={() => setHoveredTab(null)}
+              >
+                <Link href={t.href} style={{ textDecoration: 'none', display: 'block' }}>
+                  <div
+                    style={{
+                      borderRadius: 'clamp(14px,1.25vw,24px)',
+                      height: 'clamp(80px,6.25vw,120px)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s',
+                      ...(isActive
+                        ? { background: '#FEF272', border: '2px solid #FEF272' }
+                        : { background: 'linear-gradient(180deg,rgba(255,255,255,0.20) 0%,rgba(255,255,255,0) 100%), rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.55)', backdropFilter: 'blur(10px)' }
+                      ),
+                    }}
+                  >
+                    <span
+                      className="font-[family-name:var(--font-bricolage)]"
+                      style={{ fontSize: 'clamp(13px,1.25vw,24px)', fontWeight: 600, color: isActive ? '#013E37' : '#fff', textAlign: 'center', lineHeight: 1.25, padding: '0 12px', transition: 'color 0.25s' }}
+                    >
+                      {t.label.split(' ').slice(0, -1).join(' ')}<br />{t.label.split(' ').slice(-1)}
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {/* Connector drops from cards to pills */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
+          {TABS.map((t) => (
+            <div key={t.id} style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: 1, height: 'clamp(14px,1.25vw,24px)', background: 'rgba(255,255,255,0.20)' }} />
+            </div>
+          ))}
+        </div>
+
+        {/* ── Sub-pathway pills — 3 columns ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'clamp(8px,0.625vw,12px)', alignItems: 'start' }}>
+          {TABS.map((t, ci) => (
+            <div key={t.id} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px,0.625vw,12px)', alignItems: 'center' }}>
+              {SUB_PILLS[t.id].map((pill, pi) => (
+                <motion.div
+                  key={pill.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.4, ease: EASE, delay: ci * 0.06 + pi * 0.05 }}
+                >
+                  <Link href={pill.href} style={{ textDecoration: 'none' }}>
+                    <span
+                      className="font-[family-name:var(--font-bricolage)]"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '1px solid rgba(255,255,255,0.45)',
+                        borderRadius: 9999,
+                        height: 'clamp(38px,3.33vw,64px)',
+                        padding: '0 clamp(14px,1.25vw,24px)',
+                        fontSize: 'clamp(11px,0.83vw,16px)',
+                        fontWeight: 400,
+                        color: '#fff',
+                        whiteSpace: 'nowrap',
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      {pill.label}
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── FOOTER ──────────────────────────────────────────────────── */}
+      <Footer />
+    </main>
   )
 }

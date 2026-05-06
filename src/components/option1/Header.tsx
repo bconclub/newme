@@ -15,7 +15,7 @@ type NavLink = { label: string; href: string; hasMenu?: boolean; live?: boolean 
 const navLinks: NavLink[] = [
   { label: 'Home', href: '/', live: true },
   { label: 'How It Works', href: '/how-it-works', live: true },
-  { label: 'Pathways', href: '/pathways' },
+  { label: 'Pathways', href: '/pathways', live: true },
   { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
   { label: 'NewME Care Team', href: '/care-team' },
   { label: 'Resources', href: '#resources', hasMenu: true },
