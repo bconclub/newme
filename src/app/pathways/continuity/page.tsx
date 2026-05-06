@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-function PathwayBg() {
+function AtmoBg() {
   return (
     <div aria-hidden style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #013E37 0%, rgba(1,62,55,0.6) 35%, transparent 60%)' }} />
@@ -17,144 +18,384 @@ function PathwayBg() {
   )
 }
 
-const PHASES = [
+// ── Types ─────────────────────────────────────────────────────────────────
+
+type CareItem = { num: string; title: string; desc: string }
+
+type Phase = {
+  id: string
+  heading: string
+  description: string
+  duration: string
+  whoFor: string[]
+  areasOfFocus: string[]
+  careItems: CareItem[]
+  bannerImg: string
+  bannerHeading: string
+  bannerBody: string
+  bannerOverlay: string
+}
+
+// ── Data ──────────────────────────────────────────────────────────────────
+
+const TABS = [
+  { label: 'Metabolic Care Pathways', href: '/pathways/metabolic', active: false },
+  { label: 'GastroIntestinal Care Pathways', href: '/pathways/gi', active: false },
+  { label: 'Continuity Pathways', href: '/pathways/continuity', active: true },
+]
+
+const PHASES: Phase[] = [
   {
-    id: '360',
-    tag: 'NewME 360',
-    duration: 'Ongoing Continuity Program',
-    badge: 'FULL WRAP-AROUND',
-    heading: 'Complete clinical continuity after your phase.',
-    body: "NewME 360 is for clients who have completed a core pathway phase and want to maintain momentum, accountability and clinical access without starting a new phase from scratch. It's structured support that keeps your results intact as your life evolves.",
-    who: 'Clients who have completed Reset, Rebuild, Sustain, GI Core or GI Advanced.',
-    tags: ['Post-phase continuity', 'Ongoing accountability', 'Clinical access retained'],
-    bullets: [
-      'Continued clinical health coach access with regular check-ins and progress reviews',
-      'Ongoing blood work interpretation and metabolic monitoring',
-      'Maintenance nutrition and lifestyle framework adapted as your life changes',
-      'Priority access to Dr. Pal\'s monthly live education sessions',
-      'Full Virtual Gym access with 180+ sessions per week',
-      'Specialist check-ins if symptoms re-emerge or new concerns arise',
+    id: 'newme360',
+    heading: 'NewME 360',
+    description: 'This is a structured post-program accountability and relapse prevention system that provides continued lifestyle guidance and monitoring.',
+    duration: 'Duration: 3 Months / 12 Months',
+    whoFor: [
+      'Individuals who have completed core pathways and require continued accountability',
+      'Those looking to maintain metabolic and lifestyle improvements',
+      'Clients who benefit from ongoing structure without intensive intervention',
     ],
-    price: 'From $150 / month',
-    priceNote: 'Flexible continuity · cancel anytime',
-    accent: '#FEF272',
+    areasOfFocus: [
+      'Maintenance of lifestyle and nutrition habits',
+      'Ongoing accountability and consistency',
+      'Relapse prevention and long-term stability',
+    ],
+    careItems: [
+      { num: '01', title: 'Monthly Coach Check-ins', desc: 'Regular structured sessions with your clinical health coach to review progress, address challenges, and refine your approach.' },
+      { num: '02', title: 'Habit & Lifestyle Monitoring', desc: 'Ongoing review of your daily habits, nutrition consistency, and lifestyle patterns to maintain the progress you have achieved.' },
+      { num: '03', title: 'Lifestyle Correction Guidance', desc: 'Targeted guidance to address any drift or setbacks in your established routines, keeping your health habits on track.' },
+      { num: '04', title: 'Relapse Prevention Support', desc: 'Proactive strategies and check-ins designed to identify and address early signs of lifestyle regression before they escalate.' },
+      { num: '05', title: 'Movement & Activity Access', desc: 'Continued access to the NewME virtual gym and structured movement support to help you maintain an active lifestyle.' },
+      { num: '06', title: 'Ongoing Accountability Framework', desc: 'Regular progress tracking and goal-setting to keep you aligned with your long-term health outcomes beyond the core pathway.' },
+    ],
+    bannerImg: '/images/pathways/newme360-banner.jpg',
+    bannerHeading: 'Who Is Prescribed The NewME 360 Pathway?',
+    bannerBody: 'NewME 360 is prescribed for individuals who need continued accountability and structured oversight to maintain results and prevent relapse after completing their primary pathway.',
+    bannerOverlay: 'rgba(1,62,55,0.47)',
   },
   {
     id: 'movement',
-    tag: 'NewME Movement',
-    duration: 'Movement & Recovery Program',
-    badge: 'BODY-FOCUSED',
-    heading: 'Movement and recovery as clinical tools.',
-    body: 'NewME Movement is a clinically supervised movement and physiotherapy program designed to complement any metabolic or GI phase. It addresses joint pain, stiffness, recovery, and physical performance as clinical outcomes — not afterthoughts.',
-    who: 'Any client experiencing joint pain, stiffness, poor recovery, or wanting structured physical support alongside their pathway.',
-    tags: ['Physio-led sessions', 'Movement as medicine', 'Integrated with your pathway'],
-    bullets: [
-      'Weekly 1:1 virtual physiotherapist sessions focused on your specific movement concerns',
-      'Personalised mobility and recovery protocol built around your health history',
-      'Breathwork and nervous system regulation practices included',
-      'Coordination with your clinical health coach to align movement with nutrition and recovery',
-      'Progress tracked across strength, mobility, pain levels and energy',
-      'Can run alongside any active pathway phase or as a standalone program',
+    heading: 'NewMe Movement',
+    description: 'This is a fitness-focused continuity pathway designed to support physical activity and performance without clinical lifestyle supervision.',
+    duration: 'Duration: 3 Months / 12 Months',
+    whoFor: [
+      'Individuals with stable health who do not require ongoing clinical oversight',
+      'Those looking to maintain fitness through structured workouts',
+      'Clients focused on physical activity rather than metabolic correction',
     ],
-    price: 'From $180 / month',
-    priceNote: 'Movement-focused · flexible scheduling',
-    accent: '#629675',
+    areasOfFocus: [
+      'Strength and mobility',
+      'Physical performance',
+      'Structured workouts',
+    ],
+    careItems: [
+      { num: '01', title: 'Live & Recorded Workouts', desc: 'Access to live group sessions and an on-demand workout library spanning strength, cardio, yoga, and mobility formats.' },
+      { num: '02', title: 'Virtual Gym Access', desc: 'Full access to the NewME virtual gym with 180+ weekly sessions across a wide range of formats and difficulty levels.' },
+      { num: '03', title: 'Strength & Mobility Training', desc: 'Structured programs targeting functional strength, joint mobility, and physical performance improvements over time.' },
+      { num: '04', title: 'Community-Based Participation', desc: 'Group-based workout formats and community engagement to support consistency, motivation, and long-term adherence.' },
+    ],
+    bannerImg: '/images/pathways/movement-banner.jpg',
+    bannerHeading: 'Who Is Prescribed The NewME Movement Pathway?',
+    bannerBody: 'NewME Movement is prescribed for individuals who want to maintain physical fitness through structured workouts, without the need for ongoing clinical or lifestyle intervention.',
+    bannerOverlay: 'rgba(1,62,55,0.47)',
   },
 ]
+
+// ── Phase section component ────────────────────────────────────────────────
+
+function PhaseSection({ phase }: { phase: Phase }) {
+  return (
+    <section id={phase.id} style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(60px,5.21vw,100px)' }}>
+
+      {/* Phase heading + description + duration */}
+      <div style={{ textAlign: 'center', paddingLeft: 'clamp(20px,6.25vw,120px)', paddingRight: 'clamp(20px,6.25vw,120px)' }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.65, ease: EASE }}
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{ fontSize: 'clamp(32px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.05, marginBottom: 'clamp(12px,1.04vw,20px)' }}
+        >
+          {phase.heading}
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+          className="font-[family-name:var(--font-urbanist)]"
+          style={{ fontSize: 'clamp(14px,1.46vw,28px)', color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, maxWidth: 'clamp(260px,47.8vw,917px)', margin: '0 auto clamp(16px,1.25vw,24px)' }}
+        >
+          {phase.description}
+        </motion.p>
+
+        {/* Duration pill */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.4, delay: 0.14 }}
+          style={{ display: 'inline-flex', alignItems: 'center', height: 48, padding: '0 20px', borderRadius: 40, border: '1px solid rgba(255,255,255,0.28)', marginBottom: 'clamp(24px,2.08vw,40px)' }}
+        >
+          <span className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 14, color: 'rgba(255,255,255,0.70)', fontWeight: 500 }}>{phase.duration}</span>
+        </motion.div>
+      </div>
+
+      {/* 2-column info cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(10px,1.04vw,20px)', padding: '0 clamp(20px,9.32vw,179px) clamp(24px,2.08vw,40px)' }}>
+        {/* Who It's For */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: EASE }}
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)',
+            border: '1px solid rgba(255,255,255,0.10)',
+            borderRadius: 'clamp(14px,1.04vw,20px)',
+            padding: 'clamp(20px,2.08vw,40px)',
+            backdropFilter: 'blur(14px)',
+          }}
+        >
+          <h3
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{ fontSize: 'clamp(18px,1.67vw,32px)', fontWeight: 600, color: '#fff', marginBottom: 'clamp(12px,1.04vw,20px)' }}
+          >
+            Who It&apos;s For:
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px,0.83vw,16px)' }}>
+            {phase.whoFor.map((item, i) => (
+              <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#629675', marginTop: 6, flexShrink: 0 }} />
+                <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.72)', lineHeight: 1.6 }}>{item}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Areas Of Focus */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)',
+            border: '1px solid rgba(255,255,255,0.10)',
+            borderRadius: 'clamp(14px,1.04vw,20px)',
+            padding: 'clamp(20px,2.08vw,40px)',
+            backdropFilter: 'blur(14px)',
+          }}
+        >
+          <h3
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{ fontSize: 'clamp(18px,1.67vw,32px)', fontWeight: 600, color: '#fff', marginBottom: 'clamp(12px,1.04vw,20px)' }}
+          >
+            Areas Of Focus:
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px,0.83vw,16px)' }}>
+            {phase.areasOfFocus.map((item, i) => (
+              <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#629675', marginTop: 6, flexShrink: 0 }} />
+                <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.72)', lineHeight: 1.6 }}>{item}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* What Structured Care Entails heading */}
+      <div style={{ padding: '0 clamp(20px,9.32vw,179px)', textAlign: 'center' }}>
+        <motion.h3
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.55, ease: EASE }}
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{ fontSize: 'clamp(18px,1.67vw,32px)', fontWeight: 600, color: '#fff', marginBottom: 'clamp(16px,1.67vw,32px)', paddingTop: 'clamp(12px,1.04vw,20px)' }}
+        >
+          What Structured Care Entails:
+        </motion.h3>
+
+        {/* Numbered care items */}
+        <div style={{ maxWidth: 'clamp(300px,62.19vw,1194px)', margin: '0 auto', textAlign: 'left' }}>
+          {phase.careItems.map((item, ci) => (
+            <motion.div
+              key={ci}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, ease: EASE, delay: ci * 0.04 }}
+            >
+              <div style={{ display: 'flex', gap: 'clamp(12px,1.67vw,32px)', alignItems: 'flex-start', padding: 'clamp(12px,1.25vw,24px) 0' }}>
+                {/* Ghost number */}
+                <div
+                  className="font-[family-name:var(--font-bricolage)]"
+                  style={{
+                    fontSize: 'clamp(36px,4.17vw,80px)',
+                    fontWeight: 700,
+                    color: 'rgba(255,255,255,0.10)',
+                    lineHeight: 1,
+                    flexShrink: 0,
+                    minWidth: 'clamp(36px,4.17vw,80px)',
+                    textAlign: 'right',
+                  }}
+                >
+                  {item.num}
+                </div>
+                {/* Title + description */}
+                <div style={{ flex: 1 }}>
+                  <p
+                    className="font-[family-name:var(--font-bricolage)]"
+                    style={{ fontSize: 'clamp(14px,1.25vw,24px)', fontWeight: 600, color: '#fff', marginBottom: 6 }}
+                  >
+                    {item.title}
+                  </p>
+                  <p
+                    className="font-[family-name:var(--font-urbanist)]"
+                    style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.58)', lineHeight: 1.65 }}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+              {/* Divider */}
+              {ci < phase.careItems.length - 1 && (
+                <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Prescription banner */}
+      <div style={{ padding: 'clamp(32px,3.13vw,60px) clamp(20px,10.99vw,211px)' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          style={{ position: 'relative', borderRadius: 'clamp(24px,2.92vw,56px)', overflow: 'hidden', minHeight: 'clamp(180px,21.04vw,404px)' }}
+        >
+          <Image
+            src={phase.bannerImg}
+            alt={phase.bannerHeading}
+            fill
+            unoptimized
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: phase.bannerOverlay }} />
+          <div style={{ position: 'relative', zIndex: 1, padding: 'clamp(24px,4.17vw,80px) clamp(20px,4.17vw,80px)' }}>
+            <h3
+              className="font-[family-name:var(--font-bricolage)]"
+              style={{ fontSize: 'clamp(22px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, maxWidth: 'clamp(240px,41.35vw,794px)', marginBottom: 'clamp(12px,1.04vw,20px)' }}
+            >
+              {phase.bannerHeading}
+            </h3>
+            <p
+              className="font-[family-name:var(--font-urbanist)]"
+              style={{ fontSize: 'clamp(13px,1.46vw,28px)', color: 'rgba(255,255,255,0.80)', lineHeight: 1.65, maxWidth: 'clamp(240px,54.69vw,1050px)', fontWeight: 500 }}
+            >
+              {phase.bannerBody}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────
 
 export default function ContinuityPathwayPage() {
   return (
     <main style={{ background: '#013E37', color: '#fff', overflowX: 'hidden' }}>
-      <PathwayBg />
+      <AtmoBg />
       <Header />
 
-      {/* ── Page intro ── */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(110px,9.5vw,150px)', paddingBottom: 'clamp(40px,3.13vw,60px)', paddingLeft: 'clamp(20px,7.29vw,140px)', paddingRight: 'clamp(20px,7.29vw,140px)' }}>
-        <Link href="/pathways" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.45)', fontSize: 13, textDecoration: 'none', marginBottom: 24 }} className="font-[family-name:var(--font-urbanist)]">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden><path d="M9 2.5L4 7l5 4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          All Pathways
-        </Link>
-
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-          style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 9999, padding: '0 18px', height: 40, backdropFilter: 'blur(2px)', marginBottom: 20 }}>
-          <span className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 13, fontWeight: 300, color: '#fff' }}>Continuity Pathways</span>
-        </motion.div>
-
-        <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, ease: EASE, delay: 0.1 }}
-          className="font-[family-name:var(--font-bricolage)]"
-          style={{ fontSize: 'clamp(30px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.05, maxWidth: 860, marginBottom: 20 }}>
-          After Your Phase. The Work Continues.
-        </motion.h1>
-
-        <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, ease: EASE, delay: 0.2 }}
-          className="font-[family-name:var(--font-urbanist)]"
-          style={{ fontSize: 'clamp(15px,1.15vw,22px)', color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, maxWidth: 700 }}>
-          Continuity Pathways are designed to maintain results, prevent relapse, and provide structured support beyond the core phases. Available standalone or as a follow-on to any pathway.
-        </motion.p>
+      {/* Hero */}
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(80px,7.29vw,120px)' }}>
+        <div style={{
+          position: 'relative',
+          margin: '0 clamp(12px,1.04vw,20px)',
+          borderRadius: 'clamp(16px,1.25vw,24px)',
+          overflow: 'hidden',
+          height: 'clamp(280px,36.15vw,694px)',
+        }}>
+          <Image
+            src="/images/pathways/continuity-hero.jpg"
+            alt="Continuity Pathways — ongoing care"
+            fill
+            unoptimized
+            priority
+            style={{ objectFit: 'cover', objectPosition: 'center 25%' }}
+          />
+          {/* Left gradient overlay */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.92) 0%, rgba(1,62,55,0.65) 40%, rgba(1,62,55,0.10) 70%, transparent 100%)' }} />
+          {/* Text */}
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,3.13vw,60px) clamp(24px,6.25vw,120px)' }}>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: EASE }}
+              className="font-[family-name:var(--font-bricolage)]"
+              style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.05, marginBottom: 'clamp(10px,1.04vw,20px)' }}
+            >
+              Continuity Pathways
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: EASE, delay: 0.15 }}
+              className="font-[family-name:var(--font-urbanist)]"
+              style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: 'clamp(260px,40.7vw,783px)' }}
+            >
+              Continuity Pathways are designed to maintain results, prevent relapse, and provide structured support beyond the core phases. Available for clients who have completed a primary pathway or as a standalone fitness and accountability program.
+            </motion.p>
+          </div>
+        </div>
       </section>
 
-      {/* ── Phase cards ── */}
-      <section style={{ position: 'relative', zIndex: 1, padding: '0 clamp(20px,7.29vw,140px) clamp(80px,6.25vw,120px)' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px,1.25vw,24px)' }}>
-          {PHASES.map((phase, i) => (
-            <motion.article
-              key={phase.id}
-              id={phase.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.55, ease: EASE, delay: i * 0.07 }}
-              style={{
-                background: 'linear-gradient(180deg,rgba(255,255,255,0.07) 0%,rgba(255,255,255,0.02) 100%)',
-                border: '1px solid rgba(255,255,255,0.10)',
-                borderRadius: 'clamp(16px,1.25vw,24px)',
-                backdropFilter: 'blur(14px)',
-                overflow: 'hidden',
-              }}
-            >
-              <div style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', padding: 'clamp(16px,1.25vw,24px) clamp(20px,2.08vw,40px)', display: 'flex', alignItems: 'center', gap: 14 }}>
-                <span className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(20px,1.87vw,36px)', fontWeight: 700, color: phase.accent }}>{phase.tag}</span>
-                <span className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 9, fontWeight: 800, color: '#013E37', background: phase.accent, borderRadius: 4, padding: '3px 8px', letterSpacing: '0.10em' }}>{phase.badge}</span>
-                <span className="font-[family-name:var(--font-urbanist)]" style={{ marginLeft: 'auto', fontSize: 11, color: '#629675', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{phase.duration}</span>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(16px,2.08vw,40px)', padding: 'clamp(20px,2.08vw,40px)' }}>
-                <div>
-                  <h3 className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(18px,1.46vw,28px)', fontWeight: 600, color: '#fff', lineHeight: 1.2, marginBottom: 12 }}>{phase.heading}</h3>
-                  <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(13px,0.78vw,15px)', color: 'rgba(255,255,255,0.62)', lineHeight: 1.65, marginBottom: 16 }}>{phase.body}</p>
-                  <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', fontStyle: 'italic', marginBottom: 18 }}>Best for: {phase.who}</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 24 }}>
-                    {phase.tags.map((tag) => (
-                      <span key={tag} className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.20)', borderRadius: 9999, padding: '4px 12px' }}>{tag}</span>
-                    ))}
-                  </div>
-                  <div style={{ marginBottom: 6 }}>
-                    <span className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(18px,1.46vw,28px)', fontWeight: 700, color: phase.accent }}>{phase.price}</span>
-                  </div>
-                  <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginBottom: 24 }}>{phase.priceNote}</p>
-                  <Link href="/assessment" style={{ textDecoration: 'none' }}>
-                    <span className="font-[family-name:var(--font-bricolage)]" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#FEF272', color: '#013E37', borderRadius: 9999, fontSize: 14, fontWeight: 600, padding: '11px 26px', cursor: 'pointer' }}>
-                      Start my assessment →
-                    </span>
-                  </Link>
-                </div>
-
-                <div>
-                  <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 10, color: '#629675', fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase', marginBottom: 14 }}>What&apos;s included</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    {phase.bullets.map((b, bi) => (
-                      <div key={bi} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: phase.accent, marginTop: 5, flexShrink: 0 }} />
-                        <p className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(12px,0.68vw,13px)', color: 'rgba(255,255,255,0.70)', lineHeight: 1.6 }}>{b}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.article>
+      {/* Pathway navigation tabs */}
+      <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(20px,2.08vw,40px) clamp(20px,6.25vw,120px) 0' }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {TABS.map((tab) => (
+            <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
+              <span
+                className="font-[family-name:var(--font-urbanist)]"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  height: 48,
+                  padding: '0 20px',
+                  borderRadius: 40,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  border: '1px solid rgba(255,255,255,0.28)',
+                  background: tab.active ? '#fff' : 'rgba(255,255,255,0.06)',
+                  color: tab.active ? '#013E37' : 'rgba(255,255,255,0.60)',
+                  backdropFilter: 'blur(2px)',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s, color 0.2s',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {tab.label}
+              </span>
+            </Link>
           ))}
         </div>
       </section>
+
+      {/* Phase sections */}
+      {PHASES.map((phase) => (
+        <PhaseSection key={phase.id} phase={phase} />
+      ))}
+
+      {/* Bottom spacer before footer */}
+      <div style={{ height: 'clamp(40px,3.13vw,60px)' }} />
 
       <Footer />
     </main>
