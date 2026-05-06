@@ -358,7 +358,7 @@ export default function MetabolicPathwayPage() {
       </div>
 
       {/* Hero */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)' }}>
         <div style={{
           position: 'relative',
           margin: '0 clamp(12px,1.04vw,20px)',

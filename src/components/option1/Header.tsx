@@ -44,6 +44,7 @@ export default function Header() {
             ? 'bg-[#013E37]/90 backdrop-blur-md border-b border-white/[0.06]'
             : 'bg-transparent'
         }`}
+        style={{ paddingTop: 'clamp(6px, calc(10 / 1920 * 100vw), 10px)', paddingBottom: 'clamp(4px, calc(6 / 1920 * 100vw), 6px)' }}
       >
         {/* Figma 58:132 — Header is 1800×74 inside the 1920 artboard with a
             60px gutter on each side (1920 − 1800 = 120 / 2 = 60). The inner

@@ -55,11 +55,10 @@ export default function PathwaysPage() {
       </div>
 
       {/* ─── HERO SECTION ────────────────────────────────────────────── */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)' }}>
 
         {/* Hero image — rounded panel */}
-        <div style={{ margin: '0 auto', maxWidth: 'clamp(300px,calc(1880/1920*100vw),1880px)', padding: '0 clamp(12px,1.04vw,20px)' }}>
-          <div style={{ position: 'relative', borderRadius: 'clamp(16px,1.56vw,30px)', overflow: 'hidden', height: 'clamp(260px,calc(694/1920*100vw),694px)' }}>
+          <div style={{ position: 'relative', margin: '0 clamp(12px, calc(20 / 1920 * 100vw), 20px)', borderRadius: 'clamp(16px,1.56vw,30px)', overflow: 'hidden', height: 'clamp(260px,calc(694/1920*100vw),694px)' }}>
             <Image
               src={HERO_IMG}
               alt="Dr. Pal with patient"
@@ -119,7 +118,6 @@ export default function PathwaysPage() {
               </motion.div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* ─── INTRODUCTION SECTION ────────────────────────────────────── */}

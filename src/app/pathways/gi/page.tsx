@@ -302,7 +302,7 @@ export default function GIPathwayPage() {
       </div>
 
       {/* Hero */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)' }}>
         <div style={{ position: 'relative', margin: '0 clamp(12px,1.04vw,20px)', borderRadius: 'clamp(16px,1.25vw,24px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
           <Image
             src="/images/pathways/gi-hero.jpg"

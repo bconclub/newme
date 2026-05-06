@@ -14,7 +14,7 @@ export default function HIWHero() {
       className="relative pb-3 md:pb-4"
       style={{
         // Figma artboard top of hero card y=152 with header y=39 h=74 → 39px gap.
-        paddingTop: 'clamp(88px, calc(113 / 1920 * 100vw), 113px)',
+        paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)',
         paddingLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
         paddingRight: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
       }}
