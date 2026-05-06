@@ -318,77 +318,73 @@ export default function ContinuityPathwayPage() {
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-2" style={{ top: 3100, left: -625 }} />
       </div>
 
-      {/* Hero */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)' }}>
-        <div style={{
-          position: 'relative',
-          margin: '0 clamp(12px,1.04vw,20px)',
-          borderRadius: 'clamp(16px,1.25vw,24px)',
-          overflow: 'hidden',
-          height: 'clamp(280px,36.15vw,694px)',
-        }}>
-          <Image
-            src="/images/pathways/continuity-hero.jpg"
-            alt="Continuity Pathways — ongoing care"
-            fill
-            unoptimized
-            priority
-            style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
-          />
-          {/* Left gradient overlay */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.92) 0%, rgba(1,62,55,0.65) 40%, rgba(1,62,55,0.10) 70%, transparent 100%)' }} />
-          {/* Text */}
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,3.13vw,60px) clamp(24px,6.25vw,120px)' }}>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, ease: EASE }}
-              className="font-[family-name:var(--font-bricolage)]"
-              style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.05, marginBottom: 'clamp(10px,1.04vw,20px)' }}
-            >
-              Continuity Pathways
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: EASE, delay: 0.15 }}
-              className="font-[family-name:var(--font-urbanist)]"
-              style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: 'clamp(260px,40.7vw,783px)' }}
-            >
-              Continuity Pathways are designed to maintain results, prevent relapse, and provide structured support beyond the core phases. Available for clients who have completed a primary pathway or as a standalone fitness and accountability program.
-            </motion.p>
-          </div>
-        </div>
-      </section>
+      {/* Hero — tabs straddle the card's bottom edge (Figma: tab y=673 in 694px card) */}
+      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)', paddingBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)' }}>
+        <div style={{ position: 'relative', margin: '0 clamp(12px,1.04vw,20px)' }}>
 
-      {/* Pathway navigation tabs */}
-      <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(20px,2.08vw,40px) clamp(20px,6.25vw,120px) 0' }}>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {TABS.map((tab) => (
-            <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
-              <span
-                className="font-[family-name:var(--font-urbanist)]"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  height: 48,
-                  padding: '0 20px',
-                  borderRadius: 40,
-                  fontSize: 14,
-                  fontWeight: 500,
-                  border: '1px solid rgba(255,255,255,0.28)',
-                  background: tab.active ? '#fff' : 'rgba(255,255,255,0.06)',
-                  color: tab.active ? '#013E37' : 'rgba(255,255,255,0.60)',
-                  backdropFilter: 'blur(2px)',
-                  cursor: 'pointer',
-                  transition: 'background 0.2s, color 0.2s',
-                  whiteSpace: 'nowrap',
-                }}
+          {/* Image card */}
+          <div style={{ position: 'relative', borderRadius: 'clamp(16px,1.25vw,24px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
+            <Image
+              src="/images/pathways/continuity-hero.jpg"
+              alt="Continuity Pathways — ongoing care"
+              fill
+              unoptimized
+              priority
+              style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.92) 0%, rgba(1,62,55,0.65) 40%, rgba(1,62,55,0.10) 70%, transparent 100%)' }} />
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,3.13vw,60px) clamp(24px,6.25vw,120px) clamp(56px,4.58vw,88px)' }}>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, ease: EASE }}
+                className="font-[family-name:var(--font-bricolage)]"
+                style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.05, marginBottom: 'clamp(10px,1.04vw,20px)' }}
               >
-                {tab.label}
-              </span>
-            </Link>
-          ))}
+                Continuity Pathways
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, ease: EASE, delay: 0.15 }}
+                className="font-[family-name:var(--font-urbanist)]"
+                style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: 'clamp(260px,40.7vw,783px)' }}
+              >
+                Continuity Pathways are designed to maintain results, prevent relapse, and provide structured support beyond the core phases. Available for clients who have completed a primary pathway or as a standalone fitness and accountability program.
+              </motion.p>
+            </div>
+          </div>
+
+          {/* Tabs — absolute, extending ~24px below the card */}
+          <div style={{ position: 'absolute', bottom: 'clamp(-16px, calc(-24 / 1920 * 100vw), -24px)', left: 'clamp(20px, calc(120 / 1920 * 100vw), 120px)', display: 'flex', gap: 8, flexWrap: 'wrap', zIndex: 10 }}>
+            {TABS.map((tab) => (
+              <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
+                <span
+                  className="font-[family-name:var(--font-urbanist)]"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    height: 48,
+                    padding: '0 clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                    borderRadius: 40,
+                    fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
+                    fontWeight: 500,
+                    border: tab.active ? 'none' : '1px solid rgba(255,255,255,0.28)',
+                    background: tab.active ? '#fff' : 'rgba(255,255,255,0.08)',
+                    color: tab.active ? '#013E37' : 'rgba(255,255,255,0.65)',
+                    backdropFilter: 'blur(2px)',
+                    WebkitBackdropFilter: 'blur(2px)',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {tab.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+
         </div>
       </section>
 
