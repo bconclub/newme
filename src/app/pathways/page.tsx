@@ -68,13 +68,25 @@ export default function PathwaysPage() {
               unoptimized
               style={{ objectFit: 'cover', objectPosition: '60% center' }}
             />
-            {/* Dark overlay — left-half gradient so white text reads cleanly */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.88) 0%, rgba(1,62,55,0.55) 48%, transparent 75%)' }} />
+            {/* Hero overlay — Figma 121:93 spec: greener / lighter wash than
+                the original dark-pine overlay, but still dark enough on the
+                LEFT third for the white headline to read cleanly. Diagonal
+                moss-to-pine gradient at high alpha (0.96) on the left, fading
+                to transparent at ~70% so the doctor / patient stay clear on
+                the right. */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'linear-gradient(108deg, rgba(20,90,75,0.96) 0%, rgba(15,80,68,0.92) 22%, rgba(10,68,58,0.78) 38%, rgba(6,55,48,0.45) 52%, rgba(1,62,55,0.18) 64%, transparent 78%)',
+              }}
+            />
 
-            {/* Grain texture — soft-light blended noise that rides on top of the
-                hero photo so the page feels continuous with the rest of the
-                site (not a clean photo floating on a textured page). Same
-                fractalNoise recipe used on the home / option1 hero. */}
+            {/* Grain texture — soft-light blended noise that rides on top of
+                the hero photo so the page feels continuous with the rest of
+                the site (not a clean photo floating on a textured page). Same
+                fractalNoise recipe used on the home / option1 hero. Masked
+                to the LEFT zone only so the right (doctor) stays clean. */}
             <div
               aria-hidden
               style={{
@@ -85,23 +97,9 @@ export default function PathwaysPage() {
                   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
                 backgroundSize: '220px 220px',
                 mixBlendMode: 'soft-light',
-                opacity: 0.45,
-              }}
-            />
-
-            {/* Atmospheric green wash — bleeds the page-bg blob over the photo
-                so the hero feels embedded in the page, not a discrete card
-                floating on it. Masked to fade out before the right edge so
-                the doctor/patient stay clear. */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                inset: 0,
-                pointerEvents: 'none',
-                background:
-                  'radial-gradient(ellipse 90% 130% at 0% 50%, rgba(98,150,117,0.45) 0%, rgba(98,150,117,0.22) 35%, rgba(98,150,117,0.08) 60%, transparent 85%)',
-                mixBlendMode: 'normal',
+                opacity: 0.55,
+                maskImage: 'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 70%)',
+                WebkitMaskImage: 'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 70%)',
               }}
             />
 
