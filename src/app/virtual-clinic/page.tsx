@@ -88,7 +88,7 @@ function VCHero() {
         className="relative overflow-hidden"
         style={{
           borderRadius: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
-          minHeight: 'clamp(420px, calc(694 / 1880 * 100vw), 694px)',
+          minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
           background: '#0E2827',
         }}
       >

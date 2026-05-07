@@ -26,7 +26,7 @@ export default function MediaHero() {
           className="relative overflow-hidden"
           style={{
             borderRadius: 'clamp(28px, 2.5vw, 48px)',
-            minHeight: 'clamp(420px, calc(694 / 1880 * 100vw), 694px)',
+            minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
           }}
         >
           {/* Background image */}

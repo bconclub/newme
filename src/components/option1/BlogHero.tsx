@@ -31,7 +31,7 @@ export default function BlogHero() {
           className="relative overflow-hidden"
           style={{
             borderRadius: 'clamp(28px, 2.5vw, 48px)',
-            minHeight: 'clamp(420px, calc(694 / 1880 * 100vw), 694px)',
+            minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
             // Solid pine base — ensures the panel renders even if the hero
             // photo file isn't present yet.
             background: '#013E37',

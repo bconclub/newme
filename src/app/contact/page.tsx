@@ -40,7 +40,7 @@ function ContactHero() {
         className="relative overflow-hidden"
         style={{
           borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)',
-          height: 'clamp(280px, calc(694 / 1920 * 100vw), 694px)',
+          height: 'clamp(320px, calc(694 / 1920 * 100vw), 694px)',
           background: '#0E2827',
         }}
       >

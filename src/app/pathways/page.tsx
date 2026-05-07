@@ -59,7 +59,7 @@ export default function PathwaysPage() {
       <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)' }}>
 
         {/* Hero image — rounded panel */}
-          <div style={{ position: 'relative', margin: '0 clamp(12px, calc(20 / 1920 * 100vw), 20px)', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(260px,calc(694/1920*100vw),694px)' }}>
+          <div style={{ position: 'relative', margin: '0 clamp(12px, calc(20 / 1920 * 100vw), 20px)', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(320px,calc(694/1920*100vw),694px)' }}>
             <Image
               src={HERO_IMG}
               alt="Dr. Pal with patient"
