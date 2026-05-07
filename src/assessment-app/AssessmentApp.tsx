@@ -21,8 +21,8 @@ export default function App() {
 
   const [screen,      setScreen]     = useState("intro");
   const [step,        setStep]       = useState(0);
-  const [profile,     setProfile]    = useState<{ dob: string; gender: string; phone: string; dialCode: string }>(
-    savedSession?.profile ?? { dob: "", gender: "", phone: "", dialCode: "" }
+  const [profile,     setProfile]    = useState<{ dob: string; gender: string; phone: string; dialCode?: string }>(
+    savedSession?.profile ?? { dob: "", gender: "", phone: "" }
   );
   const [ans,         setAns]        = useState<Record<string, any>>(
     savedSession?.ans ?? { r2_symptoms: [], r3_diagnoses: [] }
@@ -118,22 +118,48 @@ export default function App() {
   const q = qIdx >= 0 && qIdx < TOTAL ? ALL_Q[qIdx] : null;
   const pct = step === 0 ? 4 : Math.round((step / (TOTAL + 1)) * 100);
 
+  /** Parse DOB in either MM/DD/YYYY (text input) or YYYY-MM-DD (legacy) */
   function calcAge(dob: string) {
     if (!dob) return null;
-    const [y, m, d] = [parseInt(dob.slice(0, 4)), parseInt(dob.slice(5, 7)) - 1, parseInt(dob.slice(8, 10))];
+    let y: number, m: number, d: number;
+    if (dob.includes("/")) {
+      const parts = dob.split("/");
+      if (parts.length !== 3) return null;
+      m = parseInt(parts[0], 10) - 1;
+      d = parseInt(parts[1], 10);
+      y = parseInt(parts[2], 10);
+    } else {
+      y = parseInt(dob.slice(0, 4), 10);
+      m = parseInt(dob.slice(5, 7), 10) - 1;
+      d = parseInt(dob.slice(8, 10), 10);
+    }
+    if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) return null;
+    if (y < 1900 || y > 2100 || m < 0 || m > 11 || d < 1 || d > 31) return null;
     const today = new Date(), b = new Date(y, m, d);
+    if (b.getFullYear() !== y || b.getMonth() !== m || b.getDate() !== d) return null;
     let age = today.getFullYear() - b.getFullYear();
     if (today < new Date(today.getFullYear(), m, d)) age--;
     return age;
   }
 
+  /** Auto-format text DOB as MM/DD/YYYY while typing */
   function handleDOB(v: string) {
-    setProfile(p => ({ ...p, dob: v }));
-    if (v) { const a = calcAge(v); setDobErr(a === null || a < 18 || a > 65 ? "Please enter a valid date of birth (age 18 to 65)." : ""); }
+    // Strip non-digits, then re-insert slashes
+    const digits = v.replace(/\D/g, "").slice(0, 8);
+    let formatted = digits;
+    if (digits.length > 4)      formatted = `${digits.slice(0,2)}/${digits.slice(2,4)}/${digits.slice(4)}`;
+    else if (digits.length > 2) formatted = `${digits.slice(0,2)}/${digits.slice(2)}`;
+    setProfile(p => ({ ...p, dob: formatted }));
+    if (formatted.length === 10) {
+      const a = calcAge(formatted);
+      setDobErr(a === null || a < 18 || a > 65 ? "Please enter a valid date of birth (age 18 to 65)." : "");
+    } else {
+      setDobErr("");
+    }
   }
 
   function canAdvanceProfile() {
-    if (!profile.dob || !profile.gender || !profile.phone?.trim() || !profile.dialCode) return false;
+    if (!profile.dob || !profile.gender || !profile.phone?.trim()) return false;
     const a = calcAge(profile.dob); return a !== null && a >= 18 && a <= 65;
   }
 
@@ -164,7 +190,7 @@ export default function App() {
     }
     const recommended = routeAnswers(ans).pathway;
     const secondary = SEC[recommended];
-    const infoWithPhone = { ...info, phone: profile.dialCode && profile.phone ? `${profile.dialCode}${profile.phone}` : info.phone };
+    const infoWithPhone = { ...info, phone: profile.phone || info.phone };
     if (effectiveLeadId) {
       updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile, ans, pathway: recommended, secondary }).catch(() => {});
     } else {
@@ -187,7 +213,7 @@ export default function App() {
       if (leadIdNow) {
         const secKey = SEC[result.pathway];
         attachResultsPDF(leadIdNow, {
-          info: { ...info, phone: profile.dialCode && profile.phone ? `${profile.dialCode}${profile.phone}` : info.phone },
+          info: { ...info, phone: profile.phone || info.phone },
           res: { ...result, ans },
           pw: { badge: PW[result.pathway].badge, bullets: PW[result.pathway].bullets },
           pricing: PRICING[result.pathway],
@@ -227,7 +253,7 @@ export default function App() {
     try { sessionStorage.removeItem("newme_session"); } catch {}
     setAns({ r2_symptoms: [], r3_diagnoses: [] });
     setInfo({ name: "", last: "", email: "", phone: "" });
-    setProfile({ dob: "", gender: "", phone: "", dialCode: "" });
+    setProfile({ dob: "", gender: "", phone: "" });
     setRes(null); setCrmLeadId(null); setAttemptsLeft(null); setStep(0); setScreen("q");
   }
 
@@ -279,7 +305,7 @@ export default function App() {
           if (!crmLeadId) {
             createLeadFromProfile({
               firstName: info.name,
-              phone: profile.dialCode && profile.phone ? `${profile.dialCode}${profile.phone}` : profile.phone,
+              phone: profile.phone,
               dob: profile.dob,
               gender: profile.gender,
             }).then(d => { if (d?.leadId) setCrmLeadId(d.leadId); }).catch(() => {});

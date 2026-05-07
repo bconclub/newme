@@ -19,7 +19,7 @@ export function Header({ showProgress = true, light = false, step = 0, total = 0
     }}>
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-          <LogoFull height={36} light={true} />
+          <LogoFull height={42} />
         </a>
         {showProgress && step > 0 && step <= total && (
           <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", fontWeight: 500, fontFamily: "var(--font-urbanist, 'Urbanist', sans-serif)" }}>{step} of {total + 1}</span>

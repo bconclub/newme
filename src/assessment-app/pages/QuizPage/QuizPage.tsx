@@ -154,7 +154,16 @@ export function QuizPage({
               </div>
               <div>
                 <label style={labelStyle}>Date of birth</label>
-                <input type="date" value={profile.dob} onChange={e => handleDOB(e.target.value)} className="inp" />
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="bday"
+                  placeholder="MM/DD/YYYY"
+                  value={profile.dob || ""}
+                  onChange={e => handleDOB(e.target.value)}
+                  className="inp"
+                  maxLength={10}
+                />
                 {dobErr && <p style={{ fontSize: 12, color: "#ff7b6b", marginTop: 6, fontFamily: FONT_BODY }}>{dobErr}</p>}
               </div>
               <div>
@@ -171,19 +180,15 @@ export function QuizPage({
               </div>
               <div>
                 <label style={labelStyle}>Whatsapp number</label>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <select value={profile.dialCode || ""} onChange={e => setProfile((p: any) => ({ ...p, dialCode: e.target.value }))} className="inp" style={{ width: "auto", flexShrink: 0, paddingLeft: 12, paddingRight: 12, cursor: "pointer" }}>
-                    <option value="" disabled>Code</option>
-                    {[
-                      { c: "🇺🇸", d: "+1", n: "US" }, { c: "🇬🇧", d: "+44", n: "UK" }, { c: "🇦🇺", d: "+61", n: "AU" },
-                      { c: "🇨🇦", d: "+1", n: "CA" }, { c: "🇮🇳", d: "+91", n: "IN" }, { c: "🇦🇪", d: "+971", n: "AE" },
-                      { c: "🇸🇬", d: "+65", n: "SG" }, { c: "🇳🇿", d: "+64", n: "NZ" }, { c: "🇿🇦", d: "+27", n: "ZA" },
-                      { c: "🇩🇪", d: "+49", n: "DE" }, { c: "🇫🇷", d: "+33", n: "FR" }, { c: "🇵🇰", d: "+92", n: "PK" },
-                      { c: "🇧🇩", d: "+880", n: "BD" }, { c: "🇳🇬", d: "+234", n: "NG" }, { c: "🇰🇪", d: "+254", n: "KE" },
-                    ].map(o => <option key={o.n} value={o.d}>{o.c} {o.d}</option>)}
-                  </select>
-                  <input type="tel" value={profile.phone || ""} onChange={e => setProfile((p: any) => ({ ...p, phone: e.target.value }))} className="inp" placeholder="Your Whatsapp number" style={{ flex: 1 }} />
-                </div>
+                <input
+                  type="tel"
+                  autoComplete="tel"
+                  value={profile.phone || ""}
+                  onChange={e => setProfile((p: any) => ({ ...p, phone: e.target.value }))}
+                  className="inp"
+                  placeholder="+1 555 123 4567"
+                />
+                <p style={{ fontSize: 11, color: INK3, marginTop: 6, fontFamily: FONT_BODY }}>Include your country code (e.g. +91 for India, +1 for US).</p>
               </div>
             </div>
             <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 14 }}>

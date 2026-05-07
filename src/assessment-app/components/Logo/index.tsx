@@ -12,13 +12,13 @@ export function LogoMark({ size = 32, color = "#2d4a28" }: { size?: number; colo
   );
 }
 
-/** Renders the actual newme-logo.png used across the site */
-export function LogoFull({ height = 38, light = false }: { height?: number; light?: boolean }) {
+/** Renders the actual newme-logo.png used across the site (colored, no filter) */
+export function LogoFull({ height = 38 }: { height?: number; light?: boolean }) {
   return (
     <img
       src="/newme-logo.png"
       alt="Dr. Pal's NewME"
-      style={{ height, width: "auto", display: "block", filter: light ? "brightness(0) invert(1)" : "none" }}
+      style={{ height, width: "auto", display: "block" }}
     />
   );
 }

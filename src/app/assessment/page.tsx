@@ -7,8 +7,9 @@
  * background (pine-teal, green gradient blobs, grain noise) so it matches
  * the rest of the site's design system.
  *
- * ssr: false on the inner app avoids hydration mismatches from sessionStorage /
- * localStorage access in component state initializers.
+ * Atmospheric blobs use CSS classes (with @media query for mobile) so
+ * secondary blobs hide gracefully below 768px instead of crowding the
+ * viewport.
  */
 
 import dynamic from 'next/dynamic'
@@ -34,75 +35,98 @@ const AssessmentApp = dynamic(
   }
 )
 
-/* ── Noise data-URL (matches option1.scss .newme-noise recipe) ── */
-const NOISE_SVG = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")`
+/* Noise SVG — matches option1.scss .newme-noise recipe */
+const NOISE_URL = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")"
+
+/* Atmospheric blobs as a real <style> block so we can use @media queries */
+const ATMOSPHERIC_CSS = `
+.assess-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.assess-blob, .assess-noise {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+/* Top-left green wash — primary atmospheric */
+.assess-blob-green-1 {
+  width: 220vw; height: 220vw;
+  top: -60vw; left: -90vw;
+  background: linear-gradient(180deg,#629675 0%,#013E37 100%);
+  filter: blur(clamp(120px,18vw,260px));
+  opacity: 0.40;
+  mask-image: radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.85) 60%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.2) 92%,transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.85) 60%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.2) 92%,transparent 100%);
+}
+.assess-noise-1 {
+  width: 220vw; height: 220vw;
+  top: -60vw; left: -90vw;
+  background-image: ${NOISE_URL};
+  background-size: 220px 220px;
+  mix-blend-mode: soft-light;
+  opacity: 0.45;
+  mask-image: radial-gradient(closest-side,black 0%,black 65%,rgba(0,0,0,.6) 82%,rgba(0,0,0,.25) 92%,transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side,black 0%,black 65%,rgba(0,0,0,.6) 82%,rgba(0,0,0,.25) 92%,transparent 100%);
+}
+/* Top-right gold accent */
+.assess-blob-gold {
+  width: 60vw; height: 60vw;
+  top: -15vw; right: -20vw;
+  background: #FEF272;
+  filter: blur(clamp(60px,10vw,180px));
+  opacity: 0.20;
+}
+/* Bottom-left secondary green wash */
+.assess-blob-green-2 {
+  width: 180vw; height: 180vw;
+  bottom: -90vw; left: -70vw;
+  background: linear-gradient(180deg,#629675 0%,#013E37 100%);
+  filter: blur(clamp(100px,15vw,220px));
+  opacity: 0.28;
+  mask-image: radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.6) 70%,transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.6) 70%,transparent 100%);
+}
+/* Mobile — keep only the primary green wash + grain. Hide secondary green
+   and gold accent (they downscale poorly under 768px and crowd the form). */
+@media (max-width: 767px) {
+  .assess-blob-green-1 {
+    width: 320vw; height: 320vw;
+    top: -130vw; left: -110vw;
+    opacity: 0.32;
+  }
+  .assess-noise-1 {
+    width: 320vw; height: 320vw;
+    top: -130vw; left: -110vw;
+    opacity: 0.30;
+  }
+  .assess-blob-gold,
+  .assess-blob-green-2 {
+    display: none;
+  }
+}
+`
 
 export default function AssessmentPage() {
   return (
     <div style={{ position: 'relative', minHeight: '100vh', background: '#013E37', color: '#fff', isolation: 'isolate', overflow: 'hidden' }}>
+      <style>{ATMOSPHERIC_CSS}</style>
 
-      {/* ── Atmospheric background blobs ── */}
-      <div aria-hidden style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-
-        {/* Green gradient wash — top-left, mirrors home .newme-ellipse-28 */}
-        <div style={{
-          position: 'absolute',
-          width: '260vw', height: '260vw',
-          top: '-80vw', left: '-100vw',
-          background: 'linear-gradient(180deg,#629675 0%,#013E37 100%)',
-          borderRadius: '50%',
-          filter: 'blur(clamp(120px,18vw,260px))',
-          opacity: 0.35,
-          maskImage: 'radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.85) 60%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.2) 92%,transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.85) 60%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.2) 92%,transparent 100%)',
-        }} />
-
-        {/* Noise grain on the green wash */}
-        <div style={{
-          position: 'absolute',
-          width: '260vw', height: '260vw',
-          top: '-80vw', left: '-100vw',
-          borderRadius: '50%',
-          pointerEvents: 'none',
-          backgroundImage: NOISE_SVG,
-          backgroundSize: '220px 220px',
-          mixBlendMode: 'soft-light',
-          opacity: 0.45,
-          maskImage: 'radial-gradient(closest-side,black 0%,black 65%,rgba(0,0,0,.6) 82%,rgba(0,0,0,.25) 92%,transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(closest-side,black 0%,black 65%,rgba(0,0,0,.6) 82%,rgba(0,0,0,.25) 92%,transparent 100%)',
-        }} />
-
-        {/* Yellow accent — top right */}
-        <div style={{
-          position: 'absolute',
-          width: '70vw', height: '70vw',
-          top: '-20vw', right: '-25vw',
-          background: '#FEF272',
-          borderRadius: '50%',
-          filter: 'blur(clamp(60px,10vw,180px))',
-          opacity: 0.18,
-        }} />
-
-        {/* Secondary green wash — bottom left */}
-        <div style={{
-          position: 'absolute',
-          width: '200vw', height: '200vw',
-          bottom: '-100vw', left: '-80vw',
-          background: 'linear-gradient(180deg,#629675 0%,#013E37 100%)',
-          borderRadius: '50%',
-          filter: 'blur(clamp(100px,15vw,220px))',
-          opacity: 0.25,
-          maskImage: 'radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.6) 70%,transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.6) 70%,transparent 100%)',
-        }} />
-
+      {/* Atmospheric layer — fixed behind content */}
+      <div className="assess-bg" aria-hidden>
+        <div className="assess-blob assess-blob-green-1" />
+        <div className="assess-noise assess-noise-1" />
+        <div className="assess-blob assess-blob-gold" />
+        <div className="assess-blob assess-blob-green-2" />
       </div>
 
-      {/* ── Assessment app on top of bg ── */}
+      {/* Assessment app */}
       <div style={{ position: 'relative', zIndex: 1 }}>
         <AssessmentApp />
       </div>
-
     </div>
   )
 }
