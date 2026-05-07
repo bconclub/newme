@@ -10,15 +10,16 @@ type IntroPageProps = {
   savedScreen?: string;
 };
 
-/* Avatar stack — Indian faces for the "10,000+ people have found their
-   clinical pathway" social-proof row. Sourced from the team library so
-   we don't ship stock photos. Mix of women + men. */
+/* Avatar stack — random people for the "10,000+ people have found
+   their clinical pathway" social-proof row. Pulled from randomuser.me
+   (royalty-free photos, hot-link friendly). NOT team members.
+   To swap any specific face, change the {gender}/{0-99}.jpg index. */
 const AVATARS = [
-  "/images/team/gayatri-rajamani.jpg",
-  "/images/team/shakeela.jpg",
-  "/images/team/karthik-ravi.jpg",
-  "/images/team/ashwini-saras.jpg",
-  "/images/team/namratha-nataraj.jpg",
+  "https://randomuser.me/api/portraits/women/68.jpg",
+  "https://randomuser.me/api/portraits/men/22.jpg",
+  "https://randomuser.me/api/portraits/women/45.jpg",
+  "https://randomuser.me/api/portraits/men/52.jpg",
+  "https://randomuser.me/api/portraits/women/89.jpg",
 ];
 
 export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScreen }: IntroPageProps) {
