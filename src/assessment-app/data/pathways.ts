@@ -230,11 +230,11 @@ export const TESTIMONIALS: Record<string, any[]> = {
 };
 
 export const PATHWAY_SEVERITY: Record<string, { label: string; color: string; bg: string; border: string }> = {
-  Reset:       { label: "At Risk",     color: "#1a5e31", bg: "#e8f5e9", border: "#a5d6a7" },
-  Rebuild:     { label: "Mild",        color: "#92400e", bg: "#fef3c7", border: "#fcd34d" },
-  Sustain:     { label: "Moderate",    color: "#b45309", bg: "#fff7ed", border: "#fed7aa" },
-  GI_Core:     { label: "Severe",      color: "#b91c1c", bg: "#fef2f2", border: "#fca5a5" },
-  GI_Advanced: { label: "Very Severe", color: "#7f1d1d", bg: "#fef2f2", border: "#ef4444" },
+  Reset:       { label: "At Risk",     color: "#86efac", bg: "rgba(134,239,172,0.10)", border: "rgba(134,239,172,0.30)" },
+  Rebuild:     { label: "Mild",        color: "#fcd34d", bg: "rgba(252,211,77,0.10)",  border: "rgba(252,211,77,0.30)"  },
+  Sustain:     { label: "Moderate",    color: "#fdba74", bg: "rgba(253,186,116,0.10)", border: "rgba(253,186,116,0.30)" },
+  GI_Core:     { label: "Severe",      color: "#fca5a5", bg: "rgba(252,165,165,0.10)", border: "rgba(252,165,165,0.30)" },
+  GI_Advanced: { label: "Very Severe", color: "#f87171", bg: "rgba(248,113,113,0.10)", border: "rgba(248,113,113,0.30)" },
 };
 
 export const FRAMING_BODY = "When the gut-brain axis is disrupted by food, stress, or inflammation, symptoms go beyond digestion: energy, skin, mood, sleep. Identifying what your body reacts to is where change starts.";

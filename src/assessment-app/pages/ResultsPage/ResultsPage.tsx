@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GRN, GRN_L, GRN_M, WHITE, INK, INK2, INK3, baseStyle } from "../../constants/theme";
+import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
 import { LogoMark } from "../../components/Logo";
 import { SectionLabel, Dot } from "../../components/SectionLabel";
@@ -27,6 +27,15 @@ export type ResultsPageProps = {
   crmLeadId?: string | null;
 };
 
+/* Shared dark glass card style */
+const glassCard: React.CSSProperties = {
+  background: "rgba(255,255,255,0.06)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  borderRadius: 16,
+  padding: "20px 22px",
+  backdropFilter: "blur(12px)",
+};
+
 export function ResultsPage({
   res, info,
   showSticky, bodyVisible, pricingRef,
@@ -52,16 +61,17 @@ export function ResultsPage({
     : (PRICING[res.pathway]?.day ?? "");
 
   return (
-    <div style={{ ...baseStyle }}>
+    <div style={{ minHeight: "100vh", fontFamily: FONT_BODY }}>
       <Header showProgress={false} pct={pct} total={total} />
 
+      {/* Sticky CTA — CSS class handles dark backdrop */}
       {showSticky && (
         <div className="sticky-cta">
           <div>
-            <p style={{ fontSize: 14, fontWeight: 700, color: INK, lineHeight: 1 }}>{pw.badge.split(" · ")[0]}</p>
+            <p style={{ fontSize: 14, fontWeight: 700, color: INK, lineHeight: 1, fontFamily: FONT_HEADING }}>{pw.badge.split(" · ")[0]}</p>
             <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{priceMain} · {priceDay}</p>
           </div>
-          <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14 }}>
+          <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}>
             Start now →
           </button>
         </div>
@@ -72,30 +82,47 @@ export function ResultsPage({
 
           {/* Clinical Report Badge */}
           <div style={{ marginBottom: 20 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 50, fontSize: 11, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", background: GRN, color: WHITE }}>
-              <LogoMark size={13} color={WHITE} />{name.toUpperCase()}'S CLINICAL REPORT
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 16px", borderRadius: 50,
+              fontSize: 11, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase",
+              background: "rgba(98,150,117,0.2)", color: GRN,
+              border: "1px solid rgba(98,150,117,0.4)",
+              fontFamily: FONT_BUTTON,
+            }}>
+              <LogoMark size={13} color={GRN} />{name.toUpperCase()}'S CLINICAL REPORT
             </span>
           </div>
 
           {/* Headline */}
-          <h1 style={{ fontSize: "clamp(26px,5vw,40px)", fontWeight: 800, lineHeight: 1.18, marginBottom: 0, letterSpacing: "-.025em", color: INK }}>{pw.headline}</h1>
+          <h1 style={{
+            fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.15,
+            marginBottom: 0, letterSpacing: "-0.025em", color: INK,
+            fontFamily: FONT_HEADING,
+          }}>{pw.headline}</h1>
 
-          {/* Body fades in */}
+          {/* Body — fades in after mount */}
           <div style={{ opacity: bodyVisible ? 1 : 0, transform: bodyVisible ? "translateY(0)" : "translateY(10px)", transition: "opacity .5s ease, transform .5s ease" }}>
             <div style={{ height: 20 }} />
 
             {/* Severity statement */}
-            <p style={{ fontSize: 14, color: sev.color, fontWeight: 600, marginBottom: 16, background: sev.bg, border: `1px solid ${sev.border}`, borderRadius: 10, padding: "10px 14px" }}>{pw.severityStatement}</p>
+            <p style={{
+              fontSize: 14, color: sev.color, fontWeight: 600,
+              marginBottom: 16,
+              background: sev.bg, border: `1px solid ${sev.border}`,
+              borderRadius: 10, padding: "10px 14px",
+              fontFamily: FONT_BODY,
+            }}>{pw.severityStatement}</p>
 
             {/* Framing body */}
-            <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 16 }}>{FRAMING_BODY}</p>
+            <p style={{ fontSize: 14, color: INK2, lineHeight: 1.75, marginBottom: 16 }}>{FRAMING_BODY}</p>
 
             {/* Assurance */}
-            <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 20 }}>{ASSURANCE[res.pathway]}</p>
+            <p style={{ fontSize: 14, color: INK2, lineHeight: 1.75, marginBottom: 20 }}>{ASSURANCE[res.pathway]}</p>
 
             {/* Actionable points */}
-            <div style={{ background: GRN_L, border: `1px solid ${GRN_M}`, borderRadius: 14, padding: "18px 20px", marginBottom: 16 }}>
-              <p style={{ fontSize: 13, color: GRN, fontWeight: 700, marginBottom: 14 }}>Here are the actionable points:</p>
+            <div style={{ ...glassCard, background: "rgba(98,150,117,0.12)", border: "1px solid rgba(98,150,117,0.25)", borderRadius: 14, padding: "18px 20px", marginBottom: 16 }}>
+              <p style={{ fontSize: 13, color: GRN, fontWeight: 700, marginBottom: 14, fontFamily: FONT_BUTTON }}>Here are the actionable points:</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {actionables.map((a: string, i: number) => (
                   <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -107,14 +134,14 @@ export function ResultsPage({
 
             {/* GI diagnosis callout */}
             {isGIPathway && res.gi_dx_labels?.length > 0 && (
-              <div style={{ background: WHITE, border: `1.5px solid ${GRN_M}`, borderRadius: 12, padding: "14px 18px", marginBottom: 16 }}>
+              <div style={{ ...glassCard, marginBottom: 16 }}>
                 <p style={{ fontSize: 13, fontWeight: 700, color: INK, marginBottom: 6 }}>Your gut conditions are the focus of this clinical pathway.</p>
                 <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, marginBottom: res.meta_dx_labels?.length > 0 ? 10 : 0 }}>
                   <strong>{res.gi_dx_labels.join(", ")}</strong>. Your clinical team is briefed at onboarding and your protocol is built around these from day one.
                 </p>
                 {res.meta_dx_labels?.length > 0 && (
-                  <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, borderTop: "1px solid #e8ede6", paddingTop: 10 }}>
-                    <strong>{res.meta_dx_labels.join(", ")}</strong> {res.meta_dx_labels.length > 1 ? "have" : "has"} also been noted. Your clinical team factors this into your plan. Nothing is treated in isolation.
+                  <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 10 }}>
+                    <strong>{res.meta_dx_labels.join(", ")}</strong> {res.meta_dx_labels.length > 1 ? "have" : "has"} also been noted. Nothing is treated in isolation.
                   </p>
                 )}
               </div>
@@ -122,7 +149,7 @@ export function ResultsPage({
 
             {/* Metabolic diagnosis callout */}
             {!isGIPathway && res.dx_labels_metabolic?.length > 0 && (
-              <div style={{ background: WHITE, border: `1.5px solid ${GRN_M}`, borderRadius: 12, padding: "14px 18px", marginBottom: 16 }}>
+              <div style={{ ...glassCard, marginBottom: 16 }}>
                 <p style={{ fontSize: 13, fontWeight: 700, color: INK, marginBottom: 6 }}>Your diagnoses are part of this clinical pathway from day one.</p>
                 <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6 }}>
                   <strong>{res.dx_labels_metabolic.join(", ")}</strong>. Your Clinical Health Coach and medical team are briefed at onboarding.
@@ -131,21 +158,15 @@ export function ResultsPage({
             )}
 
             {/* Bridge sentence */}
-            <p style={{ fontSize: 14, color: INK, fontWeight: 600, marginBottom: 20, borderTop: "1px solid #e8ede6", paddingTop: 20 }}>{BRIDGE_SENTENCE}</p>
+            <p style={{ fontSize: 14, color: INK, fontWeight: 600, marginBottom: 20, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 20, fontFamily: FONT_BODY }}>{BRIDGE_SENTENCE}</p>
 
             {/* GI billing toggle */}
             {isGIPathway && giBilling && (
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }} ref={pricingRef}>
-                <button
-                  className={`toggle-btn${billing === "upfront" ? " active" : ""}`}
-                  onClick={() => setBilling("upfront")}
-                >
+                <button className={`toggle-btn${billing === "upfront" ? " active" : ""}`} onClick={() => setBilling("upfront")} style={{ fontFamily: FONT_BUTTON }}>
                   3 months · Save ${giBilling.upfront.savings}
                 </button>
-                <button
-                  className={`toggle-btn${billing === "monthly" ? " active" : ""}`}
-                  onClick={() => setBilling("monthly")}
-                >
+                <button className={`toggle-btn${billing === "monthly" ? " active" : ""}`} onClick={() => setBilling("monthly")} style={{ fontFamily: FONT_BUTTON }}>
                   Monthly
                 </button>
               </div>
@@ -153,28 +174,42 @@ export function ResultsPage({
 
             {/* Pricing card */}
             <div
-              style={{ border: `1.5px solid ${GRN_M}`, borderRadius: 12, padding: "14px 18px", background: GRN_L, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 20 }}
+              style={{
+                border: "1.5px solid rgba(98,150,117,0.4)",
+                borderRadius: 12, padding: "14px 18px",
+                background: "rgba(98,150,117,0.12)",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                flexWrap: "wrap", gap: 12, marginBottom: 20,
+                backdropFilter: "blur(10px)",
+              }}
               ref={!isGIPathway ? pricingRef : undefined}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 50, fontSize: 10, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", background: WHITE, color: GRN, border: `1px solid ${GRN_M}` }}>
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "4px 12px", borderRadius: 50,
+                  fontSize: 10, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase",
+                  background: "rgba(255,255,255,0.1)", color: GRN, border: "1px solid rgba(98,150,117,0.4)",
+                  fontFamily: FONT_BUTTON,
+                }}>
                   <LogoMark size={11} color={GRN} />{pw.badge}
                 </span>
                 <div>
-                  <span style={{ fontSize: 16, fontWeight: 800, color: GRN }}>{priceMain}</span>
+                  <span style={{ fontSize: 16, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING }}>{priceMain}</span>
                   <span style={{ fontSize: 12, color: INK3, marginLeft: 6 }}>{priceDay}</span>
                 </div>
               </div>
               <button
                 onClick={() => onSelectPhase(effectivePhase)}
-                style={{ background: GRN, color: WHITE, fontWeight: 700, padding: "10px 20px", borderRadius: 50, fontSize: 13, border: "none", cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
+                className="btng"
+                style={{ padding: "10px 20px", fontSize: 13, fontFamily: FONT_BUTTON }}
               >
                 Start now →
               </button>
             </div>
 
             {/* What's included */}
-            <div style={{ background: WHITE, border: "1px solid #e8ede6", borderRadius: 16, padding: "20px 22px" }}>
+            <div style={{ ...glassCard, marginBottom: 0 }}>
               <SectionLabel>What's included in your clinical pathway</SectionLabel>
               {pw.bullets.map((b: string, i: number) => (
                 <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: i < pw.bullets.length - 1 ? 12 : 0 }}>
@@ -184,15 +219,15 @@ export function ResultsPage({
             </div>
 
             {/* After your pathway */}
-            <div style={{ borderTop: "1px solid #e8ede6", paddingTop: 20, marginTop: 20 }}>
-              <p style={{ fontSize: 11, color: INK3, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10 }}>After your pathway</p>
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 20, marginTop: 20 }}>
+              <p style={{ fontSize: 11, color: INK3, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10, fontFamily: FONT_BUTTON }}>After your pathway</p>
               <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
                 {[
                   { name: "NewME 360",      desc: "Ongoing coaching, habit reviews and relapse prevention." },
                   { name: "NewME Movement", desc: "Fitness programming, live sessions and community." },
                 ].map((c, i) => (
                   <div key={i} style={{ flex: 1, minWidth: 180 }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: INK2, marginBottom: 2 }}>{c.name}</p>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: INK2, marginBottom: 2, fontFamily: FONT_BODY }}>{c.name}</p>
                     <p style={{ fontSize: 12, color: INK3, lineHeight: 1.5 }}>{c.desc}</p>
                   </div>
                 ))}

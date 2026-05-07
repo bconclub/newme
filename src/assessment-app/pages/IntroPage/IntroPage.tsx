@@ -1,4 +1,4 @@
-import { GRN, GRN_L, GRN_M, SAND, INK, INK2, INK3, WHITE, baseStyle } from "../../constants/theme";
+import { GRN, GRN_L, GRN_M, INK, INK2, INK3, FONT_HEADING, FONT_BODY, FONT_BUTTON, GOLD } from "../../constants/theme";
 import { LogoMark } from "../../components/Logo";
 import { Header } from "../../components/Header/Header";
 
@@ -10,6 +10,15 @@ type IntroPageProps = {
   savedScreen?: string;
 };
 
+/* Real face photos for avatar stack */
+const AVATARS = [
+  "/testimonials/nithya.jpg",
+  "/testimonials/kat.jpg",
+  "/testimonials/thamarai.jpg",
+  "/images/team/karthik-ravi.jpg",
+  "/images/team/reshmi-sinha.jpg",
+];
+
 export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScreen }: IntroPageProps) {
   const hasProgress = !!onContinue && (savedScreen === "results" || (savedStep !== undefined && savedStep > 0));
   const progressLabel = savedScreen === "results"
@@ -17,44 +26,103 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
     : savedStep !== undefined && savedTotal
       ? `Question ${savedStep} of ${savedTotal}`
       : "In progress";
+
   return (
-    <div style={{ ...baseStyle, display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header showProgress={false} />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px 56px" }}>
-        <div className="fu" style={{ maxWidth: 540, width: "100%" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: GRN_L, border: `1px solid ${GRN_M}`, borderRadius: 50, padding: "6px 14px", marginBottom: 32 }}>
-            <LogoMark size={14} color={GRN} />
-            <span style={{ fontSize: 11, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase" }}>Dr. Pal's Clinical Assessment</span>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px 64px" }}>
+        <div className="fu" style={{ maxWidth: 560, width: "100%" }}>
+
+          {/* ── Eyebrow pill — matches site EyebrowPill style ── */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "rgba(98,150,117,0.15)",
+            border: "1px solid rgba(98,150,117,0.45)",
+            borderRadius: 50, padding: "7px 16px", marginBottom: 28,
+            backdropFilter: "blur(8px)",
+          }}>
+            <LogoMark size={13} color={GRN} />
+            <span style={{
+              fontSize: 11, color: GRN, fontWeight: 700,
+              letterSpacing: ".09em", textTransform: "uppercase",
+              fontFamily: FONT_BUTTON,
+            }}>Dr. Pal's Clinical Assessment</span>
           </div>
-          <h1 style={{ fontSize: "clamp(32px,6vw,52px)", fontWeight: 800, lineHeight: 1.12, marginBottom: 20, letterSpacing: "-.03em", color: INK }}>
+
+          {/* ── Heading — Bricolage Grotesque ── */}
+          <h1 style={{
+            fontSize: "clamp(32px,5vw,54px)", fontWeight: 600, lineHeight: 1.1,
+            marginBottom: 20, letterSpacing: "-0.02em", color: INK,
+            fontFamily: FONT_HEADING,
+          }}>
             You've been trying.<br />
             <span style={{ color: INK3 }}>Your body hasn't</span><br />
             <span style={{ color: INK3 }}>responded.</span>
           </h1>
-          <p style={{ color: INK2, fontSize: 16, lineHeight: 1.75, maxWidth: 420, marginBottom: 36 }}>Not a diet plan. Not a generic program. A clinical assessment that matches you to a pathway. One built around what's actually happening in your body, not what worked for someone else.</p>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 36, flexWrap: "wrap" }}>
+
+          {/* ── Body ── */}
+          <p style={{ color: INK2, fontSize: 16, lineHeight: 1.75, maxWidth: 440, marginBottom: 36, fontFamily: FONT_BODY }}>
+            Not a diet plan. Not a generic program. A clinical assessment that matches you to a pathway built around what's actually happening in your body.
+          </p>
+
+          {/* ── Avatar stack with real faces ── */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 36, flexWrap: "wrap" }}>
             <div style={{ display: "flex" }}>
-              {["P", "A", "K", "R", "M"].map((l, i) => (
-                <div key={i} style={{ width: 28, height: 28, borderRadius: "50%", background: i % 2 === 0 ? GRN : GRN_M, border: `2px solid ${SAND}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, color: WHITE, marginLeft: i > 0 ? -8 : 0, zIndex: 5 - i }}>{l}</div>
+              {AVATARS.map((src, i) => (
+                <div key={i} style={{
+                  width: 32, height: 32, borderRadius: "50%",
+                  border: "2px solid rgba(255,255,255,0.25)",
+                  overflow: "hidden",
+                  marginLeft: i > 0 ? -10 : 0,
+                  zIndex: 5 - i,
+                  position: "relative",
+                  background: "#0a4a45",
+                  flexShrink: 0,
+                }}>
+                  <img
+                    src={src}
+                    alt=""
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
+                  />
+                </div>
               ))}
             </div>
             <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: INK, lineHeight: 1.2 }}>10,000+ people have found their clinical pathway</p>
-              <p style={{ fontSize: 12, color: INK3, marginTop: 2 }}>Free · Private · Takes about 3 minutes</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: INK, lineHeight: 1.2, fontFamily: FONT_BODY }}>10,000+ people have found their clinical pathway</p>
+              <p style={{ fontSize: 12, color: INK3, marginTop: 3, fontFamily: FONT_BODY }}>Free · Private · Takes about 3 minutes</p>
             </div>
           </div>
+
+          {/* ── Resume session card ── */}
           {hasProgress && (
-            <div style={{ background: WHITE, border: `1.5px solid ${GRN_M}`, borderRadius: 14, padding: "14px 18px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <div style={{
+              background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.15)",
+              borderRadius: 14, padding: "14px 18px", marginBottom: 16,
+              display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+              backdropFilter: "blur(12px)",
+            }}>
               <div>
-                <p style={{ fontSize: 12, color: GRN, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 3 }}>You left off here</p>
-                <p style={{ fontSize: 14, color: INK2, fontWeight: 500 }}>{progressLabel}</p>
+                <p style={{ fontSize: 12, color: GRN, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 3, fontFamily: FONT_BUTTON }}>You left off here</p>
+                <p style={{ fontSize: 14, color: INK2, fontWeight: 500, fontFamily: FONT_BODY }}>{progressLabel}</p>
               </div>
               <button className="btng" onClick={onContinue} style={{ fontSize: 14, padding: "11px 22px", whiteSpace: "nowrap" }}>Continue →</button>
             </div>
           )}
-          <button className="btng" onClick={onStart} style={{ fontSize: 16, padding: "17px 48px", background: hasProgress ? INK3 : undefined }}>
+
+          {/* ── Primary CTA ── */}
+          <button
+            className="btng"
+            onClick={onStart}
+            style={{
+              fontSize: 16, padding: "17px 48px",
+              background: hasProgress ? "rgba(255,255,255,0.12)" : GOLD,
+              color: hasProgress ? "rgba(255,255,255,0.8)" : "#013E37",
+              fontFamily: FONT_BUTTON,
+            }}
+          >
             {hasProgress ? "Start over" : "Find my clinical pathway →"}
           </button>
+
         </div>
       </div>
     </div>

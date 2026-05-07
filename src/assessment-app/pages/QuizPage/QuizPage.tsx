@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { GRN, GRN_L, INK, INK2, INK3, baseStyle } from "../../constants/theme";
+import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
 import { TOTAL } from "../../data/questions";
 import { checkAssessmentLimit, verifyEmail } from "../../services/assessmentService";
@@ -26,6 +26,13 @@ export type QuizPageProps = {
   onLimitChecked: (attemptsLeft: number) => void;
   pct: number;
   total: number;
+};
+
+/* ── Shared label style (reused across all sub-steps) ── */
+const labelStyle: React.CSSProperties = {
+  display: "block", fontSize: 11, color: GRN, fontWeight: 700,
+  marginBottom: 8, letterSpacing: ".06em", textTransform: "uppercase",
+  fontFamily: FONT_BUTTON,
 };
 
 export function QuizPage({
@@ -59,7 +66,6 @@ export function QuizPage({
     pickSingle(v);
   }
 
-  // Debounced email check — MX validation + CRM enrollment status
   useEffect(() => {
     setEnrolledBlocked(false);
     setFoundCrmLead(null);
@@ -89,11 +95,9 @@ export function QuizPage({
         setEmailVerifying(false);
       }
     }, 700);
-
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
   }, [info.email]);
 
-  // profile step: requires first name + last name
   function canAdvanceProfileFull() {
     return info.name?.trim().length > 0 && info.last?.trim().length > 0 && canAdvanceProfile();
   }
@@ -107,64 +111,58 @@ export function QuizPage({
         setLimitBlocked(true);
         return;
       }
-
       let leadId: string | null = existingLeadId ?? null;
-
       if (foundCrmLead) {
-        // An older lead exists for this email — delete the fresh profile lead and reuse the old one
-        if (existingLeadId && existingLeadId !== foundCrmLead.id) {
-          deleteLeadById(existingLeadId); // fire-and-forget
-        }
+        if (existingLeadId && existingLeadId !== foundCrmLead.id) deleteLeadById(existingLeadId);
         leadId = foundCrmLead.id;
       } else if (!leadId) {
         try {
           const r = await createPreQuizLead(info.name, info.last, info.email);
           leadId = r.leadId ?? null;
-        } catch { /* fail silently */ }
+        } catch {}
       }
-
       onLimitChecked(Math.max(0, left - 1));
       startCalc(leadId);
     } catch {
-      startCalc(null); // fail open
+      startCalc(null);
     } finally {
       setLimitChecking(false);
     }
   }
 
   return (
-    <div style={{ ...baseStyle }}>
+    <div style={{ minHeight: "100vh", fontFamily: FONT_BODY }}>
       <Header step={step} total={total} pct={pct} />
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 72px)", padding: "32px 24px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 60px)", padding: "32px 24px" }}>
 
-        {/* ── PROFILE STEP: first name + DOB + gender + phone ── */}
+        {/* ── PROFILE STEP ── */}
         {isProfile && (
           <div key="profile" className="fu" style={{ width: "100%", maxWidth: 500 }}>
-            <p style={{ fontSize: 12, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10 }}>Before we begin</p>
-            <h2 style={{ fontSize: "clamp(22px,3.5vw,28px)", fontWeight: 700, lineHeight: 1.25, marginBottom: 6, color: INK, letterSpacing: "-.015em" }}>A couple of quick things</h2>
-            <p style={{ fontSize: 14, color: INK3, marginBottom: 28 }}>We use these to make sure your clinical pathway recommendation is specific to you, not a generic result.</p>
+            <p style={{ fontSize: 11, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10, fontFamily: FONT_BUTTON }}>Before we begin</p>
+            <h2 style={{ fontSize: "clamp(22px,3.5vw,30px)", fontWeight: 600, lineHeight: 1.2, marginBottom: 6, color: INK, letterSpacing: "-0.015em", fontFamily: FONT_HEADING }}>A couple of quick things</h2>
+            <p style={{ fontSize: 14, color: INK3, marginBottom: 28, fontFamily: FONT_BODY }}>We use these to make sure your clinical pathway recommendation is specific to you.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div style={{ display: "flex", gap: 12 }}>
                 <div style={{ flex: 1 }}>
-                  <label style={{ display: "block", fontSize: 12, color: INK2, fontWeight: 600, marginBottom: 7, letterSpacing: ".04em", textTransform: "uppercase" }}>First name</label>
+                  <label style={labelStyle}>First name</label>
                   <input className="inp" placeholder="First name" type="text" name="given-name" autoComplete="given-name" value={info.name || ""} onChange={e => setInfo((p: any) => ({ ...p, name: e.target.value }))} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <label style={{ display: "block", fontSize: 12, color: INK2, fontWeight: 600, marginBottom: 7, letterSpacing: ".04em", textTransform: "uppercase" }}>Last name</label>
+                  <label style={labelStyle}>Last name</label>
                   <input className="inp" placeholder="Last name" type="text" name="family-name" autoComplete="family-name" value={info.last || ""} onChange={e => setInfo((p: any) => ({ ...p, last: e.target.value }))} />
                 </div>
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 12, color: INK2, fontWeight: 600, marginBottom: 7, letterSpacing: ".04em", textTransform: "uppercase" }}>Date of birth</label>
+                <label style={labelStyle}>Date of birth</label>
                 <input type="date" value={profile.dob} onChange={e => handleDOB(e.target.value)} className="inp" />
-                {dobErr && <p style={{ fontSize: 12, color: "#c0392b", marginTop: 6 }}>{dobErr}</p>}
+                {dobErr && <p style={{ fontSize: 12, color: "#ff7b6b", marginTop: 6, fontFamily: FONT_BODY }}>{dobErr}</p>}
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 12, color: INK2, fontWeight: 600, marginBottom: 8, letterSpacing: ".04em", textTransform: "uppercase" }}>Gender</label>
+                <label style={labelStyle}>Gender</label>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {[{ v: "female", l: "Female" }, { v: "male", l: "Male" }, { v: "prefer_not", l: "Prefer not to say" }].map(o => (
                     <button key={o.v} className={`opt${profile.gender === o.v ? " s" : ""}`} onClick={() => setProfile((p: any) => ({ ...p, gender: o.v }))}>
-                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${profile.gender === o.v ? GRN : "#c8d6c4"}`, background: profile.gender === o.v ? GRN_L : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${profile.gender === o.v ? GRN : "rgba(255,255,255,0.25)"}`, background: profile.gender === o.v ? "rgba(98,150,117,0.25)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {profile.gender === o.v && <div style={{ width: 8, height: 8, borderRadius: "50%", background: GRN }} />}
                       </div>{o.l}
                     </button>
@@ -172,9 +170,9 @@ export function QuizPage({
                 </div>
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 12, color: INK2, fontWeight: 600, marginBottom: 7, letterSpacing: ".04em", textTransform: "uppercase" }}>Whatsapp number</label>
+                <label style={labelStyle}>Whatsapp number</label>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <select value={profile.dialCode || ""} onChange={e => setProfile((p: any) => ({ ...p, dialCode: e.target.value }))} className="inp" style={{ width: "auto", flexShrink: 0, paddingLeft: 12, paddingRight: 12, cursor: "pointer", color: profile.dialCode ? "inherit" : INK3 }}>
+                  <select value={profile.dialCode || ""} onChange={e => setProfile((p: any) => ({ ...p, dialCode: e.target.value }))} className="inp" style={{ width: "auto", flexShrink: 0, paddingLeft: 12, paddingRight: 12, cursor: "pointer" }}>
                     <option value="" disabled>Code</option>
                     {[
                       { c: "🇺🇸", d: "+1", n: "US" }, { c: "🇬🇧", d: "+44", n: "UK" }, { c: "🇦🇺", d: "+61", n: "AU" },
@@ -182,17 +180,15 @@ export function QuizPage({
                       { c: "🇸🇬", d: "+65", n: "SG" }, { c: "🇳🇿", d: "+64", n: "NZ" }, { c: "🇿🇦", d: "+27", n: "ZA" },
                       { c: "🇩🇪", d: "+49", n: "DE" }, { c: "🇫🇷", d: "+33", n: "FR" }, { c: "🇵🇰", d: "+92", n: "PK" },
                       { c: "🇧🇩", d: "+880", n: "BD" }, { c: "🇳🇬", d: "+234", n: "NG" }, { c: "🇰🇪", d: "+254", n: "KE" },
-                    ].map(o => (
-                      <option key={o.n} value={o.d}>{o.c} {o.d}</option>
-                    ))}
+                    ].map(o => <option key={o.n} value={o.d}>{o.c} {o.d}</option>)}
                   </select>
                   <input type="tel" value={profile.phone || ""} onChange={e => setProfile((p: any) => ({ ...p, phone: e.target.value }))} className="inp" placeholder="Your Whatsapp number" style={{ flex: 1 }} />
                 </div>
               </div>
             </div>
             <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 14 }}>
-              <button className="btng" disabled={!canAdvanceProfileFull()} onClick={onAdvanceProfile}>Continue →</button>
-              <p style={{ fontSize: 11, color: INK3 }}>Always private. Never shared.</p>
+              <button className="btng" disabled={!canAdvanceProfileFull()} onClick={onAdvanceProfile} style={{ fontFamily: FONT_BUTTON }}>Continue →</button>
+              <p style={{ fontSize: 11, color: INK3, fontFamily: FONT_BODY }}>Always private. Never shared.</p>
             </div>
           </div>
         )}
@@ -200,15 +196,15 @@ export function QuizPage({
         {/* ── QUIZ QUESTIONS ── */}
         {!isProfile && !isDetails && q && (
           <div key={step} className="fu" style={{ width: "100%", maxWidth: 540 }}>
-            <p style={{ fontSize: 12, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10 }}>{q.hl}</p>
-            <h2 style={{ fontSize: "clamp(20px,3.5vw,26px)", fontWeight: 700, lineHeight: 1.3, marginBottom: q.sub ? 8 : 22, color: INK, letterSpacing: "-.015em" }}>{q.q}</h2>
-            {q.sub && <p style={{ fontSize: 13, color: INK3, marginBottom: 18 }}>{q.sub}</p>}
+            <p style={{ fontSize: 11, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10, fontFamily: FONT_BUTTON }}>{q.hl}</p>
+            <h2 style={{ fontSize: "clamp(20px,3.5vw,28px)", fontWeight: 600, lineHeight: 1.25, marginBottom: q.sub ? 8 : 22, color: INK, letterSpacing: "-0.015em", fontFamily: FONT_HEADING }}>{q.q}</h2>
+            {q.sub && <p style={{ fontSize: 13, color: INK3, marginBottom: 18, fontFamily: FONT_BODY }}>{q.sub}</p>}
             <div style={{ display: "flex", flexDirection: "column", gap: 8, pointerEvents: transitioning ? "none" : "auto" }}>
               {q.opts.map((o: any) => {
                 const isSel = isMulti ? (sel || []).includes(o.v) : sel === o.v;
                 return (
                   <button key={o.v} className={`opt${isSel ? " s" : ""}`} onClick={() => isMulti ? toggleMulti(o.v) : handlePickSingle(o.v)}>
-                    <div style={{ width: 18, height: 18, borderRadius: isMulti ? "4px" : "50%", border: `2px solid ${isSel ? GRN : "#c8d6c4"}`, background: isSel ? GRN_L : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }}>
+                    <div style={{ width: 18, height: 18, borderRadius: isMulti ? "4px" : "50%", border: `2px solid ${isSel ? GRN : "rgba(255,255,255,0.25)"}`, background: isSel ? "rgba(98,150,117,0.25)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }}>
                       {isSel && <div style={{ width: 8, height: 8, borderRadius: "50%", background: GRN }} />}
                     </div>{o.l}
                   </button>
@@ -217,12 +213,12 @@ export function QuizPage({
             </div>
             <div style={{ marginTop: 20, display: "flex", gap: 10, alignItems: "center" }}>
               <button className="btnout" onClick={goBack}>← Back</button>
-              {isMulti && <button className="btng" disabled={!canNext} onClick={advanceMulti}>Continue →</button>}
+              {isMulti && <button className="btng" disabled={!canNext} onClick={advanceMulti} style={{ fontFamily: FONT_BUTTON }}>Continue →</button>}
             </div>
           </div>
         )}
 
-        {/* ── DETAILS STEP: last name + email ── */}
+        {/* ── DETAILS STEP ── */}
         {isDetails && (() => {
           const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(info.email);
           const canSubmit = emailOk && !limitChecking && !emailVerifying && emailDomainValid !== false;
@@ -232,19 +228,15 @@ export function QuizPage({
           if (enrolledBlocked) {
             return (
               <div key="enrolled" className="fu" style={{ width: "100%", maxWidth: 440, textAlign: "center" }}>
-                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#e6f4ea", border: `1.5px solid #a8d5b5`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 20px" }}>✅</div>
-                <h2 style={{ fontSize: "clamp(20px,4vw,26px)", fontWeight: 800, color: INK, marginBottom: 10, letterSpacing: "-.02em" }}>Already enrolled!</h2>
-                <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 8 }}>
-                  Payment has already been completed with <strong>{info.email}</strong>.
-                </p>
-                <p style={{ fontSize: 14, color: INK3, lineHeight: 1.65, marginBottom: 28 }}>
-                  Your program is active. Contact us if you need help accessing your account.
-                </p>
+                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(98,150,117,0.2)", border: "1.5px solid rgba(98,150,117,0.5)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 20px" }}>✅</div>
+                <h2 style={{ fontSize: "clamp(20px,4vw,26px)", fontWeight: 700, color: INK, marginBottom: 10, letterSpacing: "-0.02em", fontFamily: FONT_HEADING }}>Already enrolled!</h2>
+                <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 8, fontFamily: FONT_BODY }}>Payment has already been completed with <strong>{info.email}</strong>.</p>
+                <p style={{ fontSize: 14, color: INK3, lineHeight: 1.65, marginBottom: 28, fontFamily: FONT_BODY }}>Your program is active. Contact us if you need help accessing your account.</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  <a href="mailto:hello@newme.com" style={{ display: "block", background: GRN, color: "white", fontWeight: 700, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none" }}>
+                  <a href="mailto:hello@newme.com" style={{ display: "block", background: GOLD, color: "#013E37", fontWeight: 600, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none", fontFamily: FONT_BUTTON }}>
                     Contact us at hello@newme.com
                   </a>
-                  <button className="btnout" onClick={() => { setEnrolledBlocked(false); setInfo((p: any) => ({ ...p, email: "" })); }} style={{ width: "100%" }}>
+                  <button className="btnout" onClick={() => { setEnrolledBlocked(false); setInfo((p: any) => ({ ...p, email: "" })); }} style={{ width: "100%", fontFamily: FONT_BUTTON }}>
                     Try with a different email
                   </button>
                 </div>
@@ -255,24 +247,20 @@ export function QuizPage({
           if (limitBlocked) {
             return (
               <div key="blocked" className="fu" style={{ width: "100%", maxWidth: 440, textAlign: "center" }}>
-                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#fdecea", border: "1.5px solid #f5c6c2", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 20px" }}>🚫</div>
-                <h2 style={{ fontSize: "clamp(20px,4vw,26px)", fontWeight: 800, color: INK, marginBottom: 10, letterSpacing: "-.02em" }}>Assessment limit reached</h2>
-                <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 8 }}>
-                  You've completed this assessment <strong>{attemptsUsed} of 2</strong> times with <strong>{info.email}</strong>.
-                </p>
-                <p style={{ fontSize: 14, color: INK3, lineHeight: 1.65, marginBottom: 28 }}>
-                  Please reach out and we'll help you find the right pathway.
-                </p>
+                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(255,107,94,0.15)", border: "1.5px solid rgba(255,107,94,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 20px" }}>🚫</div>
+                <h2 style={{ fontSize: "clamp(20px,4vw,26px)", fontWeight: 700, color: INK, marginBottom: 10, letterSpacing: "-0.02em", fontFamily: FONT_HEADING }}>Assessment limit reached</h2>
+                <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 8, fontFamily: FONT_BODY }}>You've completed this assessment <strong>{attemptsUsed} of 2</strong> times with <strong>{info.email}</strong>.</p>
+                <p style={{ fontSize: 14, color: INK3, lineHeight: 1.65, marginBottom: 28, fontFamily: FONT_BODY }}>Please reach out and we'll help you find the right pathway.</p>
                 <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 28 }}>
                   {[1, 2].map(n => (
-                    <div key={n} style={{ width: 36, height: 36, borderRadius: "50%", background: n <= attemptsUsed ? GRN : GRN_L, border: `2px solid ${GRN}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: n <= attemptsUsed ? "white" : INK3 }}>{n}</div>
+                    <div key={n} style={{ width: 36, height: 36, borderRadius: "50%", background: n <= attemptsUsed ? GOLD : "rgba(255,255,255,0.08)", border: "2px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: n <= attemptsUsed ? "#013E37" : INK3 }}>{n}</div>
                   ))}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  <a href="mailto:hello@newme.com" style={{ display: "block", background: GRN, color: "white", fontWeight: 700, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none" }}>
+                  <a href="mailto:hello@newme.com" style={{ display: "block", background: GOLD, color: "#013E37", fontWeight: 600, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none", fontFamily: FONT_BUTTON }}>
                     Contact us at hello@newme.com
                   </a>
-                  <button className="btnout" onClick={() => { setLimitBlocked(false); setInfo((p: any) => ({ ...p, email: "" })); }} style={{ width: "100%" }}>
+                  <button className="btnout" onClick={() => { setLimitBlocked(false); setInfo((p: any) => ({ ...p, email: "" })); }} style={{ width: "100%", fontFamily: FONT_BUTTON }}>
                     Try with a different email
                   </button>
                 </div>
@@ -282,9 +270,9 @@ export function QuizPage({
 
           return (
             <div key="details" className="fu" style={{ width: "100%", maxWidth: 440 }}>
-              <p style={{ fontSize: 12, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10 }}>Almost there</p>
-              <h2 style={{ fontSize: "clamp(22px,4vw,30px)", fontWeight: 800, lineHeight: 1.2, marginBottom: 10, color: INK, letterSpacing: "-.02em" }}>Where should we send your results?</h2>
-              <p style={{ color: INK3, fontSize: 14, lineHeight: 1.65, marginBottom: 24 }}>Your results are private. We will never share your information.</p>
+              <p style={{ fontSize: 11, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10, fontFamily: FONT_BUTTON }}>Almost there</p>
+              <h2 style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 600, lineHeight: 1.15, marginBottom: 10, color: INK, letterSpacing: "-0.02em", fontFamily: FONT_HEADING }}>Where should we send your results?</h2>
+              <p style={{ color: INK3, fontSize: 14, lineHeight: 1.65, marginBottom: 24, fontFamily: FONT_BODY }}>Your results are private. We will never share your information.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 22 }}>
                 <div>
                   <div style={{ position: "relative" }}>
@@ -295,24 +283,23 @@ export function QuizPage({
                       value={info.email || ""}
                       onChange={e => setInfo((p: any) => ({ ...p, email: e.target.value }))}
                       style={{
-                        borderColor: showDomainErr || showEmailErr ? "#c0392b" : emailDomainValid === true ? GRN : undefined,
+                        borderColor: showDomainErr || showEmailErr ? "rgba(255,100,80,0.7)" : emailDomainValid === true ? "rgba(98,150,117,0.7)" : undefined,
                         paddingRight: emailOk ? 38 : undefined,
                       }}
                     />
-                    {/* Verification status icon */}
                     {emailOk && (
                       <span style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", fontSize: 15, lineHeight: 1 }}>
                         {emailVerifying
-                          ? <span style={{ display: "inline-block", width: 14, height: 14, border: `2px solid ${GRN}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin .7s linear infinite", verticalAlign: "middle" }} />
+                          ? <span style={{ display: "inline-block", width: 14, height: 14, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: GOLD, borderRadius: "50%", animation: "spin .7s linear infinite", verticalAlign: "middle" }} />
                           : emailDomainValid === true  ? <span style={{ color: GRN }}>✓</span>
-                          : emailDomainValid === false ? <span style={{ color: "#c0392b" }}>✗</span>
+                          : emailDomainValid === false ? <span style={{ color: "#ff7b6b" }}>✗</span>
                           : null}
                       </span>
                     )}
                   </div>
-                  {showEmailErr  && <p style={{ fontSize: 12, color: "#c0392b", marginTop: 5 }}>Please enter a valid email address.</p>}
+                  {showEmailErr  && <p style={{ fontSize: 12, color: "#ff7b6b", marginTop: 5, fontFamily: FONT_BODY }}>Please enter a valid email address.</p>}
                   {showDomainErr && (
-                    <p style={{ fontSize: 12, color: "#c0392b", marginTop: 5 }}>
+                    <p style={{ fontSize: 12, color: "#ff7b6b", marginTop: 5, fontFamily: FONT_BODY }}>
                       {emailInvalidReason === "disposable_email"
                         ? "Disposable or temporary email addresses are not accepted. Please use your real email."
                         : "This email address doesn't appear to exist. Please double-check and try again."}
@@ -320,10 +307,10 @@ export function QuizPage({
                   )}
                 </div>
               </div>
-              <button className="btng" disabled={!canSubmit} onClick={handleDetailsSubmit} style={{ width: "100%", fontSize: 15, padding: "16px" }}>
+              <button className="btng" disabled={!canSubmit} onClick={handleDetailsSubmit} style={{ width: "100%", fontSize: 15, padding: "16px", fontFamily: FONT_BUTTON }}>
                 {limitChecking ? "Checking…" : "See my clinical pathway →"}
               </button>
-              <p style={{ fontSize: 11, color: INK3, textAlign: "center", marginTop: 12 }}>No spam · Unsubscribe anytime</p>
+              <p style={{ fontSize: 11, color: INK3, textAlign: "center", marginTop: 12, fontFamily: FONT_BODY }}>No spam · Unsubscribe anytime</p>
             </div>
           );
         })()}

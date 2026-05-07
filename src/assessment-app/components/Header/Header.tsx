@@ -1,4 +1,3 @@
-import { GRN, GRN_M, INK3, WHITE } from "../../constants/theme";
 import { LogoFull } from "../Logo";
 
 export type HeaderProps = {
@@ -11,16 +10,24 @@ export type HeaderProps = {
 
 export function Header({ showProgress = true, light = false, step = 0, total = 0, pct = 0 }: HeaderProps) {
   return (
-    <div style={{ background: light ? GRN : WHITE, borderBottom: `1px solid ${light ? "rgba(255,255,255,.1)" : "#e8ede6"}` }}>
-      <div style={{ maxWidth: 680, margin: "0 auto", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <LogoFull height={38} light={light} />
+    <div style={{
+      background: "#013E37",
+      borderBottom: "1px solid rgba(255,255,255,0.06)",
+      position: "sticky",
+      top: 0,
+      zIndex: 50,
+    }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+          <LogoFull height={36} light={true} />
+        </a>
         {showProgress && step > 0 && step <= total && (
-          <span style={{ fontSize: 12, color: light ? "rgba(255,255,255,.55)" : INK3, fontWeight: 500 }}>{step} of {total + 1}</span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", fontWeight: 500, fontFamily: "var(--font-urbanist, 'Urbanist', sans-serif)" }}>{step} of {total + 1}</span>
         )}
       </div>
       {showProgress && (
-        <div style={{ height: 3, background: light ? "rgba(255,255,255,.15)" : "#e8ede6" }}>
-          <div style={{ height: "100%", background: light ? GRN_M : GRN, width: pct + "%", transition: "width .5s ease", borderRadius: "0 2px 2px 0" }} />
+        <div style={{ height: 3, background: "rgba(255,255,255,0.1)" }}>
+          <div style={{ height: "100%", background: "#FEF272", width: pct + "%", transition: "width .5s ease", borderRadius: "0 2px 2px 0" }} />
         </div>
       )}
     </div>
