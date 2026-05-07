@@ -1,0 +1,219 @@
+import React, { useState } from "react";
+import { GRN, GRN_L, GRN_M, WHITE, INK, INK2, INK3, baseStyle } from "../../constants/theme";
+import { Header } from "../../components/Header/Header";
+import { LogoMark } from "../../components/Logo";
+import { SectionLabel, Dot } from "../../components/SectionLabel";
+import { PW, PRICING, PATHWAY_SEVERITY, FRAMING_BODY, BRIDGE_SENTENCE, ASSURANCE, ACTIONABLE_POINTS } from "../../data/pathways";
+import { ChatBot } from "../../components/ChatBot/ChatBot";
+import { GI_BILLING } from "../../constants/zohoCheckout";
+
+export type ResultsPageProps = {
+  res: any;
+  ans: any;
+  info: any;
+  profile: any;
+  selectedPhase: string | null;
+  secExpanded: boolean;
+  setSecExpanded: (v: boolean) => void;
+  showSticky: boolean;
+  bodyVisible: boolean;
+  pricingRef: React.RefObject<HTMLDivElement | null>;
+  onSelectPhase: (p: string) => void;
+  onViewDetail: (k: string) => void;
+  attemptsLeft: number | null;
+  onRetry: () => void;
+  pct: number;
+  total: number;
+  crmLeadId?: string | null;
+};
+
+export function ResultsPage({
+  res, info,
+  showSticky, bodyVisible, pricingRef,
+  onSelectPhase,
+  pct, total, crmLeadId,
+}: ResultsPageProps) {
+  const pw = PW[res.pathway];
+  const sev = PATHWAY_SEVERITY[res.pathway];
+  const name = info.name || "You";
+  const isGIPathway = res.pathway === "GI_Core" || res.pathway === "GI_Advanced";
+  const actionables = isGIPathway ? ACTIONABLE_POINTS.gi : ACTIONABLE_POINTS.metabolic;
+
+  const giBilling = GI_BILLING[res.pathway] ?? null;
+  const [billing, setBilling] = useState<"monthly" | "upfront">("upfront");
+  const effectivePhase = giBilling
+    ? (billing === "monthly" ? giBilling.monthly.key : giBilling.upfront.key)
+    : res.pathway;
+  const priceMain = giBilling
+    ? (billing === "monthly" ? giBilling.monthly.label : giBilling.upfront.label)
+    : (PRICING[res.pathway]?.main ?? "");
+  const priceDay = giBilling
+    ? (billing === "monthly" ? giBilling.monthly.dayLabel : giBilling.upfront.dayLabel)
+    : (PRICING[res.pathway]?.day ?? "");
+
+  return (
+    <div style={{ ...baseStyle }}>
+      <Header showProgress={false} pct={pct} total={total} />
+
+      {showSticky && (
+        <div className="sticky-cta">
+          <div>
+            <p style={{ fontSize: 14, fontWeight: 700, color: INK, lineHeight: 1 }}>{pw.badge.split(" · ")[0]}</p>
+            <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{priceMain} · {priceDay}</p>
+          </div>
+          <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14 }}>
+            Start now →
+          </button>
+        </div>
+      )}
+
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: "36px 20px 100px" }}>
+        <div className="fu">
+
+          {/* Clinical Report Badge */}
+          <div style={{ marginBottom: 20 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 50, fontSize: 11, fontWeight: 800, letterSpacing: ".1em", textTransform: "uppercase", background: GRN, color: WHITE }}>
+              <LogoMark size={13} color={WHITE} />{name.toUpperCase()}'S CLINICAL REPORT
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h1 style={{ fontSize: "clamp(26px,5vw,40px)", fontWeight: 800, lineHeight: 1.18, marginBottom: 0, letterSpacing: "-.025em", color: INK }}>{pw.headline}</h1>
+
+          {/* Body fades in */}
+          <div style={{ opacity: bodyVisible ? 1 : 0, transform: bodyVisible ? "translateY(0)" : "translateY(10px)", transition: "opacity .5s ease, transform .5s ease" }}>
+            <div style={{ height: 20 }} />
+
+            {/* Severity statement */}
+            <p style={{ fontSize: 14, color: sev.color, fontWeight: 600, marginBottom: 16, background: sev.bg, border: `1px solid ${sev.border}`, borderRadius: 10, padding: "10px 14px" }}>{pw.severityStatement}</p>
+
+            {/* Framing body */}
+            <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 16 }}>{FRAMING_BODY}</p>
+
+            {/* Assurance */}
+            <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 20 }}>{ASSURANCE[res.pathway]}</p>
+
+            {/* Actionable points */}
+            <div style={{ background: GRN_L, border: `1px solid ${GRN_M}`, borderRadius: 14, padding: "18px 20px", marginBottom: 16 }}>
+              <p style={{ fontSize: 13, color: GRN, fontWeight: 700, marginBottom: 14 }}>Here are the actionable points:</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {actionables.map((a: string, i: number) => (
+                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <Dot /><span style={{ fontSize: 14, color: INK2, lineHeight: 1.55 }}>{a}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* GI diagnosis callout */}
+            {isGIPathway && res.gi_dx_labels?.length > 0 && (
+              <div style={{ background: WHITE, border: `1.5px solid ${GRN_M}`, borderRadius: 12, padding: "14px 18px", marginBottom: 16 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: INK, marginBottom: 6 }}>Your gut conditions are the focus of this clinical pathway.</p>
+                <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, marginBottom: res.meta_dx_labels?.length > 0 ? 10 : 0 }}>
+                  <strong>{res.gi_dx_labels.join(", ")}</strong>. Your clinical team is briefed at onboarding and your protocol is built around these from day one.
+                </p>
+                {res.meta_dx_labels?.length > 0 && (
+                  <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, borderTop: "1px solid #e8ede6", paddingTop: 10 }}>
+                    <strong>{res.meta_dx_labels.join(", ")}</strong> {res.meta_dx_labels.length > 1 ? "have" : "has"} also been noted. Your clinical team factors this into your plan. Nothing is treated in isolation.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Metabolic diagnosis callout */}
+            {!isGIPathway && res.dx_labels_metabolic?.length > 0 && (
+              <div style={{ background: WHITE, border: `1.5px solid ${GRN_M}`, borderRadius: 12, padding: "14px 18px", marginBottom: 16 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: INK, marginBottom: 6 }}>Your diagnoses are part of this clinical pathway from day one.</p>
+                <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6 }}>
+                  <strong>{res.dx_labels_metabolic.join(", ")}</strong>. Your Clinical Health Coach and medical team are briefed at onboarding.
+                </p>
+              </div>
+            )}
+
+            {/* Bridge sentence */}
+            <p style={{ fontSize: 14, color: INK, fontWeight: 600, marginBottom: 20, borderTop: "1px solid #e8ede6", paddingTop: 20 }}>{BRIDGE_SENTENCE}</p>
+
+            {/* GI billing toggle */}
+            {isGIPathway && giBilling && (
+              <div style={{ display: "flex", gap: 8, marginBottom: 10 }} ref={pricingRef}>
+                <button
+                  className={`toggle-btn${billing === "upfront" ? " active" : ""}`}
+                  onClick={() => setBilling("upfront")}
+                >
+                  3 months · Save ${giBilling.upfront.savings}
+                </button>
+                <button
+                  className={`toggle-btn${billing === "monthly" ? " active" : ""}`}
+                  onClick={() => setBilling("monthly")}
+                >
+                  Monthly
+                </button>
+              </div>
+            )}
+
+            {/* Pricing card */}
+            <div
+              style={{ border: `1.5px solid ${GRN_M}`, borderRadius: 12, padding: "14px 18px", background: GRN_L, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 20 }}
+              ref={!isGIPathway ? pricingRef : undefined}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 50, fontSize: 10, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", background: WHITE, color: GRN, border: `1px solid ${GRN_M}` }}>
+                  <LogoMark size={11} color={GRN} />{pw.badge}
+                </span>
+                <div>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: GRN }}>{priceMain}</span>
+                  <span style={{ fontSize: 12, color: INK3, marginLeft: 6 }}>{priceDay}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => onSelectPhase(effectivePhase)}
+                style={{ background: GRN, color: WHITE, fontWeight: 700, padding: "10px 20px", borderRadius: 50, fontSize: 13, border: "none", cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}
+              >
+                Start now →
+              </button>
+            </div>
+
+            {/* What's included */}
+            <div style={{ background: WHITE, border: "1px solid #e8ede6", borderRadius: 16, padding: "20px 22px" }}>
+              <SectionLabel>What's included in your clinical pathway</SectionLabel>
+              {pw.bullets.map((b: string, i: number) => (
+                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: i < pw.bullets.length - 1 ? 12 : 0 }}>
+                  <Dot /><span style={{ fontSize: 14, color: INK2, lineHeight: 1.55 }}>{b}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* After your pathway */}
+            <div style={{ borderTop: "1px solid #e8ede6", paddingTop: 20, marginTop: 20 }}>
+              <p style={{ fontSize: 11, color: INK3, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10 }}>After your pathway</p>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                {[
+                  { name: "NewME 360",      desc: "Ongoing coaching, habit reviews and relapse prevention." },
+                  { name: "NewME Movement", desc: "Fitness programming, live sessions and community." },
+                ].map((c, i) => (
+                  <div key={i} style={{ flex: 1, minWidth: 180 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: INK2, marginBottom: 2 }}>{c.name}</p>
+                    <p style={{ fontSize: 12, color: INK3, lineHeight: 1.5 }}>{c.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: INK3, marginTop: 10, fontStyle: "italic" }}>Available when you're ready. Not part of this purchase.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <ChatBot
+        userName={info.name || ""}
+        phaseName={pw.badge.split(" · ")[0]}
+        pricingMain={PRICING[res.pathway]?.main ?? ""}
+        pricingDay={PRICING[res.pathway]?.day ?? ""}
+        pricingSub={PRICING[res.pathway]?.sub ?? ""}
+        bullets={pw.bullets}
+        onStartNow={() => onSelectPhase(res.pathway)}
+        leadId={crmLeadId}
+      />
+    </div>
+  );
+}
