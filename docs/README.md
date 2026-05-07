@@ -24,7 +24,6 @@ This folder is the source of truth for **everyone who is not writing code on the
 ## Quick links
 
 - **Studio:** `https://newme.health/studio` (production) · `http://localhost:3000/studio` (dev)
-- **Admin index:** `/admin` — internal page directory + Sanity status (noindex)
 - **Code repo:** `https://github.com/bconclub/newme`
 - **Hosting:** Vercel (auto-deploy from `main`)
 

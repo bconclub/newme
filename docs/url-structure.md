@@ -31,7 +31,6 @@ There is **no `/media/{slug}` detail page** — Media Mention cards open the pub
 
 | URL | Purpose |
 |---|---|
-| `/admin` | Internal page directory + Sanity status pill |
 | `/studio*` | Sanity Studio mount |
 | `/api/*` | Internal API routes |
 

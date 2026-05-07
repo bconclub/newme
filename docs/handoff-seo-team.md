@@ -113,7 +113,6 @@ The per-page `seo.noIndex` toggle in Sanity only takes effect AFTER the global b
 | `/blog` | Sanity (Post list) — route pending | yes |
 | `/blog/{slug}` | Sanity (Post) — route pending | yes (per `seo.noIndex`) |
 | `/assessment` | Code (client-only React app) | yes |
-| `/admin` | Code | **noindex** (internal directory) |
 | `/studio*`, `/api/*` | Code | **noindex** (always) |
 
 There is **no `/media/{slug}` detail page** — Media Mention cards link directly to the publication's external article URL in a new tab.
