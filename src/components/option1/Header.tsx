@@ -131,17 +131,25 @@ export default function Header() {
                         <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </Link>
-                    {/* Dropdown panel */}
+                    {/* Dropdown panel — `overflow-hidden` on the inner panel
+                        clips item hover backgrounds to the rounded corners
+                        (otherwise the first item's hover rectangle pokes out
+                        past the top-left / top-right curves and the panel
+                        looks "broken"). */}
                     <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible focus-within:opacity-100 focus-within:visible transition-[opacity,visibility] duration-150">
                       <div
-                        className="rounded-xl border bg-[#013E37]/95 backdrop-blur-md py-2 min-w-[180px]"
-                        style={{ borderColor: 'rgba(255,255,255,0.12)' }}
+                        className="rounded-2xl border bg-[#013E37]/95 backdrop-blur-md min-w-[200px] overflow-hidden shadow-[0_12px_32px_-12px_rgba(0,0,0,0.55)]"
+                        style={{
+                          borderColor: 'rgba(255,255,255,0.14)',
+                          padding: 6,
+                        }}
                       >
                         {link.sublinks.map((sub) => (
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            className="block px-4 py-2 text-[14px] text-white/85 hover:text-white hover:bg-white/[0.06] font-medium font-[family-name:var(--font-urbanist)] transition-colors duration-150"
+                            className="block rounded-lg text-[14px] text-white/85 hover:text-white hover:bg-white/[0.08] font-medium font-[family-name:var(--font-urbanist)] transition-colors duration-150"
+                            style={{ padding: '10px 14px' }}
                           >
                             {sub.label}
                           </Link>
