@@ -78,7 +78,7 @@ const tabGroups = [
 // Auto-advance interval. Long enough to read the visible pathway copy
 // before the section rotates. Manual prev/next buttons (below) reset
 // this timer, so a user clicking through stays in their own pace.
-const TAB_MS = 25000
+const TAB_MS = 12500
 const ease = [0.22, 1, 0.36, 1] as const
 
 export default function Pathways() {
