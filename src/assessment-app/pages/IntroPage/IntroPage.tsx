@@ -1,6 +1,6 @@
-import { GRN, GRN_L, GRN_M, INK, INK2, INK3, FONT_HEADING, FONT_BODY, FONT_BUTTON, GOLD } from "../../constants/theme";
-import { LogoMark } from "../../components/Logo";
+import { GRN, INK, INK2, INK3, FONT_HEADING, FONT_BODY, FONT_BUTTON, GOLD } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
+import EyebrowPill from "../../../components/option1/EyebrowPill";
 
 type IntroPageProps = {
   onStart: () => void;
@@ -33,20 +33,9 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px 64px" }}>
         <div className="fu" style={{ maxWidth: 560, width: "100%" }}>
 
-          {/* ── Eyebrow pill — matches site EyebrowPill style ── */}
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            background: "rgba(98,150,117,0.15)",
-            border: "1px solid rgba(98,150,117,0.45)",
-            borderRadius: 50, padding: "7px 16px", marginBottom: 28,
-            backdropFilter: "blur(8px)",
-          }}>
-            <LogoMark size={13} color={GRN} />
-            <span style={{
-              fontSize: 11, color: GRN, fontWeight: 700,
-              letterSpacing: ".09em", textTransform: "uppercase",
-              fontFamily: FONT_BUTTON,
-            }}>Dr. Pal's Clinical Assessment</span>
+          {/* ── Eyebrow pill — uses the same EyebrowPill component as the rest of the site ── */}
+          <div style={{ marginBottom: 28 }}>
+            <EyebrowPill>Clinical Assessment</EyebrowPill>
           </div>
 
           {/* ── Heading — Bricolage Grotesque ── */}

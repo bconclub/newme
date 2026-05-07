@@ -141,7 +141,7 @@ export function ResultsPage({
                 </p>
                 {res.meta_dx_labels?.length > 0 && (
                   <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 10 }}>
-                    <strong>{res.meta_dx_labels.join(", ")}</strong> {res.meta_dx_labels.length > 1 ? "have" : "has"} also been noted. Nothing is treated in isolation.
+                    <strong>{res.meta_dx_labels.join(", ")}</strong> {res.meta_dx_labels.length > 1 ? "have" : "has"} also been noted. Your clinical team factors this into your plan. Nothing is treated in isolation.
                   </p>
                 )}
               </div>

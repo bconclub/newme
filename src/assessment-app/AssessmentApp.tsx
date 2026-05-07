@@ -142,7 +142,7 @@ export default function App() {
     return age;
   }
 
-  /** Auto-format text DOB as MM/DD/YYYY while typing */
+  /** Auto-format text DOB as DD/MM/YYYY while typing */
   function handleDOB(v: string) {
     // Strip non-digits, then re-insert slashes
     const digits = v.replace(/\D/g, "").slice(0, 8);
