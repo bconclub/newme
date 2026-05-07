@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
+import BlogHero from '@/components/option1/BlogHero'
 import BlogArticles from '@/components/option1/BlogArticles'
 import { postsQuery } from '@/lib/sanity/queries'
 
@@ -94,6 +95,7 @@ export default async function BlogPage() {
         </div>
 
         <div className="newme-frame">
+          <BlogHero />
           <BlogArticles posts={posts} />
         </div>
       </main>

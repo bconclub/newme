@@ -63,47 +63,17 @@ export default function BlogArticles({ posts = [] }: { posts?: BlogPostCard[] })
     <section
       className="relative"
       style={{
-        paddingTop: 'clamp(96px, calc(160 / 1920 * 100vw), 160px)',
+        // Listing now follows the BlogHero panel — match the gap /media uses
+        // between MediaHero and the article grid (intro body bottom y=1130 →
+        // first card top y=1210 = 80px from Figma 100:980).
+        paddingTop: 'clamp(48px, calc(80 / 1920 * 100vw), 80px)',
         paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
-      <div className="mx-auto text-center" style={{ maxWidth: 1186 }}>
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="font-[family-name:var(--font-bricolage)] text-white"
-          style={{
-            fontWeight: 600,
-            fontSize: 'clamp(32px, calc(72 / 1920 * 100vw), 72px)',
-            lineHeight: 1,
-            letterSpacing: 0,
-          }}
-        >
-          The NewME Blog
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="text-white font-[family-name:var(--font-urbanist)] mx-auto"
-          style={{
-            fontWeight: 500,
-            fontSize: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
-            lineHeight: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
-            letterSpacing: 0,
-            maxWidth: 1020,
-            marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
-          }}
-        >
-          Long-form, doctor-led writing on metabolic health, the gut–brain axis, and what structured clinical care actually looks like.
-        </motion.p>
-      </div>
+      {/* Heading + subhead now live inside <BlogHero /> on the page — this
+          section just renders the card grid + pagination. */}
 
       {/* Empty state */}
       {cards.length === 0 ? (
