@@ -10,13 +10,15 @@ type IntroPageProps = {
   savedScreen?: string;
 };
 
-/* Real face photos for avatar stack */
+/* Avatar stack — Indian faces for the "10,000+ people have found their
+   clinical pathway" social-proof row. Sourced from the team library so
+   we don't ship stock photos. Mix of women + men. */
 const AVATARS = [
-  "/testimonials/nithya.jpg",
-  "/testimonials/kat.jpg",
-  "/testimonials/thamarai.jpg",
+  "/images/team/gayatri-rajamani.jpg",
+  "/images/team/shakeela.jpg",
   "/images/team/karthik-ravi.jpg",
-  "/images/team/reshmi-sinha.jpg",
+  "/images/team/ashwini-saras.jpg",
+  "/images/team/namratha-nataraj.jpg",
 ];
 
 export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScreen }: IntroPageProps) {
