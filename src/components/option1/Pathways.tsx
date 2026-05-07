@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
@@ -75,33 +75,50 @@ const tabGroups = [
   },
 ]
 
-// Auto-advance interval. 4s was too quick to read each pathway's body copy
-// and CTA — bumped to 8s per client feedback so users can actually scan
-// what's on screen before the next tab takes over.
-const TAB_MS = 8000
+// Auto-advance interval. Long enough to read the visible pathway copy
+// before the section rotates. Manual prev/next buttons (below) reset
+// this timer, so a user clicking through stays in their own pace.
+const TAB_MS = 25000
 const ease = [0.22, 1, 0.36, 1] as const
 
 export default function Pathways() {
   const [activeTab, setActiveTab] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const tabsRef = useRef<HTMLDivElement>(null)
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
     timerRef.current = setInterval(() => {
       setActiveTab(prev => (prev + 1) % tabGroups.length)
     }, TAB_MS)
-  }
+  }, [])
 
   useEffect(() => {
     startTimer()
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [startTimer])
 
-  const handleTabClick = () => {
+  const handleTabClick = (index: number) => {
+    setActiveTab(index)
+    startTimer()
+  }
+
+  // Manual prev / next — wrap around at the ends so the user can keep
+  // clicking without hitting a dead-end. Resets the auto-advance timer.
+  const goPrev = () => {
+    setActiveTab(prev => (prev - 1 + tabGroups.length) % tabGroups.length)
+    startTimer()
+  }
+  const goNext = () => {
     setActiveTab(prev => (prev + 1) % tabGroups.length)
     startTimer()
   }
+
+  // Keep the visible tab in view of the horizontal scroll on small screens.
+  useEffect(() => {
+    const el = tabsRef.current?.children[activeTab] as HTMLElement | undefined
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+  }, [activeTab])
 
   const group = tabGroups[activeTab]
 
@@ -117,14 +134,14 @@ export default function Pathways() {
       }}
     >
       <div
-        className="mx-auto grid lg:grid-cols-[580fr_980fr] items-start"
+        className="mx-auto grid lg:grid-cols-[minmax(0,580fr)_minmax(0,980fr)] items-start"
         style={{
           maxWidth: 1800,
           gap: 'clamp(24px, calc(100 / 1920 * 100vw), 100px)',
         }}
       >
         {/* ── Left ── */}
-        <div>
+        <div className="min-w-0">
           <EyebrowPill>Pathways</EyebrowPill>
 
           <h2
@@ -155,58 +172,89 @@ export default function Pathways() {
             and clinically grounded.
           </p>
 
-          {/* Single auto-fill progress pill — one tab at a time */}
-          <div style={{ marginTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)' }}>
-            <div className="relative inline-block">
-              {/* Invisible max-width sizer */}
-              <span
-                aria-hidden
-                className="invisible block font-[family-name:var(--font-bricolage)] whitespace-nowrap"
-                style={{
-                  fontWeight: 500,
-                  fontSize: 'clamp(12px, calc(19 / 1920 * 100vw), 19px)',
-                  paddingLeft: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                  paddingRight: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                  height: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
-                  lineHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
-                }}
-              >
-                The NewME Continuity Pathways
-              </span>
-
-              <button
-                onClick={handleTabClick}
-                className="absolute inset-0 rounded-full border border-white/30 flex items-center overflow-hidden"
-                style={{
-                  paddingLeft: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                  paddingRight: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)',
-                  background: 'rgba(255,255,255,0.08)',
-                }}
-              >
-                {/* Thin bottom-edge progress line sweeping left→right */}
-                <motion.span
-                  key={activeTab}
-                  aria-hidden
-                  className="absolute bottom-0 left-0 bg-[#629675]"
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
-                  style={{ height: 3, borderRadius: '0 0 99px 99px' }}
-                />
-                {/* Tab label crossfade */}
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={activeTab}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.25, ease }}
-                    className="relative z-10 font-[family-name:var(--font-bricolage)] text-white whitespace-nowrap"
-                    style={{ fontWeight: 500, fontSize: 'clamp(12px, calc(19 / 1920 * 100vw), 19px)' }}
+          {/* Scrollable pathway tabs */}
+          <div
+            className="flex max-w-full items-center gap-2"
+            style={{
+              marginTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
+              width: 'min(100%, 540px)',
+            }}
+          >
+            <div
+              ref={tabsRef}
+              role="tablist"
+              aria-label="Pathway groups"
+              className="flex min-w-0 flex-1 gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {tabGroups.map((tab, index) => {
+                const active = index === activeTab
+                return (
+                  <button
+                    key={tab.tab}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    aria-controls={`pathway-panel-${index}`}
+                    onClick={() => handleTabClick(index)}
+                    className="relative inline-flex shrink-0 items-center overflow-hidden rounded-full border font-[family-name:var(--font-bricolage)] transition-colors duration-200"
+                    style={{
+                      minHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
+                      paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                      paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                      borderColor: active ? 'rgba(255,255,255,0.60)' : 'rgba(255,255,255,0.25)',
+                      background: active ? 'rgba(255,255,255,0.13)' : 'rgba(255,255,255,0.06)',
+                      color: active ? '#FFFFFF' : 'rgba(255,255,255,0.72)',
+                      fontWeight: 500,
+                      fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
+                    }}
                   >
-                    {tabGroups[activeTab].tab}
-                  </motion.span>
-                </AnimatePresence>
+                    {/* Active tab progress */}
+                    {active && (
+                      <motion.span
+                        key={`progress-${activeTab}`}
+                        aria-hidden
+                        className="absolute bottom-0 left-0 bg-[#629675]"
+                        initial={{ width: '0%' }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
+                        style={{ height: 3, borderRadius: '0 0 99px 99px' }}
+                      />
+                    )}
+                    <span className="relative z-10 whitespace-nowrap">{tab.tab}</span>
+                  </button>
+                )
+              })}
+            </div>
+            {/* Prev / Next pair — manual navigation between pathway groups.
+                Each click jumps activeTab and resets the auto-advance timer. */}
+            <div className="flex shrink-0 items-center" style={{ gap: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)' }}>
+              <button
+                type="button"
+                aria-label="Previous pathway group"
+                onClick={goPrev}
+                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:bg-white/20 hover:border-white/55"
+                style={{
+                  width: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
+                  height: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+                  <path d="M11.25 3.75 6 9l5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                aria-label="Next pathway group"
+                onClick={goNext}
+                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:bg-white/20 hover:border-white/55"
+                style={{
+                  width: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
+                  height: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+                  <path d="M6.75 3.75 12 9l-5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+                </svg>
               </button>
             </div>
           </div>
@@ -220,7 +268,9 @@ export default function Pathways() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease }}
-            className="flex flex-col"
+            className="flex min-w-0 flex-col"
+            id={`pathway-panel-${activeTab}`}
+            role="tabpanel"
             style={{ gap: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)' }}
           >
             {group.cards.map((card, i) => (
