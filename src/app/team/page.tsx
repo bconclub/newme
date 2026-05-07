@@ -13,7 +13,6 @@ type TeamMember = {
   role: string
   photo: string
   bio: string
-  special?: boolean
 }
 
 const TEAM: TeamMember[] = [
@@ -34,7 +33,6 @@ const TEAM: TeamMember[] = [
     role: 'CEO',
     photo: '/images/team/shakeela.jpg',
     bio: 'Shakeela oversees operations and system execution across NewME. She brings a deep understanding of both client care and operational efficiency to ensure consistent, measurable outcomes.',
-    special: true,
   },
   {
     name: 'Karthik Ravi',
@@ -248,15 +246,15 @@ function SocialIcons() {
   )
 }
 
-// ─── Card — photo by default, dark green panel with centered name/role on hover
-//     Figma 122:11461..78. The default state is just the photo (no overlay
-//     pill); on hover the photo crossfades to a solid #013E37 panel with the
-//     member's name in gold + role in white, both centered, plus a short bio
-//     and social icons. ────────────────────────────────────────────────────────
+// ─── Card — photo always visible; on hover an INSET dark-green panel
+//     slides in revealing name (gold) + role + bio + social icons,
+//     left-aligned. Figma 122:11461..85. The photo edges show as a thin
+//     "frame" around the inset panel — Figma 122:11477 (Shakeela option 2)
+//     shows the outer image at 770×650 with the inner panel at 419×524,
+//     which works out to ~30px inset from the larger panel size. We use a
+//     fluid clamp() so the inset scales with viewport. ─────────────────────
 function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   const [hovered, setHovered] = useState(false)
-  // Special members (e.g. Shakeela CEO) start in the info state
-  const showInfo = member.special || hovered
 
   return (
     <motion.div
@@ -275,14 +273,15 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         cursor: 'default',
       }}
     >
-      {/* ── PHOTO LAYER (default) — clean photo, no overlay text ── */}
+      {/* ── PHOTO LAYER — always visible. On hover it darkens slightly so
+            the inset panel reads cleanly against it as a frame. ── */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          transition: 'opacity 0.45s ease, transform 0.45s ease',
-          opacity: showInfo ? 0 : 1,
-          transform: showInfo ? 'scale(1.04)' : 'scale(1)',
+          transition: 'transform 0.6s ease, filter 0.45s ease',
+          transform: hovered ? 'scale(1.04)' : 'scale(1)',
+          filter: hovered ? 'brightness(0.55)' : 'brightness(1)',
           pointerEvents: 'none',
         }}
       >
@@ -295,70 +294,69 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         />
       </div>
 
-      {/* ── INFO LAYER (hover / special) — solid dark green, name + role
-            center-aligned per Figma. */}
-      <div
+      {/* ── INSET DARK-GREEN PANEL (hover only) — sized smaller than the
+            card so the photo shows as a thin frame around it. Per Figma
+            122:11477 / 11478: outer 770 → inner 419 width = ~5-6% inset
+            on each side. Content left-aligned (Figma 122:11479..85). */}
+      <motion.div
+        initial={false}
+        animate={{
+          opacity: hovered ? 1 : 0,
+          scale: hovered ? 1 : 1.05,
+        }}
+        transition={{ duration: 0.4, ease: EASE }}
         style={{
           position: 'absolute',
-          inset: 0,
+          inset: 'clamp(10px, calc(20 / 435 * 100%), 22px)',
           background: '#013E37',
-          transition: 'opacity 0.45s ease',
-          opacity: showInfo ? 1 : 0,
-          pointerEvents: showInfo ? 'auto' : 'none',
+          borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
+          padding: 'clamp(16px, calc(28 / 1920 * 100vw), 30px)',
+          pointerEvents: hovered ? 'auto' : 'none',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 'clamp(20px, calc(32 / 1920 * 100vw), 36px) clamp(18px, calc(28 / 1920 * 100vw), 32px)',
-          textAlign: 'center',
+          gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)',
+          boxShadow: '0 18px 32px -16px rgba(0,0,0,0.45)',
         }}
       >
-        <motion.div
-          initial={false}
-          animate={{ opacity: showInfo ? 1 : 0, y: showInfo ? 0 : 12 }}
-          transition={{ duration: 0.45, ease: EASE, delay: showInfo ? 0.12 : 0 }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)', maxWidth: '90%' }}
+        <p
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{
+            fontWeight: 500,
+            fontSize: 'clamp(20px, calc(28 / 1920 * 100vw), 30px)',
+            color: '#FEF272',
+            lineHeight: 1.05,
+            letterSpacing: '-0.005em',
+          }}
         >
-          <p
-            className="font-[family-name:var(--font-bricolage)]"
-            style={{
-              fontWeight: 600,
-              fontSize: 'clamp(18px, calc(28 / 1920 * 100vw), 32px)',
-              color: '#FEF272',
-              lineHeight: 1.15,
-              letterSpacing: '-0.01em',
-            }}
-          >
-            {member.name}
-          </p>
-          <p
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{
-              fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 18px)',
-              fontWeight: 500,
-              opacity: 0.9,
-              letterSpacing: '0.02em',
-            }}
-          >
-            {member.role}
-          </p>
-          <p
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{
-              fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
-              fontWeight: 400,
-              lineHeight: 1.6,
-              opacity: 0.72,
-              marginTop: 'clamp(6px, calc(10 / 1920 * 100vw), 12px)',
-            }}
-          >
-            {member.bio}
-          </p>
-          <div style={{ marginTop: 'clamp(12px, calc(18 / 1920 * 100vw), 22px)' }}>
-            <SocialIcons />
-          </div>
-        </motion.div>
-      </div>
+          {member.name}
+        </p>
+        <p
+          className="font-[family-name:var(--font-urbanist)] text-white"
+          style={{
+            fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 15px)',
+            fontWeight: 500,
+            opacity: 0.92,
+            letterSpacing: '0.02em',
+          }}
+        >
+          {member.role}
+        </p>
+        <p
+          className="font-[family-name:var(--font-urbanist)] text-white"
+          style={{
+            fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
+            fontWeight: 400,
+            lineHeight: 1.55,
+            opacity: 0.72,
+            marginTop: 'clamp(4px, calc(6 / 1920 * 100vw), 8px)',
+          }}
+        >
+          {member.bio}
+        </p>
+        <div style={{ marginTop: 'auto', paddingTop: 'clamp(10px, calc(14 / 1920 * 100vw), 16px)' }}>
+          <SocialIcons />
+        </div>
+      </motion.div>
     </motion.div>
   )
 }

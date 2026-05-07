@@ -112,9 +112,17 @@ export function ResultsPage({
             {/* Assurance */}
             <p style={{ fontSize: 14, color: INK2, lineHeight: 1.75, marginBottom: 20 }}>{ASSURANCE[res.pathway]}</p>
 
-            {/* Actionable points */}
-            <div style={{ ...glassCard, background: "rgba(98,150,117,0.12)", border: "1px solid rgba(98,150,117,0.25)", borderRadius: 14, padding: "18px 20px", marginBottom: 16 }}>
-              <p style={{ fontSize: 13, color: GRN, fontWeight: 700, marginBottom: 14, fontFamily: FONT_BUTTON }}>Here are the actionable points:</p>
+            {/* Actionable points — moss-green tinted, distinct from
+                neutral diagnosis card below */}
+            <div style={{
+              background: "rgba(98,150,117,0.14)",
+              border: "1px solid rgba(98,150,117,0.30)",
+              borderRadius: 16,
+              padding: "20px 22px",
+              marginBottom: 28,
+              backdropFilter: "blur(12px)",
+            }}>
+              <p style={{ fontSize: 13, color: GRN, fontWeight: 700, marginBottom: 14, fontFamily: FONT_BUTTON, letterSpacing: ".04em", textTransform: "uppercase" }}>Here are the actionable points:</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {actionables.map((a: string, i: number) => (
                   <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -124,9 +132,15 @@ export function ResultsPage({
               </div>
             </div>
 
-            {/* GI diagnosis callout */}
+            {/* GI diagnosis callout — neutral glass with stronger left rail
+                so it's instantly distinguishable from the green action card. */}
             {isGIPathway && res.gi_dx_labels?.length > 0 && (
-              <div style={{ ...glassCard, marginBottom: 16 }}>
+              <div style={{
+                ...glassCard,
+                marginBottom: 28,
+                borderLeft: "3px solid #FEF272",
+                paddingLeft: 22,
+              }}>
                 <p style={{ fontSize: 13, fontWeight: 700, color: INK, marginBottom: 6 }}>Your gut conditions are the focus of this clinical pathway.</p>
                 <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, marginBottom: res.meta_dx_labels?.length > 0 ? 10 : 0 }}>
                   <strong>{res.gi_dx_labels.join(", ")}</strong>. Your clinical team is briefed at onboarding and your protocol is built around these from day one.
@@ -139,9 +153,14 @@ export function ResultsPage({
               </div>
             )}
 
-            {/* Metabolic diagnosis callout */}
+            {/* Metabolic diagnosis callout — same neutral-glass-with-rail pattern */}
             {!isGIPathway && res.dx_labels_metabolic?.length > 0 && (
-              <div style={{ ...glassCard, marginBottom: 16 }}>
+              <div style={{
+                ...glassCard,
+                marginBottom: 28,
+                borderLeft: "3px solid #FEF272",
+                paddingLeft: 22,
+              }}>
                 <p style={{ fontSize: 13, fontWeight: 700, color: INK, marginBottom: 6 }}>Your diagnoses are part of this clinical pathway from day one.</p>
                 <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6 }}>
                   <strong>{res.dx_labels_metabolic.join(", ")}</strong>. Your Clinical Health Coach and medical team are briefed at onboarding.
@@ -149,12 +168,20 @@ export function ResultsPage({
               </div>
             )}
 
-            {/* Bridge sentence */}
-            <p style={{ fontSize: 14, color: INK, fontWeight: 600, marginBottom: 20, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 20, fontFamily: FONT_BODY }}>{BRIDGE_SENTENCE}</p>
+            {/* Bridge sentence — full-width divider treatment so it acts as
+                the visual cue that we're transitioning to the CTA section. */}
+            <div style={{
+              borderTop: "1px solid rgba(255,255,255,0.12)",
+              borderBottom: "1px solid rgba(255,255,255,0.12)",
+              padding: "18px 0",
+              marginBottom: 24,
+            }}>
+              <p style={{ fontSize: 14, color: INK, fontWeight: 600, fontFamily: FONT_BODY, textAlign: "center" }}>{BRIDGE_SENTENCE}</p>
+            </div>
 
             {/* GI billing toggle */}
             {isGIPathway && giBilling && (
-              <div style={{ display: "flex", gap: 8, marginBottom: 10 }} ref={pricingRef}>
+              <div style={{ display: "flex", gap: 8, marginBottom: 12 }} ref={pricingRef}>
                 <button className={`toggle-btn${billing === "upfront" ? " active" : ""}`} onClick={() => setBilling("upfront")} style={{ fontFamily: FONT_BUTTON }}>
                   3 months · Save ${giBilling.upfront.savings}
                 </button>
@@ -164,40 +191,45 @@ export function ResultsPage({
               </div>
             )}
 
-            {/* Pricing card */}
+            {/* Pricing card — strongest visual weight on the page since
+                it's the primary action. Yellow border, stronger glass,
+                bigger price, more padding. */}
             <div
               style={{
-                border: "1.5px solid rgba(98,150,117,0.4)",
-                borderRadius: 12, padding: "14px 18px",
-                background: "rgba(98,150,117,0.12)",
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                flexWrap: "wrap", gap: 12, marginBottom: 20,
-                backdropFilter: "blur(10px)",
+                border: "2px solid rgba(254,242,114,0.45)",
+                borderRadius: 18,
+                padding: "22px 24px",
+                background: "linear-gradient(180deg, rgba(254,242,114,0.06) 0%, rgba(98,150,117,0.10) 100%)",
+                marginBottom: 28,
+                backdropFilter: "blur(14px)",
+                boxShadow: "0 16px 40px -20px rgba(254,242,114,0.18)",
               }}
               ref={!isGIPathway ? pricingRef : undefined}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 14, marginBottom: 14 }}>
                 <span style={{
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                  padding: "4px 12px", borderRadius: 50,
-                  fontSize: 10, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase",
-                  background: "rgba(255,255,255,0.1)", color: GRN, border: "1px solid rgba(98,150,117,0.4)",
+                  display: "inline-flex", alignItems: "center", gap: 7,
+                  padding: "6px 14px", borderRadius: 50,
+                  fontSize: 11, fontWeight: 700, letterSpacing: ".09em", textTransform: "uppercase",
+                  background: "rgba(255,255,255,0.06)", color: GRN, border: "1px solid rgba(98,150,117,0.45)",
                   fontFamily: FONT_BUTTON,
                 }}>
-                  <LogoMark size={11} color={GRN} />{pw.badge}
+                  <LogoMark size={12} color={GRN} />{pw.badge}
                 </span>
-                <div>
-                  <span style={{ fontSize: 16, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING }}>{priceMain}</span>
-                  <span style={{ fontSize: 12, color: INK3, marginLeft: 6 }}>{priceDay}</span>
-                </div>
               </div>
-              <button
-                onClick={() => onSelectPhase(effectivePhase)}
-                className="btng"
-                style={{ padding: "10px 20px", fontSize: 13, fontFamily: FONT_BUTTON }}
-              >
-                Start now →
-              </button>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                  <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>{priceMain}</span>
+                  <span style={{ fontSize: 13, color: INK3, marginLeft: 4 }}>{priceDay}</span>
+                </div>
+                <button
+                  onClick={() => onSelectPhase(effectivePhase)}
+                  className="btng"
+                  style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON }}
+                >
+                  Start now →
+                </button>
+              </div>
             </div>
 
             {/* What's included */}

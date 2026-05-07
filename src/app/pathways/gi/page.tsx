@@ -307,7 +307,7 @@ export default function GIPathwayPage() {
         <div style={{ position: 'relative', margin: '0 clamp(12px,1.04vw,20px)' }}>
 
           {/* Image card — overflow:hidden clips only the image/overlay */}
-          <div style={{ position: 'relative', borderRadius: 'clamp(16px,1.25vw,24px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
+          <div style={{ position: 'relative', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
             <Image
               src="/images/pathways/gi-hero.jpg"
               alt="GastroIntestinal Care — clinical team"
