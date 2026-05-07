@@ -113,13 +113,19 @@ function TeamHero() {
         }}
       >
         <div className="absolute inset-0">
+          {/* Temporary placeholder — currently the only "team-feel" stock we
+              have. The audit flagged this as one of three pages duplicating
+              /clinic/virtual-clinic-hero.webp; sourcing a real group photo
+              for /team is on the content team's TODO. Until then, using the
+              clinical-team scene so it doesn't visually duplicate
+              /virtual-clinic. */}
           <Image
-            src="/clinic/virtual-clinic-hero.webp"
-            alt="NewME clinical team"
+            src="/images/pathways/section-clinical.jpg"
+            alt="NewME clinical team reviewing patient data"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 1880px"
-            className="object-cover [object-position:55%_center] md:object-center"
+            className="object-cover [object-position:50%_center]"
           />
         </div>
         <div
