@@ -64,11 +64,11 @@ Reusable record for a publication. Add a new outlet **once**, then reference it 
 
 ## `post` — Blog Post
 
-Long-form authored content. Rendered at `/blog/{slug}` *(route pending)*. Has full SEO block.
+Long-form authored content. Rendered at `/blog/{slug}` *(route pending)*. Has full SEO controls.
 
-Fields are organised in two **groups** in Studio: `Content` and `SEO & sharing`.
+Fields are organised into three inline **fieldsets** that the editor can collapse/expand: **Editorial structure**, **Body**, and **SEO & social sharing**. Top-level required fields sit above the fieldsets.
 
-### Content group
+### Top-level fields
 
 | Field | Type | Required? | What it does |
 |---|---|---|---|
@@ -80,17 +80,38 @@ Fields are organised in two **groups** in Studio: `Content` and `SEO & sharing`.
 | `author` | reference → `author` | ✓ | Person who wrote the post. |
 | `publishedAt` | datetime | ✓ | Publish date — drives sort order on `/blog`. |
 | `city` | string | optional | Location tag (e.g. "Bangalore"). |
+| `tags` | array of strings (tags layout) | optional | Topic tags. |
+
+### Editorial structure fieldset (optional)
+
+| Field | Type | Required? | What it does |
+|---|---|---|---|
 | `intro` | array of paragraphs | optional | Opening paragraphs before the main body. |
 | `sectionTitle` | string | optional | Heading shown above the numbered list (e.g. "Five things to try"). |
 | `sectionLead` | text | optional | Paragraph between the section heading and numbered list. |
 | `habits` | array of `{num, title, body}` | optional | Numbered list block — habits, steps, tips. Each item has its own number, title, and body. |
-| `body` | Portable Text (rich text + inline images) | optional | Free-form body. Use for posts that don't fit the `intro / section / habits` structured layout. |
+
+### Body fieldset (optional)
+
+| Field | Type | Required? | What it does |
+|---|---|---|---|
+| `body` | Portable Text (rich text + inline images) | optional | Free-form rich text. Use this when the structured intro/section/habits layout doesn't fit. |
 | `disclaimer` | text | optional | Note shown at the bottom of the post (medical disclaimer, etc.). |
-| `tags` | array of strings (tags layout) | optional | Topic tags. |
 
-### SEO & sharing group
+### SEO & social sharing fieldset
 
-`seo` — see [`seo` reference](#seo--reusable-seo--social-sharing-block) above.
+These fields appear flat inside the SEO fieldset — no extra clicks. Each falls back sensibly when blank, so a Blog Post is never SEO-broken even if the editor leaves them all empty.
+
+| Field | Type | Required? | Where it shows |
+|---|---|---|---|
+| `metaTitle` | string (≤ 70 chars warn) | optional | `<title>` · Google snippet · browser tab. Falls back to `post.title`. |
+| `metaDescription` | text (≤ 170 chars warn) | optional | `<meta name="description">`. Falls back to `excerpt` → `subtitle`. |
+| `canonicalUrl` | url | optional | `<link rel="canonical">` override. Leave **blank** for the default `/blog/{slug}` canonical. |
+| `ogTitle` | string (≤ 95 chars warn) | optional | `og:title`. Falls back to `metaTitle` → `title`. |
+| `ogDescription` | text (≤ 200 chars warn) | optional | `og:description`. Falls back to `metaDescription`. |
+| `ogImage` | image (with `alt`) | optional | `og:image`. Recommended 1200×630. Falls back to `coverImage`. |
+| `noIndex` | boolean (default `false`) | optional | When `true`, sets `<meta name="robots" content="noindex,nofollow">`. Only effective once the site-wide pre-launch block is removed. |
+| `keywords` | array of strings (tags layout) | optional | Internal SEO taxonomy. Not rendered on the page. |
 
 ---
 

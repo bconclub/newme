@@ -61,16 +61,14 @@ export const postBySlugQuery = groq`
     body,
     disclaimer,
     tags,
-    seo {
-      metaTitle,
-      metaDescription,
-      canonicalUrl,
-      ogTitle,
-      ogDescription,
-      ogImage,
-      noIndex,
-      keywords
-    },
+    metaTitle,
+    metaDescription,
+    canonicalUrl,
+    ogTitle,
+    ogDescription,
+    ogImage,
+    noIndex,
+    keywords,
     "author": author->{ name, role, avatar, bio }
   }
 `;
