@@ -49,7 +49,7 @@ function toCard(p: BlogPostCard): Card {
 }
 
 /**
- * Blog page — "The NewMe Blog" hero + 3×2 card grid + pagination.
+ * Blog page — "The NewME Blog" hero + 3×2 card grid + pagination.
  * Same visual structure as /media but each card is an internal <Link>
  * to /blog/{slug} (where /media linked out via <a target="_blank">).
  */
@@ -83,7 +83,7 @@ export default function BlogArticles({ posts = [] }: { posts?: BlogPostCard[] })
             letterSpacing: 0,
           }}
         >
-          The NewMe Blog
+          The NewME Blog
         </motion.h1>
 
         <motion.p

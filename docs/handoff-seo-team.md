@@ -1,4 +1,4 @@
-# NewMe — Build & Handoff Documentation
+# NewME — Build & Handoff Documentation
 
 > The current state of what's editable in the CMS, what the developer manages, and what's pending.
 

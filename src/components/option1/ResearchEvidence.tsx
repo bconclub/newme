@@ -10,7 +10,7 @@ const EASE = [0.22, 1, 0.36, 1] as const
  *
  * Figma node 83:2498 (page) — content centered on the 1920 artboard.
  *  · Heading "Built On Clinical Evidence"  : y=966, Bricolage SemiBold 72/72 white
- *  · Subhead "All NewMe research…"        : y=1062, Urbanist SemiBold 28/34 white
+ *  · Subhead "All NewME research…"        : y=1062, Urbanist SemiBold 28/34 white
  *  · Body two paragraphs                  : y=1120, Urbanist Regular 28/34 white
  *  · CTA pair                             : y=1280, height 80, total width 1100
  *      - Left:  white pill 440×80, "Learn more about our research"
@@ -71,7 +71,7 @@ export default function ResearchEvidence() {
             marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          All NewMe research has been derived from real-world care.
+          All NewME research has been derived from real-world care.
         </motion.p>
 
         {/* Body — 24px gap below subhead bottom */}

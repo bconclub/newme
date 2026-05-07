@@ -65,7 +65,7 @@ const PHASES: Phase[] = [
   },
   {
     id: 'movement',
-    heading: 'NewMe Movement',
+    heading: 'NewME Movement',
     description: 'This is a fitness-focused continuity pathway designed to support physical activity and performance without clinical lifestyle supervision.',
     duration: 'Duration: 3 Months / 12 Months',
     whoFor: [

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!--
+    Brand mark — 8-petal swirl, gold on transparent.
+    Same geometry as the in-code <LogoMark> component (8 ellipses
+    rotated around a central dot). Next.js 16 auto-serves this as
+    the site favicon via the app/icon convention.
+  -->
+  <g fill="#FEF272">
+    <ellipse cx="77.40" cy="58.18" rx="8" ry="13" transform="rotate(125 77.40 58.18)"/>
+    <ellipse cx="69.80" cy="74.96" rx="8" ry="13" transform="rotate(170 69.80 74.96)"/>
+    <ellipse cx="52.43" cy="77.99" rx="8" ry="13" transform="rotate(215 52.43 77.99)"/>
+    <ellipse cx="36.57" cy="69.80" rx="8" ry="13" transform="rotate(260 36.57 69.80)"/>
+    <ellipse cx="29.31" cy="53.04" rx="8" ry="13" transform="rotate(305 29.31 53.04)"/>
+    <ellipse cx="36.99" cy="36.43" rx="8" ry="13" transform="rotate(350 36.99 36.43)"/>
+    <ellipse cx="53.66" cy="28.77" rx="8" ry="13" transform="rotate(35 53.66 28.77)"/>
+    <ellipse cx="71.50" cy="36.43" rx="8" ry="13" transform="rotate(80 71.50 36.43)"/>
+    <circle cx="50" cy="50" r="7"/>
+  </g>
+</svg>

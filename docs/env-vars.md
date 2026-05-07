@@ -7,7 +7,7 @@
 ## Required
 
 ### `NEXT_PUBLIC_ASSESSMENT_API_URL`
-Base URL of the NewMe assessment / CRM backend. **No trailing slash.**
+Base URL of the NewME assessment / CRM backend. **No trailing slash.**
 - **Example:** `https://api.drpalsnewme.com`
 - **Read by:** `src/assessment-app/constants/urlConstants.ts`
 - **What breaks if missing:** Every assessment API call falls back to `http://localhost:4000` and fails on production. Console emits a one-time warning at runtime.

@@ -134,7 +134,7 @@ These fields appear flat inside the SEO fieldset — no extra clicks. Each falls
 |---|---|---|---|
 | `quote` | text | ✓ | The testimonial copy. |
 | `personName` | string | ✓ | |
-| `personRole` | string | optional | Where the person is in their NewMe journey. |
+| `personRole` | string | optional | Where the person is in their NewME journey. |
 | `personAvatar` | image | optional | Photo for the testimonial card. |
 | `order` | number | optional (default 0) | Lower numbers appear first on the homepage. |
 

@@ -8,7 +8,7 @@ import { mediaMentionsQuery } from '@/lib/sanity/queries'
 export const metadata: Metadata = {
   title: "Media | Dr. Pal's NewME",
   description:
-    'NewMe in the media — coverage of our work in metabolic and gut regulation across leading publications.',
+    'NewME in the media — coverage of our work in metabolic and gut regulation across leading publications.',
 }
 
 /** Revalidate the listing every 60s in production so newly added

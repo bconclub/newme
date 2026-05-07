@@ -145,7 +145,7 @@ export default function Hero() {
                 marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
               }}
             >
-              NewMe combines clinical insights with structured care to better
+              NewME combines clinical insights with structured care to better
               understand your body and provide the care it needs.
             </motion.p>
 

@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogImageUrl = ogImageRef ? urlFor(ogImageRef).width(1200).height(630).fit('crop').url() : undefined
 
   return {
-    title: title.includes('NewMe') ? title : `${title} | Dr. Pal's NewMe`,
+    title: title.includes('NewME') ? title : `${title} | Dr. Pal's NewME`,
     description,
     keywords: post.keywords && post.keywords.length > 0 ? post.keywords.join(', ') : undefined,
     alternates: {

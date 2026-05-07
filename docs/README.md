@@ -1,6 +1,6 @@
-# NewMe — Documentation
+# NewME — Documentation
 
-Project: **Dr. Pal's NewMe** marketing site & clinical assessment app.
+Project: **Dr. Pal's NewME** marketing site & clinical assessment app.
 Stack: Next.js 16 · React 19 · Tailwind v4 · Sanity CMS · Vercel.
 
 This folder is the source of truth for **everyone who is not writing code on the site** — the SEO team, content team, marketing, and anyone who needs to publish or audit content without opening the codebase.

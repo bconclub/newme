@@ -116,7 +116,7 @@ function toCard(m: MediaMention | LocalMention): Card {
 }
 
 /**
- * Media page — "NewMe In The Media" section.
+ * Media page — "NewME In The Media" section.
  * Grid of cards; each card opens the publication's article URL in a new tab.
  * Data comes from Sanity (`mediaMention[]`); falls back to a small local
  * sample when Sanity is empty / unreachable.
@@ -159,7 +159,7 @@ export default function MediaArticles({ mentions = [] }: { mentions?: MediaMenti
             letterSpacing: 0,
           }}
         >
-          NewMe In The Media
+          NewME In The Media
         </motion.h2>
 
         <motion.p

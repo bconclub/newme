@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 /**
- * Sitemap for Dr. Pal's NewMe.
+ * Sitemap for Dr. Pal's NewME.
  *
  * Combines hardcoded marketing routes with dynamic Sanity-backed entries
  * (Blog Posts + Media listing). Set NEXT_PUBLIC_SITE_URL in .env.local

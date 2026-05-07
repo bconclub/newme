@@ -29,10 +29,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
+  title: 'NewME | Doctor-Led Care, Personalized For Your Body',
   description:
-    'NewMe combines clinical insights with structured care to better understand your body and provide the care it needs. A doctor-led clinical system for metabolic and gut regulation.',
-  keywords: ['metabolic health', 'gut health', 'Dr Pal', 'NewMe', 'clinical care'],
+    'NewME combines clinical insights with structured care to better understand your body and provide the care it needs. A doctor-led clinical system for metabolic and gut regulation.',
+  keywords: ['metabolic health', 'gut health', 'Dr Pal', 'NewME', 'clinical care'],
   alternates: {
     canonical: '/',
   },
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     googleBot: { index: false, follow: false },
   },
   openGraph: {
-    title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
+    title: 'NewME | Doctor-Led Care, Personalized For Your Body',
     description:
       'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
     url: '/',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
+    title: 'NewME | Doctor-Led Care, Personalized For Your Body',
     description:
       'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
     images: ['/media/Media Hero.webp'],

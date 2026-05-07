@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 /**
  * Media outlet — reusable record for a publication where Dr. Pal /
- * NewMe has been featured. One outlet can be referenced by many
+ * NewME has been featured. One outlet can be referenced by many
  * `mediaMention` documents so logos and brand details are entered once.
  *
  * Examples: "Forbes", "The Hindu", "Vogue", "Lancet", "TechCrunch".

@@ -41,7 +41,7 @@ function pathForDocument(document?: { _type?: string; slug?: { current?: string 
 
 export default defineConfig({
   name: "default",
-  title: "NewMe",
+  title: "NewME",
   basePath: "/studio",
   projectId,
   dataset,

@@ -5,9 +5,9 @@ import BlogArticles from '@/components/option1/BlogArticles'
 import { postsQuery } from '@/lib/sanity/queries'
 
 export const metadata: Metadata = {
-  title: "Blog | Dr. Pal's NewMe",
+  title: "Blog | Dr. Pal's NewME",
   description:
-    'Long-form articles on metabolic health, gut regulation, and structured care from the NewMe team.',
+    'Long-form articles on metabolic health, gut regulation, and structured care from the NewME team.',
 }
 
 /** ISR — revalidate the listing every 60s so newly published posts surface

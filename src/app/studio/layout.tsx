@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "NewMe Studio",
+  title: "NewME Studio",
   robots: { index: false, follow: false },
 };
 

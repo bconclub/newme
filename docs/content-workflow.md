@@ -114,7 +114,7 @@ See [`seo-checklist.md`](./seo-checklist.md) for the full pre-publish checklist.
 |---|---|
 | Quote | The testimonial copy |
 | Person name | |
-| Person role | "Reset cohort, 6 months" — where they are in the NewMe journey |
+| Person role | "Reset cohort, 6 months" — where they are in the NewME journey |
 | Person avatar | Profile photo |
 | Order | Lower numbers appear first on the homepage. Use 10, 20, 30 so you can insert in between later. |
 

@@ -62,7 +62,7 @@ Good alt text:
 | `image` | `Dr. Pal in his clinic, talking with a patient` |
 | `photo of food` | `A bowl of dal with curry leaves and rice on a wooden table` |
 | `Forbes` | `Forbes logo` |
-| `team` | `The NewMe care team standing outside the Bangalore clinic` |
+| `team` | `The NewME care team standing outside the Bangalore clinic` |
 
 For **decorative images** that add nothing semantic (background patterns, ornaments), set alt to an empty string explicitly — never leave it `undefined`.
 

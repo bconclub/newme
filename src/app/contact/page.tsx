@@ -23,7 +23,7 @@ export default function ContactPage() {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Hero — Figma 122:12618 — 1880×694 card at y=152
-// "Get In Touch With The NewMe Team."
+// "Get In Touch With The NewME Team."
 // ─────────────────────────────────────────────────────────────────────────────
 function ContactHero() {
   return (
@@ -91,7 +91,7 @@ function ContactHero() {
               maxWidth: 'clamp(300px, calc(760 / 1920 * 100vw), 760px)',
             }}
           >
-            Get In Touch With<br />The NewMe Team.
+            Get In Touch With<br />The NewME Team.
           </motion.h1>
 
           <motion.p

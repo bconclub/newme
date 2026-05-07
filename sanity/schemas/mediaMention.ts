@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 /**
  * Media mention — a brand mention / press feature where Dr. Pal or
- * NewMe was covered by an external publication.
+ * NewME was covered by an external publication.
  *
  * The /media page renders these as cards. Clicking the card opens the
  * external URL in a new tab. There is NO in-site detail page for a
