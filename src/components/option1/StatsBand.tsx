@@ -178,13 +178,12 @@ function StatCell({ stat, index }: { stat: Stat; index: number }) {
         >
           {formatValue(value, stat.value)}
         </span>
-        {/* Suffix (+, %, +, Kg) — per client feedback, bumped from Poppins
-            Light 300 to SemiBold 600 so the unit reads with stronger emphasis
-            against the large numeral. */}
+        {/* Suffix (+, %, +, Kg) - bolder than the animated number so the unit
+            reads as a deliberate highlight. */}
         <span
           className="text-[#FF8547]"
           style={{
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: 'clamp(14px, calc(40 / 1920 * 100vw), 40px)',
             lineHeight: 'calc(32 / 40)',
             marginLeft: 'clamp(3px, calc(8 / 1920 * 100vw), 8px)',
