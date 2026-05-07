@@ -106,7 +106,7 @@ function TeamHero() {
         className="relative overflow-hidden"
         style={{
           borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)',
-          height: 'clamp(280px, calc(694 / 1920 * 100vw), 694px)',
+          height: 'clamp(320px, calc(694 / 1920 * 100vw), 694px)',
           background: '#0E2827',
         }}
       >
@@ -271,7 +271,11 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
     return () => mq.removeEventListener?.('change', apply)
   }, [])
 
-  const showPanel = canHover && hovered
+  // Show the inset panel ALWAYS on touch devices (where there's no
+  // hover), and on desktop only when the user actually hovers. The
+  // panel content + look is identical in both cases — just the trigger
+  // changes — so mobile and desktop feel like the same component.
+  const showPanel = !canHover || hovered
 
   return (
     <motion.div
@@ -290,8 +294,8 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         cursor: 'default',
       }}
     >
-      {/* ── PHOTO LAYER — always visible. On hover (desktop) it darkens
-            slightly so the inset panel reads cleanly against it as a frame. ── */}
+      {/* ── PHOTO LAYER — always visible. Darkens when the inset panel
+            is showing so the panel reads cleanly against it as a frame. ── */}
       <div
         style={{
           position: 'absolute',
@@ -311,113 +315,70 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         />
       </div>
 
-      {/* ── MOBILE / TOUCH FALLBACK — small name + role pill anchored to
-            the bottom of the photo. Visible only on devices that don't
-            support hover (the inset panel doesn't render on those at all). */}
-      {!canHover && (
-        <div
+      {/* ── INSET DARK-GREEN PANEL — same component, two trigger modes:
+            • Desktop: hidden by default, fades in on hover.
+            • Mobile / touch: always visible (no hover available).
+            Content (name → role → bio → social icons) is identical and
+            left-aligned per Figma 122:11461..85. */}
+      <motion.div
+        initial={false}
+        animate={{
+          opacity: showPanel ? 1 : 0,
+          scale: showPanel ? 1 : 1.05,
+        }}
+        transition={{ duration: 0.4, ease: EASE }}
+        style={{
+          position: 'absolute',
+          inset: 'clamp(10px, calc(20 / 435 * 100%), 22px)',
+          background: '#013E37',
+          borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
+          padding: 'clamp(16px, calc(28 / 1920 * 100vw), 30px)',
+          pointerEvents: showPanel ? 'auto' : 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)',
+          boxShadow: '0 18px 32px -16px rgba(0,0,0,0.45)',
+        }}
+      >
+        <p
+          className="font-[family-name:var(--font-bricolage)]"
           style={{
-            position: 'absolute',
-            left: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
-            right: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
-            bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
-            background: 'rgba(1, 62, 55, 0.92)',
-            backdropFilter: 'blur(12px)',
-            borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-            padding: 'clamp(10px, calc(14 / 1920 * 100vw), 14px) clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
+            fontWeight: 500,
+            fontSize: 'clamp(20px, calc(28 / 1920 * 100vw), 30px)',
+            color: '#FEF272',
+            lineHeight: 1.05,
+            letterSpacing: '-0.005em',
           }}
         >
-          <p
-            className="font-[family-name:var(--font-bricolage)]"
-            style={{
-              fontWeight: 500,
-              fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 20px)',
-              color: '#FEF272',
-              lineHeight: 1.15,
-            }}
-          >
-            {member.name}
-          </p>
-          <p
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{
-              fontSize: 'clamp(11px, calc(12 / 1920 * 100vw), 13px)',
-              fontWeight: 500,
-              opacity: 0.85,
-            }}
-          >
-            {member.role}
-          </p>
+          {member.name}
+        </p>
+        <p
+          className="font-[family-name:var(--font-urbanist)] text-white"
+          style={{
+            fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 15px)',
+            fontWeight: 500,
+            opacity: 0.92,
+            letterSpacing: '0.02em',
+          }}
+        >
+          {member.role}
+        </p>
+        <p
+          className="font-[family-name:var(--font-urbanist)] text-white"
+          style={{
+            fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
+            fontWeight: 400,
+            lineHeight: 1.55,
+            opacity: 0.72,
+            marginTop: 'clamp(4px, calc(6 / 1920 * 100vw), 8px)',
+          }}
+        >
+          {member.bio}
+        </p>
+        <div style={{ marginTop: 'auto', paddingTop: 'clamp(10px, calc(14 / 1920 * 100vw), 16px)' }}>
+          <SocialIcons />
         </div>
-      )}
-
-      {/* ── INSET DARK-GREEN PANEL (HOVER-CAPABLE devices only) — sized
-            smaller than the card so the photo shows as a thin frame
-            around it. Per Figma 122:11477/11478. Content left-aligned. */}
-      {canHover && (
-        <motion.div
-          initial={false}
-          animate={{
-            opacity: hovered ? 1 : 0,
-            scale: hovered ? 1 : 1.05,
-          }}
-          transition={{ duration: 0.4, ease: EASE }}
-          style={{
-            position: 'absolute',
-            inset: 'clamp(10px, calc(20 / 435 * 100%), 22px)',
-            background: '#013E37',
-            borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
-            padding: 'clamp(16px, calc(28 / 1920 * 100vw), 30px)',
-            pointerEvents: hovered ? 'auto' : 'none',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)',
-            boxShadow: '0 18px 32px -16px rgba(0,0,0,0.45)',
-          }}
-        >
-          <p
-            className="font-[family-name:var(--font-bricolage)]"
-            style={{
-              fontWeight: 500,
-              fontSize: 'clamp(20px, calc(28 / 1920 * 100vw), 30px)',
-              color: '#FEF272',
-              lineHeight: 1.05,
-              letterSpacing: '-0.005em',
-            }}
-          >
-            {member.name}
-          </p>
-          <p
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{
-              fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 15px)',
-              fontWeight: 500,
-              opacity: 0.92,
-              letterSpacing: '0.02em',
-            }}
-          >
-            {member.role}
-          </p>
-          <p
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{
-              fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
-              fontWeight: 400,
-              lineHeight: 1.55,
-              opacity: 0.72,
-              marginTop: 'clamp(4px, calc(6 / 1920 * 100vw), 8px)',
-            }}
-          >
-            {member.bio}
-          </p>
-          <div style={{ marginTop: 'auto', paddingTop: 'clamp(10px, calc(14 / 1920 * 100vw), 16px)' }}>
-            <SocialIcons />
-          </div>
-        </motion.div>
-      )}
+      </motion.div>
     </motion.div>
   )
 }

@@ -239,50 +239,43 @@ export default function Header() {
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-40 bg-[#013E37] flex flex-col items-center justify-center gap-7 lg:hidden"
           >
-            {/* Mobile menu — flat list. Sublinks (Blog / Media / FAQ under
-                Resources) are hoisted inline at the same level as everything
-                else so users don't have to think about a nested submenu on
-                a touch device with no hover. The "Resources" parent itself
-                is dropped on mobile because /faq already shows up via its
-                own sublink slot. */}
-            {navLinks.flatMap((link, i) => {
-              // If this link has sublinks, hoist them inline and skip the
-              // parent (it duplicates one of the sublinks anyway).
-              if (link.sublinks && link.sublinks.length > 0) {
-                return link.sublinks.map((sub, si) => (
-                  <motion.div
-                    key={sub.href}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: (i + si * 0.5) * 0.04 }}
-                  >
-                    <Link
-                      href={sub.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="text-white text-2xl font-medium font-[family-name:var(--font-bricolage)] hover:text-[#FEF272] transition-colors"
-                    >
-                      {sub.label}
-                    </Link>
-                  </motion.div>
-                ))
-              }
-              return [(
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.04 }}
+            {/* Mobile menu — Resources retains its parent label and the
+                Blog / Media / FAQ sublinks render INLINE underneath at the
+                same visual stack (smaller font + slightly muted colour so
+                the hierarchy reads). All items are always visible — no
+                tap-to-expand, no nested panel — just a single scrollable
+                vertical list with two text sizes. */}
+            {navLinks.map((link, i) => (
+              <motion.div
+                key={link.href}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04 }}
+                className="flex flex-col items-center gap-3"
+              >
+                <Link
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-white text-2xl font-medium font-[family-name:var(--font-bricolage)] hover:text-[#FEF272] transition-colors"
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="text-white text-2xl font-medium font-[family-name:var(--font-bricolage)] hover:text-[#FEF272] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              )]
-            })}
+                  {link.label}
+                </Link>
+                {link.sublinks && link.sublinks.length > 0 && (
+                  <div className="flex flex-col items-center gap-2">
+                    {link.sublinks.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setMobileOpen(false)}
+                        className="text-white/75 text-lg font-medium font-[family-name:var(--font-bricolage)] hover:text-[#FEF272] transition-colors"
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            ))}
             <MotionLink
               href="/assessment"
               initial={{ opacity: 0, y: 10 }}
