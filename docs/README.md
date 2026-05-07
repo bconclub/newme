@@ -19,6 +19,7 @@ This folder is the source of truth for **everyone who is not writing code on the
 | [`url-structure.md`](./url-structure.md) | SEO + dev | All site URLs, how each is generated, sitemap behaviour, canonical rules. |
 | [`launch-checklist.md`](./launch-checklist.md) | Launch coordinator | Everything that must happen the day we go live (remove noindex, submit sitemap to Google, switch DNS, etc.). |
 | [`env-vars.md`](./env-vars.md) | Dev + DevOps | Every env var the site reads, what to set on Vercel, and the assessment backend contract (15 endpoints + CORS). |
+| [`image-manifest.md`](./image-manifest.md) | Content + dev | Inventory of every image in /public — paths, sizes, which page uses it, and which assets need compressing. |
 
 ---
 
