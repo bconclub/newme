@@ -270,16 +270,19 @@ export default function PathwaysPage() {
           </motion.div>
         </div>
 
-        {/* Connector: vertical line from box → horizontal branch */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+        {/* Connector: vertical line from box → horizontal branch.
+            Hidden on mobile (md+ only) — the tree-diagram visual doesn't
+            scale to 1-column stack and just renders as orphan vertical
+            lines, so we drop it on small screens. */}
+        <div className="hidden md:flex" style={{ justifyContent: 'center', marginBottom: 2 }}>
           <div style={{ width: 1, height: 'clamp(24px,2.08vw,40px)', background: 'rgba(255,255,255,0.25)' }} />
         </div>
-        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+        <div className="hidden md:flex" style={{ position: 'relative', justifyContent: 'center', marginBottom: 2 }}>
           {/* Horizontal bar spanning all 3 columns */}
           <div style={{ position: 'absolute', top: 0, left: '16.67%', right: '16.67%', height: 1, background: 'rgba(255,255,255,0.25)' }} />
         </div>
         {/* 3 vertical drops from horizontal bar */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
+        <div className="hidden md:grid" style={{ gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
           {TABS.map((t) => (
             <div key={t.id} style={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ width: 1, height: 'clamp(18px,1.56vw,30px)', background: 'rgba(255,255,255,0.25)' }} />
@@ -287,8 +290,8 @@ export default function PathwaysPage() {
           ))}
         </div>
 
-        {/* Dots above cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
+        {/* Dots above cards (md+ only — hidden on mobile with the tree) */}
+        <div className="hidden md:grid" style={{ gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
           {TABS.map((t) => (
             <div key={t.id} style={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ width: 10, height: 10, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.5)', background: 'transparent' }} />
@@ -296,8 +299,8 @@ export default function PathwaysPage() {
           ))}
         </div>
 
-        {/* ── 3 Pathway cards ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'clamp(8px,0.625vw,12px)', marginBottom: 'clamp(10px,0.83vw,16px)' }}>
+        {/* ── 3 Pathway cards — 1 col on mobile, 3 col at md+ ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', marginBottom: 'clamp(14px,0.83vw,16px)' }}>
           {TABS.map((t, i) => {
             const isActive = hoveredTab === t.id
             return (
@@ -341,8 +344,8 @@ export default function PathwaysPage() {
           })}
         </div>
 
-        {/* Connector drops from cards to pills */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
+        {/* Connector drops from cards to pills (md+ only) */}
+        <div className="hidden md:grid" style={{ gridTemplateColumns: '1fr 1fr 1fr', marginBottom: 4 }}>
           {TABS.map((t) => (
             <div key={t.id} style={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ width: 1, height: 'clamp(14px,1.25vw,24px)', background: 'rgba(255,255,255,0.20)' }} />
@@ -350,8 +353,8 @@ export default function PathwaysPage() {
           ))}
         </div>
 
-        {/* ── Sub-pathway pills — 3 columns ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'clamp(8px,0.625vw,12px)', alignItems: 'start' }}>
+        {/* ── Sub-pathway pills — 1 col on mobile, 3 col at md+ ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', alignItems: 'start', marginTop: 'clamp(8px, calc(8 / 1920 * 100vw), 8px)' }}>
           {TABS.map((t, ci) => (
             <div key={t.id} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px,0.625vw,12px)', alignItems: 'center' }}>
               {SUB_PILLS[t.id].map((pill, pi) => (

@@ -23,8 +23,11 @@ export default function HIWHero() {
         className="relative overflow-hidden"
         style={{
           // Figma 58:33 — 1880×694, radius 48
-          borderRadius: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
-          minHeight: 'clamp(420px, calc(694 / 1880 * 100vw), 694px)',
+          borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)',
+          // Floor 320 (was 420) — at 390px viewport the 420px floor made
+          // the hero a near-square that ate the entire viewport before
+          // any content below could be seen.
+          minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
         }}
       >
         {/* Background image (Figma 58:34) */}
@@ -82,10 +85,12 @@ export default function HIWHero() {
         <div
           className="relative z-10 flex flex-col"
           style={{
-            paddingTop: 'clamp(80px, calc(170 / 1920 * 100vw), 170px)',
-            paddingLeft: 'clamp(28px, calc(120 / 1920 * 100vw), 120px)',
+            // Floors halved on mobile so the headline doesn't sit at the
+            // bottom of a tall card when the viewport is narrow.
+            paddingTop: 'clamp(40px, calc(170 / 1920 * 100vw), 170px)',
+            paddingLeft: 'clamp(20px, calc(120 / 1920 * 100vw), 120px)',
             paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
-            paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+            paddingBottom: 'clamp(28px, calc(80 / 1920 * 100vw), 80px)',
           }}
         >
           {/* Figma 58:47 — "You Don't Choose A Program. You're Prescribed A Path." */}
@@ -96,11 +101,12 @@ export default function HIWHero() {
             className="font-[family-name:var(--font-bricolage)] text-white"
             style={{
               fontWeight: 600,
-              // Figma 1086×144 → ~72px / line-height 72 (1:1)
-              fontSize: 'clamp(34px, calc(72 / 1920 * 100vw), 72px)',
-              lineHeight: 1,
+              // Floor 26 (was 34) so on a 390-wide viewport the headline
+              // wraps to 2 lines tops instead of 4 and doesn't dominate.
+              fontSize: 'clamp(26px, calc(72 / 1920 * 100vw), 72px)',
+              lineHeight: 1.1,
               letterSpacing: 0,
-              maxWidth: 'clamp(320px, calc(1086 / 1920 * 100vw), 1086px)',
+              maxWidth: 'clamp(280px, calc(1086 / 1920 * 100vw), 1086px)',
             }}
           >
             You Don&rsquo;t Choose A Program.

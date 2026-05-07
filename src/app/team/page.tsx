@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 
@@ -255,6 +255,23 @@ function SocialIcons() {
 //     fluid clamp() so the inset scales with viewport. ─────────────────────
 function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   const [hovered, setHovered] = useState(false)
+  const [canHover, setCanHover] = useState(true)
+
+  // Detect hover-capable device. On touch devices `onMouseEnter` fires on
+  // tap but `onMouseLeave` only fires on tap-elsewhere — that left cards
+  // permanently stuck in hover state on mobile. We disable the hover/tap
+  // panel entirely when there's no fine pointer + hover capability and
+  // instead show a simple name/role pill at the bottom of the photo.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const apply = () => setCanHover(mq.matches)
+    apply()
+    mq.addEventListener?.('change', apply)
+    return () => mq.removeEventListener?.('change', apply)
+  }, [])
+
+  const showPanel = canHover && hovered
 
   return (
     <motion.div
@@ -262,8 +279,8 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.55, ease: EASE, delay: (index % 4) * 0.07 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={canHover ? () => setHovered(true) : undefined}
+      onMouseLeave={canHover ? () => setHovered(false) : undefined}
       style={{
         position: 'relative',
         overflow: 'hidden',
@@ -273,15 +290,15 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         cursor: 'default',
       }}
     >
-      {/* ── PHOTO LAYER — always visible. On hover it darkens slightly so
-            the inset panel reads cleanly against it as a frame. ── */}
+      {/* ── PHOTO LAYER — always visible. On hover (desktop) it darkens
+            slightly so the inset panel reads cleanly against it as a frame. ── */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           transition: 'transform 0.6s ease, filter 0.45s ease',
-          transform: hovered ? 'scale(1.04)' : 'scale(1)',
-          filter: hovered ? 'brightness(0.55)' : 'brightness(1)',
+          transform: showPanel ? 'scale(1.04)' : 'scale(1)',
+          filter: showPanel ? 'brightness(0.55)' : 'brightness(1)',
           pointerEvents: 'none',
         }}
       >
@@ -294,69 +311,113 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         />
       </div>
 
-      {/* ── INSET DARK-GREEN PANEL (hover only) — sized smaller than the
-            card so the photo shows as a thin frame around it. Per Figma
-            122:11477 / 11478: outer 770 → inner 419 width = ~5-6% inset
-            on each side. Content left-aligned (Figma 122:11479..85). */}
-      <motion.div
-        initial={false}
-        animate={{
-          opacity: hovered ? 1 : 0,
-          scale: hovered ? 1 : 1.05,
-        }}
-        transition={{ duration: 0.4, ease: EASE }}
-        style={{
-          position: 'absolute',
-          inset: 'clamp(10px, calc(20 / 435 * 100%), 22px)',
-          background: '#013E37',
-          borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
-          padding: 'clamp(16px, calc(28 / 1920 * 100vw), 30px)',
-          pointerEvents: hovered ? 'auto' : 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)',
-          boxShadow: '0 18px 32px -16px rgba(0,0,0,0.45)',
-        }}
-      >
-        <p
-          className="font-[family-name:var(--font-bricolage)]"
+      {/* ── MOBILE / TOUCH FALLBACK — small name + role pill anchored to
+            the bottom of the photo. Visible only on devices that don't
+            support hover (the inset panel doesn't render on those at all). */}
+      {!canHover && (
+        <div
           style={{
-            fontWeight: 500,
-            fontSize: 'clamp(20px, calc(28 / 1920 * 100vw), 30px)',
-            color: '#FEF272',
-            lineHeight: 1.05,
-            letterSpacing: '-0.005em',
+            position: 'absolute',
+            left: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
+            right: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
+            bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
+            background: 'rgba(1, 62, 55, 0.92)',
+            backdropFilter: 'blur(12px)',
+            borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
+            padding: 'clamp(10px, calc(14 / 1920 * 100vw), 14px) clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
           }}
         >
-          {member.name}
-        </p>
-        <p
-          className="font-[family-name:var(--font-urbanist)] text-white"
-          style={{
-            fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 15px)',
-            fontWeight: 500,
-            opacity: 0.92,
-            letterSpacing: '0.02em',
-          }}
-        >
-          {member.role}
-        </p>
-        <p
-          className="font-[family-name:var(--font-urbanist)] text-white"
-          style={{
-            fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
-            fontWeight: 400,
-            lineHeight: 1.55,
-            opacity: 0.72,
-            marginTop: 'clamp(4px, calc(6 / 1920 * 100vw), 8px)',
-          }}
-        >
-          {member.bio}
-        </p>
-        <div style={{ marginTop: 'auto', paddingTop: 'clamp(10px, calc(14 / 1920 * 100vw), 16px)' }}>
-          <SocialIcons />
+          <p
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{
+              fontWeight: 500,
+              fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 20px)',
+              color: '#FEF272',
+              lineHeight: 1.15,
+            }}
+          >
+            {member.name}
+          </p>
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white"
+            style={{
+              fontSize: 'clamp(11px, calc(12 / 1920 * 100vw), 13px)',
+              fontWeight: 500,
+              opacity: 0.85,
+            }}
+          >
+            {member.role}
+          </p>
         </div>
-      </motion.div>
+      )}
+
+      {/* ── INSET DARK-GREEN PANEL (HOVER-CAPABLE devices only) — sized
+            smaller than the card so the photo shows as a thin frame
+            around it. Per Figma 122:11477/11478. Content left-aligned. */}
+      {canHover && (
+        <motion.div
+          initial={false}
+          animate={{
+            opacity: hovered ? 1 : 0,
+            scale: hovered ? 1 : 1.05,
+          }}
+          transition={{ duration: 0.4, ease: EASE }}
+          style={{
+            position: 'absolute',
+            inset: 'clamp(10px, calc(20 / 435 * 100%), 22px)',
+            background: '#013E37',
+            borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
+            padding: 'clamp(16px, calc(28 / 1920 * 100vw), 30px)',
+            pointerEvents: hovered ? 'auto' : 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)',
+            boxShadow: '0 18px 32px -16px rgba(0,0,0,0.45)',
+          }}
+        >
+          <p
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{
+              fontWeight: 500,
+              fontSize: 'clamp(20px, calc(28 / 1920 * 100vw), 30px)',
+              color: '#FEF272',
+              lineHeight: 1.05,
+              letterSpacing: '-0.005em',
+            }}
+          >
+            {member.name}
+          </p>
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white"
+            style={{
+              fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 15px)',
+              fontWeight: 500,
+              opacity: 0.92,
+              letterSpacing: '0.02em',
+            }}
+          >
+            {member.role}
+          </p>
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white"
+            style={{
+              fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
+              fontWeight: 400,
+              lineHeight: 1.55,
+              opacity: 0.72,
+              marginTop: 'clamp(4px, calc(6 / 1920 * 100vw), 8px)',
+            }}
+          >
+            {member.bio}
+          </p>
+          <div style={{ marginTop: 'auto', paddingTop: 'clamp(10px, calc(14 / 1920 * 100vw), 16px)' }}>
+            <SocialIcons />
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   )
 }
