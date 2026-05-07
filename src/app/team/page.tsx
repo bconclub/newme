@@ -218,26 +218,29 @@ function TeamGrid() {
   )
 }
 
-// ─── Social icons (inline SVG, always white/muted) ───────────────────────────
+// ─── Social icons (inline SVG, white/muted; sized fluidly so they
+//     shrink to ~14px on mobile cards and grow to 20px at desktop). ─────────
 function SocialIcons() {
+  const size = 'clamp(14px, calc(20 / 1920 * 100vw), 20px)'
+  const gap = 'clamp(8px, calc(14 / 1920 * 100vw), 14px)'
   return (
-    <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap, alignItems: 'center' }}>
       {/* Facebook */}
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
         <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
       </svg>
       {/* X */}
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
       {/* Instagram */}
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
         <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
       </svg>
       {/* LinkedIn */}
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
         <rect x="2" y="9" width="4" height="12" />
         <circle cx="4" cy="4" r="2" />
@@ -271,11 +274,13 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
     return () => mq.removeEventListener?.('change', apply)
   }, [])
 
-  // Show the inset panel ALWAYS on touch devices (where there's no
-  // hover), and on desktop only when the user actually hovers. The
-  // panel content + look is identical in both cases — just the trigger
-  // changes — so mobile and desktop feel like the same component.
-  const showPanel = !canHover || hovered
+  // Trigger model:
+  //   • Desktop / hover-capable → mouseenter / mouseleave toggles `hovered`.
+  //   • Mobile / touch          → onClick toggles `hovered` (tap to reveal,
+  //                                 tap again to dismiss). The panel is
+  //                                 hidden by default on mobile, same as
+  //                                 desktop — only the trigger differs.
+  const showPanel = hovered
 
   return (
     <motion.div
@@ -285,13 +290,14 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
       transition={{ duration: 0.55, ease: EASE, delay: (index % 4) * 0.07 }}
       onMouseEnter={canHover ? () => setHovered(true) : undefined}
       onMouseLeave={canHover ? () => setHovered(false) : undefined}
+      onClick={!canHover ? () => setHovered((p) => !p) : undefined}
       style={{
         position: 'relative',
         overflow: 'hidden',
         borderRadius: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
         aspectRatio: '435 / 540',
         background: '#013E37',
-        cursor: 'default',
+        cursor: canHover ? 'default' : 'pointer',
       }}
     >
       {/* ── PHOTO LAYER — always visible. Darkens when the inset panel
@@ -315,6 +321,53 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         />
       </div>
 
+      {/* ── DEFAULT-STATE NAME PILL — anchored to bottom of card. Always
+            visible (both desktop + mobile) per Figma 122:11470/11471 so the
+            person's name is readable without hover/click. Hidden when the
+            full inset panel slides in (it duplicates the same info plus bio). */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: showPanel ? 0 : 1, y: showPanel ? 6 : 0 }}
+        transition={{ duration: 0.3, ease: EASE }}
+        style={{
+          position: 'absolute',
+          left: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
+          right: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
+          bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
+          background: '#013E37',
+          borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
+          padding: 'clamp(10px, calc(16 / 1920 * 100vw), 18px) clamp(12px, calc(20 / 1920 * 100vw), 22px)',
+          pointerEvents: showPanel ? 'none' : 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+        }}
+      >
+        <p
+          className="font-[family-name:var(--font-bricolage)]"
+          style={{
+            fontWeight: 500,
+            fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 22px)',
+            color: '#FEF272',
+            lineHeight: 1.15,
+            letterSpacing: '-0.005em',
+          }}
+        >
+          {member.name}
+        </p>
+        <p
+          className="font-[family-name:var(--font-urbanist)] text-white"
+          style={{
+            fontSize: 'clamp(10px, calc(13 / 1920 * 100vw), 14px)',
+            fontWeight: 500,
+            opacity: 0.85,
+            letterSpacing: '0.01em',
+          }}
+        >
+          {member.role}
+        </p>
+      </motion.div>
+
       {/* ── INSET DARK-GREEN PANEL — same component, two trigger modes:
             • Desktop: hidden by default, fades in on hover.
             • Mobile / touch: always visible (no hover available).
@@ -329,24 +382,27 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         transition={{ duration: 0.4, ease: EASE }}
         style={{
           position: 'absolute',
-          inset: 'clamp(10px, calc(20 / 435 * 100%), 22px)',
+          inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
           background: '#013E37',
           borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
-          padding: 'clamp(16px, calc(28 / 1920 * 100vw), 30px)',
+          padding: 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
           pointerEvents: showPanel ? 'auto' : 'none',
           display: 'flex',
           flexDirection: 'column',
-          gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)',
+          gap: 'clamp(4px, calc(8 / 1920 * 100vw), 10px)',
           boxShadow: '0 18px 32px -16px rgba(0,0,0,0.45)',
+          overflow: 'hidden',
         }}
       >
         <p
           className="font-[family-name:var(--font-bricolage)]"
           style={{
             fontWeight: 500,
-            fontSize: 'clamp(20px, calc(28 / 1920 * 100vw), 30px)',
+            // Floor 14 (was 20) — names like "Dr. Palaniappan Manickam"
+            // wrapped to 3 lines and ate half the panel on mobile.
+            fontSize: 'clamp(14px, calc(28 / 1920 * 100vw), 30px)',
             color: '#FEF272',
-            lineHeight: 1.05,
+            lineHeight: 1.1,
             letterSpacing: '-0.005em',
           }}
         >
@@ -355,7 +411,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         <p
           className="font-[family-name:var(--font-urbanist)] text-white"
           style={{
-            fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 15px)',
+            fontSize: 'clamp(10px, calc(14 / 1920 * 100vw), 15px)',
             fontWeight: 500,
             opacity: 0.92,
             letterSpacing: '0.02em',
@@ -363,19 +419,27 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         >
           {member.role}
         </p>
+        {/* Bio gets line-clamped on small panels so it doesn't crash into
+            the social icons row (the bios are 1-3 sentences each — long
+            enough to overflow a 150px-wide mobile card). */}
         <p
           className="font-[family-name:var(--font-urbanist)] text-white"
           style={{
-            fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
+            fontSize: 'clamp(10px, calc(13 / 1920 * 100vw), 14px)',
             fontWeight: 400,
-            lineHeight: 1.55,
+            lineHeight: 1.5,
             opacity: 0.72,
-            marginTop: 'clamp(4px, calc(6 / 1920 * 100vw), 8px)',
+            marginTop: 'clamp(2px, calc(6 / 1920 * 100vw), 8px)',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 6,
+            overflow: 'hidden',
+            minHeight: 0,
           }}
         >
           {member.bio}
         </p>
-        <div style={{ marginTop: 'auto', paddingTop: 'clamp(10px, calc(14 / 1920 * 100vw), 16px)' }}>
+        <div style={{ marginTop: 'auto', paddingTop: 'clamp(6px, calc(14 / 1920 * 100vw), 16px)' }}>
           <SocialIcons />
         </div>
       </motion.div>
