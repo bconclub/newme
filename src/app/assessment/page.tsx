@@ -38,11 +38,12 @@ const AssessmentApp = dynamic(
 /* Noise SVG — matches option1.scss .newme-noise recipe */
 const NOISE_URL = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")"
 
-/* Atmospheric blobs — match the home page's ".newme-ellipse-28" recipe:
-   the green wash sits BELOW the hero so the top of the viewport reads as
-   dark pine-teal while the middle/lower area lightens into moss green.
-   Positions are anchored from the bottom so the top of every assessment
-   screen stays dark regardless of viewport height. */
+/* Atmospheric layer — uses a CSS radial-gradient as the background of
+   a fixed full-viewport div. No mask edge, no DOM circle — the gradient
+   IS the alpha falloff, so there's no perceptible curved seam. The
+   ellipse is anchored at the bottom-center and fades out smoothly in
+   every direction, brightening the lower portion while the top of the
+   viewport stays as the underlying dark pine-teal. */
 const ATMOSPHERIC_CSS = `
 .assess-bg {
   position: fixed;
@@ -51,60 +52,58 @@ const ATMOSPHERIC_CSS = `
   z-index: 0;
   overflow: hidden;
 }
-.assess-blob, .assess-noise {
+.assess-glow {
   position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
+  inset: 0;
+  background:
+    /* Soft gold halo from the bottom-right corner */
+    radial-gradient(ellipse 60% 50% at 90% 100%,
+      rgba(254,242,114,0.16) 0%,
+      rgba(254,242,114,0.08) 30%,
+      rgba(254,242,114,0.02) 55%,
+      transparent 80%),
+    /* Primary green wash — anchored at the bottom, brightens the lower
+       half of the viewport with a smooth elliptical alpha falloff. */
+    radial-gradient(ellipse 130% 95% at 50% 115%,
+      rgba(98,150,117,0.55) 0%,
+      rgba(98,150,117,0.40) 18%,
+      rgba(98,150,117,0.26) 35%,
+      rgba(98,150,117,0.14) 52%,
+      rgba(98,150,117,0.06) 70%,
+      rgba(98,150,117,0.02) 85%,
+      transparent 100%);
 }
-/* Primary green wash — anchored to the bottom of the viewport so the
-   top half stays dark pine-teal. Center of the blob sits below the
-   viewport, only the upper edge bleeds into the lower 50–65% of the
-   screen. Mirrors home-page .newme-ellipse-28's effect. */
-.assess-blob-green-1 {
-  width: 200vh; height: 200vh;
-  bottom: -120vh;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg,#629675 0%,#013E37 100%);
-  filter: blur(clamp(120px,18vw,260px));
-  opacity: 0.55;
-  mask-image: radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.85) 60%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.2) 92%,transparent 100%);
-  -webkit-mask-image: radial-gradient(closest-side,black 0%,black 35%,rgba(0,0,0,.85) 60%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.2) 92%,transparent 100%);
-}
-.assess-noise-1 {
-  width: 200vh; height: 200vh;
-  bottom: -120vh;
-  left: 50%;
-  transform: translateX(-50%);
+.assess-noise {
+  position: absolute;
+  inset: 0;
   background-image: ${NOISE_URL};
   background-size: 220px 220px;
   mix-blend-mode: soft-light;
-  opacity: 0.40;
-  mask-image: radial-gradient(closest-side,black 0%,black 60%,rgba(0,0,0,.6) 80%,rgba(0,0,0,.25) 92%,transparent 100%);
-  -webkit-mask-image: radial-gradient(closest-side,black 0%,black 60%,rgba(0,0,0,.6) 80%,rgba(0,0,0,.25) 92%,transparent 100%);
+  opacity: 0.22;
+  /* Mask the noise so it only shows in the lit zone (matches the wash
+     glow above) — keeps the dark top free of grain too. */
+  -webkit-mask-image: radial-gradient(ellipse 140% 100% at 50% 115%, black 0%, rgba(0,0,0,0.6) 50%, transparent 90%);
+  mask-image: radial-gradient(ellipse 140% 100% at 50% 115%, black 0%, rgba(0,0,0,0.6) 50%, transparent 90%);
 }
-/* Subtle gold accent — bottom right, just bleeds upward with a soft halo */
-.assess-blob-gold {
-  width: 60vw; height: 60vw;
-  bottom: -30vw; right: -25vw;
-  background: #FEF272;
-  filter: blur(clamp(60px,10vw,180px));
-  opacity: 0.12;
-}
-/* Mobile — scale down + hide the gold accent for clarity */
+/* Mobile — slightly tighter wash so the brightening sits a bit higher
+   to compensate for the shorter viewport. */
 @media (max-width: 767px) {
-  .assess-blob-green-1 {
-    width: 280vh; height: 280vh;
-    bottom: -180vh;
-    opacity: 0.45;
+  .assess-glow {
+    background:
+      radial-gradient(ellipse 80% 40% at 90% 105%,
+        rgba(254,242,114,0.10) 0%,
+        rgba(254,242,114,0.04) 40%,
+        transparent 75%),
+      radial-gradient(ellipse 150% 85% at 50% 110%,
+        rgba(98,150,117,0.45) 0%,
+        rgba(98,150,117,0.30) 22%,
+        rgba(98,150,117,0.16) 42%,
+        rgba(98,150,117,0.06) 65%,
+        rgba(98,150,117,0.02) 82%,
+        transparent 100%);
   }
-  .assess-noise-1 {
-    width: 280vh; height: 280vh;
-    bottom: -180vh;
-    opacity: 0.30;
-  }
-  .assess-blob-gold {
-    display: none;
+  .assess-noise {
+    opacity: 0.16;
   }
 }
 `
@@ -116,9 +115,8 @@ export default function AssessmentPage() {
 
       {/* Atmospheric layer — fixed behind content */}
       <div className="assess-bg" aria-hidden>
-        <div className="assess-blob assess-blob-green-1" />
-        <div className="assess-noise assess-noise-1" />
-        <div className="assess-blob assess-blob-gold" />
+        <div className="assess-glow" />
+        <div className="assess-noise" />
       </div>
 
       {/* Assessment app */}
