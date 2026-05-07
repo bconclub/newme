@@ -215,16 +215,8 @@ export default function Pathways() {
                     fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
                   }}
                 >
-                  {/* Active tab progress bar — restarts on every label swap */}
-                  <motion.span
-                    key={`progress-${activeTab}`}
-                    aria-hidden
-                    className="absolute bottom-0 left-0 bg-[#629675]"
-                    initial={{ width: '0%' }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
-                    style={{ height: 3, borderRadius: '0 0 99px 99px' }}
-                  />
+                  {/* Progress indicator moved out of the pill — it now lives as
+                      a ring around the right (next) chevron, see below. */}
                   <span className="relative z-10 whitespace-nowrap">
                     {tabGroups[activeTab].tab}
                   </span>
@@ -248,20 +240,66 @@ export default function Pathways() {
                   <path d="M11.25 3.75 6 9l5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
                 </svg>
               </button>
-              <button
-                type="button"
-                aria-label="Next pathway group"
-                onClick={goNext}
-                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:bg-white/20 hover:border-white/55"
-                style={{
-                  width: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
-                  height: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-                  <path d="M6.75 3.75 12 9l-5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+              {/* Next button + circular timer ring.
+                  The ring is an SVG circle whose dashoffset animates from
+                  full to zero over TAB_MS, keyed on activeTab so it restarts
+                  cleanly when the tab changes (manually or via auto-advance).
+                  Geometry: r=20, circumference = 2π·20 ≈ 125.66. The svg is
+                  sized 48×48 around a 42px button, so the ring sits ~3px
+                  outside the button border. */}
+              <div className="relative inline-flex" style={{ width: 48, height: 48 }}>
+                <svg
+                  className="absolute inset-0 pointer-events-none"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 48 48"
+                  aria-hidden
+                >
+                  {/* Faint track behind the progress ring */}
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="22"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.18)"
+                    strokeWidth="1.5"
+                  />
+                  {/* Animated progress ring — moss-green stroke, dasharray
+                      animation, restarts on every activeTab change. Rotated
+                      -90° so the fill starts at 12 o'clock and sweeps clockwise. */}
+                  <motion.circle
+                    key={`ring-${activeTab}`}
+                    cx="24"
+                    cy="24"
+                    r="22"
+                    fill="none"
+                    stroke="#FEF272"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    pathLength={1}
+                    transform="rotate(-90 24 24)"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
+                  />
                 </svg>
-              </button>
+                <button
+                  type="button"
+                  aria-label="Next pathway group"
+                  onClick={goNext}
+                  className="absolute inline-flex items-center justify-center rounded-full bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:bg-white/20"
+                  style={{
+                    top: 3,
+                    left: 3,
+                    width: 42,
+                    height: 42,
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+                    <path d="M6.75 3.75 12 9l-5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
