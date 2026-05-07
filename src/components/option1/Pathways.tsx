@@ -172,58 +172,64 @@ export default function Pathways() {
             and clinically grounded.
           </p>
 
-          {/* Scrollable pathway tabs */}
+          {/* Pathway-group selector — only the ACTIVE tab is rendered (per
+              user request "show one button at a time"). Prev / next chevrons
+              cycle through the 3 groups. The pill animates a key-changed
+              transition when the active group changes so the label swap
+              feels deliberate rather than abrupt. */}
           <div
-            className="flex max-w-full items-center gap-2"
+            className="flex max-w-full items-center"
             style={{
               marginTop: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
               width: 'min(100%, 540px)',
+              gap: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
             }}
           >
             <div
               ref={tabsRef}
               role="tablist"
               aria-label="Pathway groups"
-              className="flex min-w-0 flex-1 gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="flex min-w-0 flex-1 items-center"
             >
-              {tabGroups.map((tab, index) => {
-                const active = index === activeTab
-                return (
-                  <button
-                    key={tab.tab}
-                    type="button"
-                    role="tab"
-                    aria-selected={active}
-                    aria-controls={`pathway-panel-${index}`}
-                    onClick={() => handleTabClick(index)}
-                    className="relative inline-flex shrink-0 items-center overflow-hidden rounded-full border font-[family-name:var(--font-bricolage)] transition-colors duration-200"
-                    style={{
-                      minHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
-                      paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                      paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                      borderColor: active ? 'rgba(255,255,255,0.60)' : 'rgba(255,255,255,0.25)',
-                      background: active ? 'rgba(255,255,255,0.13)' : 'rgba(255,255,255,0.06)',
-                      color: active ? '#FFFFFF' : 'rgba(255,255,255,0.72)',
-                      fontWeight: 500,
-                      fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
-                    }}
-                  >
-                    {/* Active tab progress */}
-                    {active && (
-                      <motion.span
-                        key={`progress-${activeTab}`}
-                        aria-hidden
-                        className="absolute bottom-0 left-0 bg-[#629675]"
-                        initial={{ width: '0%' }}
-                        animate={{ width: '100%' }}
-                        transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
-                        style={{ height: 3, borderRadius: '0 0 99px 99px' }}
-                      />
-                    )}
-                    <span className="relative z-10 whitespace-nowrap">{tab.tab}</span>
-                  </button>
-                )
-              })}
+              <AnimatePresence mode="wait">
+                <motion.button
+                  key={`tab-${activeTab}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={true}
+                  aria-controls={`pathway-panel-${activeTab}`}
+                  onClick={() => handleTabClick(activeTab)}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.28, ease }}
+                  className="relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border font-[family-name:var(--font-bricolage)]"
+                  style={{
+                    minHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
+                    paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                    borderColor: 'rgba(255,255,255,0.60)',
+                    background: 'rgba(255,255,255,0.13)',
+                    color: '#FFFFFF',
+                    fontWeight: 500,
+                    fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
+                  }}
+                >
+                  {/* Active tab progress bar — restarts on every label swap */}
+                  <motion.span
+                    key={`progress-${activeTab}`}
+                    aria-hidden
+                    className="absolute bottom-0 left-0 bg-[#629675]"
+                    initial={{ width: '0%' }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
+                    style={{ height: 3, borderRadius: '0 0 99px 99px' }}
+                  />
+                  <span className="relative z-10 whitespace-nowrap">
+                    {tabGroups[activeTab].tab}
+                  </span>
+                </motion.button>
+              </AnimatePresence>
             </div>
             {/* Prev / Next pair — manual navigation between pathway groups.
                 Each click jumps activeTab and resets the auto-advance timer. */}
