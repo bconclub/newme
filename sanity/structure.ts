@@ -3,11 +3,6 @@ import type { StructureBuilder } from "sanity/structure";
 /**
  * Custom Studio sidebar structure.
  *
- * Default `structureTool()` lists every document type in flat alphabetical
- * order. Here we group related items under category folders so editors can
- * find content faster and the sidebar reflects the v2 schema layout
- * (see docs/sanity-schemas.md).
- *
  * Order (top to bottom):
  *   • Content
  *     ├ Media          ← Media Mentions + Media Outlets together
@@ -17,6 +12,8 @@ import type { StructureBuilder } from "sanity/structure";
  *   • People
  *     ├ Authors
  *     └ Team Members
+ *   • Site
+ *     └ Redirects
  */
 export const customStructure = (S: StructureBuilder) =>
   S.list()
@@ -50,6 +47,20 @@ export const customStructure = (S: StructureBuilder) =>
             .items([
               S.documentTypeListItem("author").title("Authors"),
               S.documentTypeListItem("teamMember").title("Team Members"),
+            ])
+        ),
+
+      S.divider(),
+
+      // ── Site operations ─────────────────────────────────────────────
+      S.listItem()
+        .title("Site")
+        .icon(() => "⚙️")
+        .child(
+          S.list()
+            .title("Site")
+            .items([
+              S.documentTypeListItem("redirect").title("Redirects"),
             ])
         ),
     ]);

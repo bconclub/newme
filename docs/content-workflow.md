@@ -134,7 +134,36 @@ See [`seo-checklist.md`](./seo-checklist.md) for the full pre-publish checklist.
 
 ---
 
-## 8. Add an FAQ
+## 8. Add a Redirect
+
+When migrating from a previous website, or when content moves on this site, add a redirect so old URLs still land somewhere useful.
+
+**Site → Redirects → + Create new Redirect**:
+
+| Field | What to enter |
+|---|---|
+| **Old / source path** | The path on the previous site you want to redirect. Must start with `/`. Examples: `/old-blog/post-name`, `/services/legacy-page`, `/contact-us`. Don't include query strings. |
+| **New destination** | Where to send the user. Either a relative path on this site (e.g. `/blog/new-post`) or a full external URL (`https://newme.health/something`). |
+| **Permanent (301 / 308)** | **ON** for content that has moved for good (passes ~95% of SEO authority). **OFF** only for short-term temporary redirects. Default ON. |
+| **Enabled** | Default ON. Toggle OFF to disable a redirect without deleting it. |
+| **Internal note** | Why this redirect exists. Examples: "Migrated from old WordPress site", "Renamed slug from launch-2024 to gut-microbiome-explained". |
+
+Click **Publish**. The redirect takes effect within ~60 seconds (the middleware re-fetches the redirect table from Sanity at most once a minute per edge node).
+
+### Important rules
+
+- **Source must be a path on the new site's domain.** e.g. if your old site was `oldsite.com/foo`, you can only redirect `newme.health/foo` to wherever you want. The DNS for `oldsite.com` is a separate setup.
+- **Don't redirect `/`.** The schema blocks this — redirecting the root creates infinite loops.
+- **Don't redirect to a page that itself redirects.** Resolve to the final destination directly.
+- **301 vs 302** — when in doubt, use **Permanent** (308 / 301). Use Temporary only for things like a "site under maintenance" page.
+
+### Bulk import (developer-assisted)
+
+If you have hundreds of redirects from a CSV migration, export a list with columns `source`, `destination`, `permanent` and ask the dev team to bulk-import them via `sanity dataset import`.
+
+---
+
+## 9. Add an FAQ
 
 **FAQ** → **+ Create new FAQ**:
 | Field | What to enter |
@@ -146,7 +175,7 @@ See [`seo-checklist.md`](./seo-checklist.md) for the full pre-publish checklist.
 
 ---
 
-## 9. Publish, draft, and unpublish
+## 10. Publish, draft, and unpublish
 
 - **Publish** — saves and makes the document live. The site picks up the change within 60 seconds.
 - **Save as draft** — stores progress without exposing it on the live site (Sanity creates a `drafts.{id}` shadow document).
@@ -154,7 +183,7 @@ See [`seo-checklist.md`](./seo-checklist.md) for the full pre-publish checklist.
 
 ---
 
-## 10. Previewing
+## 11. Previewing
 
 > **Visual editing / live preview is not yet wired up.** For now, the workflow is:
 > 1. Save and Publish in Studio.
@@ -165,7 +194,7 @@ See [`seo-checklist.md`](./seo-checklist.md) for the full pre-publish checklist.
 
 ---
 
-## 11. Common pitfalls
+## 12. Common pitfalls
 
 | Don't | Why |
 |---|---|

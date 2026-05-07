@@ -5,6 +5,7 @@ import faq from "./faq";
 import mediaMention from "./mediaMention";
 import mediaOutlet from "./mediaOutlet";
 import post from "./post";
+import redirect from "./redirect";
 import seo from "./seo";
 import teamMember from "./teamMember";
 import testimonial from "./testimonial";
@@ -29,4 +30,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   testimonial,
   teamMember,
   faq,
+
+  // Site operations
+  redirect,
 ];

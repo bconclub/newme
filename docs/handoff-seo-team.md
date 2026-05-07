@@ -32,6 +32,7 @@ Studio: `https://newme.health/studio`
 | **Testimonial** | Quote shown on the homepage testimonials section | Homepage | quote · person name · person role · person avatar · order |
 | **Team Member** | Individual care-team profile | Future `/care-team/[slug]` | name · slug · role · photo · bio (Portable Text) · order |
 | **FAQ** | Q&A item shown in FAQ blocks | Site-wide FAQ blocks | question · answer (Portable Text) · category · order |
+| **Redirect** | URL redirect (301 / 302) — for migrating old URLs | Next.js middleware on every request | source · destination · permanent · enabled · note |
 
 Homepage hero and landing copy live in code, not in the CMS.
 
@@ -139,7 +140,7 @@ See [`url-structure.md`](./url-structure.md) for the full canonical URL strategy
 
 ## 9. Recommendations
 
-- **301 redirects** — when content moves (e.g. `/old-page` → `/new-page`), file a request; redirects live in `next.config.ts`.
+- **301 redirects** — when content moves (e.g. `/old-page` → `/new-page`), the SEO team adds a redirect document under **Site → Redirects** in Studio. Lives within ~60 s; no developer involvement needed.
 - **Image alt text** — never leave it blank. Schemas now require it for every cover, OG image, and outlet logo.
 - **Slugs** — keep them stable. Renaming a published Blog Post slug breaks inbound links and resets accumulated SEO.
 - **Canonical override** — only use it when re-publishing existing third-party content; leave blank otherwise so the default canonical (`/blog/{slug}`) is used.

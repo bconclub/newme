@@ -14,6 +14,7 @@ Schema files live at: `sanity/schemas/<name>.ts`
 | `testimonial` | `testimonial.ts` | Document | Standalone |
 | `teamMember` | `teamMember.ts` | Document | Standalone |
 | `faq` | `faq.ts` | Document | Standalone |
+| `redirect` | `redirect.ts` | Document | Standalone |
 
 ---
 
@@ -160,4 +161,25 @@ These fields appear flat inside the SEO fieldset — no extra clicks. Each falls
 | `answer` | Portable Text | ✓ | The answer. Supports paragraphs, links, lists. |
 | `category` | string (dropdown: general, pricing, care, privacy) | optional | Used to group FAQs into sections. |
 | `order` | number | optional | Sort order within a category. |
+
+---
+
+## `redirect`
+
+CMS-driven URL redirect. Used by the Next.js middleware to issue 308 (permanent) or 307 (temporary) redirects on incoming requests. Live within ~60 s of publishing — no deploy required.
+
+| Field | Type | Required? | What it does |
+|---|---|---|---|
+| `source` | string | ✓ | Old / source path. Must start with `/`. Strip query strings — match the path only. e.g. `/old-blog/post-name`, `/services/legacy-page`. |
+| `destination` | string | ✓ | Where the request should go. Either a relative path on this site (`/blog/new-post`) or a full external URL (`https://example.com/page`). |
+| `permanent` | boolean (default `true`) | ✓ | **ON** → 308 Permanent Redirect — passes ~95% of SEO authority. Use when the page has moved for good. **OFF** → 307 Temporary Redirect — does NOT transfer SEO authority. Use only for short-term redirects. |
+| `enabled` | boolean (default `true`) | ✓ | Quick toggle. Disabled redirects are ignored without losing the record. |
+| `note` | text | optional | Internal note about why this redirect exists. |
+
+### Behaviour
+
+- Query strings on the incoming request are **preserved** and appended to the destination (unless the destination already has a query string).
+- Trailing slashes are normalised — `/foo` and `/foo/` both match a redirect with `source: "/foo"`.
+- The redirect table is fetched once per ~60 s per edge node from Sanity's CDN. Newly published redirects take effect within that window.
+- Self-redirects (where `destination === source`) are blocked at the schema level and ignored at runtime as a defensive backstop.
 

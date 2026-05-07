@@ -102,13 +102,13 @@ If you see external links pointing to the trailing-slash form, file a redirect r
 
 ## Redirects
 
-Redirects live in `next.config.ts` under `async redirects()`. To add one:
+Redirects are managed by the SEO team **directly in Sanity Studio** (Site → Redirects). The Next.js middleware (`src/middleware.ts`) fetches the active redirect table from Sanity on every request, with a 60 s cache.
 
-1. File a request with the dev team — include the **old URL**, **new URL**, and whether it's permanent (`permanent: true`, 308) or temporary (`permanent: false`, 307).
-2. Test on a preview deploy.
-3. Verify in production after deploy.
+- 308 (Permanent) — content has moved for good. Passes ~95% of SEO authority. Default.
+- 307 (Temporary) — short-term redirect. Does NOT transfer SEO authority.
+- Use redirects when content moves, not when it's deleted (delete = 404 or `noindex`).
 
-301/308 redirects pass roughly 95% of SEO authority — use them when content moves, not when content is deleted (delete = 404 or `noindex`).
+See `docs/content-workflow.md` § 8 for the editor flow.
 
 ---
 
