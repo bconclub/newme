@@ -1,4 +1,26 @@
-const API_BASE = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_ASSESSMENT_API_URL) || "http://localhost:4000";
+/**
+ * Base URL for the NewME assessment / CRM backend.
+ *
+ * Set `NEXT_PUBLIC_ASSESSMENT_API_URL` in Vercel (Production + Preview)
+ * to the deployed backend, e.g. `https://api.drpalsnewme.com`.
+ *
+ * If the env var is missing we fall back to localhost so dev still works,
+ * but emit a one-time browser console warning so the issue surfaces fast
+ * (otherwise every assessment fetch silently 404s on production).
+ *
+ * See `docs/env-vars.md` for the full list of endpoints the backend
+ * needs to expose at this base URL.
+ */
+const ENV_API_URL = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_ASSESSMENT_API_URL) || "";
+const API_BASE = ENV_API_URL || "http://localhost:4000";
+
+if (typeof window !== "undefined" && !ENV_API_URL) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    "[NewME Assessment] NEXT_PUBLIC_ASSESSMENT_API_URL is not set — falling back to http://localhost:4000. " +
+    "Set this env var in Vercel for production / preview deploys."
+  );
+}
 
 export const ENDPOINTS = {
   CRM_LEAD:              `${API_BASE}/api/crm/lead`,
