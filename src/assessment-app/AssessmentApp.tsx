@@ -118,15 +118,15 @@ export default function App() {
   const q = qIdx >= 0 && qIdx < TOTAL ? ALL_Q[qIdx] : null;
   const pct = step === 0 ? 4 : Math.round((step / (TOTAL + 1)) * 100);
 
-  /** Parse DOB in either MM/DD/YYYY (text input) or YYYY-MM-DD (legacy) */
+  /** Parse DOB in either DD/MM/YYYY (text input) or YYYY-MM-DD (legacy) */
   function calcAge(dob: string) {
     if (!dob) return null;
     let y: number, m: number, d: number;
     if (dob.includes("/")) {
       const parts = dob.split("/");
       if (parts.length !== 3) return null;
-      m = parseInt(parts[0], 10) - 1;
-      d = parseInt(parts[1], 10);
+      d = parseInt(parts[0], 10);
+      m = parseInt(parts[1], 10) - 1;
       y = parseInt(parts[2], 10);
     } else {
       y = parseInt(dob.slice(0, 4), 10);

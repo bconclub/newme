@@ -158,7 +158,7 @@ export function QuizPage({
                   type="text"
                   inputMode="numeric"
                   autoComplete="bday"
-                  placeholder="MM/DD/YYYY"
+                  placeholder="DD/MM/YYYY"
                   value={profile.dob || ""}
                   onChange={e => handleDOB(e.target.value)}
                   className="inp"
