@@ -50,3 +50,7 @@ figma-pull.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local scratch — Figma screenshot downloads
+.figma-temp/
+.codex-temp-index-commit
