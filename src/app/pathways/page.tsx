@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
+import EyebrowPill from '@/components/option1/EyebrowPill'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -69,6 +70,40 @@ export default function PathwaysPage() {
             />
             {/* Dark overlay — left-half gradient so white text reads cleanly */}
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.88) 0%, rgba(1,62,55,0.55) 48%, transparent 75%)' }} />
+
+            {/* Grain texture — soft-light blended noise that rides on top of the
+                hero photo so the page feels continuous with the rest of the
+                site (not a clean photo floating on a textured page). Same
+                fractalNoise recipe used on the home / option1 hero. */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                pointerEvents: 'none',
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+                backgroundSize: '220px 220px',
+                mixBlendMode: 'soft-light',
+                opacity: 0.45,
+              }}
+            />
+
+            {/* Atmospheric green wash — bleeds the page-bg blob over the photo
+                so the hero feels embedded in the page, not a discrete card
+                floating on it. Masked to fade out before the right edge so
+                the doctor/patient stay clear. */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                pointerEvents: 'none',
+                background:
+                  'radial-gradient(ellipse 90% 130% at 0% 50%, rgba(98,150,117,0.45) 0%, rgba(98,150,117,0.22) 35%, rgba(98,150,117,0.08) 60%, transparent 85%)',
+                mixBlendMode: 'normal',
+              }}
+            />
 
             {/* Text + CTA overlaid on hero image */}
             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(20px,7.29vw,140px)' }}>
@@ -159,21 +194,12 @@ export default function PathwaysPage() {
       {/* ─── INTRODUCTION SECTION ────────────────────────────────────── */}
       <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(60px,5.2vw,100px) clamp(20px,10.4vw,200px)' }}>
 
-        {/* Eyebrow pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.4 }}
-          style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(16px,1.25vw,24px)' }}
-        >
-          <span
-            className="font-[family-name:var(--font-bricolage)]"
-            style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 9999, backdropFilter: 'blur(2px)', padding: '0 clamp(16px,1.04vw,20px)', height: 48, fontSize: 'clamp(13px,1.25vw,24px)', fontWeight: 300, color: '#fff', letterSpacing: '0.01em' }}
-          >
-            Introduction To The Pathways
-          </span>
-        </motion.div>
+        {/* Eyebrow pill — uses the shared site EyebrowPill component so
+            the entrance animation, gradient border with bottom-right fade,
+            and frosted-glass treatment match every other section. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(16px,1.25vw,24px)' }}>
+          <EyebrowPill>Introduction To The Pathways</EyebrowPill>
+        </div>
 
         {/* Heading */}
         <motion.h2
@@ -289,7 +315,9 @@ export default function PathwaysPage() {
                 <Link href={t.href} style={{ textDecoration: 'none', display: 'block' }}>
                   <div
                     style={{
-                      borderRadius: 'clamp(14px,1.25vw,24px)',
+                      // Bumped from clamp(14,1.25vw,24) → clamp(20,2vw,40) per
+                      // request — softer, more pill-like cards.
+                      borderRadius: 'clamp(20px,2vw,40px)',
                       height: 'clamp(80px,6.25vw,120px)',
                       display: 'flex',
                       alignItems: 'center',
@@ -336,26 +364,21 @@ export default function PathwaysPage() {
                   viewport={{ once: true, amount: 0.4 }}
                   transition={{ duration: 0.4, ease: EASE, delay: ci * 0.06 + pi * 0.05 }}
                 >
-                  <Link href={pill.href} style={{ textDecoration: 'none' }}>
-                    <span
-                      className="font-[family-name:var(--font-bricolage)]"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: '1px solid rgba(255,255,255,0.45)',
-                        borderRadius: 9999,
-                        height: 'clamp(38px,3.33vw,64px)',
-                        padding: '0 clamp(14px,1.25vw,24px)',
-                        fontSize: 'clamp(11px,0.83vw,16px)',
-                        fontWeight: 400,
-                        color: '#fff',
-                        whiteSpace: 'nowrap',
-                        transition: 'all 0.2s',
-                      }}
-                    >
-                      {pill.label}
-                    </span>
+                  <Link
+                    href={pill.href}
+                    className="font-[family-name:var(--font-bricolage)] inline-flex items-center justify-center text-white hover:text-[#FEF272] hover:border-[#FEF272] transition-colors duration-200"
+                    style={{
+                      textDecoration: 'none',
+                      border: '1px solid rgba(255,255,255,0.45)',
+                      borderRadius: 9999,
+                      height: 'clamp(38px,3.33vw,64px)',
+                      padding: '0 clamp(14px,1.25vw,24px)',
+                      fontSize: 'clamp(11px,0.83vw,16px)',
+                      fontWeight: 400,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {pill.label}
                   </Link>
                 </motion.div>
               ))}

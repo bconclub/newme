@@ -288,22 +288,28 @@ html:has(main.newme-page) .newme-header a {
   color: #629675 !important;
 }
 
-html:has(main.newme-page) .newme-footer {
-  /* Figma 58:1492 — Rectangle 53 footer bg:
-     `bg-gradient-to-r from-[#173b39] to-[#0c2e2a]`
-     i.e. HORIZONTAL gradient left → right, from #173b39 to #0c2e2a.
-     (Was a vertical #021f1d → #011311 which read too dark and the wrong
-     direction.) */
+/* ============================================================
+   Footer — applies on EVERY page, not scoped to a specific
+   <main> class. Previously this was scoped to `main.newme-page`
+   only, so on /pathways (which uses `main.pathway-page`) and
+   /virtual-clinic (`main.vc-page`) the gradient bg + gold heading
+   colors were missing. The component itself uses `.newme-footer`
+   regardless of which page it's on, so we just drop the scope.
+
+   Figma 58:1492 — Rectangle 53 footer bg:
+   `bg-gradient-to-r from-[#173b39] to-[#0c2e2a]` — horizontal
+   gradient left → right. */
+.newme-footer {
   background: linear-gradient(90deg, #173b39 0%, #0c2e2a 100%);
   border-top: 1px solid rgba(254, 242, 114, 0.18);
 }
 
-html:has(main.newme-page) .newme-footer h4 {
+.newme-footer h4 {
   color: $light-gold;
   font-family: var(--font-bricolage), sans-serif;
 }
 
-html:has(main.newme-page) .newme-footer a:hover {
+.newme-footer a:hover {
   color: $light-gold;
 }
 
