@@ -1,55 +1,45 @@
 import { groq } from "next-sanity";
 
-// Media articles ----------------------------------------------------------
+// ── Media mentions ────────────────────────────────────────────────────────
+// Press features / brand mentions. Each card opens an external URL.
+// No in-site detail page — only a listing query is needed.
 
-export const articleSlugsQuery = groq`
-  *[_type == "article" && defined(slug.current)][].slug.current
-`;
-
-export const articlesQuery = groq`
-  *[_type == "article" && defined(slug.current)] | order(publishedAt desc) {
+export const mediaMentionsQuery = groq`
+  *[_type == "mediaMention"] | order(publishedAt desc) {
     _id,
     title,
-    "slug": slug.current,
-    summary,
-    subtitle,
+    excerpt,
     publishedAt,
-    city,
-    heroImage,
-    "author": author->{ name, role, avatar }
+    externalUrl,
+    coverImage,
+    "outlet": outlet->{
+      _id,
+      name,
+      "slug": slug.current,
+      logo,
+      website
+    }
   }
 `;
 
-export const articleBySlugQuery = groq`
-  *[_type == "article" && slug.current == $slug][0] {
-    _id,
-    title,
-    "slug": slug.current,
-    summary,
-    subtitle,
-    publishedAt,
-    city,
-    heroImage,
-    intro,
-    sectionTitle,
-    sectionLead,
-    habits,
-    disclaimer,
-    tags,
-    "author": author->{ name, role, avatar, bio }
-  }
-`;
+// ── Blog posts ────────────────────────────────────────────────────────────
+// Long-form authored content. Full SEO + structured editorial fields.
 
-// Blog posts --------------------------------------------------------------
+export const postSlugsQuery = groq`
+  *[_type == "post" && defined(slug.current)][].slug.current
+`;
 
 export const postsQuery = groq`
   *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
+    subtitle,
     excerpt,
     publishedAt,
+    city,
     coverImage,
+    tags,
     "author": author->{ name, role, avatar }
   }
 `;
@@ -59,14 +49,33 @@ export const postBySlugQuery = groq`
     _id,
     title,
     "slug": slug.current,
+    subtitle,
     excerpt,
     publishedAt,
+    city,
     coverImage,
+    intro,
+    sectionTitle,
+    sectionLead,
+    habits,
     body,
+    disclaimer,
     tags,
+    seo {
+      metaTitle,
+      metaDescription,
+      canonicalUrl,
+      ogTitle,
+      ogDescription,
+      ogImage,
+      noIndex,
+      keywords
+    },
     "author": author->{ name, role, avatar, bio }
   }
 `;
+
+// ── Testimonials / Team / FAQs ────────────────────────────────────────────
 
 export const testimonialsQuery = groq`
   *[_type == "testimonial"] | order(order asc) {
@@ -89,32 +98,22 @@ export const teamQuery = groq`
   }
 `;
 
+export const teamMemberBySlugQuery = groq`
+  *[_type == "teamMember" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    role,
+    photo,
+    bio
+  }
+`;
+
 export const faqsQuery = groq`
   *[_type == "faq"] | order(order asc) {
     _id,
     question,
     answer,
     category
-  }
-`;
-
-export const heroQuery = groq`
-  *[_type == "hero"][0] {
-    eyebrow,
-    headline,
-    subhead,
-    ctaLabel,
-    ctaHref,
-    backgroundImage
-  }
-`;
-
-export const landingSectionQuery = groq`
-  *[_type == "landingSection" && sectionKey == $key][0] {
-    sectionKey,
-    eyebrow,
-    heading,
-    body,
-    items
   }
 `;

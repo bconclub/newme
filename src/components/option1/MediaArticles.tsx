@@ -1,125 +1,150 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
+import { urlFor } from '@/lib/sanity/image'
+import type { MediaMention } from '@/app/media/page'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-type Article = {
-  slug: string
-  image: string
+// ── Local fallback (used when Sanity is empty / unreachable so the page
+//    still has something to show during dev). Each item shape mirrors
+//    `MediaMention` so the same render path can handle either source. ──
+type LocalMention = {
+  _id: string
   title: string
-  summary: string
-  authorName: string
-  avatar: string
-  city: string
-  date: string
+  excerpt: string
+  publishedAt: string
+  externalUrl: string
+  coverFallback: string
+  outletName: string
+  outletLogoFallback: string
 }
 
-// Article copy + image mapping derived from Figma 100:980. The 6 placeholder
-// images come from /public/media — the user's drop-in source. Cycle the 3
-// supplied images across the 6 cards until the real per-article art lands.
-const IMG = {
-  weightLoss: '/media/Weight Loss.webp',
-  media03: '/media/Media 03.webp',
-  virtualClinic: '/media/Virtual CLinic.webp',
-}
-
-const AVATAR = {
-  lifestyle: '/media/avatars/lifestyle-desk.png',
-  debapriya: '/media/avatars/debapriya.png',
-}
-
-const articles: Article[] = [
+const FALLBACK: LocalMention[] = [
   {
-    slug: 'gastroenterologist-key-mistake-weight-loss',
-    image: IMG.weightLoss,
+    _id: 'fallback-1',
     title:
-      'Make sure you don’t repeat it’: Gastroenterologist reveals key mistake made during weight loss journey',
-    summary: 'Learn how to optimise your metabolism and avoid fitness...',
-    authorName: 'Lifestyle desk',
-    avatar: AVATAR.lifestyle,
-    city: 'Bangalore,',
-    date: 'Apr 11, 2026 05:02 PM',
+      "'Make sure you don't repeat it': Gastroenterologist reveals key mistake made during weight-loss journey",
+    excerpt: 'Learn how to optimise your metabolism and avoid fitness traps.',
+    publishedAt: '2026-04-11',
+    externalUrl: 'https://www.hindustantimes.com/lifestyle',
+    coverFallback: '/media/Weight Loss.webp',
+    outletName: 'Hindustan Times',
+    outletLogoFallback: '/media/avatars/lifestyle-desk.png',
   },
   {
-    slug: 'dr-pal-stress-management-habits',
-    image: IMG.media03,
+    _id: 'fallback-2',
     title:
-      'Stop blaming your boss: Dr. Pal’s 5 stress management habits for working professionals to reclaim mental peace',
-    summary: 'We’ve all been there: It’s 3:00 PM, you’ve got 14 tabs open...',
-    authorName: 'Lifestyle desk',
-    avatar: AVATAR.lifestyle,
-    city: 'Bangalore,',
-    date: 'Apr 11, 2026 05:02 PM',
+      "Stop blaming your boss: Dr. Pal's 5 stress-management habits for working professionals",
+    excerpt: "We've all been there: it's 3:00 PM and you've got 14 tabs open.",
+    publishedAt: '2026-04-11',
+    externalUrl: 'https://www.hindustantimes.com/lifestyle',
+    coverFallback: '/media/Media 03.webp',
+    outletName: 'Hindustan Times',
+    outletLogoFallback: '/media/avatars/lifestyle-desk.png',
   },
   {
-    slug: 'gastroenterologist-warns-aging-gut',
-    image: IMG.virtualClinic,
+    _id: 'fallback-3',
     title:
-      'Gastroenterologist warns against common habit that ages the gut, and one simple solution for the problem',
-    summary: 'Sitting right after eating causes sugar spikes, sluggish...',
-    authorName: 'Debapriya Bhattacharya',
-    avatar: AVATAR.debapriya,
-    city: 'Bangalore,',
-    date: 'Dec 19, 2025 01:11 pm',
-  },
-  {
-    slug: 'gastroenterologist-sleep-not-optional',
-    image: IMG.weightLoss,
-    title:
-      'Gastroenterologist explains why sleep is not optional: ‘It is an active phase for…’',
-    summary: 'Gastroenterologist Dr Manickam explains the importance....',
-    authorName: 'Debapriya Bhattacharya',
-    avatar: AVATAR.debapriya,
-    city: 'Bangalore,',
-    date: 'Jan 11, 2026 04:24',
-  },
-  {
-    slug: 'gastroenterologist-7-daily-habits-block-weight-loss',
-    image: IMG.media03,
-    title:
-      'Gastroenterologist reveals 7 daily habits that block weight loss, explains how eating less is a bad strategy',
-    summary: 'According to Dr Manickam, both eating less and snacking...',
-    authorName: 'Debapriya Bhattacharya',
-    avatar: AVATAR.debapriya,
-    city: 'Bangalore,',
-    date: 'Dec 20, 2025 08:17',
-  },
-  {
-    slug: 'gastroenterologist-classic-breakfasts-harm-gut',
-    image: IMG.virtualClinic,
-    title:
-      'Gastroenterologist reveals 5 classic breakfasts that secretly harm the gut: Bread and butter, instant noodles, and more',
-    summary: 'Sitting right after eating causes sugar spikes, sluggish...',
-    authorName: 'Debapriya Bhattacharya',
-    avatar: AVATAR.debapriya,
-    city: 'Bangalore,',
-    date: 'Mar 15, 2026 05:22 pm',
+      'Gastroenterologist warns against common habit that ages the gut, and one simple solution',
+    excerpt: 'Sitting right after eating causes sugar spikes, sluggish digestion.',
+    publishedAt: '2025-12-19',
+    externalUrl: 'https://www.hindustantimes.com/lifestyle',
+    coverFallback: '/media/Virtual CLinic.webp',
+    outletName: 'Hindustan Times',
+    outletLogoFallback: '/media/avatars/debapriya.png',
   },
 ]
 
+const PER_PAGE = 6
+
+type Card = {
+  key: string
+  title: string
+  excerpt?: string
+  publishedAt: string
+  externalUrl: string
+  cover: string
+  coverAlt: string
+  outletName: string
+  outletLogo?: string
+  outletLogoAlt: string
+}
+
+function formatDate(iso: string) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
+}
+
 /**
- * Media page — "NewMe In The Media" section + 3×2 article card grid + pagination.
- * Figma node 100:980. Card spec from 100:3323+. All artboard-relative clamp().
+ * Map either a Sanity `MediaMention` or a `LocalMention` fallback into
+ * a single `Card` shape that the JSX below renders.
  */
-export default function MediaArticles() {
-  const [page, setPage] = useState(2) // Figma shows page 2 active
+function toCard(m: MediaMention | LocalMention): Card {
+  // LocalMention has a discriminator field
+  if ('coverFallback' in m) {
+    return {
+      key: m._id,
+      title: m.title,
+      excerpt: m.excerpt,
+      publishedAt: m.publishedAt,
+      externalUrl: m.externalUrl,
+      cover: m.coverFallback,
+      coverAlt: m.title,
+      outletName: m.outletName,
+      outletLogo: m.outletLogoFallback,
+      outletLogoAlt: m.outletName,
+    }
+  }
+  const cover = m.coverImage ? urlFor(m.coverImage).width(900).height(506).fit('crop').url() : ''
+  const logo = m.outlet?.logo ? urlFor(m.outlet.logo).width(140).height(140).fit('max').url() : undefined
+  return {
+    key: m._id,
+    title: m.title,
+    excerpt: m.excerpt,
+    publishedAt: m.publishedAt,
+    externalUrl: m.externalUrl,
+    cover,
+    coverAlt: (m.coverImage as { alt?: string } | undefined)?.alt ?? m.title,
+    outletName: m.outlet?.name ?? '',
+    outletLogo: logo,
+    outletLogoAlt: (m.outlet?.logo as { alt?: string } | undefined)?.alt ?? m.outlet?.name ?? '',
+  }
+}
+
+/**
+ * Media page — "NewMe In The Media" section.
+ * Grid of cards; each card opens the publication's article URL in a new tab.
+ * Data comes from Sanity (`mediaMention[]`); falls back to a small local
+ * sample when Sanity is empty / unreachable.
+ */
+export default function MediaArticles({ mentions = [] }: { mentions?: MediaMention[] }) {
+  const cards = useMemo<Card[]>(() => {
+    const source: Array<MediaMention | LocalMention> = mentions.length > 0 ? mentions : FALLBACK
+    return source.map(toCard)
+  }, [mentions])
+
+  const totalPages = Math.max(1, Math.ceil(cards.length / PER_PAGE))
+  const [page, setPage] = useState(1)
+
+  const visible = useMemo(
+    () => cards.slice((page - 1) * PER_PAGE, page * PER_PAGE),
+    [cards, page]
+  )
 
   return (
     <section
       className="relative"
       style={{
-        // Figma: hero card bottom y=846, heading top y=966 → 120px gap
         paddingTop: 'clamp(64px, calc(120 / 1920 * 100vw), 120px)',
-        // Bottom space before the footer band starts (y=2728)
         paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
-      {/* Intro — 100:3322 heading + 100:3321 body. Centered on artboard. */}
       <div className="mx-auto text-center" style={{ maxWidth: 1186 }}>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
@@ -144,7 +169,6 @@ export default function MediaArticles() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="text-white font-[family-name:var(--font-urbanist)] mx-auto"
           style={{
-            // Figma 100:3321 — Urbanist Medium 28/34 white center, width 1020
             fontWeight: 500,
             fontSize: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
             lineHeight: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
@@ -153,72 +177,58 @@ export default function MediaArticles() {
             marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          Our work has been featured across a range of publications. Each
-          mention captures how we use structure care to approach long-term
-          health and well-being.
+          Our work has been featured across a range of publications. Each mention captures how we use structured care to approach long-term health and well-being.
         </motion.p>
       </div>
 
-      {/* Card grid — 3×2, gap 20px, total width 1800 (60+587+20+587+20+587-... = 1800).
-          Card 587×637, white rounded-[40px]. */}
+      {/* Card grid — each card is a single anchor that opens the
+          publication's article URL in a new tab. */}
       <div
         className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
         style={{
           maxWidth: 1800,
-          // Figma: intro body bottom (y=1130) → first card top y=1210 = 80px
           marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
           gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
         }}
       >
-        {articles.map((a, i) => (
-          <motion.article
-            key={a.slug}
+        {visible.map((card, i) => (
+          <motion.a
+            key={card.key}
+            href={card.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Read "${card.title}" on ${card.outletName} (opens in a new tab)`}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.55, delay: (i % 3) * 0.08, ease: EASE }}
-            className="group relative bg-white overflow-hidden flex flex-col"
+            className="group relative bg-white overflow-hidden flex flex-col no-underline"
             style={{
-              // Card 587×637, radius 40
               borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
               padding: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
               minHeight: 'clamp(420px, calc(637 / 1920 * 100vw), 637px)',
             }}
           >
-            {/* Stretched link — covers the entire card, accessible label,
-                doesn't trap text selection thanks to z-index 10 + flow content
-                kept above at z-index 2 (this overlays nothing interactive). */}
-            <Link
-              href={`/media/${a.slug}`}
-              aria-label={a.title}
-              className="absolute inset-0 z-10"
-            />
-
-            {/* Default image — top portion of card, 571×320 inside 8px padding.
-                Stays in normal flow so it pushes the text block to its
-                resting position. On hover the FILL layer below crossfades in
-                over the entire card; the text block does NOT move — only its
-                color transitions and the scrim provides legibility. */}
+            {/* Cover image */}
             <div
               aria-hidden
               className="relative overflow-hidden bg-cover bg-center w-full"
               style={{
                 borderRadius: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
                 aspectRatio: '571 / 320',
-                backgroundImage: `url('${a.image}')`,
+                backgroundImage: card.cover ? `url('${card.cover}')` : undefined,
+                backgroundColor: card.cover ? undefined : '#0a4a45',
               }}
             />
 
-            {/* Fill layer — absolute, full card area inside padding. Image
-                + bottom scrim fade in together on hover. Sits BEHIND the
-                text (lower z-index) so the text overlays it. */}
+            {/* Hover fill — same image with a dark scrim */}
             <div
               aria-hidden
               className="absolute pointer-events-none opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
               style={{
                 inset: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
                 borderRadius: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
-                backgroundImage: `url('${a.image}')`,
+                backgroundImage: card.cover ? `url('${card.cover}')` : undefined,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 zIndex: 1,
@@ -233,10 +243,7 @@ export default function MediaArticles() {
               />
             </div>
 
-            {/* Text block — single instance, in normal flow below the
-                default image. Position never changes. Only the colors
-                transition on group-hover so the same text reads on the
-                white default and the dark hover image. */}
+            {/* Text block */}
             <div
               className="relative flex flex-col flex-1"
               style={{
@@ -247,7 +254,6 @@ export default function MediaArticles() {
                 paddingBottom: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
               }}
             >
-              {/* Title — #013E37 → white on hover */}
               <h3
                 className="font-[family-name:var(--font-bricolage)] text-[#013E37] transition-colors duration-500 ease-out group-hover:text-white"
                 style={{
@@ -261,26 +267,27 @@ export default function MediaArticles() {
                   overflow: 'hidden',
                 }}
               >
-                {a.title}
+                {card.title}
               </h3>
 
-              {/* Summary — #444 → white/85 on hover */}
-              <p
-                className="font-[family-name:var(--font-urbanist)] text-[#444] transition-colors duration-500 ease-out group-hover:text-white/85"
-                style={{
-                  fontWeight: 400,
-                  fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  lineHeight: 'clamp(18px, calc(24 / 1920 * 100vw), 24px)',
-                  marginTop: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {a.summary}
-              </p>
+              {card.excerpt && (
+                <p
+                  className="font-[family-name:var(--font-urbanist)] text-[#444] transition-colors duration-500 ease-out group-hover:text-white/85"
+                  style={{
+                    fontWeight: 400,
+                    fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                    lineHeight: 'clamp(18px, calc(24 / 1920 * 100vw), 24px)',
+                    marginTop: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {card.excerpt}
+                </p>
+              )}
 
-              {/* Author block — pushed to bottom; avatar 48 + 12 gap + name/date */}
+              {/* Outlet block — logo + name + date, pinned to bottom */}
               <div
                 className="flex items-center mt-auto"
                 style={{
@@ -288,101 +295,97 @@ export default function MediaArticles() {
                   gap: 'clamp(10px, calc(12 / 1920 * 100vw), 12px)',
                 }}
               >
-                <div
-                  className="rounded-full overflow-hidden bg-cover bg-center shrink-0 ring-0 ring-white/30 transition-[box-shadow] duration-500 ease-out group-hover:ring-2"
-                  style={{
-                    width: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
-                    height: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
-                    backgroundImage: `url('${a.avatar}')`,
-                  }}
-                  aria-hidden
-                />
+                {card.outletLogo && (
+                  <div
+                    className="rounded-full overflow-hidden bg-cover bg-center shrink-0 ring-0 ring-white/30 transition-[box-shadow] duration-500 ease-out group-hover:ring-2"
+                    style={{
+                      width: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
+                      height: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
+                      backgroundImage: `url('${card.outletLogo}')`,
+                    }}
+                    role="img"
+                    aria-label={card.outletLogoAlt}
+                  />
+                )}
                 <div className="flex flex-col min-w-0">
-                  {/* Name — black → white on hover */}
                   <span
                     className="font-[family-name:var(--font-bricolage)] text-black transition-colors duration-500 ease-out group-hover:text-white truncate"
                     style={{
-                      fontWeight: 400,
+                      fontWeight: 500,
                       fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
                       lineHeight: 1,
                     }}
                   >
-                    {a.authorName}
+                    {card.outletName}
                   </span>
-                  {/* Date — city black + date #333; both → white/80 on hover */}
                   <span
-                    className="font-[family-name:var(--font-bricolage)] text-black transition-colors duration-500 ease-out group-hover:text-white/80"
+                    className="font-[family-name:var(--font-bricolage)] text-[#333] transition-colors duration-500 ease-out group-hover:text-white/80"
                     style={{
-                      fontWeight: 400,
+                      fontWeight: 300,
                       fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
                       lineHeight: 1,
                       marginTop: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
                     }}
                   >
-                    {a.city + ' '}
-                    <span
-                      className="text-[#333] transition-colors duration-500 ease-out group-hover:text-white/80"
-                      style={{ fontWeight: 300 }}
-                    >
-                      {a.date}
-                    </span>
+                    {formatDate(card.publishedAt)}
                   </span>
                 </div>
               </div>
             </div>
-          </motion.article>
+          </motion.a>
         ))}
       </div>
 
-      {/* Pagination — Figma 100:3381. Back · 1 · [2 active] · 3 · 4 · Next */}
-      <motion.nav
-        aria-label="Pagination"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className="mx-auto flex items-center justify-center"
-        style={{
-          gap: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
-          // Figma: grid bottom y=2504 → pagination y=2560 = 56px gap
-          marginTop: 'clamp(32px, calc(56 / 1920 * 100vw), 56px)',
-        }}
-      >
-        <PageBtn
-          variant="ctrl"
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-          disabled={page === 1}
-          aria-label="Previous page"
+      {/* Pagination — only render when there's more than one page */}
+      {totalPages > 1 && (
+        <motion.nav
+          aria-label="Pagination"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="mx-auto flex items-center justify-center"
+          style={{
+            gap: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
+            marginTop: 'clamp(32px, calc(56 / 1920 * 100vw), 56px)',
+          }}
         >
-          <ChevronLeft />
-          <span>Back</span>
-        </PageBtn>
-        {[1, 2, 3, 4].map((n) => (
           <PageBtn
-            key={n}
-            variant="num"
-            active={page === n}
-            onClick={() => setPage(n)}
-            aria-current={page === n ? 'page' : undefined}
+            variant="ctrl"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            aria-label="Previous page"
           >
-            {n}
+            <ChevronLeft />
+            <span>Back</span>
           </PageBtn>
-        ))}
-        <PageBtn
-          variant="ctrl"
-          onClick={() => setPage((p) => Math.min(4, p + 1))}
-          disabled={page === 4}
-          aria-label="Next page"
-        >
-          <span>Next</span>
-          <ChevronRight />
-        </PageBtn>
-      </motion.nav>
+          {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((n) => (
+            <PageBtn
+              key={n}
+              variant="num"
+              active={page === n}
+              onClick={() => setPage(n)}
+              aria-current={page === n ? 'page' : undefined}
+            >
+              {n}
+            </PageBtn>
+          ))}
+          <PageBtn
+            variant="ctrl"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            aria-label="Next page"
+          >
+            <span>Next</span>
+            <ChevronRight />
+          </PageBtn>
+        </motion.nav>
+      )}
     </section>
   )
 }
 
-// Pagination atoms ----------------------------------------------------------
+// ── Pagination atoms (unchanged) ────────────────────────────────────────
 
 function PageBtn({
   variant,
@@ -393,14 +396,8 @@ function PageBtn({
   variant: 'ctrl' | 'num'
   active?: boolean
 }) {
-  // Active state: solid pine (#013E37) bg + bold white text. Inactive: white
-  // bg + #E9E9E9 1px border + #313131 text. From Figma 100:3383..3388.
   const base =
     'inline-flex items-center justify-center font-[family-name:var(--font-urbanist)] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
-  // Tap-target floor: page-number buttons must stay ≥44×44 even inside a
-  // flex row that might otherwise shrink them. minWidth + boxSizing pin
-  // the button to a minimum 44 and prevent the inline padding from being
-  // counted as content-area space.
   const sizing =
     variant === 'ctrl'
       ? { gap: 6, height: 48, padding: '10px 16px', fontSize: 18, fontWeight: 400 as const, minHeight: 44, boxSizing: 'border-box' as const }
@@ -413,12 +410,7 @@ function PageBtn({
       type="button"
       {...rest}
       className={base}
-      style={{
-        ...sizing,
-        ...colorStyles,
-        borderRadius: 4,
-        lineHeight: 'normal',
-      }}
+      style={{ ...sizing, ...colorStyles, borderRadius: 4, lineHeight: 'normal' }}
     >
       {children}
     </button>
@@ -428,14 +420,7 @@ function PageBtn({
 function ChevronLeft() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-      <path
-        d="M9 2.5L4.5 7L9 11.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M9 2.5L4.5 7L9 11.5" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -443,14 +428,7 @@ function ChevronLeft() {
 function ChevronRight() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-      <path
-        d="M5 2.5L9.5 7L5 11.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M5 2.5L9.5 7L5 11.5" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

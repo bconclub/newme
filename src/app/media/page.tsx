@@ -3,6 +3,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import MediaHero from '@/components/option1/MediaHero'
 import MediaArticles from '@/components/option1/MediaArticles'
+import { mediaMentionsQuery } from '@/lib/sanity/queries'
 
 export const metadata: Metadata = {
   title: "Media | Dr. Pal's NewME",
@@ -10,28 +11,56 @@ export const metadata: Metadata = {
     'NewMe in the media — coverage of our work in metabolic and gut regulation across leading publications.',
 }
 
-export default function MediaPage() {
+/** Revalidate the listing every 60s in production so newly added
+ *  Sanity Mentions surface without a fresh deploy. */
+export const revalidate = 60
+
+export type MediaMention = {
+  _id: string
+  title: string
+  excerpt?: string
+  publishedAt: string
+  externalUrl: string
+  coverImage?: { asset?: { _ref?: string }; alt?: string } & Record<string, unknown>
+  outlet?: {
+    _id: string
+    name: string
+    slug?: string
+    logo?: { asset?: { _ref?: string }; alt?: string } & Record<string, unknown>
+    website?: string
+  }
+}
+
+/** Build-safe Sanity fetch — guards on env vars and dynamically imports
+ *  the client so missing creds during a Vercel preview build don't crash
+ *  the page. Returns [] when Sanity is unreachable; the listing component
+ *  falls back to its hardcoded sample mentions in that case. */
+async function loadMentions(): Promise<MediaMention[]> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
+  try {
+    const { client } = await import('@/lib/sanity/client')
+    const data = await client.fetch<MediaMention[]>(mediaMentionsQuery)
+    return Array.isArray(data) ? data : []
+  } catch {
+    return []
+  }
+}
+
+export default async function MediaPage() {
+  const mentions = await loadMentions()
+
   return (
     <>
       <Header />
       <main className="newme-page">
         {/*
-          Page-level atmosphere — Figma artboard is 1920×3218 (taller than
-          Research Lab's 1970). Two ellipses lifted from Figma 100:980.
-
-          Ellipses (Figma artboard coords):
-            · Ellipse 28 — green wash, 4480 at top=1807 left=-1306 (covers
-              the article-grid band, bleeding up through the section heading)
-            · Ellipse 34 — yellow accent, 895×982 at top=1845 left=1610
-              (right-side halo behind the bottom row of cards)
+          Page-level atmosphere — Figma artboard is 1920×3218.
+          Two ellipses lifted from Figma 100:980.
         */}
         <div
           aria-hidden
           className="newme-bg-media pointer-events-none"
           style={{
-            // Inline `position: absolute` defeats the .newme-page > *
-            // { position: relative } rule that would otherwise pin this
-            // div in flow and push content down.
             position: 'absolute',
             top: 0,
             left: '50%',
@@ -43,7 +72,7 @@ export default function MediaPage() {
             clipPath: 'inset(0 -200vw 0 -200vw)',
           }}
         >
-          {/* Ellipse 28 — green wash bleeding up from below the hero */}
+          {/* Ellipse 28 — green wash */}
           <span
             className="absolute rounded-full"
             style={{
@@ -60,7 +89,7 @@ export default function MediaPage() {
                 'radial-gradient(closest-side, black 0%, transparent 100%)',
             }}
           />
-          {/* Ellipse 34 — yellow accent behind the right side of the grid */}
+          {/* Ellipse 34 — yellow accent */}
           <span
             className="absolute rounded-full"
             style={{
@@ -75,10 +104,9 @@ export default function MediaPage() {
           />
         </div>
 
-        {/* Figma artboard cap — 1920px. */}
         <div className="newme-frame">
           <MediaHero />
-          <MediaArticles />
+          <MediaArticles mentions={mentions} />
         </div>
       </main>
       <Footer />

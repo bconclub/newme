@@ -1,21 +1,32 @@
 import type { SchemaTypeDefinition } from "sanity";
 
-import article from "./article";
 import author from "./author";
 import faq from "./faq";
-import hero from "./hero";
-import landingSection from "./landingSection";
+import mediaMention from "./mediaMention";
+import mediaOutlet from "./mediaOutlet";
 import post from "./post";
+import seo from "./seo";
 import teamMember from "./teamMember";
 import testimonial from "./testimonial";
 
+/**
+ * Schema registry. Order here drives the order in the Studio sidebar.
+ *
+ * `seo` is a reusable object embedded inside other schemas, so it's
+ * registered first. Document types follow.
+ */
 export const schemaTypes: SchemaTypeDefinition[] = [
-  article,
+  // Reusable object types
+  seo,
+
+  // Content
+  mediaMention,
+  mediaOutlet,
   post,
+
+  // Reusable people / FAQ
   author,
   testimonial,
   teamMember,
   faq,
-  hero,
-  landingSection,
 ];

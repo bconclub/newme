@@ -8,7 +8,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 // motion-enhanced Link — avoids the deprecated legacyBehavior wrapper pattern
 const MotionLink = motion(Link)
 
-type NavLink = { label: string; href: string; hasMenu?: boolean; live?: boolean }
+type SubLink = { label: string; href: string }
+type NavLink = {
+  label: string
+  href: string
+  hasMenu?: boolean
+  live?: boolean
+  /** When present, renders as a dropdown trigger. The `href` is still used
+   *  as the fallback destination for the parent link itself (e.g. the FAQ
+   *  index for "Resources"). */
+  sublinks?: SubLink[]
+}
 
 const navLinks: NavLink[] = [
   { label: 'Home', href: '/', live: true },
@@ -16,7 +26,17 @@ const navLinks: NavLink[] = [
   { label: 'Pathways', href: '/pathways', live: true },
   { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
   { label: 'NewME Care Team', href: '/team', live: true },
-  { label: 'Resources', href: '/faq', live: true },
+  {
+    label: 'Resources',
+    href: '/faq',
+    hasMenu: true,
+    live: true,
+    sublinks: [
+      { label: 'Blog', href: '/blog' },
+      { label: 'Media', href: '/media' },
+      { label: 'FAQ', href: '/faq' },
+    ],
+  },
   { label: 'Contact Us', href: '/contact', live: true },
 ]
 
@@ -77,8 +97,62 @@ export default function Header() {
               gray text, no cursor, and a small lighten-on-hover so the user
               still gets feedback even though the click is a no-op. */}
           <nav className="hidden lg:flex items-center gap-7 xl:gap-8">
-            {navLinks.map((link) =>
-              link.live ? (
+            {navLinks.map((link) => {
+              if (!link.live) {
+                return (
+                  <span
+                    key={link.href}
+                    aria-disabled="true"
+                    title="Coming soon"
+                    className="inline-flex items-center gap-1 text-white/35 hover:text-white/55 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] cursor-not-allowed select-none"
+                  >
+                    {link.label}
+                    {link.hasMenu && (
+                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-50">
+                        <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </span>
+                )
+              }
+
+              // Dropdown — hover/focus opens a panel of sublinks. The trigger
+              // itself stays a real <Link> so keyboard users can still tab to
+              // the parent destination (/faq for Resources).
+              if (link.sublinks && link.sublinks.length > 0) {
+                return (
+                  <div key={link.href} className="relative group">
+                    <Link
+                      href={link.href}
+                      className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
+                    >
+                      {link.label}
+                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-70 transition-transform duration-200 group-hover:rotate-180">
+                        <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </Link>
+                    {/* Dropdown panel */}
+                    <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible focus-within:opacity-100 focus-within:visible transition-[opacity,visibility] duration-150">
+                      <div
+                        className="rounded-xl border bg-[#013E37]/95 backdrop-blur-md py-2 min-w-[180px]"
+                        style={{ borderColor: 'rgba(255,255,255,0.12)' }}
+                      >
+                        {link.sublinks.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            className="block px-4 py-2 text-[14px] text-white/85 hover:text-white hover:bg-white/[0.06] font-medium font-[family-name:var(--font-urbanist)] transition-colors duration-150"
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
+
+              return (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -91,22 +165,8 @@ export default function Header() {
                     </svg>
                   )}
                 </Link>
-              ) : (
-                <span
-                  key={link.href}
-                  aria-disabled="true"
-                  title="Coming soon"
-                  className="inline-flex items-center gap-1 text-white/35 hover:text-white/55 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] cursor-not-allowed select-none"
-                >
-                  {link.label}
-                  {link.hasMenu && (
-                    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-50">
-                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </span>
               )
-            )}
+            })}
           </nav>
 
           {/* Figma: CTA 214×48 pill, padding 14×24.
@@ -177,6 +237,7 @@ export default function Header() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
+                className="flex flex-col items-center gap-3"
               >
                 <Link
                   href={link.href}
@@ -185,6 +246,20 @@ export default function Header() {
                 >
                   {link.label}
                 </Link>
+                {link.sublinks && link.sublinks.length > 0 && (
+                  <div className="flex flex-col items-center gap-2">
+                    {link.sublinks.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setMobileOpen(false)}
+                        className="text-white/70 text-base font-medium font-[family-name:var(--font-urbanist)] hover:text-[#FEF272] transition-colors"
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </motion.div>
             ))}
             <MotionLink

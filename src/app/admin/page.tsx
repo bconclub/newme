@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { articleCards } from '@/lib/articles'
 
 export const metadata: Metadata = {
   title: "Admin — Pages | Dr. Pal's NewME",
@@ -18,7 +17,7 @@ type Page = {
   note?: string
 }
 
-type SanityArticle = { slug: string; title: string; _id: string }
+type SanityMention = { _id: string; title: string; outletName?: string }
 
 const STUDIO_BASE = '/studio/structure'
 
@@ -32,47 +31,27 @@ const STATIC_PAGES: Page[] = [
   { group: 'Marketing', name: 'Virtual Clinic', path: '/virtual-clinic', source: 'Code' },
   { group: 'Marketing', name: 'Research Lab', path: '/research-lab', source: 'Code' },
   { group: 'Marketing', name: 'Assessment', path: '/assessment', source: 'Code', note: 'Wizard — pathway recommendation engine' },
-  { group: 'Content', name: 'Media (listing)', path: '/media', source: 'Code', note: 'Cards still hardcoded — Sanity wiring pending' },
+  { group: 'Content', name: 'Media (listing)', path: '/media', source: 'Hybrid', note: 'Sanity-driven cards (mediaMention) with local fallback' },
 ]
 
 export default async function AdminPage() {
-  // Only attempt a Sanity fetch when the project env vars are present.
-  // We use a dynamic import so the Sanity client module is never evaluated
-  // at build time on environments that don't have the vars configured —
-  // a top-level import would throw inside env.ts before any try/catch runs.
-  let cmsArticles: SanityArticle[] = []
+  // Pull a flat list of media mentions for the admin index. Build-safe:
+  // gated on env vars + dynamic import + try/catch (audit reference §7).
+  let cmsMentions: SanityMention[] = []
   let sanityOk = false
   if (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
     try {
-      const [{ client }, { articlesQuery }] = await Promise.all([
-        import('@/lib/sanity/client'),
-        import('@/lib/sanity/queries'),
-      ])
-      cmsArticles = await client.fetch<SanityArticle[]>(articlesQuery)
+      const [{ client }] = await Promise.all([import('@/lib/sanity/client')])
+      cmsMentions = await client.fetch<SanityMention[]>(
+        `*[_type == "mediaMention"] | order(publishedAt desc){
+          _id, title, "outletName": outlet->name
+        }`
+      )
       sanityOk = true
     } catch {
-      // Sanity not reachable (CORS / token missing) — leave cmsArticles empty.
+      // Sanity not reachable — leave list empty.
     }
   }
-
-  // Merge CMS + in-code articles, dedup by slug. CMS wins on title/source.
-  const cmsBySlug = new Map(cmsArticles.map((a) => [a.slug, a]))
-  const articleRows = [
-    ...cmsArticles.map((a) => ({
-      name: a.title,
-      slug: a.slug,
-      source: 'Sanity' as const,
-      studioPath: `${STUDIO_BASE}/article;${a._id}`,
-    })),
-    ...articleCards
-      .filter((c) => !cmsBySlug.has(c.slug))
-      .map((c) => ({
-        name: c.title,
-        slug: c.slug,
-        source: 'Code' as const,
-        studioPath: undefined,
-      })),
-  ]
 
   return (
     <main className="min-h-screen bg-[#F7F6F2] text-[#0E2827]">
@@ -112,7 +91,7 @@ export default async function AdminPage() {
           <span className="font-[family-name:var(--font-urbanist)] text-[#444]">
             Sanity:{' '}
             {sanityOk
-              ? `connected · ${cmsArticles.length} article${cmsArticles.length === 1 ? '' : 's'}`
+              ? `connected · ${cmsMentions.length} media mention${cmsMentions.length === 1 ? '' : 's'}`
               : 'not reachable (check CORS / login)'}
           </span>
         </div>
@@ -121,51 +100,42 @@ export default async function AdminPage() {
         <Section title="Marketing pages" pages={STATIC_PAGES.filter((p) => p.group === 'Marketing')} />
         <Section title="Content surfaces" pages={STATIC_PAGES.filter((p) => p.group === 'Content')} />
 
-        {/* Media articles */}
+        {/* Media mentions (Sanity-only) */}
         <section className="mt-12">
           <div className="flex items-baseline justify-between">
             <h2 className="font-[family-name:var(--font-bricolage)] text-xl font-semibold">
-              Media articles
+              Media mentions
             </h2>
             <span className="font-[family-name:var(--font-urbanist)] text-xs text-[#666]">
-              {articleRows.length} total
+              {cmsMentions.length} total
             </span>
           </div>
           <div className="mt-4 overflow-hidden rounded-xl border border-[#E0DDD2] bg-white">
-            {articleRows.length === 0 && (
+            {cmsMentions.length === 0 && (
               <div className="px-4 py-6 text-sm text-[#666] font-[family-name:var(--font-urbanist)]">
-                No articles yet.
+                {sanityOk ? 'No mentions in Sanity yet.' : 'Sanity not reachable.'}
               </div>
             )}
-            {articleRows.map((a, i) => (
+            {cmsMentions.map((a, i) => (
               <div
-                key={a.slug}
+                key={a._id}
                 className={`flex flex-col gap-2 px-4 py-3 md:flex-row md:items-center md:justify-between ${
                   i > 0 ? 'border-t border-[#EEECE3]' : ''
                 }`}
               >
                 <div className="min-w-0 flex-1">
-                  <p
-                    className="truncate font-[family-name:var(--font-urbanist)] text-sm font-medium"
-                    title={a.name}
-                  >
-                    {a.name}
+                  <p className="truncate font-[family-name:var(--font-urbanist)] text-sm font-medium" title={a.title}>
+                    {a.title}
                   </p>
                   <p className="font-[family-name:var(--font-urbanist)] text-xs text-[#666]">
-                    /media/{a.slug} · <SourceTag source={a.source} />
+                    {a.outletName ?? '—'} · <SourceTag source="Sanity" />
                   </p>
                 </div>
                 <div className="flex shrink-0 gap-2">
-                  <ActionLink href={`/media/${a.slug}`}>View</ActionLink>
-                  {a.studioPath ? (
-                    <ActionLink href={a.studioPath} primary>
-                      Edit
-                    </ActionLink>
-                  ) : (
-                    <span className="inline-flex h-8 items-center rounded-md border border-[#E0DDD2] px-3 text-xs text-[#888] font-[family-name:var(--font-urbanist)]">
-                      Code-only
-                    </span>
-                  )}
+                  <ActionLink href="/media">Listing</ActionLink>
+                  <ActionLink href={`${STUDIO_BASE}/mediaMention;${a._id}`} primary>
+                    Edit
+                  </ActionLink>
                 </div>
               </div>
             ))}
@@ -182,14 +152,13 @@ export default async function AdminPage() {
           </p>
           <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             {[
-              { name: 'Media Articles', type: 'article' },
+              { name: 'Media Mentions', type: 'mediaMention' },
+              { name: 'Media Outlets', type: 'mediaOutlet' },
               { name: 'Blog Posts', type: 'post' },
               { name: 'Authors', type: 'author' },
               { name: 'Testimonials', type: 'testimonial' },
               { name: 'Team', type: 'teamMember' },
               { name: 'FAQs', type: 'faq' },
-              { name: 'Hero', type: 'hero' },
-              { name: 'Landing Sections', type: 'landingSection' },
             ].map((t) => (
               <Link
                 key={t.type}

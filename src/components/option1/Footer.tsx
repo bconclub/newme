@@ -3,9 +3,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-// Figma "Group 139" (1:2834) at y=9054, 1920×490. Figma Quick Links column
-// labels (1:3944): Home / How it Works / Your Phase of Care / Results /
-// Dr Pal & Team.
+// Figma "Group 139" (1:2834) at y=9054, 1920×490. Quick Links + Resources
+// columns are trimmed from the original Figma list — "Your Phase of Care"
+// and "Results" duplicated nav items already on Pathways/Home, and "Blog"
+// is exposed via the header nav (Resources dropdown), not the footer.
 //
 // `live: true` means the page exists and the link is clickable. Non-live
 // items render grayed out with a no-op click and a small lighten-on-hover.
@@ -14,12 +15,9 @@ type FooterLink = { label: string; href: string; live?: boolean }
 const quickLinks: FooterLink[] = [
   { label: 'Home', href: '/', live: true },
   { label: 'How it Works', href: '/how-it-works', live: true },
-  { label: 'Your Phase of Care', href: '/pathways' },
-  { label: 'Results', href: '#testimonials' },
   { label: 'Dr Pal & Team', href: '/care-team' },
 ]
 const resources: FooterLink[] = [
-  { label: 'Blog', href: '#' },
   { label: 'Podcast', href: '#' },
   { label: 'FAQ', href: '#' },
   { label: 'NewME App', href: '#' },

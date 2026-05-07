@@ -4,6 +4,8 @@ import './globals.css'
 import './option1.scss'
 import SmoothScroll from '@/components/layout/SmoothScroll'
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://newme.health').replace(/\/$/, '')
+
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
   variable: '--font-bricolage',
@@ -26,10 +28,14 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
   description:
     'NewMe combines clinical insights with structured care to better understand your body and provide the care it needs. A doctor-led clinical system for metabolic and gut regulation.',
   keywords: ['metabolic health', 'gut health', 'Dr Pal', 'NewMe', 'clinical care'],
+  alternates: {
+    canonical: '/',
+  },
   robots: {
     index: false,
     follow: false,
@@ -39,7 +45,24 @@ export const metadata: Metadata = {
     title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
     description:
       'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
+    url: '/',
+    siteName: "Dr. Pal's NewME",
+    images: [
+      {
+        url: '/media/Media Hero.webp',
+        width: 1880,
+        height: 694,
+        alt: "Dr. Pal's NewME",
+      },
+    ],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NewMe | Doctor-Led Care, Personalized For Your Body',
+    description:
+      'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
+    images: ['/media/Media Hero.webp'],
   },
 }
 
