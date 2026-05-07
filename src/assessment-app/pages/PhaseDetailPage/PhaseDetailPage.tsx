@@ -1,9 +1,9 @@
 import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
-import { LogoMark } from "../../components/Logo";
 import { SectionLabel, Dot } from "../../components/SectionLabel";
 import { PW, PW_SEC, PRICING } from "../../data/pathways";
 import { pickStories } from "../../utils/routing";
+import EyebrowPill from "../../../components/option1/EyebrowPill";
 
 const glassCard: React.CSSProperties = {
   background: "rgba(255,255,255,0.06)",
@@ -37,16 +37,10 @@ function PhaseScreen({ phaseKey, ans, info, profile, isRecommended, onBack, onSe
       {onBack && <button className="btnout" onClick={onBack} style={{ marginBottom: 28, fontFamily: FONT_BUTTON }}>← Back to my results</button>}
       <div className="fu">
 
-        {/* Eyebrow pill */}
-        <span style={{
-          display: "inline-flex", alignItems: "center", gap: 6,
-          padding: "5px 14px", borderRadius: 50,
-          fontSize: 11, fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase",
-          background: "rgba(98,150,117,0.15)", color: GRN, border: "1px solid rgba(98,150,117,0.4)",
-          marginBottom: 24, fontFamily: FONT_BUTTON,
-        }}>
-          <LogoMark size={14} color={GRN} />{pw.badge}
-        </span>
+        {/* Eyebrow pill — uses the site's EyebrowPill */}
+        <div style={{ marginBottom: 24 }}>
+          <EyebrowPill>{pw.badge}</EyebrowPill>
+        </div>
 
         <h1 style={{ fontSize: "clamp(28px,5vw,44px)", fontWeight: 600, lineHeight: 1.15, marginBottom: 4, letterSpacing: "-0.025em", color: INK, fontFamily: FONT_HEADING }}>{h1}</h1>
         <h2 style={{ fontSize: "clamp(17px,3.5vw,24px)", fontWeight: 500, lineHeight: 1.3, color: INK3, marginBottom: 16, letterSpacing: "-0.015em", fontFamily: FONT_HEADING }}>{h2}</h2>

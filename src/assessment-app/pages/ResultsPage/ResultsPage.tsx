@@ -6,6 +6,7 @@ import { SectionLabel, Dot } from "../../components/SectionLabel";
 import { PW, PRICING, PATHWAY_SEVERITY, FRAMING_BODY, BRIDGE_SENTENCE, ASSURANCE, ACTIONABLE_POINTS } from "../../data/pathways";
 import { ChatBot } from "../../components/ChatBot/ChatBot";
 import { GI_BILLING } from "../../constants/zohoCheckout";
+import EyebrowPill from "../../../components/option1/EyebrowPill";
 
 export type ResultsPageProps = {
   res: any;
@@ -80,18 +81,9 @@ export function ResultsPage({
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "36px 20px 100px" }}>
         <div className="fu">
 
-          {/* Clinical Report Badge */}
+          {/* Clinical Report — uses the site's EyebrowPill */}
           <div style={{ marginBottom: 20 }}>
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "6px 16px", borderRadius: 50,
-              fontSize: 11, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase",
-              background: "rgba(98,150,117,0.2)", color: GRN,
-              border: "1px solid rgba(98,150,117,0.4)",
-              fontFamily: FONT_BUTTON,
-            }}>
-              <LogoMark size={13} color={GRN} />{name.toUpperCase()}'S CLINICAL REPORT
-            </span>
+            <EyebrowPill>{name}'s Clinical Report</EyebrowPill>
           </div>
 
           {/* Headline */}
