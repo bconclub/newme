@@ -242,10 +242,14 @@ function SocialIcons() {
   )
 }
 
-// ─── Card — photo by default, dark info layer on hover (JS state) ─────────────
+// ─── Card — photo by default, dark green panel with centered name/role on hover
+//     Figma 122:11461..78. The default state is just the photo (no overlay
+//     pill); on hover the photo crossfades to a solid #013E37 panel with the
+//     member's name in gold + role in white, both centered, plus a short bio
+//     and social icons. ────────────────────────────────────────────────────────
 function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   const [hovered, setHovered] = useState(false)
-  // Special (Shakeela CEO) is always in "hovered" (dark info) state
+  // Special members (e.g. Shakeela CEO) start in the info state
   const showInfo = member.special || hovered
 
   return (
@@ -265,7 +269,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
         cursor: 'default',
       }}
     >
-      {/* ── PHOTO LAYER (default) ── */}
+      {/* ── PHOTO LAYER (default) — clean photo, no overlay text ── */}
       <div
         style={{
           position: 'absolute',
@@ -283,113 +287,71 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           className="object-cover object-top"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
-        {/* bottom gradient */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: '45% 0 0 0',
-            background: 'linear-gradient(0deg, rgba(1,62,55,0.72) 0%, transparent 100%)',
-          }}
-        />
-        {/* Name pill */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
-            left: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
-            right: 'clamp(8px, calc(12 / 1920 * 100vw), 12px)',
-            background: '#013E37',
-            borderRadius: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
-            padding: 'clamp(12px, calc(18 / 1920 * 100vw), 18px) clamp(16px, calc(24 / 1920 * 100vw), 24px)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(2px, calc(4 / 1920 * 100vw), 4px)',
-          }}
-        >
-          <p
-            className="font-[family-name:var(--font-bricolage)] text-white"
-            style={{ fontWeight: 600, fontSize: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)', lineHeight: 1.2 }}
-          >
-            {member.name}
-          </p>
-          <p
-            className="font-[family-name:var(--font-bricolage)]"
-            style={{ fontSize: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)', color: 'rgba(255,255,255,0.65)', fontWeight: 400 }}
-          >
-            {member.role}
-          </p>
-        </div>
       </div>
 
-      {/* ── INFO LAYER (hover / special) — dark bg, photo right, text left ── */}
+      {/* ── INFO LAYER (hover / special) — solid dark green, name + role
+            center-aligned per Figma. */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           background: '#013E37',
-          transition: 'opacity 0.45s ease, transform 0.45s ease',
+          transition: 'opacity 0.45s ease',
           opacity: showInfo ? 1 : 0,
-          transform: showInfo ? 'translateY(0)' : 'translateY(14px)',
           pointerEvents: showInfo ? 'auto' : 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 'clamp(20px, calc(32 / 1920 * 100vw), 36px) clamp(18px, calc(28 / 1920 * 100vw), 32px)',
+          textAlign: 'center',
         }}
       >
-        {/* Photo — right side (65% wide) */}
-        <div style={{ position: 'absolute', top: 0, right: 0, width: '65%', height: '100%', overflow: 'hidden' }}>
-          <Image
-            src={member.photo}
-            alt=""
-            fill
-            aria-hidden
-            className="object-cover object-top"
-            sizes="(max-width: 640px) 33vw, 16vw"
-          />
-        </div>
-
-        {/* Left-to-right fade so text stays legible */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(95deg, #013E37 46%, rgba(1,62,55,0.90) 62%, rgba(1,62,55,0.35) 78%, rgba(1,62,55,0) 100%)',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Text + social */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            padding: 'clamp(20px, calc(32 / 1920 * 100vw), 32px) clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-          }}
+        <motion.div
+          initial={false}
+          animate={{ opacity: showInfo ? 1 : 0, y: showInfo ? 0 : 12 }}
+          transition={{ duration: 0.45, ease: EASE, delay: showInfo ? 0.12 : 0 }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(6px, calc(8 / 1920 * 100vw), 10px)', maxWidth: '90%' }}
         >
-          <div>
-            <p
-              className="font-[family-name:var(--font-bricolage)]"
-              style={{ fontWeight: 500, fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)', color: '#FEF272', lineHeight: 1.2, marginBottom: 'clamp(4px, calc(6 / 1920 * 100vw), 6px)' }}
-            >
-              {member.name}
-            </p>
-            <p
-              className="font-[family-name:var(--font-bricolage)] text-white"
-              style={{ fontSize: 'clamp(11px, calc(17 / 1920 * 100vw), 17px)', fontWeight: 400, opacity: 0.9, marginBottom: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)' }}
-            >
-              {member.role}
-            </p>
-            <p
-              className="font-[family-name:var(--font-urbanist)] text-white"
-              style={{ fontSize: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)', fontWeight: 400, lineHeight: 1.65, opacity: 0.78, maxWidth: '72%' }}
-            >
-              {member.bio}
-            </p>
+          <p
+            className="font-[family-name:var(--font-bricolage)]"
+            style={{
+              fontWeight: 600,
+              fontSize: 'clamp(18px, calc(28 / 1920 * 100vw), 32px)',
+              color: '#FEF272',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            {member.name}
+          </p>
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white"
+            style={{
+              fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 18px)',
+              fontWeight: 500,
+              opacity: 0.9,
+              letterSpacing: '0.02em',
+            }}
+          >
+            {member.role}
+          </p>
+          <p
+            className="font-[family-name:var(--font-urbanist)] text-white"
+            style={{
+              fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 14px)',
+              fontWeight: 400,
+              lineHeight: 1.6,
+              opacity: 0.72,
+              marginTop: 'clamp(6px, calc(10 / 1920 * 100vw), 12px)',
+            }}
+          >
+            {member.bio}
+          </p>
+          <div style={{ marginTop: 'clamp(12px, calc(18 / 1920 * 100vw), 22px)' }}>
+            <SocialIcons />
           </div>
-          <SocialIcons />
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   )
