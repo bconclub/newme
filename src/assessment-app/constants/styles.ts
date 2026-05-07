@@ -16,9 +16,9 @@ export const globalCss = [
 
   // Option button — glass dark card
   `.opt{width:100%;padding:15px 20px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.85);font-size:15px;text-align:left;cursor:pointer;transition:all .17s;display:flex;align-items:center;gap:12px;font-family:var(--font-urbanist,'Urbanist',sans-serif);line-height:1.4;box-sizing:border-box;-webkit-tap-highlight-color:transparent;outline:none;-webkit-appearance:none;appearance:none;backdrop-filter:blur(8px)}`,
-  // Option button — selected state (green glass)
+  // Option button — selected state (yellow accent)
   `.opt:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)}`,
-  `.opt.s{border-color:rgba(98,150,117,0.7);background:rgba(98,150,117,0.18);color:#ffffff}`,
+  `.opt.s{border-color:#FEF272;background:rgba(254,242,114,0.12);color:#ffffff}`,
 
   // Primary CTA — yellow, matches site "Start My Assessment" button
   `.btng{background:#FEF272;color:#013E37;font-weight:600;border:none;padding:15px 32px;border-radius:50px;cursor:pointer;font-size:15px;transition:all .2s;font-family:var(--font-poppins,'Poppins',sans-serif);letter-spacing:.01em}`,

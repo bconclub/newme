@@ -171,8 +171,8 @@ export function QuizPage({
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {[{ v: "female", l: "Female" }, { v: "male", l: "Male" }, { v: "prefer_not", l: "Prefer not to say" }].map(o => (
                     <button key={o.v} className={`opt${profile.gender === o.v ? " s" : ""}`} onClick={() => setProfile((p: any) => ({ ...p, gender: o.v }))}>
-                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${profile.gender === o.v ? GRN : "rgba(255,255,255,0.25)"}`, background: profile.gender === o.v ? "rgba(98,150,117,0.25)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        {profile.gender === o.v && <div style={{ width: 8, height: 8, borderRadius: "50%", background: GRN }} />}
+                      <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${profile.gender === o.v ? GOLD : "rgba(255,255,255,0.25)"}`, background: profile.gender === o.v ? "rgba(254,242,114,0.18)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {profile.gender === o.v && <div style={{ width: 8, height: 8, borderRadius: "50%", background: GOLD }} />}
                       </div>{o.l}
                     </button>
                   ))}
@@ -209,8 +209,8 @@ export function QuizPage({
                 const isSel = isMulti ? (sel || []).includes(o.v) : sel === o.v;
                 return (
                   <button key={o.v} className={`opt${isSel ? " s" : ""}`} onClick={() => isMulti ? toggleMulti(o.v) : handlePickSingle(o.v)}>
-                    <div style={{ width: 18, height: 18, borderRadius: isMulti ? "4px" : "50%", border: `2px solid ${isSel ? GRN : "rgba(255,255,255,0.25)"}`, background: isSel ? "rgba(98,150,117,0.25)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }}>
-                      {isSel && <div style={{ width: 8, height: 8, borderRadius: "50%", background: GRN }} />}
+                    <div style={{ width: 18, height: 18, borderRadius: isMulti ? "4px" : "50%", border: `2px solid ${isSel ? GOLD : "rgba(255,255,255,0.25)"}`, background: isSel ? "rgba(254,242,114,0.18)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }}>
+                      {isSel && <div style={{ width: 8, height: 8, borderRadius: isMulti ? 0 : "50%", background: GOLD }} />}
                     </div>{o.l}
                   </button>
                 );
