@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
+import PageHero from '@/components/option1/PageHero'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -301,45 +302,19 @@ export default function GIPathwayPage() {
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-3" style={{ top: 5500, left: 1268, opacity: 0.4 }} />
       </div>
 
-      {/* Hero — tabs are inside the card, straddling its bottom edge (Figma: tab y=673 in 694px card) */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)', paddingBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)' }}>
+      {/* Hero — uses shared PageHero template */}
+      <PageHero
+        imageSrc="/images/pathways/gi-hero.jpg"
+        imageAlt="GastroIntestinal Care — clinical team"
+        imagePosition="center 30%"
+        heading="GastroIntestinal Care Pathways"
+        subheading="Our two GI pathways are designed to address digestive dysfunction through structured dietary protocols, clinical oversight, and continuous symptom monitoring. Each pathway reflects a different level of gastrointestinal complexity, from moderate instability to long-standing or chronic conditions."
+      />
+
+      {/* Pathway tabs */}
+      <section style={{ position: 'relative', zIndex: 1, paddingBottom: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)' }}>
         <div style={{ margin: '0 clamp(12px,1.04vw,20px)' }}>
-
-          {/* Image card — overflow:hidden clips only the image/overlay */}
-          <div style={{ position: 'relative', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
-            <Image
-              src="/images/pathways/gi-hero.jpg"
-              alt="GastroIntestinal Care — clinical team"
-              fill
-              unoptimized
-              priority
-              style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
-            />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.92) 0%, rgba(1,62,55,0.65) 40%, rgba(1,62,55,0.10) 70%, transparent 100%)' }} />
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,3.13vw,60px) clamp(24px,6.25vw,120px) clamp(56px,4.58vw,88px)' }}>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.65, ease: EASE }}
-                className="font-[family-name:var(--font-bricolage)]"
-                style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.05, marginBottom: 'clamp(10px,1.04vw,20px)' }}
-              >
-                GastroIntestinal Care Pathways
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, ease: EASE, delay: 0.15 }}
-                className="font-[family-name:var(--font-urbanist)]"
-                style={{ fontSize: 'clamp(13px,1.04vw,20px)', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: 'clamp(260px,40.7vw,783px)' }}
-              >
-                Our two GI pathways are designed to address digestive dysfunction through structured dietary protocols, clinical oversight, and continuous symptom monitoring. Each pathway reflects a different level of gastrointestinal complexity, from moderate instability to long-standing or chronic conditions.
-              </motion.p>
-            </div>
-          </div>
-
-          {/* Tabs — natural flow on mobile, indented on desktop */}
-          <div className="flex flex-wrap gap-2 mt-3" style={{ paddingLeft: 'clamp(4px, calc(120 / 1920 * 100vw), 120px)' }}>
+          <div className="flex flex-wrap gap-2" style={{ paddingLeft: 'clamp(4px, calc(120 / 1920 * 100vw), 120px)' }}>
             {TABS.map((tab) => (
               <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
                 <span
@@ -367,7 +342,6 @@ export default function GIPathwayPage() {
               </Link>
             ))}
           </div>
-
         </div>
       </section>
 
