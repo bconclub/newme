@@ -224,10 +224,24 @@ export function ResultsPage({
               }}
               ref={!isGIPathway ? pricingRef : undefined}
             >
-              {/* Eyebrow pill removed — pw.badge text is already echoed by
-                  the page heading and the order-summary card downstream, so
-                  showing it here just produced a redundant "GI ADVANCED · 1
-                  MONTH CLINICAL PATHWAY" line above the price. */}
+              {/* Pathway name badge */}
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                border: "1.5px solid rgba(1,62,55,0.25)",
+                borderRadius: 999, padding: "5px 12px 5px 8px",
+                marginBottom: 16,
+                background: "rgba(1,62,55,0.06)",
+              }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                  <path d="M7 1.5A5.5 5.5 0 1 1 7 12.5A5.5 5.5 0 0 1 7 1.5Z" stroke="#013E37" strokeWidth="1.2"/>
+                  <path d="M7 4.5V7.5L8.5 9" stroke="#013E37" strokeWidth="1.2" strokeLinecap="round"/>
+                </svg>
+                <span style={{
+                  fontSize: 10, fontWeight: 700, letterSpacing: ".1em",
+                  textTransform: "uppercase", color: "#013E37",
+                  fontFamily: FONT_BUTTON,
+                }}>{pw.badge}</span>
+              </div>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
                   <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>{priceMain}</span>
