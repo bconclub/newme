@@ -69,31 +69,39 @@ export default function HIWHumanGuidance() {
         className="mx-auto flex flex-col lg:flex-row items-start gap-[clamp(28px,calc(64/1920*100vw),64px)]"
         style={{ maxWidth: 1800 }}
       >
-        {/* Image LEFT — Figma 58:2624 mask group, 883×818 (roughly square,
-            883/818 ≈ 1.08). Items-start (not stretch) so the image keeps its
-            natural square aspect instead of being pulled tall by the text
-            column on the right. */}
-        <motion.div
-          initial={{ opacity: 0, x: -24 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="relative shrink-0 overflow-hidden"
+        {/* Image LEFT — sticky on lg+ so it pins while the longer right
+            column scrolls past, eliminating the dead space below the image
+            once you scroll past its bottom. Wrapper holds position:sticky so
+            it isn't fighting the inner motion.div's transform. */}
+        <div
+          className="shrink-0 self-start lg:sticky"
           style={{
             width: 'clamp(280px, calc(883 / 1920 * 100vw), 883px)',
-            aspectRatio: '883 / 818',
-            borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
-            background:
-              'linear-gradient(135deg, #1A4F49 0%, #0E3B37 100%)',
+            top: 'clamp(80px, calc(100 / 1920 * 100vw), 100px)',
           }}
         >
-          <div
-            role="img"
-            aria-label="Health coach with patient"
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('${IMAGE}')` }}
-          />
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden"
+            style={{
+              width: '100%',
+              aspectRatio: '883 / 818',
+              borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+              background:
+                'linear-gradient(135deg, #1A4F49 0%, #0E3B37 100%)',
+            }}
+          >
+            <div
+              role="img"
+              aria-label="Health coach with patient"
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('${IMAGE}')` }}
+            />
+          </motion.div>
+        </div>
 
         {/* Right column — text + bullet list */}
         <motion.div

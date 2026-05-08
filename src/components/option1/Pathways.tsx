@@ -335,11 +335,13 @@ export default function Pathways() {
                 className="overflow-hidden"
                 style={{
                   borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
-                  border: '1.5px solid rgba(255,255,255,0.22)',
-                  backdropFilter: 'blur(14px) saturate(80%)',
-                  WebkitBackdropFilter: 'blur(14px) saturate(80%)',
+                  border: '1px solid rgba(255,255,255,0.20)',
+                  backdropFilter: 'blur(10px) saturate(110%)',
+                  WebkitBackdropFilter: 'blur(10px) saturate(110%)',
                   background:
-                    'linear-gradient(135deg, rgba(1,48,42,0.72) 0%, rgba(1,38,34,0.60) 100%), linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%)',
+                    'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), linear-gradient(180deg, rgba(0,38,34,0.25) 0%, rgba(0,26,23,0.32) 100%)',
+                  boxShadow:
+                    'inset 0 1px 0 rgba(255,255,255,0.08), 0 22px 44px -18px rgba(0,0,0,0.60), 0 6px 14px -6px rgba(0,0,0,0.40)',
                 }}
               >
                 <div
