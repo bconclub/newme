@@ -20,24 +20,36 @@ const glassCard: React.CSSProperties = {
 };
 
 export function OrderPage({ phase, info, onBack }: OrderPageProps) {
-  const giBilling = GI_BILLING[phase] ?? null;
-  const [billing, setBilling] = useState<"monthly" | "upfront">("upfront");
+  // ResultsPage may pass billing-variant keys like "GI_Advanced_monthly" when
+  // the user picks the monthly toggle. Those keys exist in zohoCheckout's
+  // GI_BILLING map but NOT in PW / PHASE_META / PRICING, which only carry the
+  // parent pathway records ("GI_Advanced"). Strip the suffix when looking
+  // those up so we render "GI Advanced" instead of the raw underscore-cased
+  // slug, render the correct duration, and price the right total. We also
+  // pre-select the matching billing toggle so the page reflects what the
+  // user clicked.
+  const basePhase = phase.replace(/_(monthly|upfront)$/, "");
+  const incomingBilling: "monthly" | "upfront" =
+    phase.endsWith("_monthly") ? "monthly" : "upfront";
+
+  const giBilling = GI_BILLING[basePhase] ?? GI_BILLING[phase] ?? null;
+  const [billing, setBilling] = useState<"monthly" | "upfront">(incomingBilling);
 
   const effectivePhase = giBilling
     ? (billing === "monthly" ? giBilling.monthly.key : giBilling.upfront.key)
-    : phase;
+    : basePhase;
 
-  const pw = PW[phase];
-  const phaseName = pw?.badge?.split(" · ")[0] ?? phase;
-  const duration = PHASE_META[phase]?.duration ?? "";
+  const pw = PW[basePhase] ?? PW[phase];
+  const phaseName = pw?.badge?.split(" · ")[0] ?? basePhase.replace(/_/g, " ");
+  const duration = PHASE_META[basePhase]?.duration ?? PHASE_META[phase]?.duration ?? "";
   const enrollName = [info.name, info.last].filter(Boolean).join(" ") || "—";
 
   const priceLabel = giBilling
     ? (billing === "monthly" ? giBilling.monthly.label : giBilling.upfront.label)
-    : (PRICING[phase]?.main ?? "");
+    : (PRICING[basePhase]?.main ?? PRICING[phase]?.main ?? "");
   const dayLabel = giBilling
     ? (billing === "monthly" ? giBilling.monthly.dayLabel : giBilling.upfront.dayLabel)
-    : (PRICING[phase]?.day ?? "");
+    : (PRICING[basePhase]?.day ?? PRICING[phase]?.day ?? "");
   const billedAs = giBilling
     ? (billing === "monthly" ? "Monthly" : "3 months upfront")
     : "One-time";

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
-import { LogoMark } from "../../components/Logo";
 import { SectionLabel, Dot } from "../../components/SectionLabel";
 import { PW, PRICING, PATHWAY_SEVERITY, FRAMING_BODY, BRIDGE_SENTENCE, ASSURANCE, ACTIONABLE_POINTS } from "../../data/pathways";
 import { ChatBot } from "../../components/ChatBot/ChatBot";
@@ -112,21 +111,40 @@ export function ResultsPage({
             {/* Assurance */}
             <p style={{ fontSize: 14, color: INK2, lineHeight: 1.75, marginBottom: 20 }}>{ASSURANCE[res.pathway]}</p>
 
-            {/* Actionable points — moss-green tinted, distinct from
-                neutral diagnosis card below */}
+            {/* Actionable points — promoted card. Gold left rail + stronger
+                glass + larger label so it reads as the section the user is
+                actually meant to act on, not just another tinted block. */}
             <div style={{
-              background: "rgba(98,150,117,0.14)",
-              border: "1px solid rgba(98,150,117,0.30)",
+              position: "relative",
+              background: "linear-gradient(180deg, rgba(254,242,114,0.07) 0%, rgba(98,150,117,0.16) 100%)",
+              border: "1.5px solid rgba(254,242,114,0.40)",
+              borderLeft: "4px solid #FEF272",
               borderRadius: 16,
-              padding: "20px 22px",
+              padding: "22px 24px 22px 26px",
               marginBottom: 28,
-              backdropFilter: "blur(12px)",
+              backdropFilter: "blur(14px)",
+              boxShadow: "0 14px 36px -18px rgba(254,242,114,0.16)",
             }}>
-              <p style={{ fontSize: 13, color: GRN, fontWeight: 700, marginBottom: 14, fontFamily: FONT_BUTTON, letterSpacing: ".04em", textTransform: "uppercase" }}>Here are the actionable points:</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <p style={{
+                fontSize: 12, color: GOLD, fontWeight: 700,
+                marginBottom: 16, fontFamily: FONT_BUTTON,
+                letterSpacing: ".10em", textTransform: "uppercase",
+              }}>
+                Your action plan
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {actionables.map((a: string, i: number) => (
-                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                    <Dot /><span style={{ fontSize: 14, color: INK2, lineHeight: 1.55 }}>{a}</span>
+                  <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <span style={{
+                      flexShrink: 0,
+                      width: 22, height: 22, borderRadius: "50%",
+                      background: "rgba(254,242,114,0.18)",
+                      border: "1px solid rgba(254,242,114,0.45)",
+                      color: GOLD, fontSize: 11, fontWeight: 700,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontFamily: FONT_BUTTON, lineHeight: 1,
+                    }}>{i + 1}</span>
+                    <span style={{ fontSize: 14, color: INK, lineHeight: 1.55, paddingTop: 2 }}>{a}</span>
                   </div>
                 ))}
               </div>
@@ -206,17 +224,10 @@ export function ResultsPage({
               }}
               ref={!isGIPathway ? pricingRef : undefined}
             >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 14, marginBottom: 14 }}>
-                <span style={{
-                  display: "inline-flex", alignItems: "center", gap: 7,
-                  padding: "6px 14px", borderRadius: 50,
-                  fontSize: 11, fontWeight: 700, letterSpacing: ".09em", textTransform: "uppercase",
-                  background: "rgba(255,255,255,0.06)", color: GRN, border: "1px solid rgba(98,150,117,0.45)",
-                  fontFamily: FONT_BUTTON,
-                }}>
-                  <LogoMark size={12} color={GRN} />{pw.badge}
-                </span>
-              </div>
+              {/* Eyebrow pill removed — pw.badge text is already echoed by
+                  the page heading and the order-summary card downstream, so
+                  showing it here just produced a redundant "GI ADVANCED · 1
+                  MONTH CLINICAL PATHWAY" line above the price. */}
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
                   <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>{priceMain}</span>
