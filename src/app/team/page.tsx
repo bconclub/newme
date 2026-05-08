@@ -124,20 +124,32 @@ function TeamHero() {
             className="object-cover [object-position:50%_center]"
           />
         </div>
+        {/* Wash retuned: text block is now CENTER-aligned (Figma 137:1360 /
+            137:1361 — "heading misaligned" feedback) so the previous left-only
+            horizontal mask would leave the centered text floating over a
+            bright photo. Switched to a darker bottom-fade gradient that keeps
+            the headline area legible at center while letting the top of the
+            scene breathe. */}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(118deg, #629675 0%, #2F7269 28%, #144F49 52%, #013E37 78%)',
-            opacity: 0.93,
-            maskImage: 'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.60) 46%, rgba(0,0,0,0.15) 56%, rgba(0,0,0,0) 64%)',
-            WebkitMaskImage: 'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.60) 46%, rgba(0,0,0,0.15) 56%, rgba(0,0,0,0) 64%)',
+            background:
+              'linear-gradient(180deg, rgba(1,62,55,0.30) 0%, rgba(1,62,55,0.55) 50%, rgba(1,62,55,0.85) 100%)',
           }}
         />
         <div
-          className="relative z-10 flex flex-col justify-end h-full"
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
           style={{
-            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(120 / 1920 * 100vw), 120px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
+            background:
+              'radial-gradient(ellipse 70% 55% at 50% 75%, rgba(1,62,55,0.55) 0%, rgba(1,62,55,0) 70%)',
+          }}
+        />
+        <div
+          className="relative z-10 flex flex-col justify-end items-center h-full text-center"
+          style={{
+            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
           }}
         >
           <motion.p
@@ -145,7 +157,7 @@ function TeamHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: EASE, delay: 0.05 }}
             className="font-[family-name:var(--font-urbanist)]"
-            style={{ fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)', color: 'rgba(255,255,255,0.65)', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)' }}
+            style={{ fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)', color: 'rgba(255,255,255,0.75)', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)' }}
           >
             NewME Care Team
           </motion.p>
@@ -163,7 +175,7 @@ function TeamHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, ease: EASE, delay: 0.26 }}
             className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{ fontWeight: 400, fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)', lineHeight: 1.6, opacity: 0.82, maxWidth: 'clamp(260px, calc(700 / 1920 * 100vw), 700px)', marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)' }}
+            style={{ fontWeight: 400, fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)', lineHeight: 1.6, opacity: 0.88, maxWidth: 'clamp(260px, calc(720 / 1920 * 100vw), 720px)', marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)' }}
           >
             A multidisciplinary team of doctors, nutritionists, coaches, and researchers — all working inside a single clinical system.
           </motion.p>
@@ -332,9 +344,10 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
       style={{
         position: 'relative',
         overflow: 'hidden',
-        // Bumped from 24 → 36 (Figma 137:1437) — the cards read as more
-        // "soft pebble" than rectangle; matches the new design's curvature.
-        borderRadius: 'clamp(20px, calc(36 / 1920 * 100vw), 36px)',
+        // Pushed from 36 → 44 (Figma 137:1427 / 137:1428 "more curved").
+        // The cards read as soft pebbles — generous outer curve with the
+        // inset panel + name pill nested at proportionally larger radii.
+        borderRadius: 'clamp(22px, calc(44 / 1920 * 100vw), 44px)',
         aspectRatio: '435 / 540',
         background: '#013E37',
         cursor: canHover ? 'default' : 'pointer',
@@ -375,13 +388,15 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           right: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
           bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
           background: '#013E37',
-          // Bumped to match the new outer curve — was 14, now 22.
-          borderRadius: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+          // Bumped 22 → 28 to nest cleanly inside the new 44 outer curve.
+          borderRadius: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
           padding: 'clamp(10px, calc(16 / 1920 * 100vw), 18px) clamp(12px, calc(20 / 1920 * 100vw), 22px)',
           pointerEvents: showPanel ? 'none' : 'auto',
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center', // Figma 137:1427 / 1428 — names center-aligned
           gap: 4,
+          textAlign: 'center',
         }}
       >
         <p
@@ -425,9 +440,8 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           position: 'absolute',
           inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
           background: '#013E37',
-          // Inset panel bumped from 18 → 28 to keep it visually nested at
-          // the new 36 outer curve.
-          borderRadius: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
+          // Inset panel bumped 28 → 34 to track the new 44 outer curve.
+          borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
           padding: 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
           pointerEvents: showPanel ? 'auto' : 'none',
           display: 'flex',
