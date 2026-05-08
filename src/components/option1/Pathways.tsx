@@ -209,14 +209,11 @@ export default function Pathways() {
                     role="tab"
                     aria-selected={true}
                     aria-controls={`pathway-panel-${activeTab}`}
-                    className="relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border font-[family-name:var(--font-bricolage)]"
+                    className="relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border border-white/60 bg-white/[0.13] hover:bg-[#FEF272]/[0.18] hover:border-[#FEF272]/70 text-white transition-colors duration-200 font-[family-name:var(--font-bricolage)]"
                     style={{
                       minHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
                       paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
                       paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                      borderColor: 'rgba(255,255,255,0.60)',
-                      background: 'rgba(255,255,255,0.13)',
-                      color: '#FFFFFF',
                       fontWeight: 500,
                       fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
                       textDecoration: 'none',
@@ -370,14 +367,16 @@ export default function Pathways() {
                         className="rounded-full font-[family-name:var(--font-bricolage)] inline-flex items-center shrink-0"
                         style={{
                           fontWeight: 400,
-                          /* Mobile floor 12px (was 10) so the duration badge
-                             clears the legibility floor on phones. */
-                          fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                          background: '#e3ffed',
-                          color: '#162e20',
-                          paddingLeft: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
-                          paddingRight: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
-                          height: 'clamp(24px, calc(34 / 1920 * 100vw), 34px)',
+                          fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
+                          color: 'rgba(255,255,255,0.90)',
+                          background: 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%)',
+                          backdropFilter: 'blur(8px) saturate(110%)',
+                          WebkitBackdropFilter: 'blur(8px) saturate(110%)',
+                          border: '1px solid rgba(255,255,255,0.28)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
+                          paddingLeft: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
+                          paddingRight: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
+                          height: 'clamp(22px, calc(30 / 1920 * 100vw), 30px)',
                         }}
                       >
                         {card.duration}

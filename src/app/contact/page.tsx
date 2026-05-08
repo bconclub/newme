@@ -62,8 +62,38 @@ function ContactBody() {
         padding: 'clamp(60px, calc(120 / 1920 * 100vw), 120px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
       }}
     >
+      {/* Atmospheric blobs */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
+        {/* Green gradient wash — left/center */}
+        <div style={{
+          position: 'absolute', borderRadius: '50%',
+          width: 'clamp(600px, 80vw, 1400px)', height: 'clamp(600px, 80vw, 1400px)',
+          top: '-10%', left: '-15%',
+          background: 'linear-gradient(180deg, #629675 0%, #013E37 100%)',
+          filter: 'blur(180px)', opacity: 0.38,
+          maskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.7) 65%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.7) 65%, transparent 100%)',
+        }} />
+        {/* Gold accent — right */}
+        <div style={{
+          position: 'absolute', borderRadius: '50%',
+          width: 'clamp(300px, 40vw, 700px)', height: 'clamp(300px, 40vw, 700px)',
+          top: '5%', right: '-8%',
+          background: '#FEF272',
+          filter: 'blur(160px)', opacity: 0.28,
+        }} />
+        {/* Grain overlay */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+          backgroundSize: '220px 220px',
+          mixBlendMode: 'soft-light',
+          opacity: 0.35,
+        }} />
+      </div>
       <div
         style={{
+          position: 'relative', zIndex: 1,
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
           gap: 'clamp(48px, calc(110 / 1920 * 100vw), 110px)',
@@ -163,21 +193,12 @@ function ContactBody() {
           </motion.div>
         </div>
 
-        {/* ── Right column — form card ── */}
-        {/* Form card — Figma: w=890 h=902, rounded-[48px], border 1px solid rgba(255,255,255,0.28), padding 96px */}
+        {/* ── Right column — minimal form ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.65, ease: EASE }}
-          style={{
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)',
-            backdropFilter: 'blur(20px) saturate(85%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(85%)',
-            border: '1px solid rgba(255,255,255,0.28)',
-            borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
-            padding: 'clamp(36px, calc(96 / 1920 * 100vw), 96px)',
-          }}
         >
           <h2
             className="font-[family-name:var(--font-bricolage)] text-white"
@@ -219,73 +240,75 @@ function ContactBody() {
               ✓ &nbsp;Message received. Our team will be in touch within 1 business day.
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)' }}>
-              {/* Name — Figma: h=72, w=698 */}
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)' }}>
               <input
                 type="text"
                 placeholder="Name"
                 required
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none"
+                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none bg-transparent"
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  borderRadius: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                  height: 'clamp(52px, calc(72 / 1920 * 100vw), 72px)',
-                  padding: '0 clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                  borderBottom: '1px solid rgba(255,255,255,0.30)',
+                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                  padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
                   fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                  transition: 'border-color 0.2s',
                 }}
+                onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
+                onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
               />
 
-              {/* Email — Figma: h=72, w=698 */}
               <input
                 type="email"
                 placeholder="Email address"
                 required
                 value={form.email}
                 onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none"
+                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none bg-transparent"
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  borderRadius: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                  height: 'clamp(52px, calc(72 / 1920 * 100vw), 72px)',
-                  padding: '0 clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                  borderBottom: '1px solid rgba(255,255,255,0.30)',
+                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                  padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
                   fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                  transition: 'border-color 0.2s',
                 }}
+                onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
+                onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
               />
 
-              {/* Message — Figma: h=208, w=698 */}
               <textarea
-                placeholder="Leave a Message"
+                placeholder="Leave a message"
                 required
                 value={form.message}
                 onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/40 w-full outline-none resize-none"
+                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none resize-none bg-transparent"
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  borderRadius: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
-                  height: 'clamp(130px, calc(208 / 1920 * 100vw), 208px)',
-                  padding: 'clamp(16px, calc(24 / 1920 * 100vw), 24px) clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                  borderBottom: '1px solid rgba(255,255,255,0.30)',
+                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+                  height: 'clamp(120px, calc(180 / 1920 * 100vw), 180px)',
+                  padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
                   fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                  transition: 'border-color 0.2s',
                 }}
+                onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
+                onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
               />
 
-              {/* Send Now — Figma: bg-white, text-black, 197×72px, rounded-[60px], 24px Medium */}
               <button
                 type="submit"
                 disabled={sending}
-                className="font-[family-name:var(--font-bricolage)]"
+                className="font-[family-name:var(--font-bricolage)] hover:bg-[#FEF272] active:scale-95"
                 style={{
                   background: sending ? 'rgba(255,255,255,0.7)' : '#ffffff',
-                  color: '#000000',
+                  color: '#013E37',
                   border: 'none',
                   borderRadius: 60,
                   width: 'clamp(150px, calc(197 / 1920 * 100vw), 197px)',
-                  height: 'clamp(52px, calc(72 / 1920 * 100vw), 72px)',
-                  fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                  height: 'clamp(52px, calc(64 / 1920 * 100vw), 64px)',
+                  fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 20px)',
                   fontWeight: 500,
                   cursor: sending ? 'not-allowed' : 'pointer',
                   transition: 'background 0.2s, transform 0.15s',
