@@ -217,10 +217,13 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
       {/* Floating launcher — pill label on the left, circular icon on the right.
           The label only appears when the chat is closed; clicking either piece
           opens the panel. The whole stack pulses softly until the user has
-          interacted so the prompt actually gets noticed. */}
+          interacted so the prompt actually gets noticed.
+
+          Anchored at bottom:24 right:24 (was 88 / 24 — read as floating in
+          mid-air). Now sits in the natural bottom-right corner. */}
       <div
         style={{
-          position: "fixed", bottom: 88, right: 24, zIndex: 200,
+          position: "fixed", bottom: 24, right: 24, zIndex: 200,
           display: "flex", alignItems: "center", gap: 10,
           pointerEvents: "none", // children opt-in below
         }}
@@ -277,16 +280,16 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
           {open ? (
             <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 20, lineHeight: 1 }}>✕</span>
           ) : (
-            // Chat-bubble icon — universally legible as "chat with us"
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5l-4.2 3.36a.6.6 0 0 1-.97-.47V16H6a2 2 0 0 1-2-2V5z"
-                fill={GOLD}
-              />
-              <circle cx="9" cy="9.5" r="1.1" fill="#013E37" />
-              <circle cx="12" cy="9.5" r="1.1" fill="#013E37" />
-              <circle cx="15" cy="9.5" r="1.1" fill="#013E37" />
-            </svg>
+            // Brand swirl (favicon) as the launcher icon — replaces the
+            // generic chat-bubble SVG so the floater matches the rest of
+            // the site's brand language. swirl-cream.png already lives in
+            // /public and is used as the site favicon.
+            <img
+              src="/swirl-cream.png"
+              alt=""
+              aria-hidden
+              style={{ width: 30, height: 30, objectFit: "contain", display: "block" }}
+            />
           )}
         </div>
       </div>
@@ -294,7 +297,8 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
       {/* Chat window */}
       {open && (
         <div style={{
-          position: "fixed", top: 16, bottom: 152, right: 24, zIndex: 199,
+          // Panel bottom = launcher bottom (24) + launcher height (52) + gap (12) = 88
+          position: "fixed", top: 16, bottom: 88, right: 24, zIndex: 199,
           width: 340, borderRadius: 20,
           background: "rgba(1,30,28,0.96)",
           backdropFilter: "blur(24px)",
