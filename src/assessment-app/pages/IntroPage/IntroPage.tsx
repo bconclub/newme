@@ -54,7 +54,7 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
 
           {/* ── Body ── */}
           <p style={{ color: INK2, fontSize: 16, lineHeight: 1.75, maxWidth: 440, marginBottom: 36, fontFamily: FONT_BODY }}>
-            Not a diet plan. Not a generic program. A clinical assessment that matches you to a pathway built around what's actually happening in your body.
+            A clinical assessment that matches you to a pathway built around what's actually happening in your body.
           </p>
 
           {/* ── Avatar stack with real faces ── */}
