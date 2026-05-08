@@ -198,9 +198,22 @@ main.newme-page {
         border-radius: 16px !important;
       }
 
+      /* Header bands: compact height + tight padding */
+      .newme-typical-col > div:first-child,
+      .newme-newme-col > div:first-child {
+        min-height: 52px !important;
+        padding: 10px 8px !important;
+        border-radius: 16px 16px 0 0 !important;
+      }
+
+      /* List items: fixed padding, no flex-stretch */
+      .newme-typical-col li,
+      .newme-newme-col li {
+        flex: none !important;
+        padding: 7px 10px !important;
+      }
+
       /* Shrink all text inside both cards */
-      .newme-typical-col [style*="font-size"],
-      .newme-newme-col [style*="font-size"],
       .newme-typical-col span,
       .newme-newme-col span,
       .newme-typical-col h3,
