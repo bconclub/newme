@@ -114,14 +114,16 @@ const BODY_SIZE = 'clamp(16px, calc(19 / 1920 * 100vw), 19px)'
 const BODY_FONT = 'font-[family-name:var(--font-urbanist)]'
 const HEAD_FONT = 'font-[family-name:var(--font-bricolage)]'
 
-/* Pre-scan: assign sequential numbers to h3s within each h2 section
-   when a section contains 2+ h3s (e.g. "6 Common Reasons"). */
+/* Pre-scan: number h3s only inside h2 sections whose title contains a
+   digit (e.g. "6 Common Reasons", "5 Steps"). Other h3s keep the gold
+   left-border treatment to show hierarchy without implying a count. */
 function buildH3NumberMap(blocks: PtBlock[]): Map<string, number> {
   const map = new Map<string, number>()
+  let currentH2HasNumber = false
   let sectionH3s: { key: string }[] = []
 
   const flush = () => {
-    if (sectionH3s.length >= 2) {
+    if (currentH2HasNumber) {
       sectionH3s.forEach(({ key }, i) => map.set(key, i + 1))
     }
     sectionH3s = []
@@ -129,8 +131,13 @@ function buildH3NumberMap(blocks: PtBlock[]): Map<string, number> {
 
   for (const b of blocks) {
     if (b._type !== 'block') continue
-    if (b.style === 'h2') { flush() }
-    else if (b.style === 'h3' && b._key) { sectionH3s.push({ key: b._key }) }
+    if (b.style === 'h2') {
+      flush()
+      const text = (b.children ?? []).map(s => s.text).join('')
+      currentH2HasNumber = /\d/.test(text)
+    } else if (b.style === 'h3' && b._key) {
+      sectionH3s.push({ key: b._key })
+    }
   }
   flush()
   return map
