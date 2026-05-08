@@ -214,27 +214,81 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
 
   return (
     <>
-      {/* Floating toggle */}
+      {/* Floating launcher — pill label on the left, circular icon on the right.
+          The label only appears when the chat is closed; clicking either piece
+          opens the panel. The whole stack pulses softly until the user has
+          interacted so the prompt actually gets noticed. */}
       <div
-        onClick={() => { setOpen(o => !o); setPulse(false); }}
         style={{
           position: "fixed", bottom: 88, right: 24, zIndex: 200,
-          width: 52, height: 52, borderRadius: "50%",
-          background: open ? "#0E2827" : "#013E37",
-          border: "1.5px solid rgba(255,255,255,0.2)",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          cursor: "pointer", transition: "background .2s, transform .2s",
-          transform: open ? "scale(1.05)" : "scale(1)",
+          display: "flex", alignItems: "center", gap: 10,
+          pointerEvents: "none", // children opt-in below
         }}
       >
-        {pulse && !open && (
-          <div style={{ position: "absolute", inset: -4, borderRadius: "50%", border: `2px solid ${GOLD}`, animation: "chatPulse 1.4s ease-out infinite" }} />
+        {/* "Have any questions?" pill — closed state only */}
+        {!open && (
+          <button
+            type="button"
+            onClick={() => { setOpen(true); setPulse(false); }}
+            aria-label="Open chat — have any questions?"
+            style={{
+              pointerEvents: "auto",
+              background: "#FEF272",
+              color: "#013E37",
+              border: "none",
+              borderRadius: 999,
+              padding: "10px 16px",
+              fontSize: 13,
+              fontWeight: 600,
+              fontFamily: FONT_BUTTON,
+              boxShadow: "0 6px 20px rgba(0,0,0,0.28)",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              animation: pulse ? "chatLabelBob 2.4s ease-in-out infinite" : "none",
+              transition: "transform .15s ease",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}
+          >
+            Have any questions?
+          </button>
         )}
-        {open
-          ? <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 20, lineHeight: 1 }}>✕</span>
-          : <LogoMark size={26} color={GRN} />
-        }
+
+        {/* Circular icon launcher */}
+        <div
+          onClick={() => { setOpen(o => !o); setPulse(false); }}
+          role="button"
+          aria-label={open ? "Close chat" : "Open chat"}
+          style={{
+            pointerEvents: "auto",
+            position: "relative",
+            width: 52, height: 52, borderRadius: "50%",
+            background: open ? "#0E2827" : "#013E37",
+            border: "1.5px solid rgba(255,255,255,0.2)",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", transition: "background .2s, transform .2s",
+            transform: open ? "scale(1.05)" : "scale(1)",
+          }}
+        >
+          {pulse && !open && (
+            <div style={{ position: "absolute", inset: -4, borderRadius: "50%", border: `2px solid ${GOLD}`, animation: "chatPulse 1.4s ease-out infinite" }} />
+          )}
+          {open ? (
+            <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 20, lineHeight: 1 }}>✕</span>
+          ) : (
+            // Chat-bubble icon — universally legible as "chat with us"
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path
+                d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5l-4.2 3.36a.6.6 0 0 1-.97-.47V16H6a2 2 0 0 1-2-2V5z"
+                fill={GOLD}
+              />
+              <circle cx="9" cy="9.5" r="1.1" fill="#013E37" />
+              <circle cx="12" cy="9.5" r="1.1" fill="#013E37" />
+              <circle cx="15" cy="9.5" r="1.1" fill="#013E37" />
+            </svg>
+          )}
+        </div>
       </div>
 
       {/* Chat window */}
@@ -323,6 +377,7 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
         @keyframes chatPulse { 0% { opacity:.8; transform:scale(1); } 100% { opacity:0; transform:scale(1.6); } }
         @keyframes chatSlideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes typingDot { 0%, 100% { transform:translateY(0); opacity:.4; } 50% { transform:translateY(-4px); opacity:1; } }
+        @keyframes chatLabelBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
       `}</style>
     </>
   );
