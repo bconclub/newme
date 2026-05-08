@@ -101,9 +101,9 @@ export default function BlogHero() {
                 maxWidth: 'clamp(320px, calc(880 / 1920 * 100vw), 880px)',
               }}
             >
-              Long-Form Writing,
+              Notes From
               <br />
-              Doctor-Led.
+              The Clinic.
             </motion.h1>
 
             <motion.p
