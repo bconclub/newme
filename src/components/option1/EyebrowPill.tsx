@@ -63,22 +63,27 @@ export default function EyebrowPill({
   children,
   className = '',
   variant = 'light',
+  style: styleProp,
 }: {
   children: ReactNode
   className?: string
+  style?: React.CSSProperties
   /**
-   * `light` (default): white text on dark page bg — used everywhere except DrPal.
-   * `dark`: dark pine text on the light sage DrPal card. Sage-green border ramp.
+   * `light` (default): white text on dark page bg.
+   * `dark`: dark pine text on light sage card.
+   * `gold`: gold text + border — used for pathway badges on dark cards.
    */
-  variant?: 'light' | 'dark'
+  variant?: 'light' | 'dark' | 'gold'
 }) {
   const isDark = variant === 'dark'
-  // Stroke color used for the entrance draw — matches the variant's settled border.
-  const strokeColor = isDark ? '#629675' : 'rgba(255,255,255,0.95)'
+  const isGold = variant === 'gold'
 
-  // Settled-border radial-gradient string (matches each variant's existing look).
+  const strokeColor = isDark ? '#629675' : isGold ? 'rgba(254,242,114,0.9)' : 'rgba(255,255,255,0.95)'
+
   const settledBorderBg = isDark
     ? 'radial-gradient(ellipse 115% 95% at 100% 100%, rgba(98,150,117,0) 0%, rgba(98,150,117,0) 25%, rgba(98,150,117,0.10) 38%, rgba(98,150,117,0.28) 50%, rgba(98,150,117,0.50) 62%, rgba(98,150,117,0.72) 74%, rgba(98,150,117,0.90) 86%, #629675 96%)'
+    : isGold
+    ? 'radial-gradient(ellipse 115% 95% at 100% 100%, rgba(254,242,114,0) 0%, rgba(254,242,114,0) 25%, rgba(254,242,114,0.08) 38%, rgba(254,242,114,0.22) 50%, rgba(254,242,114,0.45) 62%, rgba(254,242,114,0.7) 74%, rgba(254,242,114,0.88) 86%, rgba(254,242,114,0.95) 96%)'
     : 'radial-gradient(ellipse 115% 95% at 100% 100%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0.08) 38%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.45) 62%, rgba(255,255,255,0.7) 74%, rgba(255,255,255,0.9) 86%, #FFFFFF 96%)'
 
   return (
@@ -86,7 +91,7 @@ export default function EyebrowPill({
       {...RISE}
       className={[
         'relative inline-flex items-center justify-center rounded-full font-[family-name:var(--font-bricolage)]',
-        isDark ? '' : 'text-white',
+        isDark ? '' : isGold ? '' : 'text-white',
         className,
       ].join(' ')}
       style={{
@@ -99,15 +104,20 @@ export default function EyebrowPill({
         fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
         lineHeight: 1,
         letterSpacing: 0,
-        color: isDark ? '#173b39' : undefined,
+        color: isDark ? '#173b39' : isGold ? '#FEF272' : undefined,
         backdropFilter: 'blur(8px) saturate(110%)',
         WebkitBackdropFilter: 'blur(8px) saturate(110%)',
         background: isDark
           ? 'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0) 100%)'
+          : isGold
+          ? 'linear-gradient(180deg, rgba(254,242,114,0.08) 0%, rgba(254,242,114,0.03) 45%, rgba(254,242,114,0) 100%)'
           : 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0) 100%)',
         boxShadow: isDark
           ? 'inset 0 1px 0 rgba(255,255,255,0.22), 0 6px 18px -10px rgba(23,59,57,0.25)'
+          : isGold
+          ? 'inset 0 1px 0 rgba(254,242,114,0.18), 0 6px 18px -10px rgba(254,242,114,0.15)'
           : 'inset 0 1px 0 rgba(255,255,255,0.18), 0 6px 18px -10px rgba(0,0,0,0.45)',
+        ...styleProp,
       }}
     >
       {/* Entrance stroke — SVG rect that draws around the perimeter.

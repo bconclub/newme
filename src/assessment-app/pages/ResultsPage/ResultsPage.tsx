@@ -225,22 +225,23 @@ export function ResultsPage({
               ref={!isGIPathway ? pricingRef : undefined}
             >
               {/* Pathway name badge */}
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                border: "1.5px solid rgba(254,242,114,0.35)",
-                borderRadius: 999, padding: "5px 12px 5px 8px",
-                marginBottom: 16,
-                background: "rgba(254,242,114,0.08)",
-              }}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                  <path d="M7 1.5A5.5 5.5 0 1 1 7 12.5A5.5 5.5 0 0 1 7 1.5Z" stroke="rgba(254,242,114,0.8)" strokeWidth="1.2"/>
-                  <path d="M7 4.5V7.5L8.5 9" stroke="rgba(254,242,114,0.8)" strokeWidth="1.2" strokeLinecap="round"/>
-                </svg>
-                <span style={{
-                  fontSize: 10, fontWeight: 700, letterSpacing: ".1em",
-                  textTransform: "uppercase", color: "rgba(254,242,114,0.85)",
-                  fontFamily: FONT_BUTTON,
-                }}>{pw.badge}</span>
+              <div style={{ marginBottom: 16 }}>
+                <EyebrowPill
+                  variant="gold"
+                  style={{
+                    height: 36,
+                    paddingLeft: 16,
+                    paddingRight: 16,
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: ".10em",
+                    fontFamily: FONT_BUTTON,
+                  }}
+                >
+                  {pw.badge}
+                </EyebrowPill>
               </div>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
