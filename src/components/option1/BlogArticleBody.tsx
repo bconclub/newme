@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import type { BlogPost } from '@/app/blog/[slug]/page'
 import { urlFor } from '@/lib/sanity/image'
+import BlogTOC from './BlogTOC'
 
 type Span = { _type: 'span'; text: string; marks?: string[]; _key?: string }
 type PtBlock = {
@@ -349,13 +350,14 @@ function PortableText({ value }: { value: unknown[] }) {
 
 /* ── Body component ─────────────────────────────────────────────────────── */
 
-export default function BlogArticleBody({ post, noTopMargin }: { post: BlogPost; noTopMargin?: boolean }) {
+export default function BlogArticleBody({ post, tocEntries }: { post: BlogPost; tocEntries?: TOCEntry[] }) {
   const hasIntro = post.intro && post.intro.length > 0
   const hasSection = !!(post.sectionTitle || post.sectionLead || (post.habits && post.habits.length > 0))
   const hasBody = post.body && Array.isArray(post.body) && post.body.length > 0
 
   return (
-    <div className="mx-auto" style={{ maxWidth: 800, marginTop: noTopMargin ? 0 : 'clamp(40px, calc(64 / 1920 * 100vw), 64px)' }}>
+    <div style={{ maxWidth: 800, marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)' }}>
+      {tocEntries && tocEntries.length > 1 && <BlogTOC entries={tocEntries} />}
       {hasIntro && (
         <div>
           {post.intro!.map((para, i) => (

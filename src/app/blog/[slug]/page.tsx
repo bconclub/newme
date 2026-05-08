@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import BlogArticleBody, { extractTOCHeadings } from '@/components/option1/BlogArticleBody'
-import BlogTOC from '@/components/option1/BlogTOC'
 import { postBySlugQuery, postSlugsQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
@@ -299,11 +298,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           )}
 
-          {/* Table of contents + Body — shared container owns the top margin */}
-          <div className="mx-auto" style={{ maxWidth: 800, marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)' }}>
-            {tocEntries.length > 1 && <BlogTOC entries={tocEntries} />}
-          </div>
-          <BlogArticleBody post={post} noTopMargin={tocEntries.length > 1} />
+          <BlogArticleBody post={post} tocEntries={tocEntries} />
         </article>
       </main>
       <Footer />
