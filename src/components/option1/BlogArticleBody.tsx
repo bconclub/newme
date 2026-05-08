@@ -1,16 +1,37 @@
-'use client'
-
+import Image from 'next/image'
 import type { BlogPost } from '@/app/blog/[slug]/page'
+import { urlFor } from '@/lib/sanity/image'
 
 type Span = { _type: 'span'; text: string; marks?: string[]; _key?: string }
 type PtBlock = {
-  _type: 'block'
+  _type: 'block' | 'image'
   style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'blockquote'
   listItem?: 'bullet' | 'number'
   level?: number
   children?: Span[]
   markDefs?: Array<{ _key: string; _type: string; href?: string }>
   _key?: string
+  // image fields
+  asset?: { _ref?: string; _id?: string }
+  alt?: string
+  caption?: string
+}
+
+export function slugifyHeading(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+export type TOCEntry = { id: string; text: string; level: 2 | 3 }
+
+export function extractTOCHeadings(body: unknown[]): TOCEntry[] {
+  if (!Array.isArray(body)) return []
+  return body
+    .filter((n): n is PtBlock => typeof n === 'object' && n !== null && (n as PtBlock)._type === 'block' && ((n as PtBlock).style === 'h2' || (n as PtBlock).style === 'h3'))
+    .map((b) => {
+      const text = (b.children ?? []).map((s) => s.text).join('')
+      return { id: slugifyHeading(text), text, level: b.style === 'h2' ? 2 : 3 }
+    })
+    .filter((e) => e.text.trim())
 }
 
 function renderSpans(spans: Span[] | undefined, markDefs: PtBlock['markDefs']) {
@@ -59,9 +80,9 @@ function renderSpans(spans: Span[] | undefined, markDefs: PtBlock['markDefs']) {
   })
 }
 
-/* Groups consecutive list blocks into <ul> / <ol> runs */
 type Group =
-  | { kind: 'block'; block: PtBlock; index: number }
+  | { kind: 'block'; block: PtBlock }
+  | { kind: 'image'; block: PtBlock }
   | { kind: 'ul'; items: PtBlock[] }
   | { kind: 'ol'; items: PtBlock[] }
 
@@ -70,20 +91,19 @@ function groupBlocks(blocks: PtBlock[]): Group[] {
   let i = 0
   while (i < blocks.length) {
     const b = blocks[i]
-    if (b.listItem === 'bullet') {
+    if (b._type === 'image') {
+      groups.push({ kind: 'image', block: b })
+      i++
+    } else if (b.listItem === 'bullet') {
       const items: PtBlock[] = []
-      while (i < blocks.length && blocks[i].listItem === 'bullet') {
-        items.push(blocks[i++])
-      }
+      while (i < blocks.length && blocks[i].listItem === 'bullet') items.push(blocks[i++])
       groups.push({ kind: 'ul', items })
     } else if (b.listItem === 'number') {
       const items: PtBlock[] = []
-      while (i < blocks.length && blocks[i].listItem === 'number') {
-        items.push(blocks[i++])
-      }
+      while (i < blocks.length && blocks[i].listItem === 'number') items.push(blocks[i++])
       groups.push({ kind: 'ol', items })
     } else {
-      groups.push({ kind: 'block', block: b, index: i })
+      groups.push({ kind: 'block', block: b })
       i++
     }
   }
@@ -91,53 +111,59 @@ function groupBlocks(blocks: PtBlock[]): Group[] {
 }
 
 const BODY_SIZE = 'clamp(16px, calc(19 / 1920 * 100vw), 19px)'
-const BODY_FONT = "font-[family-name:var(--font-urbanist)]"
-const HEAD_FONT = "font-[family-name:var(--font-bricolage)]"
+const BODY_FONT = 'font-[family-name:var(--font-urbanist)]'
+const HEAD_FONT = 'font-[family-name:var(--font-bricolage)]'
 
 function PortableText({ value }: { value: unknown[] }) {
   if (!Array.isArray(value)) return null
-  const blocks = value.filter((n): n is PtBlock => typeof n === 'object' && n !== null && (n as PtBlock)._type === 'block')
+  const blocks = value.filter((n): n is PtBlock => typeof n === 'object' && n !== null)
   const groups = groupBlocks(blocks)
 
   return (
     <>
       {groups.map((g, gi) => {
+        /* ── Inline image ── */
+        if (g.kind === 'image') {
+          if (!g.block.asset) return null
+          const src = urlFor(g.block as object).width(1200).auto('format').url()
+          return (
+            <figure
+              key={g.block._key ?? `img-${gi}`}
+              style={{ margin: '40px 0', borderRadius: 16, overflow: 'hidden' }}
+            >
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+                <Image
+                  src={src}
+                  alt={g.block.alt ?? ''}
+                  fill
+                  sizes="(max-width: 800px) 100vw, 800px"
+                  style={{ objectFit: 'cover' }}
+                  unoptimized
+                />
+              </div>
+              {g.block.caption && (
+                <figcaption
+                  className={`${BODY_FONT} text-white/50`}
+                  style={{ fontSize: 13, marginTop: 10, textAlign: 'center', fontStyle: 'italic' }}
+                >
+                  {g.block.caption}
+                </figcaption>
+              )}
+            </figure>
+          )
+        }
+
+        /* ── Bullet list ── */
         if (g.kind === 'ul') {
           return (
-            <ul
-              key={`ul-${gi}`}
-              style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: '24px 0',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-              }}
-            >
+            <ul key={`ul-${gi}`} style={{ listStyle: 'none', padding: 0, margin: '24px 0', display: 'flex', flexDirection: 'column', gap: 12 }}>
               {g.items.map((item, ii) => (
                 <li
                   key={item._key ?? `ul-${gi}-${ii}`}
                   className={`${BODY_FONT} text-white/85`}
-                  style={{
-                    display: 'flex',
-                    gap: 12,
-                    alignItems: 'flex-start',
-                    fontSize: BODY_SIZE,
-                    lineHeight: 1.65,
-                  }}
+                  style={{ display: 'flex', gap: 12, alignItems: 'flex-start', fontSize: BODY_SIZE, lineHeight: 1.65 }}
                 >
-                  <span
-                    aria-hidden
-                    style={{
-                      flexShrink: 0,
-                      width: 7,
-                      height: 7,
-                      borderRadius: '50%',
-                      background: '#FEF272',
-                      marginTop: '0.55em',
-                    }}
-                  />
+                  <span aria-hidden style={{ flexShrink: 0, width: 7, height: 7, borderRadius: '50%', background: '#FEF272', marginTop: '0.55em' }} />
                   <span>{renderSpans(item.children, item.markDefs)}</span>
                 </li>
               ))}
@@ -145,49 +171,24 @@ function PortableText({ value }: { value: unknown[] }) {
           )
         }
 
+        /* ── Numbered list ── */
         if (g.kind === 'ol') {
           return (
-            <ol
-              key={`ol-${gi}`}
-              style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: '24px 0',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 14,
-                counterReset: 'pt-ol',
-              }}
-            >
+            <ol key={`ol-${gi}`} style={{ listStyle: 'none', padding: 0, margin: '24px 0', display: 'flex', flexDirection: 'column', gap: 14 }}>
               {g.items.map((item, ii) => (
                 <li
                   key={item._key ?? `ol-${gi}-${ii}`}
                   className={`${BODY_FONT} text-white/85`}
-                  style={{
-                    display: 'flex',
-                    gap: 14,
-                    alignItems: 'flex-start',
-                    fontSize: BODY_SIZE,
-                    lineHeight: 1.65,
-                  }}
+                  style={{ display: 'flex', gap: 14, alignItems: 'flex-start', fontSize: BODY_SIZE, lineHeight: 1.65 }}
                 >
                   <span
                     aria-hidden
                     className={HEAD_FONT}
                     style={{
-                      flexShrink: 0,
-                      width: 26,
-                      height: 26,
-                      borderRadius: '50%',
-                      background: 'rgba(254,242,114,0.15)',
-                      border: '1px solid rgba(254,242,114,0.4)',
-                      color: '#FEF272',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginTop: '0.2em',
+                      flexShrink: 0, width: 26, height: 26, borderRadius: '50%',
+                      background: 'rgba(254,242,114,0.15)', border: '1px solid rgba(254,242,114,0.4)',
+                      color: '#FEF272', fontSize: 11, fontWeight: 700,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '0.2em',
                     }}
                   >
                     {ii + 1}
@@ -199,61 +200,61 @@ function PortableText({ value }: { value: unknown[] }) {
           )
         }
 
-        /* Single block */
+        /* ── Single block ── */
         const block = g.block
         const key = block._key ?? `b-${gi}`
         const children = renderSpans(block.children, block.markDefs)
 
         switch (block.style) {
-          case 'h2':
+          case 'h2': {
+            const headingText = (block.children ?? []).map(s => s.text).join('')
+            const id = slugifyHeading(headingText)
             return (
               <h2
                 key={key}
+                id={id}
                 className={`${HEAD_FONT} text-white`}
                 style={{
                   fontSize: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
-                  lineHeight: 1.2,
-                  fontWeight: 600,
-                  letterSpacing: '-0.01em',
-                  marginTop: 64,
-                  marginBottom: 18,
-                  paddingBottom: 14,
-                  borderBottom: '1px solid rgba(255,255,255,0.12)',
+                  lineHeight: 1.2, fontWeight: 600, letterSpacing: '-0.01em',
+                  marginTop: 64, marginBottom: 18,
+                  paddingBottom: 14, borderBottom: '1px solid rgba(255,255,255,0.12)',
+                  scrollMarginTop: 100,
                 }}
               >
                 {children}
               </h2>
             )
-          case 'h3':
+          }
+          case 'h3': {
+            const headingText = (block.children ?? []).map(s => s.text).join('')
+            const id = slugifyHeading(headingText)
             return (
               <h3
                 key={key}
+                id={id}
                 className={`${HEAD_FONT} text-white`}
                 style={{
                   fontSize: 'clamp(18px, calc(26 / 1920 * 100vw), 26px)',
-                  lineHeight: 1.3,
-                  fontWeight: 600,
-                  marginTop: 44,
-                  marginBottom: 12,
-                  paddingLeft: 14,
-                  borderLeft: '3px solid #FEF272',
-                  color: 'rgba(255,255,255,0.95)',
+                  lineHeight: 1.3, fontWeight: 600,
+                  marginTop: 44, marginBottom: 12,
+                  paddingLeft: 14, borderLeft: '3px solid #FEF272',
+                  scrollMarginTop: 100,
                 }}
               >
                 {children}
               </h3>
             )
+          }
           case 'h4':
             return (
               <h4
                 key={key}
-                className={`${HEAD_FONT}`}
+                className={HEAD_FONT}
                 style={{
                   fontSize: 'clamp(16px, calc(20 / 1920 * 100vw), 20px)',
-                  lineHeight: 1.3,
-                  fontWeight: 600,
-                  marginTop: 32,
-                  marginBottom: 8,
+                  lineHeight: 1.3, fontWeight: 600,
+                  marginTop: 32, marginBottom: 8,
                   color: '#FEF272',
                 }}
               >
@@ -266,41 +267,29 @@ function PortableText({ value }: { value: unknown[] }) {
                 key={key}
                 className={`${HEAD_FONT} text-white/85`}
                 style={{
-                  borderLeft: '3px solid #FEF272',
-                  paddingLeft: 22,
-                  paddingTop: 4,
-                  paddingBottom: 4,
-                  marginTop: 32,
-                  marginBottom: 32,
-                  fontStyle: 'italic',
-                  fontSize: 'clamp(18px, calc(22 / 1920 * 100vw), 22px)',
-                  lineHeight: 1.55,
-                  background: 'rgba(254,242,114,0.04)',
-                  borderRadius: '0 8px 8px 0',
+                  borderLeft: '3px solid #FEF272', paddingLeft: 22, paddingTop: 4, paddingBottom: 4,
+                  marginTop: 32, marginBottom: 32, fontStyle: 'italic',
+                  fontSize: 'clamp(18px, calc(22 / 1920 * 100vw), 22px)', lineHeight: 1.55,
+                  background: 'rgba(254,242,114,0.04)', borderRadius: '0 8px 8px 0',
                 }}
               >
                 {children}
               </blockquote>
             )
           case 'normal':
-          default:
-            /* Empty paragraph = spacer */
+          default: {
             const isEmpty = !block.children?.some(s => s.text?.trim())
             if (isEmpty) return <div key={key} style={{ height: 8 }} />
             return (
               <p
                 key={key}
                 className={`${BODY_FONT} text-white/80`}
-                style={{
-                  fontSize: BODY_SIZE,
-                  lineHeight: 1.75,
-                  marginTop: 20,
-                  fontWeight: 400,
-                }}
+                style={{ fontSize: BODY_SIZE, lineHeight: 1.75, marginTop: 20, fontWeight: 400 }}
               >
                 {children}
               </p>
             )
+          }
         }
       })}
     </>
@@ -309,32 +298,20 @@ function PortableText({ value }: { value: unknown[] }) {
 
 /* ── Body component ─────────────────────────────────────────────────────── */
 
-export default function BlogArticleBody({ post }: { post: BlogPost }) {
+export default function BlogArticleBody({ post, noTopMargin }: { post: BlogPost; noTopMargin?: boolean }) {
   const hasIntro = post.intro && post.intro.length > 0
   const hasSection = !!(post.sectionTitle || post.sectionLead || (post.habits && post.habits.length > 0))
   const hasBody = post.body && Array.isArray(post.body) && post.body.length > 0
 
   return (
-    <div
-      className="mx-auto"
-      style={{
-        maxWidth: 800,
-        marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
-      }}
-    >
-      {/* Intro paragraphs */}
+    <div className="mx-auto" style={{ maxWidth: 800, marginTop: noTopMargin ? 0 : 'clamp(40px, calc(64 / 1920 * 100vw), 64px)' }}>
       {hasIntro && (
         <div>
           {post.intro!.map((para, i) => (
             <p
               key={`intro-${i}`}
               className={`${BODY_FONT} text-white/90`}
-              style={{
-                fontSize: 'clamp(17px, calc(20 / 1920 * 100vw), 20px)',
-                lineHeight: 1.7,
-                marginTop: i === 0 ? 0 : 20,
-                fontWeight: 400,
-              }}
+              style={{ fontSize: 'clamp(17px, calc(20 / 1920 * 100vw), 20px)', lineHeight: 1.7, marginTop: i === 0 ? 0 : 20, fontWeight: 400 }}
             >
               {para}
             </p>
@@ -342,19 +319,12 @@ export default function BlogArticleBody({ post }: { post: BlogPost }) {
         </div>
       )}
 
-      {/* Structured section (habits) */}
       {hasSection && (
         <section style={{ marginTop: hasIntro ? 56 : 0 }}>
           {post.sectionTitle && (
             <h2
               className={`${HEAD_FONT} text-white`}
-              style={{
-                fontSize: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)',
-                lineHeight: 1.15,
-                fontWeight: 600,
-                letterSpacing: '-0.01em',
-                marginBottom: 16,
-              }}
+              style={{ fontSize: 'clamp(24px, calc(40 / 1920 * 100vw), 40px)', lineHeight: 1.15, fontWeight: 600, letterSpacing: '-0.01em', marginBottom: 16 }}
             >
               {post.sectionTitle}
             </h2>
@@ -362,59 +332,19 @@ export default function BlogArticleBody({ post }: { post: BlogPost }) {
           {post.sectionLead && (
             <p
               className={`${BODY_FONT} text-white/85`}
-              style={{
-                fontSize: 'clamp(16px, calc(19 / 1920 * 100vw), 19px)',
-                lineHeight: 1.7,
-                marginTop: 12,
-                fontWeight: 400,
-              }}
+              style={{ fontSize: 'clamp(16px, calc(19 / 1920 * 100vw), 19px)', lineHeight: 1.7, marginTop: 12, fontWeight: 400 }}
             >
               {post.sectionLead}
             </p>
           )}
-
           {post.habits && post.habits.length > 0 && (
-            <ol
-              className="list-none"
-              style={{ marginTop: 36, padding: 0, display: 'flex', flexDirection: 'column', gap: 28 }}
-            >
+            <ol className="list-none" style={{ marginTop: 36, padding: 0, display: 'flex', flexDirection: 'column', gap: 28 }}>
               {post.habits.map((h, i) => (
                 <li key={`habit-${i}`} className="flex gap-6 items-start">
-                  <span
-                    className={`${HEAD_FONT} shrink-0`}
-                    aria-hidden
-                    style={{
-                      color: '#FEF272',
-                      fontSize: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
-                      lineHeight: 1,
-                      fontWeight: 500,
-                      minWidth: 56,
-                    }}
-                  >
-                    {h.num}
-                  </span>
+                  <span className={`${HEAD_FONT} shrink-0`} aria-hidden style={{ color: '#FEF272', fontSize: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)', lineHeight: 1, fontWeight: 500, minWidth: 56 }}>{h.num}</span>
                   <div className="flex-1">
-                    <h3
-                      className={`${HEAD_FONT} text-white`}
-                      style={{
-                        fontSize: 'clamp(18px, calc(24 / 1920 * 100vw), 24px)',
-                        lineHeight: 1.3,
-                        fontWeight: 600,
-                        marginBottom: 8,
-                      }}
-                    >
-                      {h.title}
-                    </h3>
-                    <p
-                      className={`${BODY_FONT} text-white/80`}
-                      style={{
-                        fontSize: 'clamp(15px, calc(17 / 1920 * 100vw), 17px)',
-                        lineHeight: 1.65,
-                        fontWeight: 400,
-                      }}
-                    >
-                      {h.body}
-                    </p>
+                    <h3 className={`${HEAD_FONT} text-white`} style={{ fontSize: 'clamp(18px, calc(24 / 1920 * 100vw), 24px)', lineHeight: 1.3, fontWeight: 600, marginBottom: 8 }}>{h.title}</h3>
+                    <p className={`${BODY_FONT} text-white/80`} style={{ fontSize: 'clamp(15px, calc(17 / 1920 * 100vw), 17px)', lineHeight: 1.65, fontWeight: 400 }}>{h.body}</p>
                   </div>
                 </li>
               ))}
@@ -423,62 +353,27 @@ export default function BlogArticleBody({ post }: { post: BlogPost }) {
         </section>
       )}
 
-      {/* Free-form Portable Text body */}
       {hasBody && (
         <div style={{ marginTop: hasSection || hasIntro ? 56 : 0 }}>
           <PortableText value={post.body as unknown[]} />
         </div>
       )}
 
-      {/* Disclaimer */}
       {post.disclaimer && (
         <aside
           className={`${BODY_FONT} text-white/60`}
-          style={{
-            marginTop: 64,
-            padding: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            borderRadius: 16,
-            background: 'rgba(255,255,255,0.04)',
-            fontSize: 13,
-            lineHeight: 1.6,
-            fontStyle: 'italic',
-          }}
+          style={{ marginTop: 64, padding: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, background: 'rgba(255,255,255,0.04)', fontSize: 13, lineHeight: 1.6, fontStyle: 'italic' }}
         >
           <span style={{ display: 'block', fontStyle: 'normal', fontWeight: 600, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 8, color: 'rgba(255,255,255,0.45)' }}>Disclaimer</span>
           {post.disclaimer}
         </aside>
       )}
 
-      {/* Author bio footer */}
       {post.author?.bio && (
-        <footer
-          style={{
-            marginTop: 80,
-            paddingTop: 32,
-            borderTop: '1px solid rgba(255,255,255,0.15)',
-          }}
-        >
-          <p
-            className={`${BODY_FONT} text-white/60`}
-            style={{ fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 600 }}
-          >
-            About the author
-          </p>
-          {post.author.name && (
-            <p
-              className={`${HEAD_FONT} text-white`}
-              style={{ fontSize: 22, fontWeight: 600, marginTop: 8 }}
-            >
-              {post.author.name}
-            </p>
-          )}
-          <p
-            className={`${BODY_FONT} text-white/80`}
-            style={{ fontSize: 16, lineHeight: 1.65, marginTop: 12, fontWeight: 400 }}
-          >
-            {post.author.bio}
-          </p>
+        <footer style={{ marginTop: 80, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.15)' }}>
+          <p className={`${BODY_FONT} text-white/60`} style={{ fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 600 }}>About the author</p>
+          {post.author.name && <p className={`${HEAD_FONT} text-white`} style={{ fontSize: 22, fontWeight: 600, marginTop: 8 }}>{post.author.name}</p>}
+          <p className={`${BODY_FONT} text-white/80`} style={{ fontSize: 16, lineHeight: 1.65, marginTop: 12, fontWeight: 400 }}>{post.author.bio}</p>
         </footer>
       )}
     </div>

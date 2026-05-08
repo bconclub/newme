@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
-import BlogArticleBody from '@/components/option1/BlogArticleBody'
+import BlogArticleBody, { extractTOCHeadings } from '@/components/option1/BlogArticleBody'
+import BlogTOC from '@/components/option1/BlogTOC'
 import { postBySlugQuery, postSlugsQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
@@ -131,6 +132,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const authorAvatarUrl = post.author?.avatar
     ? urlFor(post.author.avatar).width(120).height(120).fit('crop').url()
     : null
+  const tocEntries = post.body ? extractTOCHeadings(post.body as unknown[]) : []
 
   return (
     <>
@@ -162,24 +164,29 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             paddingBottom: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
           }}
         >
-          {/* Back link */}
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white font-[family-name:var(--font-urbanist)]"
-            style={{ fontSize: 14, marginBottom: 32 }}
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-              <path
-                d="M9 2.5L4.5 7L9 11.5"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>All posts</span>
-          </Link>
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" style={{ marginBottom: 40 }}>
+            <ol
+              className="flex flex-wrap items-center font-[family-name:var(--font-urbanist)] text-white/55"
+              style={{ listStyle: 'none', padding: 0, margin: 0, gap: '6px 4px', fontSize: 13 }}
+            >
+              <li>
+                <Link href="/" className="hover:text-white/90 transition-colors">Home</Link>
+              </li>
+              <li aria-hidden style={{ opacity: 0.4 }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L7.5 6L4.5 9.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-white/90 transition-colors">Blog</Link>
+              </li>
+              <li aria-hidden style={{ opacity: 0.4 }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L7.5 6L4.5 9.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </li>
+              <li aria-current="page" className="text-white/85" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '40ch' }}>
+                {post.title}
+              </li>
+            </ol>
+          </nav>
 
           {/* Header block */}
           <header style={{ maxWidth: 880 }}>
@@ -292,8 +299,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           )}
 
-          {/* Body */}
-          <BlogArticleBody post={post} />
+          {/* Table of contents + Body — shared container owns the top margin */}
+          <div className="mx-auto" style={{ maxWidth: 800, marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)' }}>
+            {tocEntries.length > 1 && <BlogTOC entries={tocEntries} />}
+          </div>
+          <BlogArticleBody post={post} noTopMargin={tocEntries.length > 1} />
         </article>
       </main>
       <Footer />
