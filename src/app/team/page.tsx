@@ -111,15 +111,13 @@ function TeamHero() {
         }}
       >
         <div className="absolute inset-0">
-          {/* Temporary placeholder — currently the only "team-feel" stock we
-              have. The audit flagged this as one of three pages duplicating
-              /clinic/virtual-clinic-hero.webp; sourcing a real group photo
-              for /team is on the content team's TODO. Until then, using the
-              clinical-team scene so it doesn't visually duplicate
-              /virtual-clinic. */}
+          {/* Real /team hero supplied by the client (renamed from
+              `Team Hero.webp` → `team-hero.webp` so the URL doesn't need
+              percent-encoding and matches the rest of the codebase's
+              kebab-case convention). */}
           <Image
-            src="/images/pathways/section-clinical.jpg"
-            alt="NewME clinical team reviewing patient data"
+            src="/images/team/team-hero.webp"
+            alt="NewME clinical care team"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 1880px"
@@ -182,8 +180,47 @@ function TeamGrid() {
         position: 'relative',
         zIndex: 1,
         padding: 'clamp(60px, calc(100 / 1920 * 100vw), 100px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
+        overflow: 'hidden', // contain the side-glow blobs
       }}
     >
+      {/* ── Side-glow washes — soft moss-green ellipses anchored to the left
+            and right edges so the team grid sits inside a cone of warm light.
+            Per design (Figma 137:1437) the cards should feel framed by glow
+            on both sides. Pointer-events:none + aria-hidden so they're purely
+            decorative. Mobile floors keep them tasteful when the column count
+            collapses. ── */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '8%',
+          left: 'clamp(-260px, calc(-180 / 1920 * 100vw), -120px)',
+          width: 'clamp(360px, calc(720 / 1920 * 100vw), 720px)',
+          height: 'clamp(360px, calc(720 / 1920 * 100vw), 720px)',
+          background:
+            'radial-gradient(circle, rgba(98,150,117,0.45) 0%, rgba(47,114,105,0.22) 38%, rgba(1,62,55,0) 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '20%',
+          right: 'clamp(-260px, calc(-180 / 1920 * 100vw), -120px)',
+          width: 'clamp(360px, calc(720 / 1920 * 100vw), 720px)',
+          height: 'clamp(360px, calc(720 / 1920 * 100vw), 720px)',
+          background:
+            'radial-gradient(circle, rgba(98,150,117,0.45) 0%, rgba(47,114,105,0.22) 38%, rgba(1,62,55,0) 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      {/* Inner wrapper lifts the heading + grid above the glow layers. */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -213,6 +250,7 @@ function TeamGrid() {
         {TEAM.map((member, i) => (
           <TeamCard key={member.name} member={member} index={i} />
         ))}
+      </div>
       </div>
     </section>
   )
@@ -294,7 +332,9 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
       style={{
         position: 'relative',
         overflow: 'hidden',
-        borderRadius: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+        // Bumped from 24 → 36 (Figma 137:1437) — the cards read as more
+        // "soft pebble" than rectangle; matches the new design's curvature.
+        borderRadius: 'clamp(20px, calc(36 / 1920 * 100vw), 36px)',
         aspectRatio: '435 / 540',
         background: '#013E37',
         cursor: canHover ? 'default' : 'pointer',
@@ -335,7 +375,8 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           right: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
           bottom: 'clamp(8px, calc(12 / 1920 * 100vw), 14px)',
           background: '#013E37',
-          borderRadius: 'clamp(10px, calc(14 / 1920 * 100vw), 14px)',
+          // Bumped to match the new outer curve — was 14, now 22.
+          borderRadius: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
           padding: 'clamp(10px, calc(16 / 1920 * 100vw), 18px) clamp(12px, calc(20 / 1920 * 100vw), 22px)',
           pointerEvents: showPanel ? 'none' : 'auto',
           display: 'flex',
@@ -384,7 +425,9 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           position: 'absolute',
           inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
           background: '#013E37',
-          borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
+          // Inset panel bumped from 18 → 28 to keep it visually nested at
+          // the new 36 outer curve.
+          borderRadius: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
           padding: 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
           pointerEvents: showPanel ? 'auto' : 'none',
           display: 'flex',
