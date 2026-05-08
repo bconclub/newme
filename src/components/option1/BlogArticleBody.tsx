@@ -30,7 +30,7 @@ export function extractTOCHeadings(body: unknown[]): TOCEntry[] {
     .filter((n): n is PtBlock => typeof n === 'object' && n !== null && (n as PtBlock)._type === 'block' && ((n as PtBlock).style === 'h2' || (n as PtBlock).style === 'h3'))
     .map((b) => {
       const text = (b.children ?? []).map((s) => s.text).join('')
-      return { id: slugifyHeading(text), text, level: b.style === 'h2' ? 2 : 3 }
+      return { id: slugifyHeading(text), text, level: (b.style === 'h2' ? 2 : 3) as 2 | 3 }
     })
     .filter((e) => e.text.trim())
 }
