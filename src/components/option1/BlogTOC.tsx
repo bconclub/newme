@@ -22,7 +22,9 @@ function buildGroups(entries: TOCEntry[]): TOCGroup[] {
 
 export default function BlogTOC({ entries }: { entries: TOCEntry[] }) {
   const [open, setOpen] = useState(true)
-  const [collapsed, setCollapsed] = useState<Set<string>>(new Set())
+  const [collapsed, setCollapsed] = useState<Set<string>>(
+    () => new Set(buildGroups(entries).filter(g => g.children.length > 0).map(g => g.entry.id))
+  )
   const [activeId, setActiveId] = useState('')
   const groups = buildGroups(entries)
 
