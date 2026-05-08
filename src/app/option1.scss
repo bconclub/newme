@@ -186,25 +186,31 @@ main.newme-page {
        inactive card shrinks to its header and tucks behind the bottom
        of the active card, peeking out so users know it's tappable. */
     .newme-compare-wrap {
-      flex-direction: column !important;
+      flex-direction: row !important;
       align-items: stretch !important;
       max-width: 100% !important;
-      gap: 12px;
+      gap: 8px !important;
 
       .newme-typical-col,
       .newme-newme-col {
-        flex: none !important;
-        width: 100% !important;
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
         margin-left: 0 !important;
         margin-top: 0 !important;
         min-height: 0 !important;
         transform: none !important;
         opacity: 1 !important;
+        border-radius: 16px !important;
+        font-size: 11px !important;
       }
 
-      /* NewME first (recommended), Typical below */
-      .newme-newme-col { order: 1 !important; }
-      .newme-typical-col { order: 2 !important; }
+      /* Shrink header text + row items inside each card */
+      .newme-typical-col [style*="font-size"],
+      .newme-newme-col [style*="font-size"] {
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+      }
     }
 
     /* Mobile: keep the green wash (Ellipse 28) and the Pillars yellow
