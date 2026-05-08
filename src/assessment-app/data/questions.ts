@@ -38,7 +38,7 @@ export const ROUTING = [
   {id:"r1_track",type:"s",hl:"Let's get specific.",q:"What's the main thing you want to address?",opts:[
     {v:"metabolic",l:"My weight, energy, hormones, blood pressure or glucose levels"},
     {v:"gut",l:"My gut: digestion, bloating, reactions to food"},
-    {v:"both",l:"Both,not but my gut symptoms are most disruptive"},
+    {v:"both",l:"Both, but my gut symptoms are most disruptive."},
     {v:"unsure",l:"I'm not sure yet"},
   ]},
   {id:"r2_symptoms",type:"m",hl:"Your body is communicating.",q:"What does your body do that it really shouldn't?",sub:"Select up to 5, even things you've learned to live with.",max:5,opts:[

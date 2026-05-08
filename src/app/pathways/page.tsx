@@ -178,8 +178,91 @@ export default function PathwaysPage() {
           ))}
         </div>
 
-        {/* ── 3 Pathway cards — 1 col on mobile, 3 col at md+ ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', marginBottom: 'clamp(14px,0.83vw,16px)' }}>
+        {/* ── Mobile-only horizontal scroll — three "lanes" each containing
+              its pathway card + sub-pills stacked vertically. Lets the user
+              swipe across all three pathways without the page becoming a
+              vertical wall. The desktop tree (cards row + connectors + pills
+              grid) stays mounted at md+ unchanged. ── */}
+        <div
+          className="md:hidden flex overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pathways-mobile-scroll"
+          style={{
+            gap: 14,
+            marginBottom: 16,
+            scrollbarWidth: 'none',
+          }}
+        >
+          {TABS.map((t, i) => (
+            <div
+              key={t.id}
+              className="shrink-0 snap-center flex flex-col items-center"
+              style={{ width: '78%' }}
+            >
+              <Link href={t.href} style={{ textDecoration: 'none', display: 'block', width: '100%' }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.4, ease: EASE, delay: i * 0.06 }}
+                  style={{
+                    borderRadius: 28,
+                    height: 88,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background:
+                      'linear-gradient(180deg,rgba(255,255,255,0.20) 0%,rgba(255,255,255,0) 100%), rgba(255,255,255,0.12)',
+                    border: '2px solid rgba(255,255,255,0.55)',
+                    backdropFilter: 'blur(10px)',
+                  }}
+                >
+                  <span
+                    className="font-[family-name:var(--font-bricolage)]"
+                    style={{ fontSize: 16, fontWeight: 600, color: '#fff', textAlign: 'center', lineHeight: 1.25, padding: '0 12px' }}
+                  >
+                    {t.label}
+                  </span>
+                </motion.div>
+              </Link>
+              {/* Vertical connector */}
+              <div style={{ width: 1, height: 14, background: 'rgba(255,255,255,0.25)' }} />
+              {/* Sub-pills stacked vertically inside this lane */}
+              <div className="flex flex-col items-center" style={{ gap: 8, width: '100%' }}>
+                {SUB_PILLS[t.id].map((pill, pi) => (
+                  <motion.div
+                    key={pill.label}
+                    initial={{ opacity: 0, y: 6 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.35, ease: EASE, delay: i * 0.06 + pi * 0.04 }}
+                    style={{ width: 'auto' }}
+                  >
+                    <Link
+                      href={pill.href}
+                      className="font-[family-name:var(--font-bricolage)] inline-flex items-center justify-center text-white"
+                      style={{
+                        textDecoration: 'none',
+                        border: '1px solid rgba(255,255,255,0.45)',
+                        borderRadius: 9999,
+                        height: 38,
+                        padding: '0 16px',
+                        fontSize: 12,
+                        fontWeight: 400,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {pill.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Hide native scrollbar on mobile pathway carousel (Webkit). */}
+        <style>{`.pathways-mobile-scroll::-webkit-scrollbar { display: none; }`}</style>
+
+        {/* ── 3 Pathway cards — desktop only (mobile uses the lanes above) ── */}
+        <div className="hidden md:grid md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', marginBottom: 'clamp(14px,0.83vw,16px)' }}>
           {TABS.map((t, i) => {
             const isActive = hoveredTab === t.id
             return (
@@ -232,8 +315,9 @@ export default function PathwaysPage() {
           ))}
         </div>
 
-        {/* ── Sub-pathway pills — 1 col on mobile, 3 col at md+ ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', alignItems: 'start', marginTop: 'clamp(8px, calc(8 / 1920 * 100vw), 8px)' }}>
+        {/* ── Sub-pathway pills — desktop only (mobile renders pills inside
+              each lane above). 3-column tree-style layout on md+. ── */}
+        <div className="hidden md:grid md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', alignItems: 'start', marginTop: 'clamp(8px, calc(8 / 1920 * 100vw), 8px)' }}>
           {TABS.map((t, ci) => (
             <div key={t.id} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px,0.625vw,12px)', alignItems: 'center' }}>
               {SUB_PILLS[t.id].map((pill, pi) => (
