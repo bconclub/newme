@@ -4,6 +4,7 @@ import { Header } from "../../components/Header/Header";
 import { TOTAL } from "../../data/questions";
 import { checkAssessmentLimit, verifyEmail } from "../../services/assessmentService";
 import { createPreQuizLead, checkLeadByEmail, deleteLeadById } from "../../services/crmService";
+import { PhoneInput } from "../../components/PhoneInput/PhoneInput";
 
 export type QuizPageProps = {
   step: number;
@@ -180,15 +181,19 @@ export function QuizPage({
               </div>
               <div>
                 <label style={labelStyle}>Whatsapp number</label>
-                <input
-                  type="tel"
-                  autoComplete="tel"
+                {/* Country picker auto-defaults to the user's timezone-inferred
+                    country (no permission prompt, no API call). They can swap
+                    it via the dropdown. Combined value lands in profile.phone
+                    as "+CC LOCALNUMBER" so the backend contract stays the
+                    same — no API changes needed. */}
+                <PhoneInput
                   value={profile.phone || ""}
-                  onChange={e => setProfile((p: any) => ({ ...p, phone: e.target.value }))}
-                  className="inp"
-                  placeholder="+1 555 123 4567"
+                  onChange={v => setProfile((p: any) => ({ ...p, phone: v }))}
+                  placeholder="9876543210"
                 />
-                <p style={{ fontSize: 11, color: INK3, marginTop: 6, fontFamily: FONT_BODY }}>Include your country code (e.g. +91 for India, +1 for US).</p>
+                <p style={{ fontSize: 11, color: INK3, marginTop: 6, fontFamily: FONT_BODY }}>
+                  We auto-pick a country code from your location — tap the flag if it&rsquo;s wrong.
+                </p>
               </div>
             </div>
             <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 14 }}>
