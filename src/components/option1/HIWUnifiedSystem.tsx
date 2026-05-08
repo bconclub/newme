@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
@@ -107,7 +107,7 @@ export default function HIWUnifiedSystem() {
             style={{
               fontWeight: 600,
               // Figma: 874×72, line-height 72 → ~72/1
-              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',
               lineHeight: 1,
               letterSpacing: 0,
               // pill bottom y=1014, heading y=1038 → 24 gap
@@ -332,3 +332,4 @@ function UnifiedCard({ card, delay }: { card: Card; delay: number }) {
     </motion.div>
   )
 }
+

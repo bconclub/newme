@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -171,7 +171,7 @@ function TeamGrid() {
       >
         <h2
           className="font-[family-name:var(--font-bricolage)] text-white"
-          style={{ fontWeight: 600, fontSize: 'clamp(24px, calc(56 / 1920 * 100vw), 56px)', lineHeight: 1.1, letterSpacing: '-0.01em', marginBottom: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)' }}
+          style={{ fontWeight: 600, fontSize: 'clamp(22px, calc(46 / 1920 * 100vw), 46px)', lineHeight: 1.1, letterSpacing: '-0.01em', marginBottom: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)' }}
         >
           The Experts Who Will Guide You.
         </h2>
@@ -479,3 +479,4 @@ function TeamCard({
     </motion.div>
   )
 }
+

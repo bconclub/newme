@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -47,7 +47,7 @@ export default function ResearchEvidence() {
           className="font-[family-name:var(--font-bricolage)] text-white"
           style={{
             fontWeight: 600,
-            fontSize: 'clamp(32px, calc(72 / 1920 * 100vw), 72px)',
+            fontSize: 'clamp(28px, calc(58 / 1920 * 100vw), 58px)',
             lineHeight: 1,
             letterSpacing: 0,
           }}
@@ -189,3 +189,4 @@ export default function ResearchEvidence() {
     </section>
   )
 }
+

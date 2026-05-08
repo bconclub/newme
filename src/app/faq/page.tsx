@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -179,7 +179,7 @@ function FAQSection({
           className="font-[family-name:var(--font-bricolage)] text-white"
           style={{
             fontWeight: 600,
-            fontSize: 'clamp(24px, calc(56 / 1920 * 100vw), 56px)',
+            fontSize: 'clamp(22px, calc(46 / 1920 * 100vw), 46px)',
             lineHeight: 1.1,
             letterSpacing: '-0.01em',
             textAlign: 'center',
@@ -311,3 +311,4 @@ function AccordionItem({
     </div>
   )
 }
+

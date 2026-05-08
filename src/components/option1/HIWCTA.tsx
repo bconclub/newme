@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
@@ -62,7 +62,7 @@ export default function HIWCTA() {
               className="font-[family-name:var(--font-bricolage)] text-white"
               style={{
                 fontWeight: 600,
-                fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+                fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',
                 lineHeight: 1,
                 letterSpacing: 0,
                 marginTop: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
@@ -141,3 +141,4 @@ export default function HIWCTA() {
     </section>
   )
 }
+

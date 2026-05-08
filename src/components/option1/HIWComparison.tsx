@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
@@ -120,7 +120,7 @@ export default function HIWComparison() {
               style={{
                 fontWeight: 600,
                 // Figma 1011×144 → ~72/72
-                fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+                fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',
                 lineHeight: 1,
                 letterSpacing: 0,
                 marginTop: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
@@ -321,3 +321,4 @@ export default function HIWComparison() {
     </section>
   )
 }
+

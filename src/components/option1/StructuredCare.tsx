@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -129,7 +129,7 @@ export default function StructuredCare() {
             className="relative font-[family-name:var(--font-bricolage)] text-white text-center mx-auto"
             style={{
               fontWeight: 600,
-              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',
               lineHeight: 1,
               maxWidth: 'clamp(300px, calc(759 / 1920 * 100vw), 759px)',
               marginBottom: 'clamp(32px, calc(64 / 1920 * 100vw), 64px)',
@@ -335,3 +335,4 @@ export default function StructuredCare() {
     </section>
   )
 }
+

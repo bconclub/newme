@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
@@ -182,7 +182,7 @@ export default function PageHero({
             className="font-[family-name:var(--font-bricolage)] text-white"
             style={{
               fontWeight: 600,
-              fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)',
+              fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',
               lineHeight: 1.05,
               letterSpacing: '-0.005em',
               maxWidth: `clamp(280px, calc(${headingMaxWidthPx} / 1920 * 100vw), ${headingMaxWidthPx}px)`,
@@ -221,3 +221,4 @@ export default function PageHero({
     </section>
   )
 }
+

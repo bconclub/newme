@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
@@ -113,7 +113,7 @@ function VCWhatIs() {
           className="text-center font-[family-name:var(--font-bricolage)] text-white mx-auto"
           style={{
             fontWeight: 600,
-            fontSize: 'clamp(32px, calc(56 / 1920 * 100vw), 56px)',
+            fontSize: 'clamp(26px, calc(46 / 1920 * 100vw), 46px)',
             lineHeight: 1.12,
             letterSpacing: '-0.01em',
             maxWidth: 'clamp(280px, calc(706 / 1920 * 100vw), 706px)',
@@ -353,7 +353,7 @@ function VCDoctorCard() {
             style={{
               fontWeight: 600,
               color: '#FEF272',
-              fontSize: 'clamp(34px, calc(80 / 1920 * 100vw), 80px)',
+              fontSize: 'clamp(28px, calc(64 / 1920 * 100vw), 64px)',
               lineHeight: 0.9,
               letterSpacing: '-0.015em',
               maxWidth: 'clamp(280px, calc(1011 / 1920 * 100vw), 1011px)',
@@ -502,3 +502,4 @@ function ContactPill({
     </a>
   )
 }
+
