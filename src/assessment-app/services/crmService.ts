@@ -2,6 +2,16 @@ import { ENDPOINTS } from "../constants/urlConstants";
 
 const LEAD_SOURCE: string = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_LEAD_SOURCE) || "";
 
+function toIsoDob(dob?: string): string | undefined {
+  if (!dob) return dob;
+  // Already ISO (YYYY-MM-DD)
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dob)) return dob;
+  // DD/MM/YYYY → YYYY-MM-DD
+  const m = dob.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+  return dob;
+}
+
 export async function createLeadFromProfile(payload: {
   firstName: string;
   phone?: string;
@@ -11,7 +21,7 @@ export async function createLeadFromProfile(payload: {
   const r = await fetch(ENDPOINTS.CRM_LEAD_PROFILE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify({ ...payload, dob: toIsoDob(payload.dob), leadSource: "" }),
   });
   return r.json();
 }
