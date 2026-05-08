@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import EyebrowPill from '@/components/option1/EyebrowPill'
+import PageHero from '@/components/option1/PageHero'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -55,139 +56,17 @@ export default function PathwaysPage() {
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-2" style={{ top: 2500, left: -625 }} />
       </div>
 
-      {/* ─── HERO SECTION ────────────────────────────────────────────── */}
-      <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)' }}>
-
-        {/* Hero image — rounded panel */}
-          <div style={{ position: 'relative', margin: '0 clamp(12px, calc(20 / 1920 * 100vw), 20px)', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(320px,calc(694/1920*100vw),694px)' }}>
-            <Image
-              src={HERO_IMG}
-              alt="Dr. Pal with patient"
-              fill
-              priority
-              unoptimized
-              style={{ objectFit: 'cover', objectPosition: '60% center' }}
-            />
-            {/* Hero overlay — Figma 121:93 spec: greener / lighter wash than
-                the original dark-pine overlay, but still dark enough on the
-                LEFT third for the white headline to read cleanly. Diagonal
-                moss-to-pine gradient at high alpha (0.96) on the left, fading
-                to transparent at ~70% so the doctor / patient stay clear on
-                the right. */}
-            <div
-              aria-hidden
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: 'linear-gradient(108deg, rgba(20,90,75,0.96) 0%, rgba(15,80,68,0.92) 22%, rgba(10,68,58,0.78) 38%, rgba(6,55,48,0.45) 52%, rgba(1,62,55,0.18) 64%, transparent 78%)',
-              }}
-            />
-
-            {/* Grain texture — soft-light blended noise that rides on top of
-                the hero photo so the page feels continuous with the rest of
-                the site (not a clean photo floating on a textured page). Same
-                fractalNoise recipe used on the home / option1 hero. Masked
-                to the LEFT zone only so the right (doctor) stays clean. */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                inset: 0,
-                pointerEvents: 'none',
-                backgroundImage:
-                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-                backgroundSize: '220px 220px',
-                mixBlendMode: 'soft-light',
-                opacity: 0.55,
-                maskImage: 'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 70%)',
-                WebkitMaskImage: 'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 70%)',
-              }}
-            />
-
-            {/* Text + CTA overlaid on hero image */}
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(20px,7.29vw,140px)' }}>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: EASE }}
-                className="font-[family-name:var(--font-bricolage)]"
-                style={{ fontSize: 'clamp(26px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, maxWidth: 'clamp(260px,calc(1086/1920*100vw),1086px)', marginBottom: 'clamp(12px,1.3vw,24px)' }}
-              >
-                You Don&apos;t Choose A Program. You&apos;re Prescribed A Path.
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: EASE, delay: 0.15 }}
-                className="font-[family-name:var(--font-urbanist)]"
-                style={{ fontSize: 'clamp(14px,1.25vw,24px)', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, maxWidth: 'clamp(240px,calc(783/1920*100vw),783px)', marginBottom: 'clamp(20px,2.08vw,40px)' }}
-              >
-                NewME is a structured clinical system. Your assessment maps your health patterns and guides you into the pathway designed for your body&apos;s needs.
-              </motion.p>
-
-              {/* CTA — gold pill + tangerine arrow circle (homepage pattern).
-                  flex-row-reverse: arrow first in DOM → right visually, pill left.
-                  Negative marginRight on pill overlaps onto arrow's left edge.
-                  Individual whileHover on each piece for micro-animation. */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, ease: EASE, delay: 0.28 }}
-                className="group/cta flex items-center flex-row-reverse justify-end"
-              >
-                {/* Arrow circle — first in DOM, visually RIGHT */}
-                <motion.a
-                  href="/assessment"
-                  aria-hidden
-                  tabIndex={-1}
-                  whileHover={{ scale: 1.06 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center shrink-0 transition-colors will-change-transform"
-                  style={{
-                    width: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
-                    height: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    aria-hidden
-                    className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
-                    style={{
-                      width: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                      height: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                    }}
-                  >
-                    <path
-                      d="M9 21L21 9M21 9H11M21 9V19"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </motion.a>
-                {/* Pill — second in DOM, visually LEFT. Negative marginRight overlaps arrow */}
-                <motion.a
-                  href="/assessment"
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#013E37] font-semibold font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
-                  style={{
-                    height: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
-                    paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                    paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                    fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
-                    lineHeight: 1.3,
-                    marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
-                  }}
-                >
-                  Find Your Pathway
-                </motion.a>
-              </motion.div>
-            </div>
-          </div>
-      </section>
+      {/* ─── HERO SECTION — composes <PageHero> (Figma 121:93 template) ─ */}
+      <PageHero
+        imageSrc={HERO_IMG}
+        imageAlt="Dr. Pal with patient"
+        imagePosition="60% center"
+        heading={<>You Don&apos;t Choose A Program. You&apos;re Prescribed A Path.</>}
+        subheading="NewME is a structured clinical system. Your assessment maps your health patterns and guides you into the pathway designed for your body's needs."
+        headingMaxWidthPx={1086}
+        bodyMaxWidthPx={783}
+        cta={<PathwaysHeroCta />}
+      />
 
       {/* ─── INTRODUCTION SECTION ────────────────────────────────────── */}
       <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(60px,5.2vw,100px) clamp(20px,10.4vw,200px)' }}>
@@ -392,5 +271,66 @@ export default function PathwaysPage() {
       <Footer />
     </main>
     </>
+  )
+}
+
+// CTA pair — gold pill + tangerine arrow, used only by the /pathways hero.
+// Lives outside <PageHero> via the `cta` prop so the template stays generic.
+function PathwaysHeroCta() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: EASE, delay: 0.28 }}
+      className="group/cta flex items-center flex-row-reverse justify-end"
+    >
+      <motion.a
+        href="/assessment"
+        aria-hidden
+        tabIndex={-1}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.95 }}
+        className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center shrink-0 transition-colors will-change-transform"
+        style={{
+          width: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
+          height: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
+        }}
+      >
+        <svg
+          viewBox="0 0 30 30"
+          fill="none"
+          aria-hidden
+          className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
+          style={{
+            width: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+            height: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+          }}
+        >
+          <path
+            d="M9 21L21 9M21 9H11M21 9V19"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.a>
+      <motion.a
+        href="/assessment"
+        whileHover={{ y: -1 }}
+        whileTap={{ scale: 0.98 }}
+        className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#013E37] font-semibold font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
+        style={{
+          height: 'clamp(44px, calc(64 / 1920 * 100vw), 64px)',
+          paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+          paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+          fontSize: 'clamp(14px, calc(22 / 1920 * 100vw), 22px)',
+          lineHeight: 1.3,
+          marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
+        }}
+      >
+        Find Your Pathway
+      </motion.a>
+    </motion.div>
   )
 }
