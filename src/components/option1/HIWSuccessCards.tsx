@@ -142,13 +142,61 @@ export default function HIWSuccessCards() {
           </motion.h2>
         </div>
 
-        {/* Top row — 3 cards. Tic-tac-toe grid: only internal dividers
-            (vertical between columns + horizontal between rows). No outer
-            top/bottom/left/right borders. The "featured" treatment (glass
-            card + bloom + yellow title) follows the cursor; on mouse-leave
-            of the row state clears. */}
+        {/* ── Mobile carousel — all 6 items in one horizontal scroll-snap
+            row. The desktop hover-to-feature interaction doesn't translate
+            to touch; on mobile every card renders in a plain "compact"
+            state instead, with the user swiping to see each one. ────── */}
         <div
-          className="grid grid-cols-1 lg:grid-cols-3"
+          className="lg:hidden flex overflow-x-auto snap-x snap-mandatory -mx-5 px-5 hiw-success-carousel"
+          style={{
+            gap: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+            marginTop: 'clamp(40px, calc(56 / 1920 * 100vw), 56px)',
+            scrollbarWidth: 'none',
+          }}
+        >
+          {[...TOP_ROW, ...BOTTOM_ROW].map((card, i) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              className="shrink-0 snap-center relative overflow-hidden flex flex-col justify-center text-center"
+              style={{
+                width: '78%',
+                minHeight: 220,
+                padding: '32px 24px',
+                background:
+                  'radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                borderRadius: 24,
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+              }}
+            >
+              <h3
+                className="font-[family-name:var(--font-bricolage)] text-[#FEF272]"
+                style={{ fontWeight: 600, fontSize: 19, lineHeight: 1.2 }}
+              >
+                {card.title}
+              </h3>
+              <p
+                className="font-[family-name:var(--font-urbanist)] text-white/85"
+                style={{ fontWeight: 400, fontSize: 14, lineHeight: 1.55, marginTop: 12 }}
+              >
+                {card.body}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+        <style>{`.hiw-success-carousel::-webkit-scrollbar { display: none; }`}</style>
+
+        {/* ── Desktop tic-tac-toe — 3 cards. Only internal dividers (vertical
+            between columns + horizontal between rows). No outer borders. The
+            "featured" treatment (glass card + bloom + yellow title) follows
+            the cursor; on mouse-leave of the row state clears. ─────────── */}
+        <div
+          className="hidden lg:grid lg:grid-cols-3"
           style={{
             minHeight: 'clamp(280px, calc(347 / 1920 * 100vw), 347px)',
             marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
@@ -314,22 +362,22 @@ export default function HIWSuccessCards() {
           })}
         </div>
 
-        {/* Middle horizontal divider (Vector 246 + Vector 1342) */}
+        {/* Middle horizontal divider (Vector 246 + Vector 1342) — desktop only */}
         <div
           aria-hidden
+          className="hidden lg:block"
           style={{
             height: 1,
             background: 'rgba(255,255,255,0.18)',
           }}
         />
 
-        {/* Bottom row — 3 cards with vertical dividers (Vectors 244 + 245).
-            Same hover treatment as the top row: at rest it's plain centered
-            text, on hover the tile lights up with the green bloom + glass
-            card + yellow heading. State indices 3, 4, 5 follow on from the
+        {/* Bottom row — desktop only (mobile renders both rows in the
+            carousel above). 3 cards with vertical dividers + hover-featured
+            tic-tac-toe pattern, state indices 3, 4, 5 continuing from the
             top row's 0, 1, 2. */}
         <div
-          className="grid grid-cols-1 lg:grid-cols-3"
+          className="hidden lg:grid lg:grid-cols-3"
           style={{ minHeight: 'clamp(220px, calc(280 / 1920 * 100vw), 280px)' }}
           onMouseLeave={() => setFeaturedIdx(null)}
         >

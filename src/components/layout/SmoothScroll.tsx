@@ -50,5 +50,21 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
   }, [skipLenis])
 
+  // Reset scroll to top on every route change. Without this, navigating
+  // from /how-it-works → / would land at the same Y the user left
+  // /how-it-works at — the home page would appear to "scroll to a
+  // section" (e.g. mid-page Pathways) instead of starting at the hero.
+  // We skip hash navigation (#anchor) so in-page anchor links still work.
+  useEffect(() => {
+    if (skipLenis) return
+    if (typeof window === 'undefined') return
+    if (window.location.hash) return // honor anchor links
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, skipLenis])
+
   return <>{children}</>
 }

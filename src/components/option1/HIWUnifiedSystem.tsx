@@ -142,16 +142,38 @@ export default function HIWUnifiedSystem() {
         </div>
 
         {/*
-          Cards grid. Figma: 2 columns × 3 rows zig-zag with vertical offsets.
-          Card width 828, total content area 120..1800 = 1680, gap 144 between
-          col 1 (120..948) and col 2 (972..1800).
-          Vertical offsets (each col against its own row top):
-            row 0: col-L y=1371, col-R y=1449 → R offset +78
-            row 1: col-L y=1687, col-R y=1765 → R offset +78
-            row 2: col-L y=2029, col-R y=2129 → R offset +100
+          Mobile: horizontal scroll-snap carousel — easier than scrolling
+          past 6 stacked cards. Each card takes ~85% viewport width with
+          a small peek of the next card on the right edge.
+          Desktop (lg+): existing 2-column zig-zag layout with vertical
+          offsets per Figma. Two completely separate trees swapped via
+          `lg:hidden` / `hidden lg:grid` because the desktop zig-zag
+          can't be expressed inside a flex-row carousel cleanly.
         */}
+
+        {/* ── Mobile carousel ────────────────────────────────────────── */}
         <div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-y-4 lg:gap-x-[clamp(20px,calc(40/1920*100vw),40px)] lg:gap-y-[clamp(20px,calc(36/1920*100vw),36px)]"
+          className="lg:hidden flex overflow-x-auto snap-x snap-mandatory -mx-5 px-5 hiw-unified-carousel"
+          style={{
+            gap: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
+            marginTop: 'clamp(40px, calc(56 / 1920 * 100vw), 56px)',
+            scrollbarWidth: 'none',
+          }}
+        >
+          {CARDS.map((card, i) => (
+            <div
+              key={card.title || 'cta'}
+              className="shrink-0 snap-center"
+              style={{ width: '82%' }}
+            >
+              <UnifiedCard card={card} delay={i * 0.04} />
+            </div>
+          ))}
+        </div>
+
+        {/* ── Desktop zig-zag (Figma 2-column with vertical offsets) ──── */}
+        <div
+          className="hidden lg:grid lg:grid-cols-2 lg:gap-x-[clamp(20px,calc(40/1920*100vw),40px)] lg:gap-y-[clamp(20px,calc(36/1920*100vw),36px)]"
           style={{
             // header body bottom y=1244, first card y=1371 → 127 gap
             marginTop: 'clamp(56px, calc(127 / 1920 * 100vw), 127px)',
@@ -176,6 +198,8 @@ export default function HIWUnifiedSystem() {
             ))}
           </div>
         </div>
+        {/* Hide native scrollbar on mobile carousel (Webkit). */}
+        <style>{`.hiw-unified-carousel::-webkit-scrollbar { display: none; }`}</style>
       </div>
     </section>
   )

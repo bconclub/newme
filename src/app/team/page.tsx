@@ -107,6 +107,14 @@ function TeamHero() {
 }
 
 function TeamGrid() {
+  // Single-open behavior: only one card can be expanded at a time.
+  // Tapping another card closes the previously open one. Tapping the
+  // same card again closes it. Lifted from per-card state so cards can
+  // coordinate. Desktop hover (canHover devices) bypasses this and
+  // tracks an independent hover state inside the card itself — see
+  // TeamCard for the trigger model.
+  const [openName, setOpenName] = useState<string | null>(null)
+
   return (
     <section
       style={{
@@ -185,7 +193,13 @@ function TeamGrid() {
         style={{ gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)', maxWidth: 1800, margin: '0 auto' }}
       >
         {TEAM.map((member, i) => (
-          <TeamCard key={member.name} member={member} index={i} />
+          <TeamCard
+            key={member.name}
+            member={member}
+            index={i}
+            isOpen={openName === member.name}
+            onToggle={() => setOpenName((prev) => (prev === member.name ? null : member.name))}
+          />
         ))}
       </div>
       <style>{`
@@ -253,7 +267,22 @@ function SocialIcons() {
 //     shows the outer image at 770×650 with the inner panel at 419×524,
 //     which works out to ~30px inset from the larger panel size. We use a
 //     fluid clamp() so the inset scales with viewport. ─────────────────────
-function TeamCard({ member, index }: { member: TeamMember; index: number }) {
+function TeamCard({
+  member,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  member: TeamMember
+  index: number
+  /** Touch-device open state, lifted to parent so only one card opens at a time. */
+  isOpen: boolean
+  /** Touch-device toggle (tap to open / tap again to close). */
+  onToggle: () => void
+}) {
+  // Local desktop hover. Independent of the parent's `isOpen` so multiple
+  // cards can light up as the cursor moves across the grid (which is the
+  // expected desktop UX). On touch we ignore this and read `isOpen`.
   const [hovered, setHovered] = useState(false)
   const [canHover, setCanHover] = useState(true)
 
@@ -261,7 +290,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   // tap but `onMouseLeave` only fires on tap-elsewhere — that left cards
   // permanently stuck in hover state on mobile. We disable the hover/tap
   // panel entirely when there's no fine pointer + hover capability and
-  // instead show a simple name/role pill at the bottom of the photo.
+  // instead drive the panel from the parent's single-open `isOpen` prop.
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -272,12 +301,12 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   }, [])
 
   // Trigger model:
-  //   • Desktop / hover-capable → mouseenter / mouseleave toggles `hovered`.
-  //   • Mobile / touch          → onClick toggles `hovered` (tap to reveal,
-  //                                 tap again to dismiss). The panel is
-  //                                 hidden by default on mobile, same as
-  //                                 desktop — only the trigger differs.
-  const showPanel = hovered
+  //   • Desktop / hover-capable → mouseenter / mouseleave toggles local
+  //     `hovered`. Each card lights up independently.
+  //   • Mobile / touch          → onClick calls parent's onToggle. Parent
+  //     tracks a single open card; tapping a new card closes the previous
+  //     one. Source of truth for "is this card open?" is `isOpen`.
+  const showPanel = canHover ? hovered : isOpen
 
   return (
     <motion.div
@@ -287,7 +316,7 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
       transition={{ duration: 0.55, ease: EASE, delay: (index % 4) * 0.07 }}
       onMouseEnter={canHover ? () => setHovered(true) : undefined}
       onMouseLeave={canHover ? () => setHovered(false) : undefined}
-      onClick={!canHover ? () => setHovered((p) => !p) : undefined}
+      onClick={!canHover ? onToggle : undefined}
       style={{
         position: 'relative',
         overflow: 'hidden',
