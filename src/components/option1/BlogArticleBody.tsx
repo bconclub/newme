@@ -424,9 +424,25 @@ export default function BlogArticleBody({ post, tocEntries }: { post: BlogPost; 
 
       {post.author?.bio && (
         <footer style={{ marginTop: 80, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.15)' }}>
-          <p className={`${BODY_FONT} text-white/60`} style={{ fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 600 }}>About the author</p>
-          {post.author.name && <p className={`${HEAD_FONT} text-white`} style={{ fontSize: 22, fontWeight: 600, marginTop: 8 }}>{post.author.name}</p>}
-          <p className={`${BODY_FONT} text-white/80`} style={{ fontSize: 16, lineHeight: 1.65, marginTop: 12, fontWeight: 400 }}>{post.author.bio}</p>
+          <p className={`${BODY_FONT} text-white/60`} style={{ fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 20 }}>About the author</p>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+            {post.author.avatar && (() => {
+              const avatarUrl = urlFor(post.author!.avatar!).width(120).height(120).fit('crop').url()
+              return (
+                <div style={{
+                  width: 72, height: 72, borderRadius: '50%', flexShrink: 0,
+                  backgroundImage: `url('${avatarUrl}')`,
+                  backgroundSize: 'cover', backgroundPosition: 'top center',
+                  border: '2px solid rgba(254,242,114,0.35)',
+                }} />
+              )
+            })()}
+            <div style={{ flex: 1 }}>
+              {post.author.name && <p className={`${HEAD_FONT} text-white`} style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>{post.author.name}</p>}
+              {post.author.role && <p className={`${BODY_FONT}`} style={{ fontSize: 13, color: '#FEF272', fontWeight: 600, marginBottom: 10, letterSpacing: '.04em' }}>{post.author.role}</p>}
+              <p className={`${BODY_FONT} text-white/80`} style={{ fontSize: 15, lineHeight: 1.7, fontWeight: 400 }}>{post.author.bio}</p>
+            </div>
+          </div>
         </footer>
       )}
     </div>
