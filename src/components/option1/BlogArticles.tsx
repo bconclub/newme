@@ -123,7 +123,7 @@ export default function BlogArticles({ posts = [] }: { posts?: BlogPostCard[] })
                   aria-hidden
                   className="relative overflow-hidden bg-cover bg-center w-full"
                   style={{
-                    borderRadius: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
+                    borderRadius: 'clamp(14px, calc(30 / 1920 * 100vw), 30px) clamp(14px, calc(30 / 1920 * 100vw), 30px) 0 0',
                     aspectRatio: '571 / 320',
                     backgroundImage: card.cover ? `url('${card.cover}')` : undefined,
                     backgroundColor: card.cover ? undefined : '#0a4a45',
