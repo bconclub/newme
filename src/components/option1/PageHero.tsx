@@ -80,10 +80,11 @@ export default function PageHero({
     <section
       className="relative pb-3 md:pb-4"
       style={{
-        // Header sits at y=39 h=74 → 39px gap below the header. Match the
-        // home Hero's padding-top formula so the visible gap is identical
-        // across pages.
-        paddingTop: 'clamp(66px, calc(74 / 1920 * 100vw), 74px)',
+        // Match the home Hero's exact padding-top so the header → hero
+        // gap is pixel-identical across pages. Was 74 (Figma artboard
+        // value) but the home was 80, so the home felt ~6px more
+        // breathing room — user noticed. Now both are 80 max.
+        paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)',
         paddingLeft: 'clamp(12px, 1.04vw, 20px)',
         paddingRight: 'clamp(12px, 1.04vw, 20px)',
       }}

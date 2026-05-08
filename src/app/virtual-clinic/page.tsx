@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
+import VCHeroCta from './VCHeroCta'
 
 export const metadata: Metadata = {
   title: 'Virtual Clinic | Dr. Pal\'s NewME',
@@ -87,56 +88,9 @@ function VCHero() {
   )
 }
 
-// CTA pair — gold pill + orange arrow with -7px overlap, used only by the
-// virtual-clinic hero (booking CTA links to #contact).
-function VCHeroCta() {
-  return (
-    <div className="group/cta flex items-center flex-row-reverse justify-end">
-      <a
-        href="#contact"
-        aria-label="Book a consultation"
-        className="relative z-0 rounded-full bg-[#F08B55] hover:bg-[#FF8547] text-white flex items-center justify-center shrink-0 shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors"
-        style={{
-          width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-          height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-        }}
-      >
-        <svg
-          viewBox="0 0 30 30"
-          fill="none"
-          aria-hidden
-          className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
-          style={{
-            width: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
-            height: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
-          }}
-        >
-          <path
-            d="M9 21L21 9M21 9H11M21 9V19"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </a>
-      <a
-        href="#contact"
-        className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-black font-medium font-[family-name:var(--font-bricolage)] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors"
-        style={{
-          height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-          paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-          paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-          fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
-          lineHeight: 1,
-          marginRight: 'clamp(-12px, calc(-9 / 1920 * 100vw), -9px)',
-        }}
-      >
-        Book A Consultation
-      </a>
-    </div>
-  )
-}
+// VCHeroCta lives in ./VCHeroCta.tsx as a separate client component
+// because this page is a server component (exports `metadata`) and can't
+// import framer-motion directly.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // What Is The NewME Virtual Clinic? — Figma 83:2387 / 83:2388 / 83:2389
