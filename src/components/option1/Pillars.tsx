@@ -450,7 +450,7 @@ function MobilePillars({
             zIndex: 1,
           }}
         >
-          <NewMELogo size={64} rotateValue={discAngle} />
+          <NewMELogo size={32} rotateValue={discAngle} />
         </div>
         {PILLARS.map((p, i) => (
           <MobileArcPillar
