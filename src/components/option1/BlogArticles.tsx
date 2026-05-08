@@ -133,7 +133,7 @@ export default function BlogArticles({ posts = [] }: { posts?: BlogPostCard[] })
                 {/* Hover-fill — full card cover image with dark scrim */}
                 <div
                   aria-hidden
-                  className="absolute pointer-events-none opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+                  className="absolute pointer-events-none overflow-hidden opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
                   style={{
                     inset: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
                     borderRadius: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
