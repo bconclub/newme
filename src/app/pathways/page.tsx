@@ -356,16 +356,14 @@ export default function PathwaysPage() {
 // Lives outside <PageHero> via the `cta` prop so the template stays generic.
 function PathwaysHeroCta() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, ease: EASE, delay: 0.28 }}
-      className="group/cta flex items-center flex-row-reverse justify-end"
-    >
+    <div className="group/cta flex items-center flex-row-reverse justify-end">
       <motion.a
         href="/assessment"
         aria-hidden
         tabIndex={-1}
+        initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ duration: 0.55, delay: 0.42, ease: EASE }}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.95 }}
         className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center shrink-0 transition-colors will-change-transform"
@@ -395,6 +393,9 @@ function PathwaysHeroCta() {
       </motion.a>
       <motion.a
         href="/assessment"
+        initial={{ opacity: 0, x: -14 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.55, delay: 0.28, ease: EASE }}
         whileHover={{ y: -1 }}
         whileTap={{ scale: 0.98 }}
         className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#013E37] font-semibold font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
@@ -409,6 +410,6 @@ function PathwaysHeroCta() {
       >
         Find Your Pathway
       </motion.a>
-    </motion.div>
+    </div>
   )
 }

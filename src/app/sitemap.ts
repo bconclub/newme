@@ -8,7 +8,7 @@ import type { MetadataRoute } from 'next'
  * to your canonical domain — defaults to https://newme.health.
  */
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://newme.health').replace(/\/$/, '')
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://drpalsnewme.com').replace(/\/$/, '')
 
 type StaticRoute = {
   path: string

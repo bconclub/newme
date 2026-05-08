@@ -8,7 +8,7 @@ import { customStructure } from "./sanity/structure";
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 const apiVersion = process.env.SANITY_API_VERSION || "2024-10-01";
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://newme-web.vercel.app").replace(/\/$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://drpalsnewme.com").replace(/\/$/, "");
 
 /**
  * Map a Sanity document to its live URL on the marketing site.

@@ -4,7 +4,7 @@ import './globals.css'
 import './option1.scss'
 import SmoothScroll from '@/components/layout/SmoothScroll'
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://newme.health').replace(/\/$/, '')
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://drpalsnewme.com').replace(/\/$/, '')
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
