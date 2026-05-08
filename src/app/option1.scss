@@ -189,54 +189,22 @@ main.newme-page {
       flex-direction: column !important;
       align-items: stretch !important;
       max-width: 100% !important;
+      gap: 12px;
 
       .newme-typical-col,
       .newme-newme-col {
         flex: none !important;
         width: 100% !important;
         margin-left: 0 !important;
+        margin-top: 0 !important;
         min-height: 0 !important;
         transform: none !important;
         opacity: 1 !important;
-        overflow: hidden !important;
-        position: relative !important;
-        transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                    margin-top 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
       }
 
-      /* NewME active (default): NewME dominates on top, Typical peeks below */
-      &[data-active="newme"] {
-        .newme-newme-col {
-          order: 1 !important;
-          z-index: 2 !important;
-          max-height: 1400px;
-          margin-top: 0 !important;
-        }
-        .newme-typical-col {
-          order: 2 !important;
-          z-index: 1 !important;
-          max-height: 80px; /* just header band visible */
-          margin-top: -24px !important; /* tucks behind the NewME card bottom */
-          cursor: pointer;
-        }
-      }
-
-      /* Typical active: Typical dominates on top, NewME peeks below */
-      &[data-active="typical"] {
-        .newme-typical-col {
-          order: 1 !important;
-          z-index: 2 !important;
-          max-height: 1400px;
-          margin-top: 0 !important;
-        }
-        .newme-newme-col {
-          order: 2 !important;
-          z-index: 1 !important;
-          max-height: 96px; /* NewME header is taller */
-          margin-top: -24px !important;
-          cursor: pointer;
-        }
-      }
+      /* NewME first (recommended), Typical below */
+      .newme-newme-col { order: 1 !important; }
+      .newme-typical-col { order: 2 !important; }
     }
 
     /* Mobile: keep the green wash (Ellipse 28) and the Pillars yellow

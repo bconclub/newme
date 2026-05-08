@@ -97,7 +97,7 @@ function TeamHero() {
     <PageHero
       imageSrc="/images/team/team-hero.webp"
       imageAlt="NewME clinical care team"
-      imagePosition="right center"
+      imagePosition="center"
       eyebrow="NewME Care Team"
       heading={<>Meet The Clinical Team<br />Behind Your Care.</>}
       subheading="A multidisciplinary team of doctors, nutritionists, coaches, and researchers — all working inside a single clinical system."

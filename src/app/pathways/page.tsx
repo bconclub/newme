@@ -70,12 +70,12 @@ export default function PathwaysPage() {
       />
 
       {/* ─── INTRODUCTION SECTION ────────────────────────────────────── */}
-      <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(60px,5.2vw,100px) clamp(20px,10.4vw,200px)' }}>
+      <section style={{ position: 'relative', zIndex: 1, padding: 'clamp(60px,5.2vw,100px) clamp(16px,6.25vw,120px)' }}>
 
         {/* Eyebrow pill — uses the shared site EyebrowPill component so
             the entrance animation, gradient border with bottom-right fade,
             and frosted-glass treatment match every other section. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(16px,1.25vw,24px)' }}>
+        <div className="flex justify-start md:justify-center" style={{ marginBottom: 'clamp(16px,1.25vw,24px)' }}>
           <EyebrowPill>Introduction To The Pathways</EyebrowPill>
         </div>
 

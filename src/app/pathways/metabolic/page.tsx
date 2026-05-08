@@ -135,7 +135,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
     <section id={phase.id} style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(60px,5.21vw,100px)' }}>
 
       {/* Phase heading + description + duration */}
-      <div style={{ textAlign: 'center', paddingLeft: 'clamp(20px,6.25vw,120px)', paddingRight: 'clamp(20px,6.25vw,120px)' }}>
+      <div className="text-left md:text-center" style={{ paddingLeft: 'clamp(16px,6.25vw,120px)', paddingRight: 'clamp(16px,6.25vw,120px)' }}>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -171,7 +171,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
       </div>
 
       {/* 2-column info cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(10px,1.04vw,20px)', padding: '0 clamp(20px,9.32vw,179px) clamp(24px,2.08vw,40px)' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'clamp(10px,1.04vw,20px)', padding: '0 clamp(16px,6.25vw,120px) clamp(24px,2.08vw,40px)' }}>
         {/* Who It's For */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -234,7 +234,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
       </div>
 
       {/* What Structured Care Entails heading */}
-      <div style={{ padding: '0 clamp(20px,9.32vw,179px)', textAlign: 'center' }}>
+      <div style={{ padding: '0 clamp(16px,6.25vw,120px)' }}>
         <motion.h3
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -298,7 +298,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
       </div>
 
       {/* Prescription banner */}
-      <div style={{ padding: 'clamp(32px,3.13vw,60px) clamp(20px,10.99vw,211px)' }}>
+      <div style={{ padding: 'clamp(32px,3.13vw,60px) clamp(16px,6.25vw,120px)' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -359,7 +359,7 @@ export default function MetabolicPathwayPage() {
 
       {/* Hero — tabs straddle the card's bottom edge (Figma: tab y=673 in 694px card) */}
       <section style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)', paddingBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)' }}>
-        <div style={{ position: 'relative', margin: '0 clamp(12px,1.04vw,20px)' }}>
+        <div style={{ margin: '0 clamp(12px,1.04vw,20px)' }}>
 
           {/* Image card */}
           <div style={{ position: 'relative', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
@@ -394,8 +394,8 @@ export default function MetabolicPathwayPage() {
             </div>
           </div>
 
-          {/* Tabs — absolute, extending ~24px below the card */}
-          <div style={{ position: 'absolute', bottom: 'clamp(-16px, calc(-24 / 1920 * 100vw), -24px)', left: 'clamp(20px, calc(120 / 1920 * 100vw), 120px)', display: 'flex', gap: 8, flexWrap: 'wrap', zIndex: 10 }}>
+          {/* Tabs — natural flow on mobile, indented on desktop */}
+          <div className="flex flex-wrap gap-2 mt-3" style={{ paddingLeft: 'clamp(4px, calc(120 / 1920 * 100vw), 120px)' }}>
             {TABS.map((tab) => (
               <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
                 <span
