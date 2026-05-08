@@ -208,11 +208,13 @@ export default function BlogArticles({ posts = [] }: { posts?: BlogPostCard[] })
                   >
                     {card.authorAvatar && (
                       <div
-                        className="rounded-full overflow-hidden bg-cover bg-center shrink-0 ring-0 ring-white/30 transition-[box-shadow] duration-500 ease-out group-hover:ring-2"
+                        className="rounded-full overflow-hidden shrink-0 ring-0 ring-white/30 transition-[box-shadow] duration-500 ease-out group-hover:ring-2"
                         style={{
-                          width: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
-                          height: 'clamp(40px, calc(48 / 1920 * 100vw), 48px)',
+                          width: 'clamp(36px, calc(44 / 1920 * 100vw), 44px)',
+                          height: 'clamp(36px, calc(44 / 1920 * 100vw), 44px)',
                           backgroundImage: `url('${card.authorAvatar}')`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'top center',
                         }}
                         role="img"
                         aria-label={card.authorAvatarAlt}
