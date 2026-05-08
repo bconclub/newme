@@ -93,8 +93,11 @@ export default function PageHero({
         style={{
           // 48 unified across every hero card so they all read as siblings.
           borderRadius: 'clamp(28px, 2.5vw, 48px)',
-          // 320 floor matches the rest of the site (commits 42c488e + sweep).
-          minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
+          // Internal-page hero is intentionally SHORTER than the home Hero
+          // (which sits at ~947px) — per client feedback the home page
+          // should feel taller; secondary pages should not. Floor stays at
+          // 320 (mobile) but ceiling drops 694 → 580 (16% shorter).
+          minHeight: 'clamp(320px, calc(580 / 1880 * 100vw), 580px)',
         }}
       >
         {/* ── Background image ── */}
@@ -139,10 +142,13 @@ export default function PageHero({
         <div
           className="relative z-10 flex flex-col"
           style={{
-            paddingTop: 'clamp(170px, calc(233 / 1920 * 100vw), 233px)',
+            // paddingTop reduced 233 → 160 to track the 580 card height
+            // (was sized for a 694 card). Heading + body now sit in the
+            // bottom-third of the panel without crashing into the bottom.
+            paddingTop: 'clamp(120px, calc(160 / 1920 * 100vw), 160px)',
             paddingLeft: 'clamp(28px, calc(100 / 1920 * 100vw), 100px)',
             paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
-            paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+            paddingBottom: 'clamp(36px, calc(64 / 1920 * 100vw), 64px)',
             maxWidth: 'clamp(360px, calc(1186 / 1920 * 100vw), 1186px)',
           }}
         >

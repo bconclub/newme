@@ -1,7 +1,18 @@
 import type { StructureBuilder } from "sanity/structure";
+import {
+  MediaIcon,
+  BlogIcon,
+  FaqIcon,
+  TestimonialIcon,
+  PeopleIcon,
+  SiteIcon,
+} from "./icons";
 
 /**
  * Custom Studio sidebar structure.
+ *
+ * Icons are solid SVG components (sanity/icons.tsx) — replaced the
+ * previous emoji set which read as childish next to a real CMS.
  *
  * Order (top to bottom):
  *   • Content
@@ -22,7 +33,7 @@ export const customStructure = (S: StructureBuilder) =>
       // ── Content group ───────────────────────────────────────────────
       S.listItem()
         .title("Media")
-        .icon(() => "📰")
+        .icon(MediaIcon)
         .child(
           S.list()
             .title("Media")
@@ -31,16 +42,16 @@ export const customStructure = (S: StructureBuilder) =>
               S.documentTypeListItem("mediaOutlet").title("Media Outlets"),
             ])
         ),
-      S.documentTypeListItem("post").title("Blog Posts").icon(() => "📝"),
-      S.documentTypeListItem("faq").title("FAQs").icon(() => "❓"),
-      S.documentTypeListItem("testimonial").title("Testimonials").icon(() => "💬"),
+      S.documentTypeListItem("post").title("Blog Posts").icon(BlogIcon),
+      S.documentTypeListItem("faq").title("FAQs").icon(FaqIcon),
+      S.documentTypeListItem("testimonial").title("Testimonials").icon(TestimonialIcon),
 
       S.divider(),
 
       // ── People group ────────────────────────────────────────────────
       S.listItem()
         .title("People")
-        .icon(() => "👥")
+        .icon(PeopleIcon)
         .child(
           S.list()
             .title("People")
@@ -55,7 +66,7 @@ export const customStructure = (S: StructureBuilder) =>
       // ── Site operations ─────────────────────────────────────────────
       S.listItem()
         .title("Site")
-        .icon(() => "⚙️")
+        .icon(SiteIcon)
         .child(
           S.list()
             .title("Site")

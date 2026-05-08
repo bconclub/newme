@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
+import PageHero from '@/components/option1/PageHero'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -93,95 +94,15 @@ export default function TeamPage() {
 
 function TeamHero() {
   return (
-    <section
-      className="relative"
-      style={{
-        paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)',
-        paddingLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-        paddingRight: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-        paddingBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
-      }}
-    >
-      <div
-        className="relative overflow-hidden"
-        style={{
-          borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)',
-          height: 'clamp(320px, calc(694 / 1920 * 100vw), 694px)',
-          background: '#0E2827',
-        }}
-      >
-        <div className="absolute inset-0">
-          {/* Real /team hero supplied by the client (renamed from
-              `Team Hero.webp` → `team-hero.webp` so the URL doesn't need
-              percent-encoding and matches the rest of the codebase's
-              kebab-case convention). */}
-          <Image
-            src="/images/team/team-hero.webp"
-            alt="NewME clinical care team"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 1880px"
-            className="object-cover [object-position:50%_center]"
-          />
-        </div>
-        {/* Wash retuned: text block is now CENTER-aligned (Figma 137:1360 /
-            137:1361 — "heading misaligned" feedback) so the previous left-only
-            horizontal mask would leave the centered text floating over a
-            bright photo. Switched to a darker bottom-fade gradient that keeps
-            the headline area legible at center while letting the top of the
-            scene breathe. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(1,62,55,0.30) 0%, rgba(1,62,55,0.55) 50%, rgba(1,62,55,0.85) 100%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse 70% 55% at 50% 75%, rgba(1,62,55,0.55) 0%, rgba(1,62,55,0) 70%)',
-          }}
-        />
-        <div
-          className="relative z-10 flex flex-col justify-end items-center h-full text-center"
-          style={{
-            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
-          }}
-        >
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: EASE, delay: 0.05 }}
-            className="font-[family-name:var(--font-urbanist)]"
-            style={{ fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)', color: 'rgba(255,255,255,0.75)', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)' }}
-          >
-            NewME Care Team
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease: EASE, delay: 0.12 }}
-            className="font-[family-name:var(--font-bricolage)] text-white"
-            style={{ fontWeight: 600, fontSize: 'clamp(28px, calc(72 / 1920 * 100vw), 72px)', lineHeight: 1.08, letterSpacing: '-0.01em', maxWidth: 'clamp(300px, calc(900 / 1920 * 100vw), 900px)' }}
-          >
-            Meet The Clinical Team<br />Behind Your Care.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: EASE, delay: 0.26 }}
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{ fontWeight: 400, fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)', lineHeight: 1.6, opacity: 0.88, maxWidth: 'clamp(260px, calc(720 / 1920 * 100vw), 720px)', marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)' }}
-          >
-            A multidisciplinary team of doctors, nutritionists, coaches, and researchers — all working inside a single clinical system.
-          </motion.p>
-        </div>
-      </div>
-    </section>
+    <PageHero
+      imageSrc="/images/team/team-hero.webp"
+      imageAlt="NewME clinical care team"
+      eyebrow="NewME Care Team"
+      heading={<>Meet The Clinical Team<br />Behind Your Care.</>}
+      subheading="A multidisciplinary team of doctors, nutritionists, coaches, and researchers — all working inside a single clinical system."
+      headingMaxWidthPx={900}
+      bodyMaxWidthPx={720}
+    />
   )
 }
 
