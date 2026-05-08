@@ -366,14 +366,14 @@ export default function Pathways() {
                       <span
                         className="rounded-full font-[family-name:var(--font-bricolage)] inline-flex items-center shrink-0"
                         style={{
-                          fontWeight: 400,
+                          fontWeight: 500,
                           fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
-                          color: 'rgba(255,255,255,0.90)',
-                          background: 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%)',
+                          color: '#FEF272',
+                          background: 'linear-gradient(180deg, rgba(254,242,114,0.16) 0%, rgba(254,242,114,0.07) 100%)',
                           backdropFilter: 'blur(8px) saturate(110%)',
                           WebkitBackdropFilter: 'blur(8px) saturate(110%)',
-                          border: '1px solid rgba(255,255,255,0.28)',
-                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
+                          border: '1px solid rgba(254,242,114,0.38)',
+                          boxShadow: 'inset 0 1px 0 rgba(254,242,114,0.18)',
                           paddingLeft: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
                           paddingRight: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
                           height: 'clamp(22px, calc(30 / 1920 * 100vw), 30px)',
