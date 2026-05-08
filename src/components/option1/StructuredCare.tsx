@@ -148,6 +148,7 @@ export default function StructuredCare() {
           <div
             className="relative mx-auto flex items-start newme-compare-wrap"
             style={{ maxWidth: 1223 }}
+            data-active={active}
           >
             {/* Left — Typical Wellness Program (1:6323/1:6324) */}
             <motion.div

@@ -226,11 +226,14 @@ export default function Pathways() {
             {/* Prev / Next pair — manual navigation between pathway groups.
                 Each click jumps activeTab and resets the auto-advance timer. */}
             <div className="flex shrink-0 items-center" style={{ gap: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)' }}>
-              <button
+              <motion.button
                 type="button"
                 aria-label="Previous pathway group"
                 onClick={goPrev}
-                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:bg-white/20 hover:border-white/55"
+                whileTap={{ scale: 0.88 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md hover:bg-white/20 hover:border-white/55"
                 style={{
                   width: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
                   height: 'clamp(36px, calc(42 / 1920 * 100vw), 42px)',
@@ -239,7 +242,7 @@ export default function Pathways() {
                 <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
                   <path d="M11.25 3.75 6 9l5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
                 </svg>
-              </button>
+              </motion.button>
               {/* Next button + circular timer ring.
                   The ring is an SVG circle whose dashoffset animates from
                   full to zero over TAB_MS, keyed on activeTab so it restarts
@@ -283,11 +286,14 @@ export default function Pathways() {
                     transition={{ duration: TAB_MS / 1000, ease: 'linear' }}
                   />
                 </svg>
-                <button
+                <motion.button
                   type="button"
                   aria-label="Next pathway group"
                   onClick={goNext}
-                  className="absolute inline-flex items-center justify-center rounded-full bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:bg-white/20"
+                  whileTap={{ scale: 0.88 }}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inline-flex items-center justify-center rounded-full bg-white/12 text-white shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-md hover:bg-white/20"
                   style={{
                     top: 3,
                     left: 3,
@@ -298,7 +304,7 @@ export default function Pathways() {
                   <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
                     <path d="M6.75 3.75 12 9l-5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
                   </svg>
-                </button>
+                </motion.button>
               </div>
             </div>
           </div>

@@ -182,21 +182,67 @@ main.newme-page {
   }
 
   @media (max-width: 767px) {
-    /* Cards stay side-by-side on mobile (per click-to-swap UX). The
-       inactive card scales to ~0.92 + dims, so it occupies less visual
-       weight even though it physically still sits next to the active
-       card. Keeping them in a row preserves the "tabs as cards"
-       interaction the design calls for. We just override the desktop
-       margin-top offset (left card sits 90px lower than right) so the
-       two cards align cleanly on a narrow screen. */
+    /* Mobile: switch to a stacked-deck layout. The two cards stack
+       vertically; whichever is active fills the screen with full content,
+       and the inactive one collapses to just its header band so it reads
+       as a peek the user can tap to swap. One card dominates at a time
+       per the design ask — no more cramped side-by-side. */
     .newme-compare-wrap {
-      .newme-typical-col {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      max-width: 540px !important;
+
+      .newme-typical-col,
+      .newme-newme-col {
+        flex: none !important;
         margin-top: 0 !important;
-        min-height: clamp(420px, 110vw, 720px) !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+        /* Override Framer's inline transform to prevent the inactive
+           card from looking shrunken under the active one — collapse
+           does the visual work instead. */
+        transform: none !important;
+        opacity: 1 !important;
+        transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                    margin 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
+        overflow: hidden !important;
+      }
+
+      .newme-typical-col {
+        min-height: 0 !important;
+        order: 2;
       }
 
       .newme-newme-col {
-        min-height: clamp(420px, 110vw, 720px) !important;
+        min-height: 0 !important;
+        order: 1;
+        margin-bottom: 12px !important;
+      }
+
+      /* When NewME is active, Typical collapses to just its header. */
+      &[data-active="newme"] {
+        .newme-newme-col {
+          max-height: 1200px;
+        }
+        .newme-typical-col {
+          max-height: 88px; /* header band only — body items clipped */
+          cursor: pointer;
+        }
+      }
+
+      /* When Typical is active, NewME collapses to just its header. */
+      &[data-active="typical"] {
+        .newme-typical-col {
+          max-height: 1200px;
+          order: 1;
+          margin-bottom: 12px !important;
+        }
+        .newme-newme-col {
+          max-height: 100px; /* slightly taller — NewME header is bigger */
+          order: 2;
+          margin-bottom: 0 !important;
+          cursor: pointer;
+        }
       }
     }
 
