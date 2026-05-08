@@ -114,9 +114,32 @@ const BODY_SIZE = 'clamp(16px, calc(19 / 1920 * 100vw), 19px)'
 const BODY_FONT = 'font-[family-name:var(--font-urbanist)]'
 const HEAD_FONT = 'font-[family-name:var(--font-bricolage)]'
 
+/* Pre-scan: assign sequential numbers to h3s within each h2 section
+   when a section contains 2+ h3s (e.g. "6 Common Reasons"). */
+function buildH3NumberMap(blocks: PtBlock[]): Map<string, number> {
+  const map = new Map<string, number>()
+  let sectionH3s: { key: string }[] = []
+
+  const flush = () => {
+    if (sectionH3s.length >= 2) {
+      sectionH3s.forEach(({ key }, i) => map.set(key, i + 1))
+    }
+    sectionH3s = []
+  }
+
+  for (const b of blocks) {
+    if (b._type !== 'block') continue
+    if (b.style === 'h2') { flush() }
+    else if (b.style === 'h3' && b._key) { sectionH3s.push({ key: b._key }) }
+  }
+  flush()
+  return map
+}
+
 function PortableText({ value }: { value: unknown[] }) {
   if (!Array.isArray(value)) return null
   const blocks = value.filter((n): n is PtBlock => typeof n === 'object' && n !== null)
+  const h3Numbers = buildH3NumberMap(blocks)
   const groups = groupBlocks(blocks)
 
   return (
@@ -229,6 +252,7 @@ function PortableText({ value }: { value: unknown[] }) {
           case 'h3': {
             const headingText = (block.children ?? []).map(s => s.text).join('')
             const id = slugifyHeading(headingText)
+            const num = block._key ? h3Numbers.get(block._key) : undefined
             return (
               <h3
                 key={key}
@@ -238,11 +262,31 @@ function PortableText({ value }: { value: unknown[] }) {
                   fontSize: 'clamp(18px, calc(26 / 1920 * 100vw), 26px)',
                   lineHeight: 1.3, fontWeight: 600,
                   marginTop: 44, marginBottom: 12,
-                  paddingLeft: 14, borderLeft: '3px solid #FEF272',
+                  display: 'flex', alignItems: 'baseline', gap: 14,
                   scrollMarginTop: 100,
                 }}
               >
-                {children}
+                {num !== undefined && (
+                  <span
+                    aria-hidden
+                    style={{
+                      flexShrink: 0,
+                      fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)',
+                      fontWeight: 700,
+                      color: '#FEF272',
+                      background: 'rgba(254,242,114,0.12)',
+                      border: '1px solid rgba(254,242,114,0.35)',
+                      borderRadius: 6,
+                      padding: '2px 8px',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {num}
+                  </span>
+                )}
+                <span style={num === undefined ? { paddingLeft: 14, borderLeft: '3px solid #FEF272' } : undefined}>
+                  {children}
+                </span>
               </h3>
             )
           }
