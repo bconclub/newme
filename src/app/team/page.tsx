@@ -254,15 +254,41 @@ function TeamGrid() {
         </p>
       </motion.div>
 
-      {/* 4 columns at xl (1280px+), 3 at lg, 2 at sm/md */}
+      {/* 4 columns at xl (1280px+), 3 at lg, 2 at sm/md.
+          The 10-member roster produces orphan rows: 2 leftover at xl
+          (4-col), 1 leftover at lg (3-col). The CSS below shifts the
+          orphans into the middle so an incomplete last row reads as
+          centered instead of left-anchored. */}
       <div
-        className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        className="team-grid grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         style={{ gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)', maxWidth: 1800, margin: '0 auto' }}
       >
         {TEAM.map((member, i) => (
           <TeamCard key={member.name} member={member} index={i} />
         ))}
       </div>
+      <style>{`
+        /* xl (≥1280px) — 4-col grid. If the count leaves 2 in the last
+           row (count % 4 === 2), shift the antepenultimate to column 2
+           so the pair sits at cols 2-3 (centered). */
+        @media (min-width: 1280px) {
+          .team-grid > :nth-child(4n + 1):nth-last-child(2) {
+            grid-column-start: 2;
+          }
+          /* If 1 leftover (count % 4 === 1), park it at col 2 with a
+             half-column slide so it's centered between cols 2 and 3. */
+          .team-grid > :last-child:nth-child(4n + 1) {
+            grid-column-start: 2;
+            transform: translateX(calc(50% + clamp(6px, calc(10 / 1920 * 100vw), 10px)));
+          }
+        }
+        /* lg (1024-1279px) — 3-col grid. If 1 leftover, shift to col 2. */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+          .team-grid > :last-child:nth-child(3n + 1) {
+            grid-column-start: 2;
+          }
+        }
+      `}</style>
       </div>
     </section>
   )

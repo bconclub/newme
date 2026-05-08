@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
+import PageHero from '@/components/option1/PageHero'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -107,97 +107,18 @@ export default function FAQPage() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Hero — Figma 122:17409 — 1880×694 card
-// "Frequently Asked Questions"
+// Hero — composes <PageHero> (Figma 121:93 template).
 // ─────────────────────────────────────────────────────────────────────────────
 function FAQHero() {
   return (
-    <section
-      className="relative"
-      style={{
-        paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)',
-        paddingLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-        paddingRight: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-        paddingBottom: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
-      }}
-    >
-      <div
-        className="relative overflow-hidden"
-        style={{
-          borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)',
-          height: 'clamp(320px, calc(694 / 1920 * 100vw), 694px)',
-          background: '#0E2827',
-        }}
-      >
-        {/* Hero image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/clinic/doctor-hero.png"
-            alt="NewME clinical care"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 1880px"
-            className="object-cover [object-position:60%_center] md:object-center"
-          />
-        </div>
-
-        {/* Pine gradient wash */}
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(118deg, #629675 0%, #2F7269 30%, #144F49 55%, #013E37 80%)',
-            opacity: 0.92,
-            maskImage:
-              'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0.55) 44%, rgba(0,0,0,0.12) 54%, rgba(0,0,0,0) 62%)',
-            WebkitMaskImage:
-              'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0.55) 44%, rgba(0,0,0,0.12) 54%, rgba(0,0,0,0) 62%)',
-          }}
-        />
-
-        {/* Content */}
-        <div
-          className="relative z-10 flex flex-col justify-end h-full"
-          style={{
-            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(120 / 1920 * 100vw), 120px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
-          }}
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease: EASE, delay: 0.1 }}
-            className="font-[family-name:var(--font-bricolage)] text-white"
-            style={{
-              fontWeight: 600,
-              fontSize: 'clamp(30px, calc(72 / 1920 * 100vw), 72px)',
-              lineHeight: 1.08,
-              letterSpacing: '-0.01em',
-              maxWidth: 'clamp(300px, calc(760 / 1920 * 100vw), 760px)',
-            }}
-          >
-            Frequently Asked<br />Questions.
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: EASE, delay: 0.25 }}
-            className="font-[family-name:var(--font-urbanist)] text-white"
-            style={{
-              fontWeight: 400,
-              fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-              lineHeight: 1.6,
-              opacity: 0.85,
-              maxWidth: 'clamp(260px, calc(783 / 1920 * 100vw), 783px)',
-              marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
-            }}
-          >
-            Everything you need to know about our clinical pathways, team, and commitment to your health.
-          </motion.p>
-        </div>
-      </div>
-    </section>
+    <PageHero
+      imageSrc="/clinic/doctor-hero.png"
+      imageAlt="NewME clinical care"
+      imagePosition="60% center"
+      heading={<>Frequently Asked<br />Questions.</>}
+      subheading="Everything you need to know about our clinical pathways, team, and commitment to your health."
+      headingMaxWidthPx={760}
+    />
   )
 }
 

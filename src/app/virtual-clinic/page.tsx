@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
+import PageHero from '@/components/option1/PageHero'
 
 export const metadata: Metadata = {
   title: 'Virtual Clinic | Dr. Pal\'s NewME',
@@ -70,171 +70,71 @@ function VCBlobs() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Hero — Figma 83:58 / 83:63 / 83:2431 / 83:2439 / 83:2432
-// 1880×694 rounded card; doctor photo on right, pine wash on left, gold pill
-// CTA with tangerine arrow circle (same overlap pattern as HIWHero).
+// Hero — composes <PageHero> (Figma 121:93 template) with a CTA pair.
 // ─────────────────────────────────────────────────────────────────────────────
 function VCHero() {
   return (
-    <section
-      className="relative"
-      style={{
-        paddingTop: 'clamp(72px, calc(80 / 1920 * 100vw), 80px)',
-        paddingLeft: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-        paddingRight: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-      }}
-    >
-      <div
-        className="relative overflow-hidden"
+    <PageHero
+      imageSrc="/clinic/virtual-clinic-hero.webp"
+      imageAlt="NewME clinician on a virtual consultation"
+      imagePosition="65% center"
+      heading={<>Doctor-led Care,<br />Without The Wait.</>}
+      subheading="Consult with NewME's clinical team from wherever you are. Focused, evidence-based care without referral chains or waiting."
+      headingMaxWidthPx={1086}
+      bodyMaxWidthPx={783}
+      cta={<VCHeroCta />}
+    />
+  )
+}
+
+// CTA pair — gold pill + orange arrow with -7px overlap, used only by the
+// virtual-clinic hero (booking CTA links to #contact).
+function VCHeroCta() {
+  return (
+    <div className="group/cta flex items-center flex-row-reverse justify-end">
+      <a
+        href="#contact"
+        aria-label="Book a consultation"
+        className="relative z-0 rounded-full bg-[#F08B55] hover:bg-[#FF8547] text-white flex items-center justify-center shrink-0 shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors"
         style={{
-          borderRadius: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)',
-          minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
-          background: '#0E2827',
+          width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+          height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
         }}
       >
-        {/* Doctor photo — pre-cropped to 1880×694 (Figma 83:62). */}
-        <div className="absolute inset-0">
-          <Image
-            src="/clinic/virtual-clinic-hero.webp"
-            alt="NewME clinician on a virtual consultation"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 1880px"
-            className="object-cover [object-position:65%_center] md:object-center"
-          />
-        </div>
-
-        {/* Pine gradient wash, fading out around 60% so the doctor reads through
-            on the right while the left stays dark for legible copy. Mirrors the
-            HIWHero treatment for visual continuity. */}
-        <div
+        <svg
+          viewBox="0 0 30 30"
+          fill="none"
           aria-hidden
-          className="absolute inset-0 pointer-events-none"
+          className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
           style={{
-            background:
-              'linear-gradient(118deg, #629675 0%, #2F7269 30%, #144F49 55%, #013E37 80%)',
-            opacity: 0.92,
-            maskImage:
-              'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0.55) 44%, rgba(0,0,0,0.12) 54%, rgba(0,0,0,0) 62%)',
-            WebkitMaskImage:
-              'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0.55) 44%, rgba(0,0,0,0.12) 54%, rgba(0,0,0,0) 62%)',
-          }}
-        />
-
-        {/* Soft monotone noise on the wash side only. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            opacity: 0.18,
-            mixBlendMode: 'multiply',
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.35' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-            backgroundSize: '220px 220px',
-            maskImage:
-              'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.4) 46%, rgba(0,0,0,0.05) 56%, rgba(0,0,0,0) 64%)',
-            WebkitMaskImage:
-              'linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.4) 46%, rgba(0,0,0,0.05) 56%, rgba(0,0,0,0) 64%)',
-          }}
-        />
-
-        {/* Content. Figma:
-            heading 83:2431 at x=120 y=341 — 1086×144, Bricolage SemiBold 80/96
-            body    83:2439 at x=120 y=509 — 783×60,  Urbanist 20/30
-            CTA     83:2432 at x=120 y=593 — 344×64
-        */}
-        <div
-          className="relative z-10 flex flex-col"
-          style={{
-            paddingTop: 'clamp(88px, calc(189 / 1920 * 100vw), 189px)',
-            paddingLeft: 'clamp(28px, calc(120 / 1920 * 100vw), 120px)',
-            paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
-            paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+            width: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+            height: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
           }}
         >
-          <h1
-            className="font-[family-name:var(--font-bricolage)] text-white"
-            style={{
-              fontWeight: 600,
-              fontSize: 'clamp(34px, calc(80 / 1920 * 100vw), 80px)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.01em',
-              maxWidth: 'clamp(320px, calc(1086 / 1920 * 100vw), 1086px)',
-            }}
-          >
-            Doctor-led Care,
-            <br />
-            Without The Wait.
-          </h1>
-
-          <p
-            className="text-white font-[family-name:var(--font-urbanist)]"
-            style={{
-              fontWeight: 400,
-              fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-              lineHeight: 1.6,
-              maxWidth: 'clamp(280px, calc(783 / 1920 * 100vw), 783px)',
-              marginTop: 'clamp(16px, calc(28 / 1920 * 100vw), 28px)',
-            }}
-          >
-            Consult with NewME&rsquo;s clinical team from wherever you are.
-            Focused, evidence-based care without referral chains or waiting.
-          </p>
-
-          {/* CTA — gold pill (Bricolage Medium 24) + tangerine 64 arrow circle.
-              Figma: pill 289×64, arrow circle 64×64 with -7px overlap onto pill. */}
-          <div
-            className="group/cta flex items-center flex-row-reverse justify-end"
-            style={{
-              marginTop: 'clamp(20px, calc(36 / 1920 * 100vw), 36px)',
-            }}
-          >
-            <a
-              href="#contact"
-              aria-label="Book a consultation"
-              className="relative z-0 rounded-full bg-[#F08B55] hover:bg-[#FF8547] text-white flex items-center justify-center shrink-0 shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors"
-              style={{
-                width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-              }}
-            >
-              <svg
-                viewBox="0 0 30 30"
-                fill="none"
-                aria-hidden
-                className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
-                style={{
-                  width: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
-                  height: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
-                }}
-              >
-                <path
-                  d="M9 21L21 9M21 9H11M21 9V19"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-            <a
-              href="#contact"
-              className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-black font-medium font-[family-name:var(--font-bricolage)] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors"
-              style={{
-                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-                paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-                paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-                fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
-                lineHeight: 1,
-                marginRight: 'clamp(-12px, calc(-9 / 1920 * 100vw), -9px)',
-              }}
-            >
-              Book A Consultation
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+          <path
+            d="M9 21L21 9M21 9H11M21 9V19"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </a>
+      <a
+        href="#contact"
+        className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-black font-medium font-[family-name:var(--font-bricolage)] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition-colors"
+        style={{
+          height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+          paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+          paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+          fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
+          lineHeight: 1,
+          marginRight: 'clamp(-12px, calc(-9 / 1920 * 100vw), -9px)',
+        }}
+      >
+        Book A Consultation
+      </a>
+    </div>
   )
 }
 
