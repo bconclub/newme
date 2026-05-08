@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -95,8 +95,8 @@ function PhaseSection({ phase }: { phase: Phase }) {
   return (
     <section id={phase.id} style={{ position: 'relative', zIndex: 1, paddingTop: 'clamp(60px,5.21vw,100px)' }}>
 
-      {/* Heading + description + duration — left aligned */}
-      <div style={{ paddingLeft: 'clamp(20px,6.25vw,120px)', paddingRight: 'clamp(20px,6.25vw,120px)' }}>
+      {/* Heading + description + duration â€” left aligned */}
+      <div style={{ paddingLeft: 'clamp(16px,6.25vw,120px)', paddingRight: 'clamp(16px,6.25vw,120px)' }}>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -130,10 +130,10 @@ function PhaseSection({ phase }: { phase: Phase }) {
         </motion.div>
       </div>
 
-      {/* 2-column info cards — stacks on mobile */}
+      {/* 2-column info cards â€” stacks on mobile */}
       <div
         className="grid grid-cols-1 md:grid-cols-2"
-        style={{ gap: 'clamp(10px,1.04vw,20px)', padding: '0 clamp(20px,6.25vw,120px) clamp(24px,2.08vw,40px)' }}
+        style={{ gap: 'clamp(10px,1.04vw,20px)', padding: '0 clamp(16px,6.25vw,120px) clamp(24px,2.08vw,40px)' }}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -144,7 +144,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
             background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)',
             border: '1px solid rgba(255,255,255,0.10)',
             borderRadius: 'clamp(14px,1.04vw,20px)',
-            padding: 'clamp(20px,2.08vw,36px)',
+            padding: 'clamp(16px,2.08vw,36px)',
             backdropFilter: 'blur(14px)',
           }}
         >
@@ -170,7 +170,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
             background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)',
             border: '1px solid rgba(255,255,255,0.10)',
             borderRadius: 'clamp(14px,1.04vw,20px)',
-            padding: 'clamp(20px,2.08vw,36px)',
+            padding: 'clamp(16px,2.08vw,36px)',
             backdropFilter: 'blur(14px)',
           }}
         >
@@ -188,8 +188,8 @@ function PhaseSection({ phase }: { phase: Phase }) {
         </motion.div>
       </div>
 
-      {/* What Structured Care Entails — left aligned */}
-      <div style={{ padding: '0 clamp(20px,6.25vw,120px)' }}>
+      {/* What Structured Care Entails â€” left aligned */}
+      <div style={{ padding: '0 clamp(16px,6.25vw,120px)' }}>
         <motion.h3
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -229,7 +229,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
       </div>
 
       {/* Prescription banner */}
-      <div style={{ padding: 'clamp(32px,3.13vw,60px) clamp(20px,6.25vw,120px)' }}>
+      <div style={{ padding: 'clamp(32px,3.13vw,60px) clamp(16px,6.25vw,120px)' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -281,7 +281,7 @@ export default function ContinuityPathwayPage() {
             <div style={{ position: 'relative', borderRadius: 'clamp(20px, calc(48 / 1920 * 100vw), 48px)', overflow: 'hidden', height: 'clamp(280px,36.15vw,694px)' }}>
               <Image
                 src="/images/pathways/continuity-hero.jpg"
-                alt="Continuity Pathways — ongoing care"
+                alt="Continuity Pathways â€” ongoing care"
                 fill unoptimized priority
                 style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
               />
@@ -308,7 +308,7 @@ export default function ContinuityPathwayPage() {
               </div>
             </div>
 
-            {/* Tabs — below card on mobile, overlapping on desktop */}
+            {/* Tabs â€” below card on mobile, overlapping on desktop */}
             <div
               className="flex flex-wrap gap-2 mt-4 md:mt-0"
               style={{

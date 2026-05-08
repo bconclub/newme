@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
+import EyebrowPill from '@/components/option1/EyebrowPill'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -73,7 +74,6 @@ function ContactBody() {
       >
         {/* ── Left column — contact info ── */}
         <div>
-          {/* Reach Out pill — Figma: 155×48, backdropBlur 2px, border solid white, rounded-[40px], 24px Bricolage Light */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -81,26 +81,7 @@ function ContactBody() {
             transition={{ duration: 0.4 }}
             style={{ marginBottom: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)' }}
           >
-            <span
-              className="font-[family-name:var(--font-bricolage)]"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid #ffffff',
-                borderRadius: 40,
-                height: 'clamp(38px, calc(48 / 1920 * 100vw), 48px)',
-                minWidth: 'clamp(110px, calc(155 / 1920 * 100vw), 155px)',
-                padding: '0 clamp(16px, calc(20 / 1920 * 100vw), 20px)',
-                fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
-                fontWeight: 300,
-                color: '#ffffff',
-                backdropFilter: 'blur(2px)',
-                WebkitBackdropFilter: 'blur(2px)',
-              }}
-            >
-              Reach Out
-            </span>
+            <EyebrowPill>Reach Out</EyebrowPill>
           </motion.div>
 
           {/* Heading */}
