@@ -55,11 +55,22 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
               />
             </div>
             <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: INK, lineHeight: 1.25, fontFamily: FONT_BODY }}>
-                Designed by Dr. Palaniappan, MD
+              <p style={{
+                fontSize: 11, color: GRN, fontWeight: 700,
+                marginBottom: 5, letterSpacing: ".08em", textTransform: "uppercase",
+                fontFamily: FONT_BUTTON,
+              }}>
+                Designed by
               </p>
-              <p style={{ fontSize: 12, color: INK3, marginTop: 4, fontFamily: FONT_BODY }}>
-                Internal Medicine · NewME Founder
+              <p style={{
+                fontSize: 17, fontWeight: 600, color: INK,
+                lineHeight: 1.15, letterSpacing: "-0.01em",
+                fontFamily: FONT_HEADING,
+              }}>
+                Dr. Palaniappan Manickam, MD
+              </p>
+              <p style={{ fontSize: 12, color: INK3, marginTop: 5, fontFamily: FONT_BODY }}>
+                Gastroenterologist · NewME Founder
               </p>
             </div>
           </div>
