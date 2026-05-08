@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import NewMELogo from './NewMELogo'
 
 // motion-enhanced Link — avoids the deprecated legacyBehavior wrapper pattern
 const MotionLink = motion(Link)
@@ -79,17 +79,12 @@ export default function Header() {
         >
           <div className="relative h-[62px] flex items-center justify-between gap-6">
           <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
-            <Image
-              src="/newme-logo.png"
-              alt="Dr. Pal's NewME"
-              width={520}
-              height={130}
-              priority
-              unoptimized
-              /* h-10 (40px) on mobile fell below the 44px tap-target floor.
-                 h-11 = 44px exactly, then h-12 (48px) at md+ matches Figma. */
-              className="h-11 md:h-12 w-auto block"
-            />
+            <span className="hidden md:block">
+              <NewMELogo size={48} />
+            </span>
+            <span className="block md:hidden">
+              <NewMELogo size={44} />
+            </span>
           </Link>
 
           {/* Figma: nav text spans 1124px between logo and CTA, Urbanist 500 14px, 32px gap.

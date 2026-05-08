@@ -296,9 +296,8 @@ html:has(main.newme-page) .newme-header a {
    override on hover or when the card is the active scroll-snap card on mobile. */
 .testimonial-card:hover,
 .testimonial-card[data-active="true"] {
-  background-image: none !important;
   background-color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0) !important;
+  border-color: rgba(255, 255, 255, 0.0) !important;
 }
 .testimonial-card:hover .testimonial-tint,
 .testimonial-card[data-active="true"] .testimonial-tint {

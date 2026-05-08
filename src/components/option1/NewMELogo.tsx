@@ -1,15 +1,8 @@
 'use client'
 
+import { useId } from 'react'
 import { motion } from 'framer-motion'
 
-/**
- * Logo split into two independent layers:
- *   1. Spinning radial icon  (SVG, animated)
- *   2. Static wordmark image (newme-logo-text.webp)
- *
- * Pass `size` to scale uniformly (default 48 = header height in px).
- * Pass `spinDuration` to control rotation speed (seconds, default 18).
- */
 export default function NewMELogo({
   size = 48,
   spinDuration = 18,
@@ -17,7 +10,10 @@ export default function NewMELogo({
   size?: number
   spinDuration?: number
 }) {
+  const uid = useId().replace(/:/g, '')
   const iconSize = size * 0.92
+  const gradA = `nm-grad-a-${uid}`
+  const gradB = `nm-grad-b-${uid}`
 
   return (
     <div
@@ -41,12 +37,12 @@ export default function NewMELogo({
         style={{ flexShrink: 0, display: 'block' }}
       >
         <defs>
-          <radialGradient id="nm-grad-a" cx="50%" cy="30%" r="70%">
+          <radialGradient id={gradA} cx="50%" cy="30%" r="70%">
             <stop offset="0%" stopColor="#FEF272" />
             <stop offset="55%" stopColor="#FFB347" />
             <stop offset="100%" stopColor="#FF8547" />
           </radialGradient>
-          <radialGradient id="nm-grad-b" cx="50%" cy="30%" r="70%">
+          <radialGradient id={gradB} cx="50%" cy="30%" r="70%">
             <stop offset="0%" stopColor="#FFD17D" />
             <stop offset="60%" stopColor="#FF9A5C" />
             <stop offset="100%" stopColor="#E86B2B" />
@@ -59,7 +55,7 @@ export default function NewMELogo({
             cy="14"
             rx="5.2"
             ry="13.5"
-            fill={`url(#nm-grad-${i % 2 === 0 ? 'a' : 'b'})`}
+            fill={`url(#${i % 2 === 0 ? gradA : gradB})`}
             opacity={0.55 + i * 0.06}
             transform={`rotate(${i * 45} 40 40)`}
             style={{ transformBox: 'fill-box', transformOrigin: 'center' }}

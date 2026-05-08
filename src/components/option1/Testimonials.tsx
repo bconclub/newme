@@ -246,16 +246,15 @@ function TestimonialCard({
       data-active={isActive ? 'true' : undefined}
       className="testimonial-card group relative overflow-hidden shrink-0 w-[73%] sm:w-auto snap-start sm:snap-align-none cursor-default"
       style={{
-        // Default GLASS state per Figma 1:6293. CSS class overrides on hover.
-        backgroundImage:
-          'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
-        backdropFilter: 'blur(10.25px)',
-        WebkitBackdropFilter: 'blur(10.25px)',
-        border: '2px solid rgba(255,255,255,0.30)',
+        // Default: dark pine-teal undertone so active (white) reads as a clear step up.
+        backgroundColor: 'rgba(8, 46, 40, 0.62)',
+        backdropFilter: 'blur(14px) saturate(80%)',
+        WebkitBackdropFilter: 'blur(14px) saturate(80%)',
+        border: '1.5px solid rgba(255,255,255,0.16)',
         borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
         minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
         transition:
-          'background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-image 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+          'background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
       }}
     >
       {/* Sage green Ellipse 55 tint (Figma 1:6296) — fades out on hover */}
@@ -364,11 +363,10 @@ function RatingsCard() {
         WebkitBackdropFilter: 'blur(10.25px)',
       }}
     >
-      <div className="relative grid grid-cols-3 items-center py-6 sm:py-14 gap-2 sm:gap-0">
+      <div className="relative grid grid-cols-3 items-center py-5 sm:py-8 gap-2 sm:gap-0">
         <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
-        {/* Figma 1:6354 — shield center */}
         <div className="flex items-center justify-center">
-          <ShieldIcon size="clamp(48px, calc(130 / 1920 * 100vw), 130px)" />
+          <ShieldIcon size="clamp(36px, calc(72 / 1920 * 100vw), 72px)" />
         </div>
         <RatingBlock score="4.7" label="Program Completion Rate" />
       </div>
@@ -390,7 +388,7 @@ function RatingBlock({
       {/* 5 orange stars */}
       <div className="flex items-center gap-[2px] sm:gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
-          <Star key={i} size="clamp(10px, calc(28 / 1920 * 100vw), 28px)" />
+          <Star key={i} size="clamp(10px, calc(18 / 1920 * 100vw), 18px)" />
         ))}
       </div>
       {/* Score — Figma: Poppins SemiBold 80px #629675 */}
@@ -399,7 +397,7 @@ function RatingBlock({
         style={{
           color: '#629675',
           fontWeight: 600,
-          fontSize: 'clamp(26px, calc(80 / 1920 * 100vw), 80px)',
+          fontSize: 'clamp(22px, calc(52 / 1920 * 100vw), 52px)',
           lineHeight: 1,
           marginTop: 4,
         }}

@@ -269,15 +269,15 @@ export default function HIWComparison() {
               aria-pressed={active === 'newme'}
               onClick={() => setActive('newme')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('newme') } }}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 32, scale: 0.91 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.15 }}
               animate={{
                 scale: active === 'newme' ? 1 : 0.88,
                 opacity: active === 'newme' ? 1 : 0.38,
                 y: active === 'newme' ? 0 : 40,
               }}
-              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               className="w-full flex flex-col overflow-hidden newme-newme-col cursor-pointer mt-4 md:flex-[680_1_0] md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
               style={{
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',

@@ -1,7 +1,7 @@
 ﻿'use client'
 
-import Image from 'next/image'
 import { useState, useRef } from 'react'
+import NewMELogo from './NewMELogo'
 import {
   motion,
   useMotionValue,
@@ -296,10 +296,7 @@ function DesktopStage({
           style={{ width: 1100, height: 1100, transform: 'translate(-50%,-50%)', touchAction: 'none', zIndex: 0 }}
         />
 
-        {/* Hub logo — centered on the orbit anchor (0,0). Explicit size on
-            the wrapper so translate(-50%,-50%) centers correctly; without it
-            the wrapper inherits width:0 from the anchor and the logo offsets
-            to the bottom-right of the anchor instead of centering. */}
+        {/* Hub logo — centered on the orbit anchor (0,0). */}
         <div
           className="absolute pointer-events-none flex items-center justify-center"
           style={{
@@ -311,15 +308,7 @@ function DesktopStage({
             zIndex: 5,
           }}
         >
-          <Image
-            src="/newme-logo.png"
-            alt="Dr. Pal's NewME"
-            width={240}
-            height={74}
-            unoptimized
-            priority
-            style={{ width: '100%', height: 'auto', display: 'block' }}
-          />
+          <NewMELogo size={56} />
         </div>
 
         {/* Pillar icons — each follows the arc via discAngle */}
@@ -450,30 +439,17 @@ function MobilePillars({
       {/* Arc lives on top in its own fixed-height row so it can't be
           overlapped by the title/description below. */}
       <div className="relative w-full overflow-hidden pointer-events-none" style={{ height: MOB_ARC_H }}>
-        {/* Brand logo — anchored near the left edge of the screen so it
-            never overlaps the active pillar (which sits at the right end of
-            the arc, x ≈ 211 with a 110px badge). Logo width 120, left-anchor
-            16 → spans 16–136, well clear of the active pillar's left edge
-            (~156) with a comfortable 20px gap. */}
+        {/* Brand logo — anchored near the left edge of the screen */}
         <div
-          className="absolute pointer-events-none flex items-center justify-center"
+          className="absolute pointer-events-none flex items-center"
           style={{
             top: MOB_CENTER_Y,
             left: 16,
-            width: 120,
-            height: 38,
             transform: 'translateY(-50%)',
             zIndex: 1,
           }}
         >
-          <Image
-            src="/newme-logo.png"
-            alt="Dr. Pal's NewME"
-            width={240}
-            height={74}
-            unoptimized
-            style={{ width: '100%', height: 'auto', display: 'block' }}
-          />
+          <NewMELogo size={32} />
         </div>
         {PILLARS.map((p, i) => (
           <MobileArcPillar
