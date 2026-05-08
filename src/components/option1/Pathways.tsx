@@ -314,10 +314,10 @@ export default function Pathways() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease }}
+            exit={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0 }}
             className="flex min-w-0 flex-col"
             id={`pathway-panel-${activeTab}`}
             role="tabpanel"
@@ -326,9 +326,9 @@ export default function Pathways() {
             {group.cards.map((card, i) => (
               <motion.div
                 key={card.title}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 1, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.07, ease }}
+                transition={{ duration: 0 }}
                 className="overflow-hidden"
                 style={{
                   borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
