@@ -332,9 +332,9 @@ export default function Pathways() {
             {group.cards.map((card, i) => (
               <motion.div
                 key={card.title}
-                initial={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 28 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0 }}
+                transition={{ duration: 0.32, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
                 style={{
                   borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',

@@ -161,9 +161,9 @@ export default function StructuredCare() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               animate={{
-                scale: active === 'typical' ? 1 : 0.92,
-                opacity: active === 'typical' ? 1 : 0.55,
-                y: active === 'typical' ? 0 : 28,
+                scale: active === 'typical' ? 1 : 0.88,
+                opacity: active === 'typical' ? 1 : 0.38,
+                y: active === 'typical' ? 0 : 40,
               }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col overflow-hidden newme-typical-col cursor-pointer"
@@ -250,9 +250,9 @@ export default function StructuredCare() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               animate={{
-                scale: active === 'newme' ? 1 : 0.92,
-                opacity: active === 'newme' ? 1 : 0.7,
-                y: active === 'newme' ? 0 : 28,
+                scale: active === 'newme' ? 1 : 0.88,
+                opacity: active === 'newme' ? 1 : 0.38,
+                y: active === 'newme' ? 0 : 40,
               }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col overflow-hidden newme-newme-col cursor-pointer"

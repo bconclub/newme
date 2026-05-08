@@ -166,6 +166,7 @@ export default function Testimonials() {
             gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
             marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
             scrollbarWidth: 'none',
+            scrollPaddingLeft: '20px',
           }}
         >
           {testimonials.map((t, i) => (
@@ -243,7 +244,7 @@ function TestimonialCard({
           : '0 0 0 0px rgba(254,242,114,0), 0 4px 16px rgba(0,0,0,0.10)',
       }}
       data-active={isActive ? 'true' : undefined}
-      className="testimonial-card group relative overflow-hidden shrink-0 w-[78%] sm:w-auto snap-center sm:snap-align-none cursor-default"
+      className="testimonial-card group relative overflow-hidden shrink-0 w-[73%] sm:w-auto snap-start sm:snap-align-none cursor-default"
       style={{
         // Default GLASS state per Figma 1:6293. CSS class overrides on hover.
         backgroundImage:
