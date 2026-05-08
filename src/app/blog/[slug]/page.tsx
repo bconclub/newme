@@ -140,7 +140,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div
           aria-hidden
           className="pointer-events-none"
-          style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1600, zIndex: 0 }}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}
         >
           <div
             style={{
