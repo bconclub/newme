@@ -77,13 +77,12 @@ export default function ResearchHero() {
                 Gap between heading bottom (y=392) and subtitle top (y=416) = 24px
           */}
           <div
-            className="relative z-10 flex flex-col"
+            className="relative z-10 flex flex-col items-center text-center mx-auto"
             style={{
               paddingTop: 'clamp(180px, calc(248 / 1920 * 100vw), 248px)',
-              paddingLeft: 'clamp(28px, calc(100 / 1920 * 100vw), 100px)',
-              paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
+              paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+              paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
               paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-              maxWidth: 'clamp(360px, calc(1186 / 1920 * 100vw), 1186px)',
             }}
           >
             <motion.h1

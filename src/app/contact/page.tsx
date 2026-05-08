@@ -71,11 +71,12 @@ function ContactHero() {
           }}
         />
 
-        {/* Content — Figma: heading at x=120 y=370, body at x=120 y=538 */}
+        {/* Content — center-aligned per site-wide hero sweep. Original
+            Figma anchored heading at x=120 y=370 / body at x=120 y=538. */}
         <div
-          className="relative z-10 flex flex-col justify-end h-full"
+          className="relative z-10 flex flex-col justify-end items-center h-full text-center"
           style={{
-            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(120 / 1920 * 100vw), 120px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
+            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
           }}
         >
           <motion.h1
