@@ -83,14 +83,13 @@ export default function HIWHero() {
             CTA group at x=120 y=612, 376×64
         */}
         <div
-          className="relative z-10 flex flex-col items-center text-center mx-auto"
+          className="relative z-10 flex flex-col"
           style={{
-            // Center-aligned per site-wide hero sweep (triggered by /team
-            // feedback). Padding floors halved on mobile so the headline
-            // doesn't sit at the bottom of a tall card when narrow.
+            // Floors halved on mobile so the headline doesn't sit at the
+            // bottom of a tall card when the viewport is narrow.
             paddingTop: 'clamp(40px, calc(170 / 1920 * 100vw), 170px)',
-            paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
-            paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+            paddingLeft: 'clamp(20px, calc(120 / 1920 * 100vw), 120px)',
+            paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
             paddingBottom: 'clamp(28px, calc(80 / 1920 * 100vw), 80px)',
           }}
         >

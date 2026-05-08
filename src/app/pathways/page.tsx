@@ -78,7 +78,7 @@ export default function PathwaysPage() {
               aria-hidden
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: 'linear-gradient(180deg, rgba(20,90,75,0.55) 0%, rgba(10,68,58,0.65) 50%, rgba(1,62,55,0.85) 100%)',
+                background: 'linear-gradient(108deg, rgba(20,90,75,0.96) 0%, rgba(15,80,68,0.92) 22%, rgba(10,68,58,0.78) 38%, rgba(6,55,48,0.45) 52%, rgba(1,62,55,0.18) 64%, transparent 78%)',
               }}
             />
 
@@ -103,9 +103,8 @@ export default function PathwaysPage() {
               }}
             />
 
-            {/* Text + CTA overlaid on hero image — center-aligned per
-                site-wide hero sweep. */}
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: 'clamp(20px,3.13vw,60px)' }}>
+            {/* Text + CTA overlaid on hero image */}
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 'clamp(20px,7.29vw,140px)' }}>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

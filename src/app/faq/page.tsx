@@ -156,11 +156,11 @@ function FAQHero() {
           }}
         />
 
-        {/* Content — center-aligned per site-wide hero sweep. */}
+        {/* Content */}
         <div
-          className="relative z-10 flex flex-col justify-end items-center h-full text-center"
+          className="relative z-10 flex flex-col justify-end h-full"
           style={{
-            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
+            padding: 'clamp(24px, calc(60 / 1920 * 100vw), 60px) clamp(24px, calc(120 / 1920 * 100vw), 120px) clamp(48px, calc(88 / 1920 * 100vw), 88px)',
           }}
         >
           <motion.h1

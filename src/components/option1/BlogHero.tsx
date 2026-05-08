@@ -76,17 +76,16 @@ export default function BlogHero() {
             }}
           />
 
-          {/* Content — center-aligned to match the rest of the site's hero
-              treatment (sweep triggered by /team feedback). Block lives in
-              the lower-third of the card; max-width on the heading + body
-              keeps long lines from sprawling across the panel. */}
+          {/* Content — same padding spec as MediaHero so the headline lands
+              in the same visual position across the two pages. */}
           <div
-            className="relative z-10 flex flex-col items-center text-center mx-auto"
+            className="relative z-10 flex flex-col"
             style={{
               paddingTop: 'clamp(170px, calc(233 / 1920 * 100vw), 233px)',
-              paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
-              paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+              paddingLeft: 'clamp(28px, calc(100 / 1920 * 100vw), 100px)',
+              paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
               paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+              maxWidth: 'clamp(360px, calc(1186 / 1920 * 100vw), 1186px)',
             }}
           >
             <motion.h1

@@ -144,11 +144,11 @@ function VCHero() {
             CTA     83:2432 at x=120 y=593 — 344×64
         */}
         <div
-          className="relative z-10 flex flex-col items-center text-center mx-auto"
+          className="relative z-10 flex flex-col"
           style={{
             paddingTop: 'clamp(88px, calc(189 / 1920 * 100vw), 189px)',
-            paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
-            paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+            paddingLeft: 'clamp(28px, calc(120 / 1920 * 100vw), 120px)',
+            paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
             paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
           }}
         >

@@ -371,8 +371,8 @@ export default function MetabolicPathwayPage() {
               priority
               style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
             />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(1,62,55,0.30) 0%, rgba(1,62,55,0.55) 50%, rgba(1,62,55,0.85) 100%)' }} />
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', textAlign: 'center', padding: 'clamp(24px,3.13vw,60px) clamp(20px,3.13vw,60px) clamp(56px,4.58vw,88px)' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(1,62,55,0.92) 0%, rgba(1,62,55,0.65) 40%, rgba(1,62,55,0.10) 70%, transparent 100%)' }} />
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,3.13vw,60px) clamp(24px,6.25vw,120px) clamp(56px,4.58vw,88px)' }}>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
