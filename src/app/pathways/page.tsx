@@ -85,8 +85,7 @@ export default function PathwaysPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="font-[family-name:var(--font-bricolage)]"
-          className="text-left md:text-center"
+          className="font-[family-name:var(--font-bricolage)] text-left md:text-center"
           style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, marginBottom: 'clamp(20px,1.56vw,30px)' }}
         >
           One System. Multiple Pathways.
