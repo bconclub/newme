@@ -138,19 +138,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <Header />
       <main className="newme-page">
         {/* Page atmosphere */}
-        <div
-          aria-hidden
-          className="pointer-events-none"
-          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background:
-                'radial-gradient(ellipse 130% 95% at 50% 130%, rgba(98,150,117,0.55) 0%, rgba(98,150,117,0.30) 30%, rgba(98,150,117,0.10) 60%, transparent 100%)',
-            }}
-          />
+        <div aria-hidden className="pointer-events-none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, overflow: 'hidden' }}>
+          {/* Base green wash — bottom of page */}
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 130% 95% at 50% 130%, rgba(98,150,117,0.55) 0%, rgba(98,150,117,0.30) 30%, rgba(98,150,117,0.10) 60%, transparent 100%)' }} />
+          {/* Green ellipse behind hero image area — centered ~60vh from top */}
+          <div style={{ position: 'absolute', top: '18vh', left: '50%', transform: 'translateX(-50%)', width: 'min(900px, 90vw)', height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse at center, rgba(98,150,117,0.28) 0%, rgba(1,62,55,0.12) 50%, transparent 75%)', filter: 'blur(60px)' }} />
+          {/* Gold accent — top right */}
+          <div style={{ position: 'absolute', top: '8vh', right: '-8vw', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse at center, rgba(254,242,114,0.10) 0%, transparent 70%)', filter: 'blur(50px)' }} />
+          {/* Soft green — bottom left of content */}
+          <div style={{ position: 'absolute', top: '70vh', left: '-6vw', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse at center, rgba(98,150,117,0.18) 0%, transparent 70%)', filter: 'blur(70px)' }} />
         </div>
 
         <article
@@ -188,7 +184,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </nav>
 
           {/* Header block */}
-          <header style={{ maxWidth: 880 }}>
+          <header>
             {post.tags && post.tags.length > 0 && (
               <div
                 className="flex flex-wrap"
@@ -197,15 +193,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-block font-[family-name:var(--font-urbanist)] text-white/85"
+                    className="inline-flex items-center font-[family-name:var(--font-urbanist)]"
                     style={{
-                      fontSize: 12,
-                      letterSpacing: '.1em',
+                      fontSize: 11,
+                      letterSpacing: '.09em',
                       textTransform: 'uppercase',
-                      fontWeight: 600,
-                      padding: '6px 14px',
-                      border: '1px solid rgba(255,255,255,0.25)',
+                      fontWeight: 700,
+                      padding: '7px 16px',
+                      height: 32,
                       borderRadius: 50,
+                      border: '1px solid rgba(255,255,255,0.30)',
+                      background: 'rgba(255,255,255,0.06)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      color: 'rgba(255,255,255,0.80)',
                     }}
                   >
                     {tag}
@@ -247,11 +248,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             >
               {authorAvatarUrl && (
                 <div
-                  className="rounded-full overflow-hidden bg-cover bg-center shrink-0"
+                  className="rounded-full overflow-hidden shrink-0"
                   style={{
                     width: 56,
                     height: 56,
                     backgroundImage: `url('${authorAvatarUrl}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'top center',
                     border: '2px solid rgba(255,255,255,0.2)',
                   }}
                   aria-hidden
