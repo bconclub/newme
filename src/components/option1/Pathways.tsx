@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
@@ -18,6 +19,7 @@ const PLACEHOLDER_IMAGES = [
 const tabGroups = [
   {
     tab: 'The Metabolic Care Pathways',
+    href: '/pathways/metabolic',
     cards: [
       {
         title: 'Reset',
@@ -41,6 +43,7 @@ const tabGroups = [
   },
   {
     tab: 'The Gastrointestinal Pathways',
+    href: '/pathways/gi',
     cards: [
       {
         title: 'GI Core',
@@ -58,6 +61,7 @@ const tabGroups = [
   },
   {
     tab: 'The NewME Continuity Pathways',
+    href: '/pathways/continuity',
     cards: [
       {
         title: 'NewME 360',
@@ -192,35 +196,37 @@ export default function Pathways() {
               className="flex min-w-0 flex-1 items-center"
             >
               <AnimatePresence mode="wait">
-                <motion.button
+                <motion.div
                   key={`tab-${activeTab}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={true}
-                  aria-controls={`pathway-panel-${activeTab}`}
-                  onClick={() => handleTabClick(activeTab)}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.28, ease }}
-                  className="relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border font-[family-name:var(--font-bricolage)]"
-                  style={{
-                    minHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
-                    paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                    paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
-                    borderColor: 'rgba(255,255,255,0.60)',
-                    background: 'rgba(255,255,255,0.13)',
-                    color: '#FFFFFF',
-                    fontWeight: 500,
-                    fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
-                  }}
+                  className="relative w-full"
                 >
-                  {/* Progress indicator moved out of the pill — it now lives as
-                      a ring around the right (next) chevron, see below. */}
-                  <span className="relative z-10 whitespace-nowrap">
-                    {tabGroups[activeTab].tab}
-                  </span>
-                </motion.button>
+                  <Link
+                    href={tabGroups[activeTab].href}
+                    role="tab"
+                    aria-selected={true}
+                    aria-controls={`pathway-panel-${activeTab}`}
+                    className="relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border font-[family-name:var(--font-bricolage)]"
+                    style={{
+                      minHeight: 'clamp(44px, calc(58 / 1920 * 100vw), 58px)',
+                      paddingLeft: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                      paddingRight: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                      borderColor: 'rgba(255,255,255,0.60)',
+                      background: 'rgba(255,255,255,0.13)',
+                      color: '#FFFFFF',
+                      fontWeight: 500,
+                      fontSize: 'clamp(12px, calc(17 / 1920 * 100vw), 17px)',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <span className="relative z-10 whitespace-nowrap">
+                      {tabGroups[activeTab].tab}
+                    </span>
+                  </Link>
+                </motion.div>
               </AnimatePresence>
             </div>
             {/* Prev / Next pair — manual navigation between pathway groups.
