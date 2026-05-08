@@ -50,6 +50,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
   }, [skipLenis])
 
+  // Prevent browser scroll-restoration from overriding our reset.
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.history.scrollRestoration = 'manual'
+    }
+  }, [])
+
   // Reset scroll to top on every route change. Without this, navigating
   // from /how-it-works → / would land at the same Y the user left
   // /how-it-works at — the home page would appear to "scroll to a
@@ -59,10 +66,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     if (skipLenis) return
     if (typeof window === 'undefined') return
     if (window.location.hash) return // honor anchor links
+    // Reset DOM scroll position immediately (beats browser restoration timing)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true })
-    } else {
-      window.scrollTo(0, 0)
     }
   }, [pathname, skipLenis])
 
