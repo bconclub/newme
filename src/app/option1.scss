@@ -187,7 +187,7 @@ main.newme-page {
        of the active card, peeking out so users know it's tappable. */
     .newme-compare-wrap {
       flex-direction: row !important;
-      align-items: stretch !important;
+      align-items: flex-start !important;
       max-width: 100% !important;
       gap: 8px !important;
 
@@ -199,8 +199,7 @@ main.newme-page {
         margin-left: 0 !important;
         margin-top: 0 !important;
         min-height: 0 !important;
-        transform: none !important;
-        opacity: 1 !important;
+        /* allow framer-motion to animate translateY */
         border-radius: 16px !important;
         font-size: 11px !important;
       }
