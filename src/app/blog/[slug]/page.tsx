@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import BlogArticleBody, { extractTOCHeadings } from '@/components/option1/BlogArticleBody'
+import BlogListen from '@/components/option1/BlogListen'
 import { postBySlugQuery, postSlugsQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
@@ -278,6 +279,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </div>
             </div>
           </header>
+
+          {/* Listen bar */}
+          {post.body && (
+            <div style={{ marginTop: 28 }}>
+              <BlogListen body={post.body as unknown[]} />
+            </div>
+          )}
 
           {/* Cover image */}
           {coverUrl && (
