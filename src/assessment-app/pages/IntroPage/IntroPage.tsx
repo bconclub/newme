@@ -15,11 +15,11 @@ type IntroPageProps = {
    (royalty-free photos, hot-link friendly). NOT team members.
    To swap any specific face, change the {gender}/{0-99}.jpg index. */
 const AVATARS = [
-  "/images/team/priya-pal.jpg",
-  "/images/team/karthik-ravi.jpg",
-  "/images/team/gayatri-rajamani.jpg",
-  "/images/team/reshmi-sinha.jpg",
-  "/images/team/namratha-nataraj.jpg",
+  "/testimonials/nithya.jpg",
+  "/testimonials/thamarai.jpg",
+  "/testimonials/kat.jpg",
+  "/images/team/ashwini-saras.jpg",
+  "/images/team/shakeela.jpg",
 ];
 
 export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScreen }: IntroPageProps) {
