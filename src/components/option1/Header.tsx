@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import NewMELogo from './NewMELogo'
-
 // motion-enhanced Link — avoids the deprecated legacyBehavior wrapper pattern
 const MotionLink = motion(Link)
 
@@ -79,12 +77,20 @@ export default function Header() {
         >
           <div className="relative h-[62px] flex items-center justify-between gap-6">
           <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
-            <span className="hidden md:block">
-              <NewMELogo size={48} />
-            </span>
-            <span className="block md:hidden">
-              <NewMELogo size={44} />
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/newme-logo.png"
+              alt="Dr. Pal's NewME"
+              className="hidden md:block"
+              style={{ height: 48, width: 'auto' }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/newme-logo.png"
+              alt="Dr. Pal's NewME"
+              className="block md:hidden"
+              style={{ height: 44, width: 'auto' }}
+            />
           </Link>
 
           {/* Figma: nav text spans 1124px between logo and CTA, Urbanist 500 14px, 32px gap.

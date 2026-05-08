@@ -277,13 +277,15 @@ function DesktopStage({
         ref={orbitAnchorRef}
         className="absolute"
         style={{
-          left: 'calc(169 / 1920 * 100%)',
+          // Anchor docked to the left edge of the section content so only
+          // the right half of the orbit is visible — pillars on the left half
+          // (cos < 0) sit off-screen, leaving a clean half-circle dial.
+          left: 0,
           top: '50%',
           width: 0,
           height: 0,
-          // Use CSS scale() so it stays purely a transform and doesn't affect layout
           transform: 'scale(min(1, calc(100vw / 1920px)))',
-          transformOrigin: 'center',
+          transformOrigin: 'left center',
         }}
       >
         {/* Drag-catch disc */}
@@ -296,19 +298,18 @@ function DesktopStage({
           style={{ width: 1100, height: 1100, transform: 'translate(-50%,-50%)', touchAction: 'none', zIndex: 0 }}
         />
 
-        {/* Hub logo — centered on the orbit anchor (0,0). */}
+        {/* Hub logo — docked to the left wall, extending rightward from the
+            orbit anchor. Sits at the orbit center vertically. */}
         <div
-          className="absolute pointer-events-none flex items-center justify-center"
+          className="absolute pointer-events-none flex items-center"
           style={{
             top: 0,
             left: 0,
-            width: 260,
-            height: 80,
-            transform: 'translate(-50%,-50%)',
+            transform: 'translate(0,-50%)',
             zIndex: 5,
           }}
         >
-          <NewMELogo size={56} />
+          <NewMELogo size={140} rotateValue={discAngle} />
         </div>
 
         {/* Pillar icons — each follows the arc via discAngle */}
@@ -327,7 +328,7 @@ function DesktopStage({
       <div
         className="absolute flex flex-col"
         style={{
-          left: 'calc(869 / 1920 * 100%)',
+          left: 'calc(640 / 1920 * 100%)',
           right: 'calc(60 / 1920 * 100%)',
           top: '50%',
           transform: 'translateY(-50%)',
@@ -449,7 +450,7 @@ function MobilePillars({
             zIndex: 1,
           }}
         >
-          <NewMELogo size={32} />
+          <NewMELogo size={64} rotateValue={discAngle} />
         </div>
         {PILLARS.map((p, i) => (
           <MobileArcPillar
