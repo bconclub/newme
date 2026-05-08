@@ -11,7 +11,7 @@ export default function NewMELogo({
   spinDuration?: number
   rotateValue?: MotionValue<number>
 }) {
-  const iconSize = size
+  const iconSize = size * 0.7
 
   return (
     <div
