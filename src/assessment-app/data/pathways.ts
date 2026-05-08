@@ -55,8 +55,8 @@ export const PW: Record<string, any> = {
     h2: (_l: boolean) => "Four weeks of structured, coached stabilization before anything else.",
     hook: () => "Most people skip this step. They jump straight into diets and routines and wonder why nothing sticks.",
     extra: (ans: Record<string, any>) => {
-      if (ans.q5_attempts === "first_time") return "This is your starting point, built properly from the ground up.";
-      if (["some_progress", "nothing_held"].includes(ans.q5_attempts)) return "You've tried things before. This time the foundation comes first.";
+      if (ans.r5_attempts === "first_time") return "This is your starting point, built properly from the ground up.";
+      if (["some_progress", "nothing_held"].includes(ans.r5_attempts)) return "You've tried things before. This time the foundation comes first.";
       return null;
     },
     bullets: [
@@ -78,7 +78,7 @@ export const PW: Record<string, any> = {
     isGI: false,
     h1: (n: string, l: boolean) => l ? `${n}, you already know short phases don't work for this.` : `${n}, your body needs more than a generic plan.`,
     h2: (l: boolean) => l ? "Rebuild is built around your diagnosis. Twelve weeks of targeted correction with the time your body actually needs." : "Twelve weeks of targeted metabolic correction, built around your specific symptoms and what your body actually needs to shift.",
-    hook: (ans: Record<string, any>) => ans.q5_attempts === "nothing_held" ? "Real metabolic change takes time. Rebuild gives it the twelve weeks it actually needs. You've been through enough to know a generic plan won't cut it." : "Real metabolic change takes time. Rebuild gives it the twelve weeks it actually needs.",
+    hook: (ans: Record<string, any>) => ans.r5_attempts === "nothing_held" ? "Real metabolic change takes time. Rebuild gives it the twelve weeks it actually needs. You've been through enough to know a generic plan won't cut it." : "Real metabolic change takes time. Rebuild gives it the twelve weeks it actually needs.",
     extra: (ans: Record<string, any>) => {
       const s = ans.r2_symptoms || [];
       if (s.includes("brain_fog") || s.includes("fatigue")) return "Your energy and clarity are part of what this phase addresses, not a side effect.";
@@ -102,7 +102,7 @@ export const PW: Record<string, any> = {
     isGI: false,
     h1: (n: string, l: boolean) => l ? `${n}, the results came before. And then quietly left.` : `${n}, three months isn't enough for what you're dealing with.`,
     h2: (l: boolean) => l ? "Sustain is built so that doesn't happen again." : `${cap(PHASE_META.Sustain.durationLong)} of structured clinical support, built for complexity and designed so results hold when the phase ends.`,
-    hook: (ans: Record<string, any>) => ans.q5_attempts === "nothing_held" ? "Complex conditions, overlapping diagnoses, a history of losing progress. This phase is built for exactly that." : "Complex conditions, overlapping diagnoses, real complexity that needs time. This phase is built for exactly that.",
+    hook: (ans: Record<string, any>) => ans.r5_attempts === "nothing_held" ? "Complex conditions, overlapping diagnoses, a history of losing progress. This phase is built for exactly that." : "Complex conditions, overlapping diagnoses, real complexity that needs time. This phase is built for exactly that.",
     extra: () => null,
     bullets: [
       "Dedicated health coach, daily diet review, disease-specific coaching",

@@ -182,65 +182,58 @@ main.newme-page {
   }
 
   @media (max-width: 767px) {
-    /* Mobile: switch to a stacked-deck layout. The two cards stack
-       vertically; whichever is active fills the screen with full content,
-       and the inactive one collapses to just its header band so it reads
-       as a peek the user can tap to swap. One card dominates at a time
-       per the design ask — no more cramped side-by-side. */
+    /* Mobile: dominant-card stack. Active card is full-width and on top;
+       inactive card shrinks to its header and tucks behind the bottom
+       of the active card, peeking out so users know it's tappable. */
     .newme-compare-wrap {
       flex-direction: column !important;
       align-items: stretch !important;
-      max-width: 540px !important;
+      max-width: 100% !important;
 
       .newme-typical-col,
       .newme-newme-col {
         flex: none !important;
-        margin-top: 0 !important;
-        margin-left: 0 !important;
         width: 100% !important;
-        /* Override Framer's inline transform to prevent the inactive
-           card from looking shrunken under the active one — collapse
-           does the visual work instead. */
+        margin-left: 0 !important;
+        min-height: 0 !important;
         transform: none !important;
         opacity: 1 !important;
-        transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                    margin 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
         overflow: hidden !important;
+        position: relative !important;
+        transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                    margin-top 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
       }
 
-      .newme-typical-col {
-        min-height: 0 !important;
-        order: 2;
-      }
-
-      .newme-newme-col {
-        min-height: 0 !important;
-        order: 1;
-        margin-bottom: 12px !important;
-      }
-
-      /* When NewME is active, Typical collapses to just its header. */
+      /* NewME active (default): NewME dominates on top, Typical peeks below */
       &[data-active="newme"] {
         .newme-newme-col {
-          max-height: 1200px;
+          order: 1 !important;
+          z-index: 2 !important;
+          max-height: 1400px;
+          margin-top: 0 !important;
         }
         .newme-typical-col {
-          max-height: 88px; /* header band only — body items clipped */
+          order: 2 !important;
+          z-index: 1 !important;
+          max-height: 80px; /* just header band visible */
+          margin-top: -24px !important; /* tucks behind the NewME card bottom */
           cursor: pointer;
         }
       }
 
-      /* When Typical is active, NewME collapses to just its header. */
+      /* Typical active: Typical dominates on top, NewME peeks below */
       &[data-active="typical"] {
         .newme-typical-col {
-          max-height: 1200px;
-          order: 1;
-          margin-bottom: 12px !important;
+          order: 1 !important;
+          z-index: 2 !important;
+          max-height: 1400px;
+          margin-top: 0 !important;
         }
         .newme-newme-col {
-          max-height: 100px; /* slightly taller — NewME header is bigger */
-          order: 2;
-          margin-bottom: 0 !important;
+          order: 2 !important;
+          z-index: 1 !important;
+          max-height: 96px; /* NewME header is taller */
+          margin-top: -24px !important;
           cursor: pointer;
         }
       }
@@ -316,22 +309,27 @@ html:has(main.newme-page) .newme-header a {
 
 /* Testimonial card hover state per Figma 1:6292 — flips from glass to
    solid white. The default glass styling is set inline; these rules only
-   override on hover. */
-.testimonial-card:hover {
+   override on hover or when the card is the active scroll-snap card on mobile. */
+.testimonial-card:hover,
+.testimonial-card[data-active="true"] {
   background-image: none !important;
   background-color: #ffffff !important;
   border-color: rgba(255, 255, 255, 0) !important;
 }
-.testimonial-card:hover .testimonial-tint {
+.testimonial-card:hover .testimonial-tint,
+.testimonial-card[data-active="true"] .testimonial-tint {
   opacity: 0;
 }
-.testimonial-card:hover .testimonial-quote {
+.testimonial-card:hover .testimonial-quote,
+.testimonial-card[data-active="true"] .testimonial-quote {
   color: #000000 !important;
 }
-.testimonial-card:hover .testimonial-name {
+.testimonial-card:hover .testimonial-name,
+.testimonial-card[data-active="true"] .testimonial-name {
   color: #000000 !important;
 }
-.testimonial-card:hover .testimonial-pathway {
+.testimonial-card:hover .testimonial-pathway,
+.testimonial-card[data-active="true"] .testimonial-pathway {
   color: #629675 !important;
 }
 

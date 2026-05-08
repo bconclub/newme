@@ -41,6 +41,7 @@ const SUB_PILLS: Record<Tab, { label: string; href: string }[]> = {
 
 export default function PathwaysPage() {
   const [hoveredTab, setHoveredTab] = useState<Tab | null>(null)
+  const [activeMobileIdx, setActiveMobileIdx] = useState(0)
 
   return (
     <>
@@ -178,88 +179,81 @@ export default function PathwaysPage() {
           ))}
         </div>
 
-        {/* ── Mobile-only horizontal scroll — three "lanes" each containing
-              its pathway card + sub-pills stacked vertically. Lets the user
-              swipe across all three pathways without the page becoming a
-              vertical wall. The desktop tree (cards row + connectors + pills
-              grid) stays mounted at md+ unchanged. ── */}
-        <div
-          className="md:hidden flex overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pathways-mobile-scroll"
-          style={{
-            gap: 14,
-            marginBottom: 16,
-            scrollbarWidth: 'none',
-          }}
-        >
-          {TABS.map((t, i) => (
-            <div
-              key={t.id}
-              className="shrink-0 snap-center flex flex-col items-center"
-              style={{ width: '78%' }}
+        {/* ── Mobile: centered single-tab view with prev/next nav + connecting lines ── */}
+        <div className="md:hidden flex flex-col items-center" style={{ marginBottom: 16 }}>
+          {/* Vertical line from "Pathways" box down */}
+          <div style={{ width: 1, height: 28, background: 'rgba(255,255,255,0.30)' }} />
+
+          {/* Active pathway card + prev/next buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 10 }}>
+            {/* Prev */}
+            <button
+              type="button"
+              aria-label="Previous pathway"
+              onClick={() => setActiveMobileIdx(i => (i - 1 + TABS.length) % TABS.length)}
+              style={{ flexShrink: 0, width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.35)', background: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(8px)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
             >
-              <Link href={t.href} style={{ textDecoration: 'none', display: 'block', width: '100%' }}>
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.4, ease: EASE, delay: i * 0.06 }}
+              <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden><path d="M11.25 3.75 6 9l5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" /></svg>
+            </button>
+
+            {/* Active tab pill */}
+            <Link href={TABS[activeMobileIdx].href} style={{ flex: 1, textDecoration: 'none' }}>
+              <motion.div
+                key={activeMobileIdx}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                style={{ borderRadius: 28, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0) 100%), rgba(255,255,255,0.13)', border: '2px solid rgba(255,255,255,0.60)', backdropFilter: 'blur(10px)' }}
+              >
+                <span className="font-[family-name:var(--font-bricolage)]" style={{ fontSize: 15, fontWeight: 600, color: '#fff', textAlign: 'center', lineHeight: 1.25, padding: '0 12px' }}>
+                  {TABS[activeMobileIdx].label}
+                </span>
+              </motion.div>
+            </Link>
+
+            {/* Next */}
+            <button
+              type="button"
+              aria-label="Next pathway"
+              onClick={() => setActiveMobileIdx(i => (i + 1) % TABS.length)}
+              style={{ flexShrink: 0, width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.35)', background: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(8px)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden><path d="M6.75 3.75 12 9l-5.25 5.25" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" /></svg>
+            </button>
+          </div>
+
+          {/* Vertical line from active card to sub-pills */}
+          <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.30)' }} />
+
+          {/* Sub-pills for active tab */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+            {SUB_PILLS[TABS[activeMobileIdx].id].map((pill, pi) => (
+              <motion.div
+                key={pill.label}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: EASE, delay: pi * 0.05 }}
+              >
+                <Link
+                  href={pill.href}
+                  className="font-[family-name:var(--font-bricolage)] inline-flex items-center justify-center text-white"
                   style={{
-                    borderRadius: 28,
-                    height: 88,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background:
-                      'linear-gradient(180deg,rgba(255,255,255,0.20) 0%,rgba(255,255,255,0) 100%), rgba(255,255,255,0.12)',
-                    border: '2px solid rgba(255,255,255,0.55)',
-                    backdropFilter: 'blur(10px)',
+                    textDecoration: 'none',
+                    border: '1px solid rgba(255,255,255,0.45)',
+                    borderRadius: 9999,
+                    height: 40,
+                    padding: '0 20px',
+                    fontSize: 13,
+                    fontWeight: 400,
+                    whiteSpace: 'nowrap',
                   }}
                 >
-                  <span
-                    className="font-[family-name:var(--font-bricolage)]"
-                    style={{ fontSize: 16, fontWeight: 600, color: '#fff', textAlign: 'center', lineHeight: 1.25, padding: '0 12px' }}
-                  >
-                    {t.label}
-                  </span>
-                </motion.div>
-              </Link>
-              {/* Vertical connector */}
-              <div style={{ width: 1, height: 14, background: 'rgba(255,255,255,0.25)' }} />
-              {/* Sub-pills stacked vertically inside this lane */}
-              <div className="flex flex-col items-center" style={{ gap: 8, width: '100%' }}>
-                {SUB_PILLS[t.id].map((pill, pi) => (
-                  <motion.div
-                    key={pill.label}
-                    initial={{ opacity: 0, y: 6 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ duration: 0.35, ease: EASE, delay: i * 0.06 + pi * 0.04 }}
-                    style={{ width: 'auto' }}
-                  >
-                    <Link
-                      href={pill.href}
-                      className="font-[family-name:var(--font-bricolage)] inline-flex items-center justify-center text-white"
-                      style={{
-                        textDecoration: 'none',
-                        border: '1px solid rgba(255,255,255,0.45)',
-                        borderRadius: 9999,
-                        height: 38,
-                        padding: '0 16px',
-                        fontSize: 12,
-                        fontWeight: 400,
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {pill.label}
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          ))}
+                  {pill.label}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
-        {/* Hide native scrollbar on mobile pathway carousel (Webkit). */}
-        <style>{`.pathways-mobile-scroll::-webkit-scrollbar { display: none; }`}</style>
 
         {/* ── 3 Pathway cards — desktop only (mobile uses the lanes above) ── */}
         <div className="hidden md:grid md:grid-cols-3" style={{ gap: 'clamp(10px,0.625vw,12px)', marginBottom: 'clamp(14px,0.83vw,16px)' }}>

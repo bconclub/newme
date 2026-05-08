@@ -26,7 +26,7 @@ export const PERSONALISATION = [
     {v:"low",l:"Low, stress isn't a major factor for me"},
     {v:"physical",l:"I cope, but it hits my body more than my mind"},
   ]},
-  {id:"q5_attempts",type:"s",hl:"You've probably tried things before.",q:"What have you tried before?",opts:[
+  {id:"r5_attempts",type:"s",hl:"You've probably tried things before.",q:"What have you tried before?",opts:[
     {v:"first_time",l:"This is my first time trying anything structured"},
     {v:"little",l:"A little, nothing really structured"},
     {v:"some_progress",l:"I've made some progress but can't seem to sustain it"},

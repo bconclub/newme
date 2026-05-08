@@ -64,6 +64,13 @@ export const metadata: Metadata = {
       'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
     images: ['/media/Media Hero.webp'],
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

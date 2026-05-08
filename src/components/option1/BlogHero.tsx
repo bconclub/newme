@@ -11,17 +11,18 @@ import PageHero from './PageHero'
 export default function BlogHero() {
   return (
     <PageHero
-      imageSrc="/blog/hero.webp"
-      imageAlt=""
+      imageSrc="/media/Media Hero.webp"
+      imageAlt="NewME team in clinical setting"
+      imagePosition="72% center"
       heading={
         <>
-          Notes From
+          Clinical Expertise,
           <br />
-          The Clinic.
+          Recognized Globally.
         </>
       }
-      subheading="Insights from the NewME team on metabolic health, the gut–brain axis, and what structured clinical care actually looks like."
-      headingMaxWidthPx={880}
+      subheading="Our work in metabolic and gut regulation has received praise by leading media platforms."
+      headingMaxWidthPx={719}
     />
   )
 }

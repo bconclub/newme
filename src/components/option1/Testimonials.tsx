@@ -169,7 +169,7 @@ export default function Testimonials() {
           }}
         >
           {testimonials.map((t, i) => (
-            <TestimonialCard key={t.name} testimonial={t} index={i} activeOnDesktop={i === activeIdx} />
+            <TestimonialCard key={t.name} testimonial={t} index={i} activeOnDesktop={i === activeIdx} isActive={i === activeIdx} />
           ))}
         </div>
 
@@ -224,26 +224,25 @@ function TestimonialCard({
   testimonial: t,
   index: i,
   activeOnDesktop,
+  isActive,
 }: {
   testimonial: (typeof testimonials)[number]
   index: number
   activeOnDesktop?: boolean
+  isActive?: boolean
 }) {
-  // CSS-only hover state via the `group` pattern + plain CSS transitions.
-  // Avoids conflict between Framer's whileInView (entry) and animate (hover).
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, delay: i * 0.08 }}
-      // On desktop (sm+), when this card is the auto-cycle active one, show a
-      // subtle white glow border so the user can track which dot is lit.
       animate={{
         boxShadow: activeOnDesktop
           ? '0 0 0 2px rgba(254,242,114,0.65), 0 8px 32px rgba(0,0,0,0.18)'
           : '0 0 0 0px rgba(254,242,114,0), 0 4px 16px rgba(0,0,0,0.10)',
       }}
+      data-active={isActive ? 'true' : undefined}
       className="testimonial-card group relative overflow-hidden shrink-0 w-[78%] sm:w-auto snap-center sm:snap-align-none cursor-default"
       style={{
         // Default GLASS state per Figma 1:6293. CSS class overrides on hover.

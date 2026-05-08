@@ -151,23 +151,16 @@ export default function HIWUnifiedSystem() {
           can't be expressed inside a flex-row carousel cleanly.
         */}
 
-        {/* ── Mobile carousel ────────────────────────────────────────── */}
+        {/* ── Mobile list — all cards stacked vertically ─────────────── */}
         <div
-          className="lg:hidden flex overflow-x-auto snap-x snap-mandatory -mx-5 px-5 hiw-unified-carousel"
+          className="lg:hidden flex flex-col"
           style={{
             gap: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
             marginTop: 'clamp(40px, calc(56 / 1920 * 100vw), 56px)',
-            scrollbarWidth: 'none',
           }}
         >
           {CARDS.map((card, i) => (
-            <div
-              key={card.title || 'cta'}
-              className="shrink-0 snap-center"
-              style={{ width: '82%' }}
-            >
-              <UnifiedCard card={card} delay={i * 0.04} />
-            </div>
+            <UnifiedCard key={card.title || 'cta'} card={card} delay={i * 0.04} />
           ))}
         </div>
 
