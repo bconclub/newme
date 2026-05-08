@@ -1,7 +1,10 @@
 ﻿'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
+
+type ActiveCard = 'typical' | 'newme'
 
 /**
  * Figma 58:1256–58:1303 — "Unstructured Care Hasn't Led To Results, Right?"
@@ -46,6 +49,7 @@ const NEWME = [
 ]
 
 export default function HIWComparison() {
+  const [active, setActive] = useState<ActiveCard>('newme')
   return (
     <section
       id="hiw-comparison"
@@ -159,11 +163,12 @@ export default function HIWComparison() {
               · Right left-edge x=901 overlaps left right-edge x=941 by 40px
           */}
           <div
-            className="relative mx-auto flex flex-col md:flex-row items-start"
+            className="relative mx-auto flex flex-col md:flex-row items-start newme-compare-wrap"
             style={{
               maxWidth: 'clamp(560px, calc(1241 / 1920 * 100vw), 1241px)',
               marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
             }}
+            data-active={active}
           >
             {/* Left — What Most People Are Doing (Group 261). Figma 601×1202.
                 Right card is 158px taller and extends 79 above + 79 below this
@@ -172,17 +177,29 @@ export default function HIWComparison() {
                 stack uses natural content height (avoiding h=0 collapse
                 from flex-basis:0 in flex-col direction). */}
             <motion.div
+              role="button"
+              tabIndex={0}
+              aria-pressed={active === 'typical'}
+              onClick={() => setActive('typical')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('typical') } }}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.6 }}
-              className="w-full flex flex-col overflow-hidden md:flex-[601_1_0] md:mt-[clamp(40px,calc(79/1920*100vw),79px)] md:h-[clamp(680px,calc(1202/1920*100vw),1202px)]"
+              animate={{
+                scale: active === 'typical' ? 1 : 0.88,
+                opacity: active === 'typical' ? 1 : 0.38,
+                y: active === 'typical' ? 0 : 40,
+              }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full flex flex-col overflow-hidden newme-typical-col cursor-pointer md:flex-[601_1_0] md:mt-[clamp(40px,calc(79/1920*100vw),79px)] md:h-[clamp(680px,calc(1202/1920*100vw),1202px)]"
               style={{
                 borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
                 background:
                   'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+                transformOrigin: 'left center',
+                zIndex: active === 'typical' ? 3 : 1,
               }}
             >
               {/* Header band (Rectangle 114) — 169.69 high, #173B39 */}
@@ -247,15 +264,27 @@ export default function HIWComparison() {
                 edge (left ends x=941, right starts x=901).
                 NOTE: same mobile fix — flex ratio only on md+. */}
             <motion.div
+              role="button"
+              tabIndex={0}
+              aria-pressed={active === 'newme'}
+              onClick={() => setActive('newme')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('newme') } }}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="w-full flex flex-col overflow-hidden mt-4 md:flex-[680_1_0] md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
+              animate={{
+                scale: active === 'newme' ? 1 : 0.88,
+                opacity: active === 'newme' ? 1 : 0.38,
+                y: active === 'newme' ? 0 : 40,
+              }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full flex flex-col overflow-hidden newme-newme-col cursor-pointer mt-4 md:flex-[680_1_0] md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
               style={{
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 background: '#ffffff',
-                zIndex: 2,
+                boxShadow: active === 'newme' ? '0 24px 60px -28px rgba(0,0,0,0.55)' : 'none',
+                transformOrigin: 'right center',
+                zIndex: active === 'newme' ? 3 : 1,
               }}
             >
               {/* Header band (Rectangle 116) — 192 high, #013E37 */}
