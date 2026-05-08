@@ -40,11 +40,12 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
               above the eyebrow so the trust signal lands first, before the
               category label. Plain <img> matches the rest of the assessment
               app (no next/image inside this scope). ── */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 22 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 26 }}>
             <div style={{
-              width: 56, height: 56, borderRadius: "50%",
+              width: 84, height: 84, borderRadius: "50%",
               overflow: "hidden", flexShrink: 0,
-              border: "1.5px solid rgba(255,255,255,0.25)",
+              border: "2px solid rgba(254,242,114,0.45)",
+              boxShadow: "0 6px 22px rgba(0,0,0,0.28)",
               background: "#0a4a45",
             }}>
               <img
@@ -54,10 +55,10 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
               />
             </div>
             <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: INK, lineHeight: 1.25, fontFamily: FONT_BODY }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: INK, lineHeight: 1.25, fontFamily: FONT_BODY }}>
                 Designed by Dr. Palaniappan, MD
               </p>
-              <p style={{ fontSize: 11, color: INK3, marginTop: 3, fontFamily: FONT_BODY }}>
+              <p style={{ fontSize: 12, color: INK3, marginTop: 4, fontFamily: FONT_BODY }}>
                 Internal Medicine · NewME Founder
               </p>
             </div>
