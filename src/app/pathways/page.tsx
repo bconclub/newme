@@ -86,7 +86,8 @@ export default function PathwaysPage() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, ease: EASE }}
           className="font-[family-name:var(--font-bricolage)]"
-          style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', textAlign: 'center', lineHeight: 1.1, marginBottom: 'clamp(20px,1.56vw,30px)' }}
+          className="text-left md:text-center"
+          style={{ fontSize: 'clamp(28px,3.75vw,72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, marginBottom: 'clamp(20px,1.56vw,30px)' }}
         >
           One System. Multiple Pathways.
         </motion.h2>
@@ -98,7 +99,8 @@ export default function PathwaysPage() {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.5, ease: EASE, delay: 0.1 }}
           className="font-[family-name:var(--font-urbanist)]"
-          style={{ fontSize: 'clamp(15px,1.46vw,28px)', fontWeight: 500, color: '#fff', textAlign: 'center', lineHeight: 1.45, maxWidth: 'clamp(280px,calc(1275/1920*100vw),1275px)', marginLeft: 'auto', marginRight: 'auto', marginBottom: 'clamp(32px,3.13vw,60px)' }}
+          className="text-left md:text-center md:mx-auto"
+          style={{ fontSize: 'clamp(15px,1.46vw,28px)', fontWeight: 500, color: '#fff', lineHeight: 1.45, maxWidth: 'clamp(280px,calc(1275/1920*100vw),1275px)', marginBottom: 'clamp(32px,3.13vw,60px)' }}
         >
           NewME is designed as a structured clinical system where care is delivered through distinct pathways. Each pathway is built for a different level of metabolic, gastrointestinal, or long-term support.
         </motion.p>
@@ -128,7 +130,8 @@ export default function PathwaysPage() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, ease: EASE, delay: 0.1 }}
           className="font-[family-name:var(--font-urbanist)]"
-          style={{ fontSize: 'clamp(14px,1.25vw,24px)', fontWeight: 400, color: 'rgba(255,255,255,0.75)', textAlign: 'center', lineHeight: 1.55, maxWidth: 'clamp(280px,calc(1275/1920*100vw),1275px)', marginLeft: 'auto', marginRight: 'auto' }}
+          className="text-left md:text-center md:mx-auto"
+          style={{ fontSize: 'clamp(14px,1.25vw,24px)', fontWeight: 400, color: 'rgba(255,255,255,0.75)', lineHeight: 1.55, maxWidth: 'clamp(280px,calc(1275/1920*100vw),1275px)' }}
         >
           Some individuals require foundational stabilization. Others need deeper metabolic correction or focused gastrointestinal support. Each pathway is defined by its purpose, duration, and level of clinical involvement.
         </motion.p>

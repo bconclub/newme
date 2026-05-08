@@ -110,7 +110,7 @@ function VCWhatIs() {
     >
       <div className="mx-auto" style={{ maxWidth: 1194 }}>
         <h2
-          className="text-center font-[family-name:var(--font-bricolage)] text-white mx-auto"
+          className="text-left md:text-center font-[family-name:var(--font-bricolage)] text-white md:mx-auto"
           style={{
             fontWeight: 600,
             fontSize: 'clamp(26px, calc(46 / 1920 * 100vw), 46px)',
@@ -122,7 +122,7 @@ function VCWhatIs() {
           What Is The NewME Virtual Clinic?
         </h2>
         <p
-          className="text-center mx-auto text-white/85 font-[family-name:var(--font-urbanist)]"
+          className="text-left md:text-center md:mx-auto text-white/85 font-[family-name:var(--font-urbanist)]"
           style={{
             fontWeight: 400,
             fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 20px)',
@@ -349,7 +349,7 @@ function VCDoctorCard() {
       >
         <div className="relative">
           <h2
-            className="text-center mx-auto font-[family-name:var(--font-bricolage)]"
+            className="text-left md:text-center md:mx-auto font-[family-name:var(--font-bricolage)]"
             style={{
               fontWeight: 600,
               color: '#FEF272',
@@ -362,7 +362,7 @@ function VCDoctorCard() {
             The Doctor Will See You Now.
           </h2>
           <p
-            className="text-center mx-auto text-white/90 font-[family-name:var(--font-urbanist)]"
+            className="text-left md:text-center md:mx-auto text-white/90 font-[family-name:var(--font-urbanist)]"
             style={{
               fontWeight: 400,
               fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',

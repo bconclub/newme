@@ -37,7 +37,7 @@ export default function ResearchEvidence() {
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
-      <div className="mx-auto text-center" style={{ maxWidth: 1186 }}>
+      <div className="mx-auto text-left md:text-center" style={{ maxWidth: 1186 }}>
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 16 }}

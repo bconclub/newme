@@ -126,7 +126,7 @@ export default function StructuredCare() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="relative font-[family-name:var(--font-bricolage)] text-white text-center mx-auto"
+            className="relative font-[family-name:var(--font-bricolage)] text-white text-left md:text-center md:mx-auto"
             style={{
               fontWeight: 600,
               fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',

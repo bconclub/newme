@@ -157,7 +157,7 @@ export default function Pillars() {
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
-      <div className="text-center mx-auto" style={{ maxWidth: 1194 }}>
+      <div className="text-left md:text-center mx-auto" style={{ maxWidth: 1194 }}>
         <h2
           className="font-[family-name:var(--font-bricolage)] text-white"
           style={{
