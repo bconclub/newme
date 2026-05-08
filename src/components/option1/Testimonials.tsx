@@ -244,7 +244,7 @@ function TestimonialCard({
           ? '0 0 0 2px rgba(254,242,114,0.65), 0 8px 32px rgba(0,0,0,0.18)'
           : '0 0 0 0px rgba(254,242,114,0), 0 4px 16px rgba(0,0,0,0.10)',
       }}
-      className="testimonial-card group relative overflow-hidden shrink-0 w-[85%] sm:w-auto snap-center sm:snap-align-none cursor-default"
+      className="testimonial-card group relative overflow-hidden shrink-0 w-[78%] sm:w-auto snap-center sm:snap-align-none cursor-default"
       style={{
         // Default GLASS state per Figma 1:6293. CSS class overrides on hover.
         backgroundImage:

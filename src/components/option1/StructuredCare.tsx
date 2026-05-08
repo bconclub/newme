@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
 // Figma 1:6322 — comparison columns
@@ -23,7 +23,14 @@ const newme = [
   'Built for long-term stability and sustained outcomes',
 ]
 
+type ActiveCard = 'typical' | 'newme'
+
 export default function StructuredCare() {
+  // Click-to-swap pattern: whichever card the user clicks moves to the
+  // front (full size, colorful header) and the other dims + scales down.
+  // Default to 'newme' so the recommended option is highlighted on load.
+  const [active, setActive] = useState<ActiveCard>('newme')
+
   return (
     <section
       id="structured-care"
@@ -144,11 +151,24 @@ export default function StructuredCare() {
           >
             {/* Left — Typical Wellness Program (1:6323/1:6324) */}
             <motion.div
+              role="button"
+              tabIndex={0}
+              aria-pressed={active === 'typical'}
+              onClick={() => setActive('typical')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('typical') } }}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col overflow-hidden newme-typical-col"
+              animate={{
+                // Inactive card scales to ~0.92 and dims to 0.65; active
+                // returns to full size + opacity. Transform-origin is set
+                // below so the inactive card recedes toward its outer
+                // edge instead of toward the center seam.
+                scale: active === 'typical' ? 1 : 0.92,
+                opacity: active === 'typical' ? 1 : 0.55,
+              }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col overflow-hidden newme-typical-col cursor-pointer"
               data-node-id="1:6323"
               style={{
                 flex: '573 1 0',
@@ -161,6 +181,10 @@ export default function StructuredCare() {
                 background:
                   'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), ' +
                   'rgba(255,255,255,0.30)',
+                // Recede toward the outer (left) edge, so the active card
+                // visually grows toward the center.
+                transformOrigin: 'left center',
+                zIndex: active === 'typical' ? 3 : 1,
               }}
             >
               {/* Figma 1:6325 — header band, fill #173b39, h=162, corners [40,40,0,0] */}
@@ -219,11 +243,20 @@ export default function StructuredCare() {
 
             {/* Right — Structured Care With NewME Method (1:6338/1:6339) */}
             <motion.div
+              role="button"
+              tabIndex={0}
+              aria-pressed={active === 'newme'}
+              onClick={() => setActive('newme')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('newme') } }}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex flex-col overflow-hidden newme-newme-col"
+              animate={{
+                scale: active === 'newme' ? 1 : 0.92,
+                opacity: active === 'newme' ? 1 : 0.7,
+              }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col overflow-hidden newme-newme-col cursor-pointer"
               data-node-id="1:6338"
               style={{
                 flex: '680 1 0',
@@ -233,8 +266,11 @@ export default function StructuredCare() {
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 // Figma 1:6339 — SOLID white, transparent shadow effect
                 background: '#ffffff',
-                boxShadow: 'none',
-                zIndex: 2,
+                boxShadow: active === 'newme' ? '0 24px 60px -28px rgba(0,0,0,0.55)' : 'none',
+                // Recede toward the outer (right) edge so the active card
+                // grows visually toward the center seam.
+                transformOrigin: 'right center',
+                zIndex: active === 'newme' ? 3 : 1,
               }}
             >
               {/* Figma 1:6340 — header band, fill #013e37, h=192, corners [48,48,0,0] */}

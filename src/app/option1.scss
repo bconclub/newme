@@ -182,20 +182,21 @@ main.newme-page {
   }
 
   @media (max-width: 767px) {
+    /* Cards stay side-by-side on mobile (per click-to-swap UX). The
+       inactive card scales to ~0.92 + dims, so it occupies less visual
+       weight even though it physically still sits next to the active
+       card. Keeping them in a row preserves the "tabs as cards"
+       interaction the design calls for. We just override the desktop
+       margin-top offset (left card sits 90px lower than right) so the
+       two cards align cleanly on a narrow screen. */
     .newme-compare-wrap {
-      flex-direction: column !important;
-
       .newme-typical-col {
-        flex: none !important;
-        width: 100% !important;
         margin-top: 0 !important;
+        min-height: clamp(420px, 110vw, 720px) !important;
       }
 
       .newme-newme-col {
-        flex: none !important;
-        width: 100% !important;
-        margin-left: 0 !important;
-        margin-top: clamp(16px, 3vw, 24px) !important;
+        min-height: clamp(420px, 110vw, 720px) !important;
       }
     }
 
