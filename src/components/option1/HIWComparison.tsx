@@ -197,7 +197,7 @@ export default function HIWComparison() {
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
                 background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+                  'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(0,0,0,0.30)',
                 transformOrigin: 'left center',
                 zIndex: active === 'typical' ? 3 : 1,
               }}

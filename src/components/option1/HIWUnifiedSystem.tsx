@@ -227,7 +227,7 @@ function UnifiedCard({ card, delay }: { card: Card; delay: number }) {
         // edge actually reads on screen instead of vanishing into the bg.
         background: isCta
           ? '#ffffff'
-          : 'radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+          : 'radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(0,0,0,0.30)',
         // Figma renders the card outline as a soft ~30% white edge — the
         // spec says `border-2 solid white` but the alpha channel is lost in
         // the export. Trust the visual: 1.5px solid rgba(255,255,255,0.30)

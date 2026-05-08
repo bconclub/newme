@@ -157,7 +157,7 @@ export default function HIWWhyEarly() {
               // sits as a soft top-edge highlight evenly across the box, not
               // pinned to a corner.
               background:
-                'radial-gradient(150% 60% at 50% 0%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), rgba(255,255,255,0.30)',
+                'radial-gradient(150% 60% at 50% 0%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(0,0,0,0.30)',
               backdropFilter: 'blur(10.25px)',
               WebkitBackdropFilter: 'blur(10.25px)',
               border: '1.5px solid rgba(255,255,255,0.30)',

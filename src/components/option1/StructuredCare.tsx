@@ -177,8 +177,8 @@ export default function StructuredCare() {
                 backdropFilter: 'blur(10.25px)',
                 WebkitBackdropFilter: 'blur(10.25px)',
                 background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), ' +
-                  'rgba(255,255,255,0.30)',
+                  'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), ' +
+                  'rgba(0,0,0,0.30)',
                 // Recede toward the outer (left) edge, so the active card
                 // visually grows toward the center.
                 transformOrigin: 'left center',
