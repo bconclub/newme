@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
+import PathwayTabs from '@/components/option1/PathwayTabs'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -358,48 +359,15 @@ export default function MetabolicPathwayPage() {
         <span className="pathway-ellipse pathway-gold-accent pathway-gold-accent-3" style={{ top: 6800, left: 1268, opacity: 0.4 }} />
       </div>
 
-      {/* Hero — uses shared PageHero template */}
+      {/* Hero — uses shared PageHero template; tabs live inside the card */}
       <PageHero
         heading="Metabolic Care Pathways"
         subheading="These pathways are designed to address metabolic health through structured lifestyle correction, guided accountability, and continuous monitoring. Each pathway reflects a different level of need, from foundational stabilization to long-term sustainability."
         overlayImage="/images/pathways/metabolic-anatomy.png"
         overlayImageAlt="Glowing thyroid illustration"
         overlayStyle={{ right: '-2%', bottom: '-15%', height: '125%' }}
+        bottomSlot={<PathwayTabs active="/pathways/metabolic" />}
       />
-
-      {/* Pathway tabs */}
-      <section style={{ position: 'relative', zIndex: 1, paddingBottom: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)' }}>
-        <div style={{ margin: '0 clamp(12px,1.04vw,20px)' }}>
-          <div className="flex flex-wrap gap-2" style={{ paddingLeft: 'clamp(4px, calc(120 / 1920 * 100vw), 120px)' }}>
-            {TABS.map((tab) => (
-              <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
-                <span
-                  className="font-[family-name:var(--font-urbanist)]"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    height: 48,
-                    padding: '0 clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                    borderRadius: 40,
-                    fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)',
-                    fontWeight: 500,
-                    border: tab.active ? 'none' : '1px solid rgba(255,255,255,0.28)',
-                    background: tab.active ? '#fff' : 'rgba(255,255,255,0.08)',
-                    color: tab.active ? '#013E37' : 'rgba(255,255,255,0.65)',
-                    backdropFilter: 'blur(2px)',
-                    WebkitBackdropFilter: 'blur(2px)',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, color 0.2s',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {tab.label}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Phase sections */}
       {PHASES.map((phase) => (

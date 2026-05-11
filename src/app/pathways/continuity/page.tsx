@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
+import PathwayTabs from '@/components/option1/PathwayTabs'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -281,42 +282,8 @@ export default function ContinuityPathwayPage() {
           overlayImage="/images/pathways/continuity-anatomy.png"
           overlayImageAlt="Glowing upper body nervous system illustration"
           overlayStyle={{ right: '0%', bottom: '-15%', height: '118%' }}
+          bottomSlot={<PathwayTabs active="/pathways/continuity" />}
         />
-
-        {/* Pathway tabs */}
-        <section style={{ position: 'relative', zIndex: 1, paddingBottom: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)' }}>
-          <div style={{ margin: '0 clamp(12px,1.04vw,20px)' }}>
-            <div
-              className="flex flex-wrap gap-2"
-              style={{ paddingLeft: 'clamp(4px, calc(120 / 1920 * 100vw), 120px)' }}
-            >
-              {TABS.map((tab) => (
-                <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
-                  <span
-                    className="font-[family-name:var(--font-urbanist)]"
-                    style={{
-                      display: 'inline-flex', alignItems: 'center',
-                      height: 44,
-                      padding: '0 clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                      borderRadius: 40,
-                      fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
-                      fontWeight: 500,
-                      border: tab.active ? 'none' : '1px solid rgba(255,255,255,0.28)',
-                      background: tab.active ? '#fff' : 'rgba(255,255,255,0.08)',
-                      color: tab.active ? '#013E37' : 'rgba(255,255,255,0.65)',
-                      backdropFilter: 'blur(2px)',
-                      WebkitBackdropFilter: 'blur(2px)',
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {tab.label}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {PHASES.map((phase) => (
           <PhaseSection key={phase.id} phase={phase} />

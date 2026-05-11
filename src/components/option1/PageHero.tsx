@@ -71,6 +71,11 @@ export type PageHeroProps = {
   overlayImageAlt?: string
   /** Override positioning style for the overlay image. */
   overlayStyle?: React.CSSProperties
+  /**
+   * Optional slot rendered at the BOTTOM of the hero card — used for
+   * the pathway tab bar so the tabs sit inside the hero, as in Figma.
+   */
+  bottomSlot?: ReactNode
 }
 
 export default function PageHero({
@@ -87,6 +92,7 @@ export default function PageHero({
   overlayImage,
   overlayImageAlt = '',
   overlayStyle,
+  bottomSlot,
 }: PageHeroProps) {
   // When there's no photo behind, extend the solid zone a bit further so
   // text stays legible regardless. With a photo the mask already works.
@@ -240,6 +246,21 @@ export default function PageHero({
             </div>
           )}
         </div>
+
+        {/* ── Bottom tab bar slot (pathway pages — sits inside the card) ── */}
+        {bottomSlot && (
+          <div
+            className="absolute left-0 right-0 bottom-0 z-20 pointer-events-none"
+            style={{
+              paddingLeft: 'clamp(12px, calc(120 / 1920 * 100vw), 120px)',
+              paddingBottom: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+            }}
+          >
+            <div className="pointer-events-auto">
+              {bottomSlot}
+            </div>
+          </div>
+        )}
 
         {/* ── Optional anatomy / illustration overlay (pathway pages) ── */}
         {overlayImage && (
