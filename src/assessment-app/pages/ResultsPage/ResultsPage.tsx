@@ -229,7 +229,7 @@ export function ResultsPage({
                 <EyebrowPill
                   variant="gold"
                   style={{
-                    height: 36,
+                    height: 'auto',
                     paddingLeft: 16,
                     paddingRight: 16,
                     paddingTop: 10,
@@ -238,6 +238,9 @@ export function ResultsPage({
                     fontWeight: 700,
                     letterSpacing: ".10em",
                     fontFamily: FONT_BUTTON,
+                    lineHeight: 1.4,
+                    whiteSpace: 'normal',
+                    textAlign: 'left',
                   }}
                 >
                   {pw.badge}
