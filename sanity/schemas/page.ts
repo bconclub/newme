@@ -51,6 +51,16 @@ export default defineType({
       validation: (r) => r.required(),
     }),
 
+    // ── Display order (set programmatically; hidden from editors) ────────
+    defineField({
+      name: "sortOrder",
+      title: "Sort order",
+      type: "number",
+      description: "Lower numbers appear first in the Studio list. Set automatically.",
+      hidden: true,
+      initialValue: 50,
+    }),
+
     // ── Hero / OG image ─────────────────────────────────────────────────
     defineField({
       name: "heroImage",

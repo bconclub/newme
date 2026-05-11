@@ -44,7 +44,15 @@ export const customStructure = (S: StructureBuilder) =>
             ])
         ),
       S.documentTypeListItem("post").title("Blog Posts").icon(BlogIcon),
-      S.documentTypeListItem("page").title("Pages").icon(PagesIcon),
+      S.listItem()
+        .title("Pages")
+        .icon(PagesIcon)
+        .child(
+          S.documentList()
+            .title("Pages")
+            .filter('_type == "page"')
+            .defaultOrdering([{ field: "sortOrder", direction: "asc" }])
+        ),
       S.documentTypeListItem("faq").title("FAQs").icon(FaqIcon),
       S.documentTypeListItem("testimonial").title("Testimonials").icon(TestimonialIcon),
 
