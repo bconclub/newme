@@ -361,10 +361,13 @@ export default function MetabolicPathwayPage() {
       {/* Hero — uses shared PageHero template */}
       <PageHero
         imageSrc="/images/pathways/metabolic-hero.jpg"
-        imageAlt="Metabolic Care — doctor with patient"
+        imageAlt=""
         imagePosition="center 35%"
         heading="Metabolic Care Pathways"
         subheading="These pathways are designed to address metabolic health through structured lifestyle correction, guided accountability, and continuous monitoring. Each pathway reflects a different level of need, from foundational stabilization to long-term sustainability."
+        overlayImage="/images/pathways/metabolic-anatomy.png"
+        overlayImageAlt="Glowing thyroid illustration"
+        overlayStyle={{ right: '-2%', bottom: '-15%', height: '125%' }}
       />
 
       {/* Pathway tabs */}

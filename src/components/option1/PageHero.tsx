@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import type { ReactNode } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 
 /**
@@ -59,6 +60,17 @@ export type PageHeroProps = {
    * horizontal center.
    */
   gradientMaskEnd?: number
+  /**
+   * Optional anatomy / illustration overlay positioned on the RIGHT side
+   * of the hero card (used on pathway pages). Should be a PNG with a
+   * transparent background (white removed). The image is clipped by the
+   * card's overflow-hidden.
+   */
+  overlayImage?: string
+  /** Alt text for the overlay image. Default ''. */
+  overlayImageAlt?: string
+  /** Override positioning style for the overlay image. */
+  overlayStyle?: React.CSSProperties
 }
 
 export default function PageHero({
@@ -72,6 +84,9 @@ export default function PageHero({
   headingMaxWidthPx = 880,
   bodyMaxWidthPx = 783,
   gradientMaskEnd = 70,
+  overlayImage,
+  overlayImageAlt = '',
+  overlayStyle,
 }: PageHeroProps) {
   const maskGrad = `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 32%, rgba(0,0,0,0.6) 48%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0) ${gradientMaskEnd}%)`
   const grainMaskGrad = `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 32%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.08) 62%, rgba(0,0,0,0) ${gradientMaskEnd + 2}%)`
@@ -217,6 +232,25 @@ export default function PageHero({
             </div>
           )}
         </div>
+
+        {/* ── Optional anatomy / illustration overlay (pathway pages) ── */}
+        {overlayImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={overlayImage}
+            alt={overlayImageAlt}
+            aria-hidden={!overlayImageAlt}
+            className="absolute pointer-events-none select-none"
+            style={{
+              right: '-2%',
+              bottom: '-15%',
+              height: '125%',
+              width: 'auto',
+              objectFit: 'contain',
+              ...overlayStyle,
+            }}
+          />
+        )}
       </div>
     </section>
   )

@@ -305,10 +305,13 @@ export default function GIPathwayPage() {
       {/* Hero — uses shared PageHero template */}
       <PageHero
         imageSrc="/images/pathways/gi-hero.jpg"
-        imageAlt="GastroIntestinal Care — clinical team"
+        imageAlt=""
         imagePosition="center 30%"
         heading="GastroIntestinal Care Pathways"
         subheading="Our two GI pathways are designed to address digestive dysfunction through structured dietary protocols, clinical oversight, and continuous symptom monitoring. Each pathway reflects a different level of gastrointestinal complexity, from moderate instability to long-standing or chronic conditions."
+        overlayImage="/images/pathways/gi-anatomy.png"
+        overlayImageAlt="Glowing digestive system illustration"
+        overlayStyle={{ right: '-10%', bottom: '-20%', height: '140%' }}
       />
 
       {/* Pathway tabs */}

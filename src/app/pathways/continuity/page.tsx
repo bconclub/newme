@@ -277,10 +277,13 @@ export default function ContinuityPathwayPage() {
         {/* Hero — uses shared PageHero template (matches every other internal page) */}
         <PageHero
           imageSrc="/images/pathways/continuity-hero.jpg"
-          imageAlt="Continuity Pathways — ongoing care"
+          imageAlt=""
           imagePosition="center 35%"
           heading="Continuity Pathways"
-          subheading="Continuity Pathways are designed to maintain results, prevent relapse, and provide structured support beyond the core phases. Available for clients who have completed a primary pathway or as a standalone fitness and accountability program."
+          subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
+          overlayImage="/images/pathways/continuity-anatomy.png"
+          overlayImageAlt="Glowing upper body nervous system illustration"
+          overlayStyle={{ right: '0%', bottom: '-15%', height: '118%' }}
         />
 
         {/* Pathway tabs */}
