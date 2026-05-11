@@ -4,6 +4,7 @@ import author from "./author";
 import faq from "./faq";
 import mediaMention from "./mediaMention";
 import mediaOutlet from "./mediaOutlet";
+import page from "./page";
 import post from "./post";
 import redirect from "./redirect";
 import seo from "./seo";
@@ -23,6 +24,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   // Content
   mediaMention,
   mediaOutlet,
+  page,
   post,
 
   // Reusable people / FAQ

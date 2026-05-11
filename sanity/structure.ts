@@ -3,6 +3,7 @@ import {
   MediaIcon,
   BlogIcon,
   FaqIcon,
+  PagesIcon,
   TestimonialIcon,
   PeopleIcon,
   SiteIcon,
@@ -43,6 +44,7 @@ export const customStructure = (S: StructureBuilder) =>
             ])
         ),
       S.documentTypeListItem("post").title("Blog Posts").icon(BlogIcon),
+      S.documentTypeListItem("page").title("Pages").icon(PagesIcon),
       S.documentTypeListItem("faq").title("FAQs").icon(FaqIcon),
       S.documentTypeListItem("testimonial").title("Testimonials").icon(TestimonialIcon),
 
