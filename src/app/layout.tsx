@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Urbanist, Poppins } from 'next/font/google'
 import './globals.css'
 import './option1.scss'
 import SmoothScroll from '@/components/layout/SmoothScroll'
+import CookieBanner from '@/components/layout/CookieBanner'
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://drpalsnewme.com').replace(/\/$/, '')
 
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body>
         <SmoothScroll>{children}</SmoothScroll>
+        <CookieBanner />
       </body>
     </html>
   )
