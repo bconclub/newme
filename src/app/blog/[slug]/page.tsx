@@ -280,16 +280,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
 
 
-            {/* Listen player */}
-            <div style={{ marginTop: 28 }}>
-              <BlogListen
-                body={post.body ?? []}
-                audioSrc={[
-                  '/audio/Test sample blog bloating 01.mp3',
-                  '/audio/blog-sample.mp3',
-                ]}
-              />
-            </div>
+            {/* Listen player — bloating post only */}
+            {slug === 'why-am-i-so-bloated-i-look-pregnant' && (
+              <div style={{ marginTop: 28 }}>
+                <BlogListen
+                  body={post.body ?? []}
+                  audioSrc={[
+                    '/audio/Test sample blog bloating 01.mp3',
+                    '/audio/blog-sample.mp3',
+                  ]}
+                />
+              </div>
+            )}
           </header>
 
           {/* Cover image */}

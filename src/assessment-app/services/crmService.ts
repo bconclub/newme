@@ -2,7 +2,7 @@ import { ENDPOINTS } from "../constants/urlConstants";
 
 const LEAD_SOURCE: string = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_LEAD_SOURCE) || "";
 
-function toIsoDob(dob?: string): string | undefined {
+export function toIsoDob(dob?: string): string | undefined {
   if (!dob) return dob;
   // Already ISO (YYYY-MM-DD)
   if (/^\d{4}-\d{2}-\d{2}$/.test(dob)) return dob;

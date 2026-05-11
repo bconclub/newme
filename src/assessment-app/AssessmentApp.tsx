@@ -3,7 +3,7 @@ import { globalCss } from "./constants/styles";
 import { TOTAL, ALL_Q } from "./data/questions";
 import { SEC, PW, PRICING } from "./data/pathways";
 import { routeAnswers, getCalcMessages } from "./utils/routing";
-import { createLead, createLeadFromProfile, updateLeadQuizData, selectPhase, convertLead, attachResultsPDF } from "./services/crmService";
+import { createLead, createLeadFromProfile, updateLeadQuizData, selectPhase, convertLead, attachResultsPDF, toIsoDob } from "./services/crmService";
 import { recordAssessmentAttempt } from "./services/assessmentService";
 import { IntroPage } from "./pages/IntroPage/IntroPage";
 import { QuizPage } from "./pages/QuizPage/QuizPage";
@@ -191,10 +191,11 @@ export default function App() {
     const recommended = routeAnswers(ans).pathway;
     const secondary = SEC[recommended];
     const infoWithPhone = { ...info, phone: profile.phone || info.phone };
+    const profileWithIsoDob = { ...profile, dob: toIsoDob(profile.dob) };
     if (effectiveLeadId) {
-      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile, ans, pathway: recommended, secondary }).catch(() => {});
+      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans, pathway: recommended, secondary }).catch(() => {});
     } else {
-      createLead({ info: infoWithPhone, profile, ans, pathway: recommended, secondary })
+      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans, pathway: recommended, secondary })
         .then(d => { if (d.leadId) setCrmLeadId(d.leadId); })
         .catch(() => {});
     }
