@@ -276,9 +276,6 @@ export default function ContinuityPathwayPage() {
 
         {/* Hero — uses shared PageHero template (matches every other internal page) */}
         <PageHero
-          imageSrc="/images/pathways/continuity-hero.jpg"
-          imageAlt=""
-          imagePosition="center 35%"
           heading="Continuity Pathways"
           subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
           overlayImage="/images/pathways/continuity-anatomy.png"

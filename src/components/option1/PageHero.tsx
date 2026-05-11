@@ -25,8 +25,8 @@ import { motion } from 'framer-motion'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 export type PageHeroProps = {
-  /** Required hero photo. Use a path under /public. */
-  imageSrc: string
+  /** Hero photo. Omit on pages that use only the gradient + overlayImage. */
+  imageSrc?: string
   /** Accessible alt; pass '' if purely decorative behind a heavy wash. */
   imageAlt?: string
   /**
@@ -74,7 +74,7 @@ export type PageHeroProps = {
 }
 
 export default function PageHero({
-  imageSrc,
+  imageSrc = '',
   imageAlt = '',
   imagePosition = 'center',
   eyebrow,
@@ -88,8 +88,11 @@ export default function PageHero({
   overlayImageAlt = '',
   overlayStyle,
 }: PageHeroProps) {
-  const maskGrad = `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 32%, rgba(0,0,0,0.6) 48%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0) ${gradientMaskEnd}%)`
-  const grainMaskGrad = `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 32%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.08) 62%, rgba(0,0,0,0) ${gradientMaskEnd + 2}%)`
+  // When there's no photo behind, extend the solid zone a bit further so
+  // text stays legible regardless. With a photo the mask already works.
+  const solidEnd = imageSrc ? 32 : 42
+  const maskGrad = `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) ${solidEnd}%, rgba(0,0,0,0.6) 52%, rgba(0,0,0,0.15) 62%, rgba(0,0,0,0) ${gradientMaskEnd}%)`
+  const grainMaskGrad = `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) ${solidEnd}%, rgba(0,0,0,0.45) 52%, rgba(0,0,0,0.08) 64%, rgba(0,0,0,0) ${gradientMaskEnd + 2}%)`
 
   return (
     <section
@@ -107,6 +110,9 @@ export default function PageHero({
       <div
         className="relative overflow-hidden"
         style={{
+          // Dark pine-teal base ensures gradient-only heroes (no photo) still
+          // have a deep, rich background rather than falling through to the page.
+          backgroundColor: '#013E37',
           // 48 unified across every hero card so they all read as siblings.
           borderRadius: 'clamp(28px, 2.5vw, 48px)',
           // 694 ceiling = exact Figma 121:93 hero card spec (1880×694).
@@ -118,15 +124,17 @@ export default function PageHero({
           minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
         }}
       >
-        {/* ── Background image ── */}
-        <div
-          aria-label={imageAlt || undefined}
-          className="absolute inset-0 bg-cover"
-          style={{
-            backgroundImage: `url('${imageSrc}')`,
-            backgroundPosition: imagePosition,
-          }}
-        />
+        {/* ── Background image (omit when only gradient + overlay needed) ── */}
+        {imageSrc && (
+          <div
+            aria-label={imageAlt || undefined}
+            className="absolute inset-0 bg-cover"
+            style={{
+              backgroundImage: `url('${imageSrc}')`,
+              backgroundPosition: imagePosition,
+            }}
+          />
+        )}
 
         {/* ── LEFT moss→pine wash (Figma Ellipse 27 / 121:93) ── */}
         <div
