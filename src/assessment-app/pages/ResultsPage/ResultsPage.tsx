@@ -234,7 +234,7 @@ export function ResultsPage({
                     paddingRight: 16,
                     paddingTop: 10,
                     paddingBottom: 10,
-                    fontSize: 10,
+                    fontSize: 13,
                     fontWeight: 700,
                     letterSpacing: ".10em",
                     fontFamily: FONT_BUTTON,
