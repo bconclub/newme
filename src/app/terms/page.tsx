@@ -32,11 +32,11 @@ function SubHeading({ children }: { children: React.ReactNode }) {
   )
 }
 
-function P({ children }: { children: React.ReactNode }) {
+function P({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <p
       className="font-[family-name:var(--font-urbanist)]"
-      style={{ fontSize: 'clamp(14px,calc(15/1920*100vw),15px)', lineHeight: 1.75, color: '#374151', marginBottom: 12 }}
+      style={{ fontSize: 'clamp(14px,calc(15/1920*100vw),15px)', lineHeight: 1.75, color: '#374151', marginBottom: 12, ...style }}
     >
       {children}
     </p>
