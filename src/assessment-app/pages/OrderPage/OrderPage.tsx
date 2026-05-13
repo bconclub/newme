@@ -151,9 +151,28 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
           </div>
         )}
 
-        {/* Foundation note */}
+        {/* Foundation note — heart-in-hand reads as "charitable giving"
+            unambiguously. The previous 🌱 emoji was misread as a wellness/
+            growth signal rather than a donation/foundation cue. */}
         <div style={{ display: "flex", alignItems: "flex-start", gap: 10, background: "rgba(254,242,114,0.08)", border: "1px solid rgba(254,242,114,0.2)", borderRadius: 12, padding: "12px 16px", marginBottom: 20 }}>
-          <span style={{ fontSize: 18, lineHeight: 1, flexShrink: 0 }}>🌱</span>
+          <span style={{ width: 22, height: 22, lineHeight: 0, flexShrink: 0, marginTop: 1, display: "inline-flex", color: "#FEF272" }} aria-hidden>
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+              {/* Open palm */}
+              <path
+                d="M3 14.5c0-.83.67-1.5 1.5-1.5h2.07c.5 0 .98.16 1.38.46l1.8 1.35c.49.36 1.08.55 1.69.55h4.07c.7 0 1.27.56 1.27 1.26v0c0 .54-.34 1.02-.85 1.2l-3.55 1.25c-.5.17-1.05.16-1.54-.04l-3.62-1.49c-.36-.15-.74-.22-1.13-.22H4.5A1.5 1.5 0 0 1 3 15.5v-1z"
+                fill="currentColor"
+                fillOpacity="0.18"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinejoin="round"
+              />
+              {/* Heart sitting in palm */}
+              <path
+                d="M14 4.6c-1.07 0-2.01.5-2.6 1.27C10.8 5.1 9.86 4.6 8.8 4.6 6.97 4.6 5.5 6.04 5.5 7.83c0 2.8 3.4 5.07 5.6 6.31.2.12.46.12.66 0 2.2-1.24 5.6-3.5 5.6-6.31 0-1.79-1.47-3.23-3.3-3.23z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
           <p style={{ fontSize: 13, color: INK3, lineHeight: 1.6, margin: 0 }}>
             <strong style={{ color: INK }}>10% of your programme fee</strong> goes towards Dr. Pal's Foundation, supporting access to healthcare for those who need it most.
           </p>

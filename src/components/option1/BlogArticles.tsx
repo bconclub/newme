@@ -118,17 +118,54 @@ export default function BlogArticles({ posts = [] }: { posts?: BlogPostCard[] })
               >
                 <Link href={card.href} aria-label={card.title} className="absolute inset-0 z-10" />
 
-                {/* Default cover image */}
+                {/* Default cover image. When the post has no coverImage
+                    set in Sanity, fall back to a brand gradient + a soft
+                    NewME mark watermark + the post title overlay so the
+                    card never renders as an empty dark green slab. */}
                 <div
                   aria-hidden
-                  className="relative overflow-hidden bg-cover bg-center w-full"
+                  className="relative overflow-hidden bg-cover bg-center w-full flex items-center justify-center"
                   style={{
                     borderRadius: 'clamp(14px, calc(30 / 1920 * 100vw), 30px) clamp(14px, calc(30 / 1920 * 100vw), 30px) 0 0',
                     aspectRatio: '571 / 320',
-                    backgroundImage: card.cover ? `url('${card.cover}')` : undefined,
-                    backgroundColor: card.cover ? undefined : '#0a4a45',
+                    backgroundImage: card.cover
+                      ? `url('${card.cover}')`
+                      : 'linear-gradient(135deg, #629675 0%, #2F7269 35%, #144F49 65%, #013E37 100%)',
+                    backgroundColor: card.cover ? undefined : '#013E37',
                   }}
-                />
+                >
+                  {!card.cover && (
+                    <>
+                      {/* Soft noise overlay for texture */}
+                      <span
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          opacity: 0.18,
+                          mixBlendMode: 'overlay',
+                          backgroundImage:
+                            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+                          backgroundSize: '200px 200px',
+                        }}
+                      />
+                      {/* Centered title fallback so the card still tells the user what the post is about */}
+                      <span
+                        className="relative z-10 font-[family-name:var(--font-bricolage)] text-center"
+                        style={{
+                          color: '#FEF272',
+                          fontWeight: 600,
+                          fontSize: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                          lineHeight: 1.15,
+                          letterSpacing: '-0.01em',
+                          padding: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
+                          maxWidth: '85%',
+                          textShadow: '0 2px 12px rgba(0,0,0,0.35)',
+                        }}
+                      >
+                        {card.title}
+                      </span>
+                    </>
+                  )}
+                </div>
 
                 {/* Hover-fill — full card cover image with dark scrim */}
                 <div

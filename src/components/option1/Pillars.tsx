@@ -26,7 +26,7 @@ import {
 type Pillar = { name: string; desc: string; icon: string }
 
 // ── 8-Pillar order ────────────────────────────────────────────────────
-// Fitness → Mobility → Sleep → Circadian → Stress →
+// Fitness → Physical Therapy → Sleep → Circadian → Stress →
 // Digestion → Community → Nutrition
 //
 // Icon filenames use the semantic names the client renamed them to.
@@ -38,8 +38,8 @@ const PILLARS: Pillar[] = [
     icon: '/icons/fitness.svg',
   },
   {
-    name: 'Mobility',
-    desc: 'Maintains joint range, functional movement, and physical independence.',
+    name: 'Physical Therapy',
+    desc: 'Restores joint range, functional movement, and physical independence through structured rehabilitation.',
     icon: '/icons/mobility.svg',
   },
   {

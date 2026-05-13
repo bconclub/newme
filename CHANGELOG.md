@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-13 · Blog card fallback, "Physical Therapy" pillar rename, foundation icon
+
+- **Blog cards**: posts without a coverImage no longer render as an empty dark green slab. Fallback now uses a 135° moss-to-pine gradient + soft fractal-noise overlay + the post title in gold so the card still communicates what the post is about. (Editors should still upload real cover images in Studio for the 3 new posts — this is a graceful fallback, not a replacement.)
+- **Pillars**: renamed "Mobility" → "Physical Therapy" (label + description). Description now reads "Restores joint range, functional movement, and physical independence through structured rehabilitation."
+- **Assessment OrderPage / Foundation note**: replaced the 🌱 plant emoji with a heart-in-hand SVG so the icon clearly reads as "charitable giving" instead of a wellness/growth cue.
+
 ## 2026-05-13 · Footer: Resources column now actually clickable
 
 - Previous commit (`8010d43`) marked the Resources items `live: true` in the data array, but the Resources column rendering still hardcoded all entries as disabled `<span>`s — so FAQ / Blog / Media / Research Lab / Take the Assessment all looked greyed-out and didn't navigate. Now mirrors the Quick Links column rendering: respects each item's `live` flag, renders real `<Link>`s for live items and disabled `<span>`s for unbuilt ones.
