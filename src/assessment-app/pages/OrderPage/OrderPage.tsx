@@ -41,7 +41,8 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
 
   const pw = PW[basePhase] ?? PW[phase];
   const phaseName = pw?.badge?.split(" · ")[0] ?? basePhase.replace(/_/g, " ");
-  const duration = PHASE_META[basePhase]?.duration ?? PHASE_META[phase]?.duration ?? "";
+  const baseDuration = PHASE_META[basePhase]?.duration ?? PHASE_META[phase]?.duration ?? "";
+  const duration = giBilling && billing === "upfront" ? "3 months" : baseDuration;
   const enrollName = [info.name, info.last].filter(Boolean).join(" ") || "—";
 
   const priceLabel = giBilling

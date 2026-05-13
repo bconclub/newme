@@ -25,9 +25,9 @@ import {
 
 type Pillar = { name: string; desc: string; icon: string }
 
-// ── 9-Pillar order per brand sheet ────────────────────────────────────
+// ── 8-Pillar order ────────────────────────────────────────────────────
 // Fitness → Mobility → Sleep → Circadian → Stress →
-// Digestion → Metabolism → Community → Nutrition
+// Digestion → Community → Nutrition
 //
 // Icon filenames use the semantic names the client renamed them to.
 // (metabolism.svg + fitness.svg are new additions to the icons folder.)
@@ -61,11 +61,6 @@ const PILLARS: Pillar[] = [
     name: 'Digestion',
     desc: 'Determines how your body absorbs and responds to nutrition.',
     icon: '/icons/digestion.svg',
-  },
-  {
-    name: 'Metabolism',
-    desc: 'The engine behind energy production, weight regulation, and cellular repair.',
-    icon: '/icons/metabolism.svg',
   },
   {
     name: 'Community',
@@ -167,7 +162,7 @@ export default function Pillars() {
             letterSpacing: 0,
           }}
         >
-          The 9 Pillars of Health
+          The 8 Pillars of Health
         </h2>
         <p
           className="text-white font-[family-name:var(--font-urbanist)]"
@@ -178,9 +173,9 @@ export default function Pillars() {
             marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          Your body comprises nine interconnected systems working cohesively to
+          Your body comprises eight interconnected systems working cohesively to
           ensure that your body runs smoothly. The NewME framework is designed
-          keeping these 9 pillars in mind.
+          keeping these 8 pillars in mind.
         </p>
       </div>
 

@@ -240,15 +240,25 @@ export default function StructuredCare() {
             </motion.div>
 
             {/* Right — Structured Care With NewME Method (1:6338/1:6339) */}
+            {/* Scroll-entrance wrapper: scales up as the section enters view */}
+            <motion.div
+              initial={{ scale: 0.88, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                flex: '680 1 0',
+                marginLeft: 'clamp(-15px, calc(-30 / 1920 * 100vw), -30px)',
+                transformOrigin: 'right center',
+                zIndex: active === 'newme' ? 3 : 1,
+              }}
+            >
             <motion.div
               role="button"
               tabIndex={0}
               aria-pressed={active === 'newme'}
               onClick={() => setActive('newme')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('newme') } }}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
               animate={{
                 scale: active === 'newme' ? 1 : 0.88,
                 opacity: active === 'newme' ? 1 : 0.38,
@@ -258,18 +268,11 @@ export default function StructuredCare() {
               className="flex flex-col overflow-hidden newme-newme-col cursor-pointer"
               data-node-id="1:6338"
               style={{
-                flex: '680 1 0',
-                // Figma right card extends 30px under the left card
-                marginLeft: 'clamp(-15px, calc(-30 / 1920 * 100vw), -30px)',
                 minHeight: 'clamp(540px, calc(1092 / 1920 * 100vw), 1092px)',
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
-                // Figma 1:6339 — SOLID white, transparent shadow effect
                 background: '#ffffff',
                 boxShadow: active === 'newme' ? '0 24px 60px -28px rgba(0,0,0,0.55)' : 'none',
-                // Recede toward the outer (right) edge so the active card
-                // grows visually toward the center seam.
                 transformOrigin: 'right center',
-                zIndex: active === 'newme' ? 3 : 1,
               }}
             >
               {/* Figma 1:6340 — header band, fill #013e37, h=192, corners [48,48,0,0] */}
@@ -326,6 +329,7 @@ export default function StructuredCare() {
                   </li>
                 ))}
               </ul>
+            </motion.div>
             </motion.div>
           </div>
         </div>
