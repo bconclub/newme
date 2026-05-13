@@ -291,6 +291,19 @@ html:has(main.newme-page) .newme-header a {
   display: none;
 }
 
+/* Testimonial carousel — card width per breakpoint.
+   Mobile: 78vw so one card fills the viewport with a peek of the next.
+   Desktop: roughly 31% of the section so three cards fit with 20px gaps,
+   capped at the Figma spec width (587px). */
+.testimonial-card {
+  width: 78vw;
+}
+@media (min-width: 640px) {
+  .testimonial-card {
+    width: clamp(220px, calc(587 / 1920 * 100vw), 587px);
+  }
+}
+
 /* Testimonial card active state — only the JS-tracked active card flips
    to solid white. Hover no longer triggers the white state so it doesn't
    compete with the auto-advance highlight. */

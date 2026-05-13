@@ -1,11 +1,14 @@
-﻿'use client'
+'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
-// All 3 cards share the same default state: glass with sage green ellipse
-// tint behind. On hover the card flips to solid white per Figma.
+// Figma 1:6293 (default/inactive) = backdrop-blur-10.25px, 2px solid white
+// border, gradient (white 0.20→0) + white 0.30, rounded-34. Behind each card
+// sits Figma 1:6296 (Ellipse 55) — a soft sage-green radial that the
+// backdrop-blur diffuses, giving the card its green undertone.
+// Figma 1:6292 (active/center) = solid white surface, dark text, sage byline.
 const testimonials = [
   {
     quote:
@@ -30,57 +33,78 @@ const testimonials = [
   },
 ]
 
+const EASE = [0.22, 1, 0.36, 1] as const
+const N = testimonials.length // 3
+// Duplicate the array so the carousel can cycle for several minutes before
+// needing to snap back to the start. 12 copies × 3 = 36 visible card slots.
+const COPIES = 12
+const TOTAL = COPIES * N
+const ADVANCE_MS = 5000
+
 export default function Testimonials() {
-  const [activeIdx, setActiveIdx] = useState(0)
-  const carouselRef = useRef<HTMLDivElement>(null)
+  // `cycle` is a monotonically increasing index into the duplicated card
+  // array. The card centered in the viewport is at array index `cycle + 1`
+  // (so cycle = 0 starts with Karan, the middle card, as the active one).
+  const [cycle, setCycle] = useState(0)
+  const [cardStep, setCardStep] = useState(0)
+  const [skipAnim, setSkipAnim] = useState(false)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const firstCardRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // On mobile the carousel is a scroll container — track which card is
-  // snapped to the viewport centre and update the active dot.
-  const onScroll = useCallback(() => {
-    const el = carouselRef.current
-    if (!el) return
-    const cardW = el.scrollWidth / testimonials.length
-    const idx = Math.round(el.scrollLeft / cardW)
-    setActiveIdx(Math.max(0, Math.min(idx, testimonials.length - 1)))
-  }, [])
+  // The "active" testimonial = whichever card is currently centered.
+  const activeOrigIdx = ((cycle + 1) % N + N) % N
 
-  // Auto-advance only on desktop (where the 3-col grid doesn't scroll).
-  // Cycles the active highlight dot every 5 s.
-  const startDesktopTimer = useCallback(() => {
+  const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => {
-      setActiveIdx(prev => (prev + 1) % testimonials.length)
-    }, 5000)
+    timerRef.current = setInterval(() => setCycle((c) => c + 1), ADVANCE_MS)
   }, [])
 
   useEffect(() => {
-    // Only start auto-advance when wider than mobile breakpoint.
-    const mq = window.matchMedia('(min-width: 640px)')
-    if (mq.matches) startDesktopTimer()
-    const onChange = (e: MediaQueryListEvent) => {
-      if (e.matches) startDesktopTimer()
-      else { if (timerRef.current) clearInterval(timerRef.current) }
-    }
-    mq.addEventListener('change', onChange)
+    startTimer()
     return () => {
-      mq.removeEventListener('change', onChange)
       if (timerRef.current) clearInterval(timerRef.current)
     }
-  }, [startDesktopTimer])
+  }, [startTimer])
 
-  // Dot click: on mobile scroll to card; on desktop set active + restart timer.
-  const goTo = (idx: number) => {
-    const el = carouselRef.current
-    if (el && el.scrollWidth > el.clientWidth + 4) {
-      // Mobile scroll container
-      const cardW = el.scrollWidth / testimonials.length
-      el.scrollTo({ left: cardW * idx, behavior: 'smooth' })
-    } else {
-      // Desktop — just flip the highlighted dot and restart timer
-      setActiveIdx(idx)
-      startDesktopTimer()
+  // When we approach the end of the duplicated track, snap back to an
+  // equivalent earlier cycle (same testimonial centered) with the animation
+  // disabled for one frame so the jump is invisible.
+  useEffect(() => {
+    if (cycle >= TOTAL - N) {
+      setSkipAnim(true)
+      const equivalent = cycle % N
+      // Defer the cycle reset so the no-transition style applies first.
+      requestAnimationFrame(() => {
+        setCycle(equivalent)
+        requestAnimationFrame(() => setSkipAnim(false))
+      })
     }
+  }, [cycle])
+
+  // Measure one card's width + the track's gap so the translateX moves the
+  // row by exactly one card per cycle. Recomputes on viewport resize.
+  useEffect(() => {
+    const updateStep = () => {
+      const card = firstCardRef.current
+      const track = trackRef.current
+      if (!card || !track) return
+      const gap = parseFloat(getComputedStyle(track).gap) || 0
+      setCardStep(card.offsetWidth + gap)
+    }
+    updateStep()
+    window.addEventListener('resize', updateStep)
+    return () => window.removeEventListener('resize', updateStep)
+  }, [])
+
+  // Dot click: advance forward to the nearest cycle that centers the
+  // requested testimonial. Always moves left (consistent direction).
+  const goTo = (origIdx: number) => {
+    const targetMod = ((origIdx - 1) % N + N) % N
+    const currentMod = ((cycle % N) + N) % N
+    const delta = (targetMod - currentMod + N) % N
+    setCycle((c) => c + delta)
+    startTimer()
   }
 
   return (
@@ -89,15 +113,13 @@ export default function Testimonials() {
       className="relative"
       style={{
         paddingTop: 'clamp(80px, calc(160 / 1920 * 100vw), 160px)',
-        /* Page-bg offset between the rating card and the footer's darker bg,
-           per Figma. Without this the rating card looks fused to the footer. */
         paddingBottom: 'clamp(48px, calc(96 / 1920 * 100vw), 96px)',
         paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
         paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1801 }}>
-        {/* Header row — eyebrow + heading left, body text right */}
+        {/* Header row */}
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
           <div>
             <motion.div
@@ -106,17 +128,13 @@ export default function Testimonials() {
               viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.4 }}
             >
-              {/* Figma 1:6291 — Bricolage Light 24px white, pill: backdrop-blur-[2px]
-                  border border-solid border-white h-[48px] rounded-[40px] w-[179px] */}
               <EyebrowPill>Testimonials</EyebrowPill>
             </motion.div>
-
-            {/* Figma 1:6288 — Bricolage SemiBold 72px white, 2 lines */}
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, ease: EASE }}
               className="font-[family-name:var(--font-bricolage)] text-white"
               style={{
                 fontWeight: 600,
@@ -132,8 +150,6 @@ export default function Testimonials() {
               Real Experiences.
             </motion.h2>
           </div>
-
-          {/* Figma 1:6287 — Urbanist Regular 24px / lh 30px white, 698px wide */}
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -154,27 +170,53 @@ export default function Testimonials() {
           </motion.p>
         </div>
 
-        {/* Cards row — Figma: 3 cards 587×402 each, gap 20px on desktop.
-            Mobile: horizontal scroll-snap carousel so the user can swipe
-            between testimonials instead of scrolling through 3 stacked
-            cards. */}
+        {/* Carousel viewport — clips the off-screen cards on the sides.
+            The negative margins + matching padding give cards room to grow
+            vertically (shadow + scale) without being clipped at the edges. */}
         <div
-          ref={carouselRef}
-          onScroll={onScroll}
-          className="flex sm:grid sm:grid-cols-3 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none -mx-5 sm:mx-0 px-5 sm:px-0 testimonial-carousel"
+          className="relative overflow-hidden"
           style={{
-            gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
             marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
-            scrollbarWidth: 'none',
-            scrollPaddingLeft: '20px',
+            // Extend the viewport edge-to-edge so the slide-in / slide-out
+            // cards appear to come from the section boundary.
+            marginLeft: 'calc(-1 * clamp(20px, calc(60 / 1920 * 100vw), 60px))',
+            marginRight: 'calc(-1 * clamp(20px, calc(60 / 1920 * 100vw), 60px))',
+            paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+            paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+            paddingTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+            paddingBottom: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          {testimonials.map((t, i) => (
-            <TestimonialCard key={t.name} testimonial={t} index={i} activeOnDesktop={i === activeIdx} isActive={i === activeIdx} />
-          ))}
+          <motion.div
+            ref={trackRef}
+            className="flex"
+            style={{
+              gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+              willChange: 'transform',
+            }}
+            animate={{ x: -cycle * cardStep }}
+            transition={
+              skipAnim
+                ? { duration: 0 }
+                : { duration: 0.85, ease: EASE }
+            }
+          >
+            {Array.from({ length: TOTAL }).map((_, i) => {
+              const t = testimonials[i % N]
+              const isActive = i === cycle + 1
+              return (
+                <TestimonialCard
+                  key={i}
+                  measureRef={i === 0 ? firstCardRef : undefined}
+                  testimonial={t}
+                  isActive={isActive}
+                />
+              )
+            })}
+          </motion.div>
         </div>
 
-        {/* Pagination dots — clickable, track real activeIdx */}
+        {/* Pagination dots — three dots, one per original testimonial */}
         <div
           className="flex items-center justify-center"
           style={{
@@ -189,9 +231,13 @@ export default function Testimonials() {
               aria-label={`Go to testimonial ${i + 1}`}
               className="rounded-full transition-all duration-300 cursor-pointer"
               style={{
-                width: i === activeIdx ? 'clamp(18px, calc(28 / 1920 * 100vw), 28px)' : 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
+                width:
+                  i === activeOrigIdx
+                    ? 'clamp(18px, calc(28 / 1920 * 100vw), 28px)'
+                    : 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
                 height: 'clamp(10px, calc(16 / 1920 * 100vw), 16px)',
-                background: i === activeIdx ? '#FEF272' : 'rgba(255,255,255,0.30)',
+                background:
+                  i === activeOrigIdx ? '#FEF272' : 'rgba(255,255,255,0.30)',
                 border: 'none',
                 padding: 0,
                 minWidth: 10,
@@ -200,64 +246,49 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Ratings card — solid white bg, shield center, orange stars+scores */}
         <RatingsCard />
       </div>
     </section>
   )
 }
 
-/**
- * Single testimonial card with default-glass / hover-white state per Figma.
- *
- * Default state (Figma 1:6293):
- *   • backdrop-blur 10.25px
- *   • bg: linear-gradient(white 0.2 → 0) + solid white 0.30
- *   • 2px solid white border (dialed back to 30% opacity to match the
- *     softer rendered look — Figma export says solid white)
- *   • rounded-[34px]
- *   • Sage green Ellipse 55 (Figma 1:6296) tint baked into the middle
- *
- * Hover state (Figma 1:6292):
- *   • Solid white bg, dark text, yellow→green accent for the byline
- */
 function TestimonialCard({
   testimonial: t,
-  index: i,
-  activeOnDesktop,
   isActive,
+  measureRef,
 }: {
   testimonial: (typeof testimonials)[number]
-  index: number
-  activeOnDesktop?: boolean
-  isActive?: boolean
+  isActive: boolean
+  measureRef?: React.Ref<HTMLDivElement>
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: i * 0.08 }}
-      animate={{
-        boxShadow: activeOnDesktop
-          ? '0 0 0 2px rgba(254,242,114,0.65), 0 8px 32px rgba(0,0,0,0.18)'
-          : '0 0 0 0px rgba(254,242,114,0), 0 4px 16px rgba(0,0,0,0.10)',
-      }}
+      ref={measureRef}
       data-active={isActive ? 'true' : undefined}
-      className="testimonial-card group relative overflow-hidden shrink-0 w-[73%] sm:w-auto snap-start sm:snap-align-none cursor-default"
+      animate={{
+        scale: isActive ? 1 : 0.96,
+        boxShadow: isActive
+          ? '0 0 0 2px rgba(254,242,114,0.65), 0 12px 36px rgba(0,0,0,0.22)'
+          : '0 0 0 0px rgba(254,242,114,0), 0 4px 14px rgba(0,0,0,0.10)',
+      }}
+      transition={{ duration: 0.6, ease: EASE }}
+      className="testimonial-card relative overflow-hidden shrink-0"
       style={{
-        // Default: dark pine-teal undertone so active (white) reads as a clear step up.
-        backgroundColor: 'rgba(3, 28, 24, 0.78)',
-        backdropFilter: 'blur(14px) saturate(75%)',
-        WebkitBackdropFilter: 'blur(14px) saturate(75%)',
-        border: '1.5px solid rgba(255,255,255,0.10)',
+        // Figma 1:6293 inactive surface — translucent white glass.
+        backgroundImage:
+          'linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 100%), linear-gradient(90deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.30) 100%)',
+        backdropFilter: 'blur(10.25px)',
+        WebkitBackdropFilter: 'blur(10.25px)',
+        border: '2px solid #ffffff',
         borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
         minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
+        transformOrigin: 'center center',
         transition:
-          'background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+          'background-image 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
       }}
     >
-      {/* Sage green Ellipse 55 tint (Figma 1:6296) — fades out on hover */}
+      {/* Figma 1:6296 — sage-green Ellipse 55 sitting behind the glass. The
+          card's backdrop-blur softens it into a green undertone. */}
       <div
         aria-hidden
         className="testimonial-tint absolute pointer-events-none"
@@ -265,14 +296,14 @@ function TestimonialCard({
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '85%',
-          height: '85%',
+          width: '128%',
+          height: '128%',
           borderRadius: '50%',
           background:
-            'radial-gradient(ellipse 90% 75% at 50% 50%, rgba(125, 175, 145, 0.55) 0%, rgba(98, 150, 117, 0.30) 35%, rgba(98, 150, 117, 0.10) 65%, rgba(98, 150, 117, 0) 88%)',
-          filter: 'blur(40px)',
+            'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(98, 150, 117, 0.85) 0%, rgba(98, 150, 117, 0.55) 30%, rgba(98, 150, 117, 0.20) 60%, rgba(98, 150, 117, 0) 85%)',
+          filter: 'blur(28px)',
           opacity: 1,
-          transition: 'opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+          transition: 'opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       />
 
@@ -293,12 +324,11 @@ function TestimonialCard({
             fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
             lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
             maxWidth: 491,
-            transition: 'color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+            transition: 'color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
           {t.quote}
         </p>
-
         <div
           className="flex items-center mt-auto"
           style={{
@@ -322,7 +352,7 @@ function TestimonialCard({
                 fontWeight: 300,
                 fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
                 lineHeight: 1,
-                transition: 'color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+                transition: 'color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             >
               {t.name}
@@ -334,7 +364,7 @@ function TestimonialCard({
                 fontWeight: 400,
                 fontSize: 'clamp(12px, calc(16 / 1920 * 100vw), 16px)',
                 lineHeight: 1.2,
-                transition: 'color 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+                transition: 'color 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             >
               {t.pathway}
@@ -353,8 +383,6 @@ function RatingsCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
-      /* Figma 1:3957 — bg-white border-2 border-white backdrop-blur-[10.25px]
-         overflow-clip rounded-[34px] h=348 */
       className="relative overflow-hidden bg-white border-2 border-white"
       style={{
         marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
@@ -385,13 +413,11 @@ function RatingBlock({
 }) {
   return (
     <div className="flex flex-col items-center justify-center text-center px-2 sm:px-6">
-      {/* 5 orange stars */}
       <div className="flex items-center gap-[2px] sm:gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
           <Star key={i} size="clamp(10px, calc(14 / 1920 * 100vw), 14px)" />
         ))}
       </div>
-      {/* Score — Figma: Poppins SemiBold 80px #629675 */}
       <p
         className="font-[family-name:var(--font-poppins)]"
         style={{
@@ -404,7 +430,6 @@ function RatingBlock({
       >
         {score}
       </p>
-      {/* Label — Figma: Urbanist Medium 24px #013e37 */}
       <p
         className="font-[family-name:var(--font-urbanist)]"
         style={{
@@ -418,7 +443,6 @@ function RatingBlock({
         {label}
       </p>
       {trustpilot && (
-        /* Trustpilot on its own line — black ★ svg + "Trustpilot" text */
         <div
           className="flex items-center justify-center gap-1 font-[family-name:var(--font-poppins)]"
           style={{
@@ -436,7 +460,6 @@ function RatingBlock({
   )
 }
 
-/* Trustpilot logo star — exact Trustpilot green #00B67A */
 function TrustpilotStar() {
   return (
     <svg
@@ -465,9 +488,6 @@ function Star({ size }: { size: string }) {
   )
 }
 
-/* Figma 1:6354 — noun-trusted-1902111 3
-   Shield: #013e37 fill, white circle badge with #013e37 checkmark.
-   Group inset: 5% top, 14.91% right, 6% bottom, 14% left. */
 function ShieldIcon({ size }: { size: string }) {
   return (
     <svg
@@ -477,14 +497,11 @@ function ShieldIcon({ size }: { size: string }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
     >
-      {/* Shield body */}
       <path
         d="M100 6L188 36V108C188 162 150 206 100 220C50 206 12 162 12 108V36L100 6Z"
         fill="#013e37"
       />
-      {/* White circle badge */}
       <circle cx="100" cy="130" r="52" fill="white" />
-      {/* Checkmark */}
       <path
         d="M76 130L92 147L126 112"
         stroke="#013e37"
@@ -495,4 +512,3 @@ function ShieldIcon({ size }: { size: string }) {
     </svg>
   )
 }
-
