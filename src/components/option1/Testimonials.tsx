@@ -383,12 +383,14 @@ function RatingsCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden bg-white border-2 border-white"
+      className="relative overflow-hidden bg-white border-2 border-white mx-auto"
       style={{
         marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
         borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
         backdropFilter: 'blur(10.25px)',
         WebkitBackdropFilter: 'blur(10.25px)',
+        // Keep the trust badge compact — sits centered, not stretched edge-to-edge.
+        maxWidth: 'clamp(320px, calc(720 / 1920 * 100vw), 720px)',
       }}
     >
       <div className="relative grid grid-cols-3 items-center py-4 sm:py-5 gap-2 sm:gap-0">

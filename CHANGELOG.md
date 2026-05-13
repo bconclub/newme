@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-13 · Ratings card centered + compact, footer hooked up to real pages
+
+- **Ratings card**: now `max-width: clamp(320px, 720/1920×100vw, 720px)` + `mx-auto` so the trust badge sits centered and compact instead of stretching edge-to-edge
+- **Footer Quick Links**: expanded to Home, How it Works, Pathways, Virtual Clinic, Dr Pal & Team, Contact — all live with real routes
+- **Footer Resources**: replaced placeholder Podcast/NewME App with FAQ, Blog, Media, Research Lab, Take the Assessment — all live
+- **Footer bottom row**: Privacy → `/cookie-policy`, Terms → `/terms` (was `#`); switched to `<Link>` for client-side nav
+- **Dr Pal & Team href fix**: was `/care-team` (404), now `/team` (matches the actual route)
+
 ## 2026-05-13 · Testimonial carousel: Figma-spec inactive cards + real sliding motion
 
 - **Testimonials**: rebuilt as a true sliding carousel — cards now physically translate horizontally on each cycle (5 s auto-advance), with the centered card flipping to active. Active dot is wired to the centered card's testimonial.

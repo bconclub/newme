@@ -15,12 +15,17 @@ type FooterLink = { label: string; href: string; live?: boolean }
 const quickLinks: FooterLink[] = [
   { label: 'Home', href: '/', live: true },
   { label: 'How it Works', href: '/how-it-works', live: true },
-  { label: 'Dr Pal & Team', href: '/care-team' },
+  { label: 'Pathways', href: '/pathways', live: true },
+  { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
+  { label: 'Dr Pal & Team', href: '/team', live: true },
+  { label: 'Contact', href: '/contact', live: true },
 ]
 const resources: FooterLink[] = [
-  { label: 'Podcast', href: '#' },
-  { label: 'FAQ', href: '#' },
-  { label: 'NewME App', href: '#' },
+  { label: 'FAQ', href: '/faq', live: true },
+  { label: 'Blog', href: '/blog', live: true },
+  { label: 'Media', href: '/media', live: true },
+  { label: 'Research Lab', href: '/research-lab', live: true },
+  { label: 'Take the Assessment', href: '/assessment', live: true },
 ]
 
 // Dr. Pal's official social channels. Order: Facebook, X, Instagram, YouTube.
@@ -254,20 +259,20 @@ export default function Footer() {
             © 2026 Dr Pal&apos;s NewME. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            <a
-              href="#"
+            <Link
+              href="/cookie-policy"
               className="text-white/55 hover:text-white font-[family-name:var(--font-bricolage)] transition-colors"
               style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)' }}
             >
               Privacy
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/terms"
               className="text-white/55 hover:text-white font-[family-name:var(--font-bricolage)] transition-colors"
               style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)' }}
             >
               Terms
-            </a>
+            </Link>
           </div>
         </div>
       </div>
