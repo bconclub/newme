@@ -291,27 +291,22 @@ html:has(main.newme-page) .newme-header a {
   display: none;
 }
 
-/* Testimonial card hover state per Figma 1:6292 — flips from glass to
-   solid white. The default glass styling is set inline; these rules only
-   override on hover or when the card is the active scroll-snap card on mobile. */
-.testimonial-card:hover,
+/* Testimonial card active state — only the JS-tracked active card flips
+   to solid white. Hover no longer triggers the white state so it doesn't
+   compete with the auto-advance highlight. */
 .testimonial-card[data-active="true"] {
   background-color: #ffffff !important;
   border-color: rgba(255, 255, 255, 0.0) !important;
 }
-.testimonial-card:hover .testimonial-tint,
 .testimonial-card[data-active="true"] .testimonial-tint {
   opacity: 0;
 }
-.testimonial-card:hover .testimonial-quote,
 .testimonial-card[data-active="true"] .testimonial-quote {
   color: #000000 !important;
 }
-.testimonial-card:hover .testimonial-name,
 .testimonial-card[data-active="true"] .testimonial-name {
   color: #000000 !important;
 }
-.testimonial-card:hover .testimonial-pathway,
 .testimonial-card[data-active="true"] .testimonial-pathway {
   color: #629675 !important;
 }

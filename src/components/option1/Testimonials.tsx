@@ -247,10 +247,10 @@ function TestimonialCard({
       className="testimonial-card group relative overflow-hidden shrink-0 w-[73%] sm:w-auto snap-start sm:snap-align-none cursor-default"
       style={{
         // Default: dark pine-teal undertone so active (white) reads as a clear step up.
-        backgroundColor: 'rgba(8, 46, 40, 0.62)',
-        backdropFilter: 'blur(14px) saturate(80%)',
-        WebkitBackdropFilter: 'blur(14px) saturate(80%)',
-        border: '1.5px solid rgba(255,255,255,0.16)',
+        backgroundColor: 'rgba(3, 28, 24, 0.78)',
+        backdropFilter: 'blur(14px) saturate(75%)',
+        WebkitBackdropFilter: 'blur(14px) saturate(75%)',
+        border: '1.5px solid rgba(255,255,255,0.10)',
         borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
         minHeight: 'clamp(280px, calc(402 / 1920 * 100vw), 402px)',
         transition:
@@ -363,10 +363,10 @@ function RatingsCard() {
         WebkitBackdropFilter: 'blur(10.25px)',
       }}
     >
-      <div className="relative grid grid-cols-3 items-center py-5 sm:py-8 gap-2 sm:gap-0">
+      <div className="relative grid grid-cols-3 items-center py-4 sm:py-5 gap-2 sm:gap-0">
         <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
         <div className="flex items-center justify-center">
-          <ShieldIcon size="clamp(36px, calc(72 / 1920 * 100vw), 72px)" />
+          <ShieldIcon size="clamp(28px, calc(48 / 1920 * 100vw), 48px)" />
         </div>
         <RatingBlock score="4.7" label="Program Completion Rate" />
       </div>
@@ -388,7 +388,7 @@ function RatingBlock({
       {/* 5 orange stars */}
       <div className="flex items-center gap-[2px] sm:gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
-          <Star key={i} size="clamp(10px, calc(18 / 1920 * 100vw), 18px)" />
+          <Star key={i} size="clamp(10px, calc(14 / 1920 * 100vw), 14px)" />
         ))}
       </div>
       {/* Score — Figma: Poppins SemiBold 80px #629675 */}
@@ -397,7 +397,7 @@ function RatingBlock({
         style={{
           color: '#629675',
           fontWeight: 600,
-          fontSize: 'clamp(22px, calc(52 / 1920 * 100vw), 52px)',
+          fontSize: 'clamp(22px, calc(38 / 1920 * 100vw), 38px)',
           lineHeight: 1,
           marginTop: 4,
         }}
@@ -410,7 +410,7 @@ function RatingBlock({
         style={{
           color: '#013e37',
           fontWeight: 500,
-          fontSize: 'clamp(9px, calc(20 / 1920 * 100vw), 22px)',
+          fontSize: 'clamp(9px, calc(15 / 1920 * 100vw), 15px)',
           lineHeight: 1.3,
           marginTop: 4,
         }}
@@ -424,7 +424,7 @@ function RatingBlock({
           style={{
             color: '#191919',
             fontWeight: 400,
-            fontSize: 'clamp(9px, calc(20 / 1920 * 100vw), 22px)',
+            fontSize: 'clamp(9px, calc(15 / 1920 * 100vw), 15px)',
             marginTop: 2,
           }}
         >
@@ -440,8 +440,8 @@ function RatingBlock({
 function TrustpilotStar() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="14"
+      height="14"
       viewBox="0 0 24 24"
       fill="#00B67A"
       aria-hidden
