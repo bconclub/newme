@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-13 · Footer: Resources column now actually clickable
+
+- Previous commit (`8010d43`) marked the Resources items `live: true` in the data array, but the Resources column rendering still hardcoded all entries as disabled `<span>`s — so FAQ / Blog / Media / Research Lab / Take the Assessment all looked greyed-out and didn't navigate. Now mirrors the Quick Links column rendering: respects each item's `live` flag, renders real `<Link>`s for live items and disabled `<span>`s for unbuilt ones.
+
 ## 2026-05-13 · Sitemap: add /assessment and /cookie-policy, reorder by priority
 
 - Added `/assessment` (priority 0.9, monthly) — primary conversion route, was missing.

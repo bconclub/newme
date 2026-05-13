@@ -166,19 +166,30 @@ export default function Footer() {
             >
               Resources
             </h4>
-            {/* Figma: Poppins Regular 400 20px white */}
+            {/* Figma: Poppins Regular 400 20px white. Mirrors the Quick
+                Links column — respects each item's `live` flag so non-live
+                items render disabled and live ones are real <Link>s. */}
             <ul className="mt-4 space-y-2">
               {resources.map((l) => (
                 <li key={l.label}>
-                  {/* All Resources items are unbuilt — render as disabled. */}
-                  <span
-                    aria-disabled="true"
-                    title="Coming soon"
-                    className="text-white/30 hover:text-white/50 font-[family-name:var(--font-poppins)] transition-colors cursor-not-allowed select-none"
-                    style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
-                  >
-                    {l.label}
-                  </span>
+                  {l.live ? (
+                    <Link
+                      href={l.href}
+                      className="text-white/65 hover:text-white font-[family-name:var(--font-poppins)] transition-colors"
+                      style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
+                    >
+                      {l.label}
+                    </Link>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      title="Coming soon"
+                      className="text-white/30 hover:text-white/50 font-[family-name:var(--font-poppins)] transition-colors cursor-not-allowed select-none"
+                      style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
+                    >
+                      {l.label}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
