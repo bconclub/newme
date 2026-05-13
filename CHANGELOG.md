@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-13 · Sitemap: add /assessment and /cookie-policy, reorder by priority
+
+- Added `/assessment` (priority 0.9, monthly) — primary conversion route, was missing.
+- Added `/cookie-policy` (priority 0.3, yearly) — legal page, was missing.
+- Reordered routes by intent (top-of-funnel → pathway detail → other primary → conversion-adjacent → legal) and grouped with section comments. No priorities changed for existing routes.
+- Documented intentional exclusions: `/page1` (dev scratch), `/studio/...` (admin, noindexed), `/blog/[slug]` (dynamic via Sanity, already wired).
+
 ## 2026-05-13 · Seed 3 new blog posts to Sanity
 
 - Added `scripts/seed-blogs-batch2.mjs` (idempotent, mirrors the existing `seed-blogs.mjs` pattern) to push 3 new posts authored by Dr. Pal:

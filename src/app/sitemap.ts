@@ -16,21 +16,34 @@ type StaticRoute = {
   priority: number
 }
 
+// Routes are listed in roughly descending priority — top-of-funnel +
+// conversion paths first, supporting content next, legal pages last.
+// Pages that exist in src/app/ but are intentionally NOT listed here:
+//   - /page1        (dev/scratch page, not a real route)
+//   - /studio/...   (Sanity admin, noindexed)
+//   - /blog/[slug]  (dynamic — added below via loadBlogEntries())
 const staticRoutes: StaticRoute[] = [
+  // Top-of-funnel
   { path: '/', changeFrequency: 'weekly', priority: 1.0 },
   { path: '/how-it-works', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/pathways', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/assessment', changeFrequency: 'monthly', priority: 0.9 },
+  // Pathway detail pages
   { path: '/pathways/metabolic', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/pathways/gi', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/pathways/continuity', changeFrequency: 'monthly', priority: 0.8 },
+  // Other primary pages
   { path: '/virtual-clinic', changeFrequency: 'monthly', priority: 0.8 },
+  { path: '/blog', changeFrequency: 'daily', priority: 0.8 },
   { path: '/research-lab', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/team', changeFrequency: 'monthly', priority: 0.7 },
-  { path: '/contact', changeFrequency: 'yearly', priority: 0.5 },
-  { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
-  { path: '/faq', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/media', changeFrequency: 'weekly', priority: 0.6 },
-  { path: '/blog', changeFrequency: 'daily', priority: 0.8 },
+  { path: '/faq', changeFrequency: 'monthly', priority: 0.6 },
+  // Conversion-adjacent
+  { path: '/contact', changeFrequency: 'yearly', priority: 0.5 },
+  // Legal
+  { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/cookie-policy', changeFrequency: 'yearly', priority: 0.3 },
 ]
 
 type SanityPost = { slug: string; publishedAt?: string; _updatedAt?: string }
