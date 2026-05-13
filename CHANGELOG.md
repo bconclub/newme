@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-13 · Seed 3 new blog posts to Sanity
+
+- Added `scripts/seed-blogs-batch2.mjs` (idempotent, mirrors the existing `seed-blogs.mjs` pattern) to push 3 new posts authored by Dr. Pal:
+  - `/blog/constipation-remedies-relief-guide` — *Effective Constipation Remedies: How to Relieve Constipation on the Toilet Immediately*
+  - `/blog/how-to-calculate-maintenance-calories` — *How to Calculate Maintenance Calories* (BMR + TDEE walkthrough)
+  - `/blog/sibo-symptoms-guide` — *SIBO Symptoms: 10 Warning Signs You Shouldn't Ignore*
+- Source: 3 `.docx` files from the client. Each post converted to Portable Text (h2/h3/para/bullet/bold/em helpers), tagged, SEO-loaded (metaTitle, metaDescription, keywords), and given a disclaimer. Cover image is intentionally blank — editors will set the hero photo in Studio (same flow as the original 3 posts).
+
 ## 2026-05-13 · Assessment badge fix, mobile carousel active=left, shield 2× bigger
 
 - **Assessment pricing badge**: when GI billing toggle is "3 months upfront", the inner pill now reads "GI Core · 3 months Clinical Pathway" (was stuck at "1 month" because `PHASE_META` hardcodes monthly units). Switched to a derived `displayBadge` that rewrites "1 month" → "3 months" when upfront is active.
