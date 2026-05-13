@@ -72,6 +72,15 @@ export type PageHeroProps = {
   /** Override positioning style for the overlay image. */
   overlayStyle?: React.CSSProperties
   /**
+   * When true, renders the four atmospheric ellipse blobs that give the
+   * pathway-page hero its deep dark-green + lime atmosphere (Figma 150:157).
+   * Ellipse 27: large green-gradient glow (upper-left)
+   * Ellipse 28: dark shadow blob (lower-left)
+   * Ellipse 29: lime/yellow-green accent (upper area)
+   * Ellipse 30: dark shadow blob (right-bottom edge)
+   */
+  pathwayBlobs?: boolean
+  /**
    * Optional slot rendered at the BOTTOM of the hero card — used for
    * the pathway tab bar so the tabs sit inside the hero, as in Figma.
    */
@@ -92,6 +101,7 @@ export default function PageHero({
   overlayImage,
   overlayImageAlt = '',
   overlayStyle,
+  pathwayBlobs = false,
   bottomSlot,
 }: PageHeroProps) {
   // When there's no photo behind, extend the solid zone a bit further so
@@ -140,6 +150,76 @@ export default function PageHero({
               backgroundPosition: imagePosition,
             }}
           />
+        )}
+
+        {/* ── Atmospheric blobs — pathway pages (Figma 150:157) ── */}
+        {pathwayBlobs && (
+          <>
+            {/* Ellipse 27 — large green-gradient glow, upper-left */}
+            <div
+              aria-hidden
+              className="absolute pointer-events-none"
+              style={{
+                left: '-5.9%',
+                top: '12.1%',
+                width: '74%',
+                height: '200%',
+                borderRadius: '50%',
+                background: 'linear-gradient(180deg, #629675 0%, #013E37 100%)',
+                filter: 'blur(clamp(100px, calc(440 / 1920 * 100vw), 440px))',
+                opacity: 0.60,
+                maskImage: 'radial-gradient(closest-side, black 0%, black 40%, rgba(0,0,0,0.7) 65%, rgba(0,0,0,0.3) 85%, transparent 100%)',
+                WebkitMaskImage: 'radial-gradient(closest-side, black 0%, black 40%, rgba(0,0,0,0.7) 65%, rgba(0,0,0,0.3) 85%, transparent 100%)',
+              }}
+            />
+            {/* Ellipse 28 — dark shadow blob, lower-left */}
+            <div
+              aria-hidden
+              className="absolute pointer-events-none"
+              style={{
+                left: '-0.85%',
+                top: '53.3%',
+                width: '65%',
+                height: '176%',
+                borderRadius: '50%',
+                background: '#000',
+                filter: 'blur(clamp(100px, calc(440 / 1920 * 100vw), 440px))',
+                opacity: 0.28,
+              }}
+            />
+            {/* Ellipse 30 — dark shadow blob, right-bottom edge */}
+            <div
+              aria-hidden
+              className="absolute pointer-events-none"
+              style={{
+                left: '54.7%',
+                top: '110.4%',
+                width: '40.3%',
+                height: '48.7%',
+                borderRadius: '50%',
+                background: '#000',
+                filter: 'blur(clamp(80px, calc(360 / 1920 * 100vw), 360px))',
+                opacity: 0.22,
+              }}
+            />
+            {/* Ellipse 29 — lime accent blob, upper area */}
+            <div
+              aria-hidden
+              className="absolute pointer-events-none"
+              style={{
+                left: '6%',
+                top: '16.3%',
+                width: '45.6%',
+                height: '41.5%',
+                borderRadius: '50%',
+                background: '#E2FE72',
+                filter: 'blur(clamp(80px, calc(300 / 1920 * 100vw), 300px))',
+                opacity: 0.30,
+                maskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.2) 85%, transparent 100%)',
+                WebkitMaskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.2) 85%, transparent 100%)',
+              }}
+            />
+          </>
         )}
 
         {/* ── LEFT moss→pine wash (Figma Ellipse 27 / 121:93) ── */}
@@ -262,14 +342,17 @@ export default function PageHero({
           </div>
         )}
 
-        {/* ── Optional anatomy / illustration overlay (pathway pages) ── */}
+        {/* ── Optional anatomy / illustration overlay (pathway pages) ──
+            Class `pathway-hero-overlay` is targeted in option1.scss to
+            scale down + lower opacity on mobile so the anatomy doesn't
+            fight with the heading, body, and tab carousel. */}
         {overlayImage && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={overlayImage}
             alt={overlayImageAlt}
             aria-hidden={!overlayImageAlt}
-            className="absolute pointer-events-none select-none"
+            className="pathway-hero-overlay absolute pointer-events-none select-none"
             style={{
               right: '-2%',
               bottom: '-15%',

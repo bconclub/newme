@@ -291,6 +291,24 @@ html:has(main.newme-page) .newme-header a {
   display: none;
 }
 
+/* Pathway tabs row scrolls horizontally on mobile — hide the scrollbar. */
+.pathway-tabs-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Pathway hero anatomy overlay — on mobile the anatomy is shrunk and
+   dimmed so it sits behind the heading/tabs instead of overlapping
+   them. The inline `right/bottom/height` from each page's overlayStyle
+   still applies on desktop; these rules only override on small screens. */
+@media (max-width: 767px) {
+  .pathway-hero-overlay {
+    height: 78% !important;
+    bottom: -8% !important;
+    right: -22% !important;
+    opacity: 0.55 !important;
+  }
+}
+
 /* Testimonial carousel — card width per breakpoint.
    Mobile: 78vw so one card fills the viewport with a peek of the next.
    Desktop: roughly 31% of the section so three cards fit with 20px gaps,

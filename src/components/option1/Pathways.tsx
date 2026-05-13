@@ -119,9 +119,28 @@ export default function Pathways() {
   }
 
   // Keep the visible tab in view of the horizontal scroll on small screens.
+  // SKIP the first run so the initial mount (activeTab=0) does not auto-scroll
+  // the homepage down to the Pathways section. Only horizontal scrolling
+  // within the tabs row is desired, and only after a real tab change.
+  const didMountRef = useRef(false)
   useEffect(() => {
-    const el = tabsRef.current?.children[activeTab] as HTMLElement | undefined
-    el?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+    if (!didMountRef.current) {
+      didMountRef.current = true
+      return
+    }
+    const tabsEl = tabsRef.current
+    const el = tabsEl?.children[activeTab] as HTMLElement | undefined
+    if (!tabsEl || !el) return
+    // Only do an INTERNAL horizontal scroll (left/right) — never let the
+    // browser scroll the page vertically to bring the tab into view.
+    const tabsRect = tabsEl.getBoundingClientRect()
+    const elRect = el.getBoundingClientRect()
+    if (elRect.left < tabsRect.left || elRect.right > tabsRect.right) {
+      tabsEl.scrollTo({
+        left: el.offsetLeft - tabsEl.offsetLeft,
+        behavior: 'smooth',
+      })
+    }
   }, [activeTab])
 
   const group = tabGroups[activeTab]

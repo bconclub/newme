@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-13 · Homepage scroll bug, duration pill, mobile tabs carousel, VC animations
+
+- **Bug fix (Pathways.tsx)**: scrollIntoView no longer fires on initial mount — replaced with an internal horizontal `scrollTo` that only triggers on real tab changes and only when the tab is actually overflowing horizontally. Stops the homepage from auto-scrolling to the "8 Pillars" section on load.
+- **Duration pill** on all 3 pathway pages (Metabolic, GI, Continuity): now renders via the shared `<EyebrowPill variant="gold" />` to match the rest of the site's pill style.
+- **PathwayTabs**: mobile layout is now a horizontal scroll-snap carousel (no more stacking). Desktop keeps the wrap layout. Scrollbar hidden via `.pathway-tabs-row::-webkit-scrollbar`.
+- **Anatomy overlay**: unified `overlayStyle` across all 3 pathway pages (`right: -5%, bottom: -15%, height: 125%`). On mobile, `.pathway-hero-overlay` is shrunk to 78% height, pushed further right (-22%), and dimmed to 55% opacity so it sits behind the heading and tab carousel instead of overlapping them.
+- **Virtual Clinic animations**: VCWhatIs, VCHowItWorks, and VCDoctorCard sections extracted into `VCSections.tsx` (client component) with entry animations — heading fades + rises, list items stagger from the left, contact pills lift on hover. Previously these were fully static.
+
 ## 2026-05-13 · Ratings card centered + compact, footer hooked up to real pages
 
 - **Ratings card**: now `max-width: clamp(320px, 720/1920×100vw, 720px)` + `mx-auto` so the trust badge sits centered and compact instead of stretching edge-to-edge

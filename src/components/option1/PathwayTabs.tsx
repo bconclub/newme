@@ -20,11 +20,23 @@ type PathwayTabsProps = {
 
 export default function PathwayTabs({ active }: PathwayTabsProps) {
   return (
-    <div className="flex flex-wrap gap-2">
+    // Mobile: horizontal scroll carousel (no stacking — the previous
+    // flex-wrap layout broke under the anatomy image and looked cramped).
+    // Each tab keeps its native width; the row scrolls left/right with
+    // snap. On md+ the tabs lay out normally with wrapping.
+    <div
+      className="pathway-tabs-row flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-2 -mx-1 px-1 md:mx-0 md:px-0"
+      style={{ scrollbarWidth: 'none' }}
+    >
       {TABS.map((tab) => {
         const isActive = tab.href === active
         return (
-          <Link key={tab.href} href={tab.href} style={{ textDecoration: 'none' }}>
+          <Link
+            key={tab.href}
+            href={tab.href}
+            className="snap-start shrink-0 md:shrink"
+            style={{ textDecoration: 'none' }}
+          >
             <span
               className="font-[family-name:var(--font-urbanist)]"
               style={{

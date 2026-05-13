@@ -7,6 +7,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
 import PathwayTabs from '@/components/option1/PathwayTabs'
+import EyebrowPill from '@/components/option1/EyebrowPill'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -133,16 +134,21 @@ function PhaseSection({ phase }: { phase: Phase }) {
           {phase.description}
         </motion.p>
 
-        {/* Duration pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.4, delay: 0.14 }}
-          style={{ display: 'inline-flex', alignItems: 'center', height: 48, padding: '0 20px', borderRadius: 40, border: '1px solid rgba(255,255,255,0.28)', marginBottom: 'clamp(24px,2.08vw,40px)' }}
-        >
-          <span className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 14, color: 'rgba(255,255,255,0.70)', fontWeight: 500 }}>{phase.duration}</span>
-        </motion.div>
+        {/* Duration pill — uses the brand EyebrowPill (gold variant) to
+            match the rest of the site's pill style. */}
+        <div style={{ display: 'inline-flex', marginBottom: 'clamp(24px,2.08vw,40px)' }}>
+          <EyebrowPill
+            variant="gold"
+            style={{
+              height: 'clamp(38px, calc(44 / 1920 * 100vw), 44px)',
+              fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)',
+              paddingLeft: 18,
+              paddingRight: 18,
+            }}
+          >
+            {phase.duration}
+          </EyebrowPill>
+        </div>
       </div>
 
       {/* 2-column info cards */}
@@ -309,8 +315,9 @@ export default function GIPathwayPage() {
         subheading="Our two GI pathways are designed to address digestive dysfunction through structured dietary protocols, clinical oversight, and continuous symptom monitoring. Each pathway reflects a different level of gastrointestinal complexity, from moderate instability to long-standing or chronic conditions."
         overlayImage="/images/pathways/gi-anatomy.png"
         overlayImageAlt="Glowing digestive system illustration"
-        overlayStyle={{ right: '-10%', bottom: '-20%', height: '140%' }}
-        bottomSlot={<PathwayTabs active="/pathways/gi" />}
+        overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
+        pathwayBlobs
+        cta={<PathwayTabs active="/pathways/gi" />}
       />
 
       {/* Phase sections */}

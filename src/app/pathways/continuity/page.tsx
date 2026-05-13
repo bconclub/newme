@@ -7,6 +7,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
 import PathwayTabs from '@/components/option1/PathwayTabs'
+import EyebrowPill from '@/components/option1/EyebrowPill'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -121,15 +122,20 @@ function PhaseSection({ phase }: { phase: Phase }) {
           {phase.description}
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.4, delay: 0.14 }}
-          style={{ display: 'inline-flex', alignItems: 'center', height: 44, padding: '0 20px', borderRadius: 40, border: '1px solid rgba(255,255,255,0.28)', marginBottom: 'clamp(24px,2.08vw,40px)' }}
-        >
-          <span className="font-[family-name:var(--font-urbanist)]" style={{ fontSize: 14, color: 'rgba(255,255,255,0.70)', fontWeight: 500 }}>{phase.duration}</span>
-        </motion.div>
+        {/* Duration pill — uses the brand EyebrowPill (gold variant). */}
+        <div style={{ display: 'inline-flex', marginBottom: 'clamp(24px,2.08vw,40px)' }}>
+          <EyebrowPill
+            variant="gold"
+            style={{
+              height: 'clamp(38px, calc(44 / 1920 * 100vw), 44px)',
+              fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)',
+              paddingLeft: 18,
+              paddingRight: 18,
+            }}
+          >
+            {phase.duration}
+          </EyebrowPill>
+        </div>
       </div>
 
       {/* 2-column info cards â€” stacks on mobile */}
@@ -281,8 +287,9 @@ export default function ContinuityPathwayPage() {
           subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
           overlayImage="/images/pathways/continuity-anatomy.png"
           overlayImageAlt="Glowing upper body nervous system illustration"
-          overlayStyle={{ right: '0%', bottom: '-15%', height: '118%' }}
-          bottomSlot={<PathwayTabs active="/pathways/continuity" />}
+          overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
+          pathwayBlobs
+          cta={<PathwayTabs active="/pathways/continuity" />}
         />
 
         {PHASES.map((phase) => (
