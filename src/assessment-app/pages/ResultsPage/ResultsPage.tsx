@@ -60,6 +60,15 @@ export function ResultsPage({
     ? (billing === "monthly" ? giBilling.monthly.dayLabel : giBilling.upfront.dayLabel)
     : (PRICING[res.pathway]?.day ?? "");
 
+  // When a GI pathway is in 3-month upfront mode, rewrite "1 month" inside
+  // the badge to "3 months" so the inner pill matches what the user picked.
+  // PHASE_META hardcodes GI durations as "1 month" because the underlying
+  // billing unit is monthly; here we surface the upfront duration to the user.
+  const displayBadge =
+    giBilling && billing === "upfront"
+      ? pw.badge.replace(/\b1 month\b/i, "3 months")
+      : pw.badge;
+
   return (
     <div style={{ minHeight: "100vh", fontFamily: FONT_BODY }}>
       <Header showProgress={false} pct={pct} total={total} />
@@ -243,7 +252,7 @@ export function ResultsPage({
                     textAlign: 'left',
                   }}
                 >
-                  {pw.badge}
+                  {displayBadge}
                 </EyebrowPill>
               </div>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>

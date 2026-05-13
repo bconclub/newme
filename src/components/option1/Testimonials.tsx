@@ -43,17 +43,21 @@ const ADVANCE_MS = 5000
 
 export default function Testimonials() {
   // `cycle` is a monotonically increasing index into the duplicated card
-  // array. The card centered in the viewport is at array index `cycle + 1`
-  // (so cycle = 0 starts with Karan, the middle card, as the active one).
+  // array. On desktop the active card is the CENTER one (cycle + 1) — 3
+  // cards visible. On mobile only one card fits, so the active card is the
+  // LEFTMOST card (cycle + 0) — the user sees it fully + a peek of next.
   const [cycle, setCycle] = useState(0)
   const [cardStep, setCardStep] = useState(0)
   const [skipAnim, setSkipAnim] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const trackRef = useRef<HTMLDivElement>(null)
   const firstCardRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // The "active" testimonial = whichever card is currently centered.
-  const activeOrigIdx = ((cycle + 1) % N + N) % N
+  // Active offset: 0 on mobile (leftmost), 1 on desktop (middle of 3 visible).
+  const activeOffset = isMobile ? 0 : 1
+  // The "active" testimonial = whichever card sits in the highlight slot.
+  const activeOrigIdx = ((cycle + activeOffset) % N + N) % N
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
@@ -84,6 +88,8 @@ export default function Testimonials() {
 
   // Measure one card's width + the track's gap so the translateX moves the
   // row by exactly one card per cycle. Recomputes on viewport resize.
+  // Also tracks the mobile breakpoint so we know whether the active card
+  // sits in the leftmost slot (mobile) or the middle slot (desktop).
   useEffect(() => {
     const updateStep = () => {
       const card = firstCardRef.current
@@ -91,16 +97,19 @@ export default function Testimonials() {
       if (!card || !track) return
       const gap = parseFloat(getComputedStyle(track).gap) || 0
       setCardStep(card.offsetWidth + gap)
+      setIsMobile(window.matchMedia('(max-width: 639px)').matches)
     }
     updateStep()
     window.addEventListener('resize', updateStep)
     return () => window.removeEventListener('resize', updateStep)
   }, [])
 
-  // Dot click: advance forward to the nearest cycle that centers the
-  // requested testimonial. Always moves left (consistent direction).
+  // Dot click: advance forward to the nearest cycle that puts the
+  // requested testimonial in the active slot (leftmost on mobile, middle
+  // on desktop). Always moves forward so the slide direction stays
+  // consistent.
   const goTo = (origIdx: number) => {
-    const targetMod = ((origIdx - 1) % N + N) % N
+    const targetMod = ((origIdx - activeOffset) % N + N) % N
     const currentMod = ((cycle % N) + N) % N
     const delta = (targetMod - currentMod + N) % N
     setCycle((c) => c + delta)
@@ -203,7 +212,7 @@ export default function Testimonials() {
           >
             {Array.from({ length: TOTAL }).map((_, i) => {
               const t = testimonials[i % N]
-              const isActive = i === cycle + 1
+              const isActive = i === cycle + activeOffset
               return (
                 <TestimonialCard
                   key={i}
@@ -396,7 +405,7 @@ function RatingsCard() {
       <div className="relative grid grid-cols-3 items-center py-4 sm:py-5 gap-2 sm:gap-0">
         <RatingBlock score="4.6" label="Patient Satisfaction on" trustpilot />
         <div className="flex items-center justify-center">
-          <ShieldIcon size="clamp(28px, calc(48 / 1920 * 100vw), 48px)" />
+          <ShieldIcon size="clamp(56px, calc(96 / 1920 * 100vw), 96px)" />
         </div>
         <RatingBlock score="4.7" label="Program Completion Rate" />
       </div>

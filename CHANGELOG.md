@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-13 · Assessment badge fix, mobile carousel active=left, shield 2× bigger
+
+- **Assessment pricing badge**: when GI billing toggle is "3 months upfront", the inner pill now reads "GI Core · 3 months Clinical Pathway" (was stuck at "1 month" because `PHASE_META` hardcodes monthly units). Switched to a derived `displayBadge` that rewrites "1 month" → "3 months" when upfront is active.
+- **Mobile testimonial carousel**: active card is now the LEFTMOST card in view (with a peek of the next on the right) instead of being virtually centered. Desktop still has 3 cards visible with the middle one active. Implemented via a viewport-aware `activeOffset` (0 mobile, 1 desktop), wired through `isActive`, `activeOrigIdx`, and `goTo`.
+- **Trust badge shield**: doubled the shield/check icon size — `clamp(28→56 px, 48→96 px, 48→96 px)`.
+
 ## 2026-05-13 · Homepage scroll bug, duration pill, mobile tabs carousel, VC animations
 
 - **Bug fix (Pathways.tsx)**: scrollIntoView no longer fires on initial mount — replaced with an internal horizontal `scrollTo` that only triggers on real tab changes and only when the tab is actually overflowing horizontally. Stops the homepage from auto-scrolling to the "8 Pillars" section on load.
