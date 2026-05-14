@@ -4,12 +4,19 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
+export type TestimonialItem = {
+  quote: string
+  name: string
+  pathway: string
+  avatar: string | null
+}
+
 // Figma 1:6293 (default/inactive) = backdrop-blur-10.25px, 2px solid white
 // border, gradient (white 0.20→0) + white 0.30, rounded-34. Behind each card
 // sits Figma 1:6296 (Ellipse 55) — a soft sage-green radial that the
 // backdrop-blur diffuses, giving the card its green undertone.
 // Figma 1:6292 (active/center) = solid white surface, dark text, sage byline.
-const testimonials = [
+const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
   {
     quote:
       'After years of poor gut health and binge eating, my fasting blood sugar improved and my cravings completely stopped. Physically and mentally, I feel much better now.',
@@ -34,14 +41,17 @@ const testimonials = [
 ]
 
 const EASE = [0.22, 1, 0.36, 1] as const
-const N = testimonials.length // 3
-// Duplicate the array so the carousel can cycle for several minutes before
-// needing to snap back to the start. 12 copies × 3 = 36 visible card slots.
 const COPIES = 12
-const TOTAL = COPIES * N
 const ADVANCE_MS = 5000
 
-export default function Testimonials() {
+export default function Testimonials({ initialTestimonials }: { initialTestimonials?: TestimonialItem[] }) {
+  // Always keep the 3 hardcoded testimonials (they have real photos).
+  // Append any Sanity testimonials after them.
+  const testimonials = initialTestimonials && initialTestimonials.length > 0
+    ? [...FALLBACK_TESTIMONIALS, ...initialTestimonials]
+    : FALLBACK_TESTIMONIALS
+  const N = testimonials.length
+  const TOTAL = COPIES * N
   // `cycle` is a monotonically increasing index into the duplicated card
   // array. On desktop the active card is the CENTER one (cycle + 1) — 3
   // cards visible. On mobile only one card fits, so the active card is the
@@ -345,14 +355,31 @@ function TestimonialCard({
             paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
           }}
         >
-          <div
-            className="rounded-full bg-cover bg-center shrink-0"
-            style={{
-              width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-              height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-              backgroundImage: `url('${t.avatar}')`,
-            }}
-          />
+          {t.avatar ? (
+            <div
+              className="rounded-full bg-cover bg-center shrink-0"
+              style={{
+                width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                backgroundImage: `url('${t.avatar}')`,
+              }}
+            />
+          ) : (
+            <div
+              className="rounded-full shrink-0 flex items-center justify-center font-[family-name:var(--font-bricolage)]"
+              style={{
+                width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                background: 'rgba(254,242,114,0.18)',
+                border: '1.5px solid rgba(254,242,114,0.35)',
+                color: '#FEF272',
+                fontSize: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
+                fontWeight: 600,
+              }}
+            >
+              {t.name.charAt(0)}
+            </div>
+          )}
           <div>
             <p
               className="testimonial-name font-[family-name:var(--font-bricolage)]"

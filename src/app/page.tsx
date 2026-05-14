@@ -8,8 +8,30 @@ import Pathways from '@/components/option1/Pathways'
 import StructuredCare from '@/components/option1/StructuredCare'
 import Testimonials from '@/components/option1/Testimonials'
 import Footer from '@/components/option1/Footer'
+import type { TestimonialItem } from '@/components/option1/Testimonials'
 
-export default function Home() {
+async function loadTestimonials(): Promise<TestimonialItem[]> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
+  try {
+    const [{ client }, { testimonialsQuery }, { urlFor }] = await Promise.all([
+      import('@/lib/sanity/client'),
+      import('@/lib/sanity/queries'),
+      import('@/lib/sanity/image'),
+    ])
+    const docs = await client.fetch(testimonialsQuery)
+    return docs.map((d: any) => ({
+      quote: d.quote,
+      name: d.personName,
+      pathway: d.personRole ?? '',
+      avatar: d.personAvatar ? urlFor(d.personAvatar).width(120).height(120).fit('crop').url() : null,
+    }))
+  } catch {
+    return []
+  }
+}
+
+export default async function Home() {
+  const sanityTestimonials = await loadTestimonials()
   return (
     <>
       <Header />
@@ -38,7 +60,7 @@ export default function Home() {
           <Pillars />
           <Pathways />
           <StructuredCare />
-          <Testimonials />
+          <Testimonials initialTestimonials={sanityTestimonials} />
         </div>
       </main>
       <Footer />

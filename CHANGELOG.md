@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-14 19:30 IST · Fix missing circle icon, Order Summary favicon, and 8-testimonial carousel
+
+- **`public/icons/pillar-1.svg`**: created missing icon file (copy of digestion SVG) — fixes blank yellow circle in WhatIsNewMe section
+- **`OrderPage.tsx`**: replaced `LogoMark` asterisk SVG with `<img src="/favicon.png">` in Order Summary card header — shows actual brand favicon
+- **`Testimonials.tsx`**: exported `TestimonialItem` type; component now accepts `initialTestimonials` prop; Sanity data is merged after the 3 hardcoded testimonials (which keep their photos); no-avatar testimonials render an initials circle (gold ring + first initial)
+- **`page.tsx`**: `Home` is now an async server component that fetches testimonials from Sanity via guarded dynamic import and passes them as props
+- **Sanity**: 5 new testimonials seeded (Abilash, Ramya, Jyoti, Sai Deepthi, Kavita) — carousel now shows 8 total
+
 ## 2026-05-14 18:00 IST · Seed 25 media mentions + 4 outlets into Sanity
 
 - **scripts/seed-media-mentions.mjs**: one-time migration script that reads 25 Dr. Pal press articles from the spreadsheet and populates Sanity
