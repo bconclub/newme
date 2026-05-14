@@ -276,7 +276,7 @@ function TestimonialCard({
   isActive,
   measureRef,
 }: {
-  testimonial: (typeof testimonials)[number]
+  testimonial: TestimonialItem
   isActive: boolean
   measureRef?: React.Ref<HTMLDivElement>
 }) {

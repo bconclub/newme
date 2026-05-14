@@ -1,6 +1,7 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
@@ -23,9 +24,6 @@ export default function ContactPage() {
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Hero — composes <PageHero> (Figma 121:93 template).
-// ─────────────────────────────────────────────────────────────────────────────
 function ContactHero() {
   return (
     <PageHero
@@ -40,13 +38,9 @@ function ContactHero() {
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Two-column body — left: contact info  |  right: contact form
-// Figma: left content x=63, right form x=970 y=966 w=890 h=902
-// ─────────────────────────────────────────────────────────────────────────────
 function ContactBody() {
+  const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -61,10 +55,9 @@ function ContactBody() {
         body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
       })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
-      setSent(true)
+      router.push('/contact/thank-you')
     } catch {
       setError('Something went wrong. Please email us at support@drpalsnewme.com.')
-    } finally {
       setSending(false)
     }
   }
@@ -79,7 +72,6 @@ function ContactBody() {
     >
       {/* Atmospheric blobs */}
       <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
-        {/* Green gradient wash — left/center */}
         <div style={{
           position: 'absolute', borderRadius: '50%',
           width: 'clamp(600px, 80vw, 1400px)', height: 'clamp(600px, 80vw, 1400px)',
@@ -89,7 +81,6 @@ function ContactBody() {
           maskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.7) 65%, transparent 100%)',
           WebkitMaskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.7) 65%, transparent 100%)',
         }} />
-        {/* Gold accent — right */}
         <div style={{
           position: 'absolute', borderRadius: '50%',
           width: 'clamp(300px, 40vw, 700px)', height: 'clamp(300px, 40vw, 700px)',
@@ -97,7 +88,6 @@ function ContactBody() {
           background: '#FEF272',
           filter: 'blur(160px)', opacity: 0.28,
         }} />
-        {/* Grain overlay */}
         <div style={{
           position: 'absolute', inset: 0,
           backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
@@ -106,6 +96,7 @@ function ContactBody() {
           opacity: 0.35,
         }} />
       </div>
+
       <div
         style={{
           position: 'relative', zIndex: 1,
@@ -129,8 +120,6 @@ function ContactBody() {
             <EyebrowPill>Reach Out</EyebrowPill>
           </motion.div>
 
-          {/* Heading */}
-          {/* "We're Here To Help." — Figma: 72px SemiBold, line-height 72px */}
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -167,7 +156,6 @@ function ContactBody() {
             every step of the way, during your journey to better health.
           </motion.p>
 
-          {/* Contact details */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -208,7 +196,7 @@ function ContactBody() {
           </motion.div>
         </div>
 
-        {/* ── Right column — minimal form ── */}
+        {/* ── Right column — contact form ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -240,113 +228,96 @@ function ContactBody() {
             details and our team will get back to you.
           </p>
 
-          {sent ? (
-            <div
-              className="font-[family-name:var(--font-urbanist)] text-white"
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)' }}>
+            <input
+              type="text"
+              placeholder="Name"
+              required
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none bg-transparent"
               style={{
-                background: 'rgba(98,150,117,0.35)',
-                border: '1px solid rgba(254,242,114,0.4)',
-                borderRadius: 16,
-                padding: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
-                fontSize: 'clamp(15px, calc(18 / 1920 * 100vw), 18px)',
-                lineHeight: 1.6,
+                borderBottom: '1px solid rgba(255,255,255,0.30)',
+                borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
+                fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
+              onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
+            />
+
+            <input
+              type="email"
+              placeholder="Email address"
+              required
+              value={form.email}
+              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+              className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none bg-transparent"
+              style={{
+                borderBottom: '1px solid rgba(255,255,255,0.30)',
+                borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
+                fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
+              onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
+            />
+
+            <textarea
+              placeholder="Leave a message"
+              required
+              value={form.message}
+              onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+              className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none resize-none bg-transparent"
+              style={{
+                borderBottom: '1px solid rgba(255,255,255,0.30)',
+                borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+                height: 'clamp(120px, calc(180 / 1920 * 100vw), 180px)',
+                padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
+                fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
+              onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
+            />
+
+            {error && (
+              <p
+                className="font-[family-name:var(--font-urbanist)]"
+                style={{ color: '#fca5a5', fontSize: 'clamp(13px, calc(15 / 1920 * 100vw), 15px)', lineHeight: 1.5 }}
+              >
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={sending}
+              className="font-[family-name:var(--font-bricolage)] hover:bg-[#FEF272] active:scale-95"
+              style={{
+                background: sending ? 'rgba(255,255,255,0.7)' : '#ffffff',
+                color: '#013E37',
+                border: 'none',
+                borderRadius: 60,
+                width: 'clamp(150px, calc(197 / 1920 * 100vw), 197px)',
+                height: 'clamp(52px, calc(64 / 1920 * 100vw), 64px)',
+                fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 20px)',
+                fontWeight: 500,
+                cursor: sending ? 'not-allowed' : 'pointer',
+                transition: 'background 0.2s, transform 0.15s',
+                marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
+                flexShrink: 0,
               }}
             >
-              ✓ &nbsp;Message received. Our team will be in touch within 1 business day.
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)' }}>
-              <input
-                type="text"
-                placeholder="Name"
-                required
-                value={form.name}
-                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none bg-transparent"
-                style={{
-                  borderBottom: '1px solid rgba(255,255,255,0.30)',
-                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
-                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-                  padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
-                onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
-              />
-
-              <input
-                type="email"
-                placeholder="Email address"
-                required
-                value={form.email}
-                onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none bg-transparent"
-                style={{
-                  borderBottom: '1px solid rgba(255,255,255,0.30)',
-                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
-                  height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-                  padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
-                onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
-              />
-
-              <textarea
-                placeholder="Leave a message"
-                required
-                value={form.message}
-                onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                className="font-[family-name:var(--font-urbanist)] text-white placeholder:text-white/35 w-full outline-none resize-none bg-transparent"
-                style={{
-                  borderBottom: '1px solid rgba(255,255,255,0.30)',
-                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
-                  height: 'clamp(120px, calc(180 / 1920 * 100vw), 180px)',
-                  padding: '0 0 clamp(10px, calc(14 / 1920 * 100vw), 14px)',
-                  fontSize: 'clamp(14px, calc(18 / 1920 * 100vw), 18px)',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
-                onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
-              />
-
-              {error && (
-                <p
-                  className="font-[family-name:var(--font-urbanist)]"
-                  style={{ color: '#fca5a5', fontSize: 'clamp(13px, calc(15 / 1920 * 100vw), 15px)', lineHeight: 1.5 }}
-                >
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={sending}
-                className="font-[family-name:var(--font-bricolage)] hover:bg-[#FEF272] active:scale-95"
-                style={{
-                  background: sending ? 'rgba(255,255,255,0.7)' : '#ffffff',
-                  color: '#013E37',
-                  border: 'none',
-                  borderRadius: 60,
-                  width: 'clamp(150px, calc(197 / 1920 * 100vw), 197px)',
-                  height: 'clamp(52px, calc(64 / 1920 * 100vw), 64px)',
-                  fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 20px)',
-                  fontWeight: 500,
-                  cursor: sending ? 'not-allowed' : 'pointer',
-                  transition: 'background 0.2s, transform 0.15s',
-                  marginTop: 'clamp(8px, calc(16 / 1920 * 100vw), 16px)',
-                  flexShrink: 0,
-                }}
-              >
-                {sending ? 'Sending…' : 'Send Now'}
-              </button>
-            </form>
-          )}
+              {sending ? 'Sending…' : 'Send Now'}
+            </button>
+          </form>
         </motion.div>
       </div>
     </section>
   )
 }
-
