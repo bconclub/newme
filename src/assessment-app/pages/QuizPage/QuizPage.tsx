@@ -243,8 +243,8 @@ export function QuizPage({
                 <p style={{ fontSize: 14, color: INK2, lineHeight: 1.7, marginBottom: 8, fontFamily: FONT_BODY }}>Payment has already been completed with <strong>{info.email}</strong>.</p>
                 <p style={{ fontSize: 14, color: INK3, lineHeight: 1.65, marginBottom: 28, fontFamily: FONT_BODY }}>Your program is active. Contact us if you need help accessing your account.</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  <a href="mailto:hello@newme.com" style={{ display: "block", background: GOLD, color: "#013E37", fontWeight: 600, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none", fontFamily: FONT_BUTTON }}>
-                    Contact us at hello@newme.com
+                  <a href="mailto:support@drpalsnewme.com" style={{ display: "block", background: GOLD, color: "#013E37", fontWeight: 600, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none", fontFamily: FONT_BUTTON }}>
+                    Contact us at support@drpalsnewme.com
                   </a>
                   <button className="btnout" onClick={() => { setEnrolledBlocked(false); setInfo((p: any) => ({ ...p, email: "" })); }} style={{ width: "100%", fontFamily: FONT_BUTTON }}>
                     Try with a different email
@@ -267,8 +267,8 @@ export function QuizPage({
                   ))}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  <a href="mailto:hello@newme.com" style={{ display: "block", background: GOLD, color: "#013E37", fontWeight: 600, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none", fontFamily: FONT_BUTTON }}>
-                    Contact us at hello@newme.com
+                  <a href="mailto:support@drpalsnewme.com" style={{ display: "block", background: GOLD, color: "#013E37", fontWeight: 600, padding: "14px 28px", borderRadius: 50, fontSize: 15, textDecoration: "none", fontFamily: FONT_BUTTON }}>
+                    Contact us at support@drpalsnewme.com
                   </a>
                   <button className="btnout" onClick={() => { setLimitBlocked(false); setInfo((p: any) => ({ ...p, email: "" })); }} style={{ width: "100%", fontFamily: FONT_BUTTON }}>
                     Try with a different email
