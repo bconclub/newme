@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-05-14 18:00 IST · Seed 25 media mentions + 4 outlets into Sanity
+
+- **scripts/seed-media-mentions.mjs**: one-time migration script that reads 25 Dr. Pal press articles from the spreadsheet and populates Sanity
+- **4 mediaOutlet docs created**: Indian Express, Times of India, Hindustan Times, Economic Times — each with logo uploaded as a Sanity image asset
+- **25 mediaMention docs created**: all articles from the spreadsheet, with OG cover images scraped and uploaded, article dates from `article:published_time` meta, and excerpts from `og:description`; 8 articles that had no OG image use the outlet logo as fallback cover
+- **User-facing**: /media page now shows 25 real press articles sorted newest-first, each card links out to the original article
+
+## 2026-05-14 · Merge branch 14/sai: shareable results + email update
+
+- **`src/app/assessment/results/page.tsx`**: removed session gate; results page now accepts `?email=` param and is fully shareable as a deep link
+- **`SharedResultsPage`**: new component that fetches results from CRM by email, manages results → order → payment_success screen flow, and handles Zoho payment redirect
+- **Support email** updated from `hello@newme.com` → `support@drpalsnewme.com` in ChatBot, PhaseDetailPage, and QuizPage (two spots)
+
 ## 2026-05-13 · `/assessment/results` deep-link route with session gate
 
 - **New route `src/app/assessment/results/page.tsx`**: returning visitors who completed the quiz can now share/bookmark/revisit their results at `/assessment/results`. Fresh visitors (no session, partial session, or missing CRM lead) are redirected to `/assessment` to start the quiz properly.
