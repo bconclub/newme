@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-13 · Calendly link updated to the program-specific booking page
+
+- `CALENDLY_URL` in `src/assessment-app/components/ChatBot/ChatBot.tsx` was pointing at `/dr-pal-s-newme` (the older event). Switched to `/dr-pal-s-newme-program` per the new Calendly URL.
+- The booking flow (popup widget + the `calendly.event_scheduled` postMessage listener that writes the appointment back to the CRM via `saveCalendlyAppointment`) is unchanged — same constant, two booking buttons in the chatbot ("📅 Book a call" in the main menu and in the menu after answering a question) now point at the right event.
+
 ## 2026-05-13 · Blog card fallback, "Physical Therapy" pillar rename, foundation icon
 
 - **Blog cards**: posts without a coverImage no longer render as an empty dark green slab. Fallback now uses a 135° moss-to-pine gradient + soft fractal-noise overlay + the post title in gold so the card still communicates what the post is about. (Editors should still upload real cover images in Studio for the 3 new posts — this is a graceful fallback, not a replacement.)

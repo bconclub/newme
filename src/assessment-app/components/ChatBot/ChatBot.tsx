@@ -64,7 +64,7 @@ const CATEGORIES: Category[] = [
 ];
 
 const WHATSAPP_NUMBER = "";
-const CALENDLY_URL    = "https://calendly.com/d/ct35-rpb-xkg/dr-pal-s-newme";
+const CALENDLY_URL    = "https://calendly.com/d/ct35-rpb-xkg/dr-pal-s-newme-program";
 
 function openWhatsApp(phaseName: string) {
   const msg = encodeURIComponent(`Hi, I'd like to know more about the ${phaseName} pathway.`);
