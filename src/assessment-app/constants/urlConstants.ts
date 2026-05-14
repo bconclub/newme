@@ -23,6 +23,7 @@ if (typeof window !== "undefined" && !ENV_API_URL) {
 }
 
 export const ENDPOINTS = {
+  CRM_LEAD_CONTACT_US:   `${API_BASE}/api/crm/lead/contact-us`,
   CRM_LEAD:              `${API_BASE}/api/crm/lead`,
   CRM_LEAD_PROFILE:      `${API_BASE}/api/crm/lead/profile`,
   CRM_LEAD_PRE_QUIZ:     `${API_BASE}/api/crm/lead/pre-quiz`,

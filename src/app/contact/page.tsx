@@ -6,6 +6,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
 import EyebrowPill from '@/components/option1/EyebrowPill'
+import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -47,11 +48,25 @@ function ContactBody() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
-    setTimeout(() => { setSending(false); setSent(true) }, 1200)
+    setError(null)
+    try {
+      const res = await fetch(ENDPOINTS.CRM_LEAD_CONTACT_US, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
+      })
+      if (!res.ok) throw new Error(`Server error ${res.status}`)
+      setSent(true)
+    } catch {
+      setError('Something went wrong. Please email us at support@drpalsnewme.com.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -296,6 +311,15 @@ function ContactBody() {
                 onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
                 onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
               />
+
+              {error && (
+                <p
+                  className="font-[family-name:var(--font-urbanist)]"
+                  style={{ color: '#fca5a5', fontSize: 'clamp(13px, calc(15 / 1920 * 100vw), 15px)', lineHeight: 1.5 }}
+                >
+                  {error}
+                </p>
+              )}
 
               <button
                 type="submit"

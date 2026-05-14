@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-14 20:00 IST · Wire Contact Us form to CRM endpoint
+
+- **`urlConstants.ts`**: added `CRM_LEAD_CONTACT_US` endpoint (`/api/crm/lead/contact-us`) to the shared ENDPOINTS map
+- **`contact/page.tsx`**: replaced fake `setTimeout` submit with real `fetch` POST to CRM; added `error` state that shows a fallback message if the request fails; success/sending/error states all handled
+- User-facing: form now stores leads in the CRM on submission; errors surface inline above the Send button
+
 ## 2026-05-14 19:30 IST · Fix missing circle icon, Order Summary favicon, and 8-testimonial carousel
 
 - **`public/icons/pillar-1.svg`**: created missing icon file (copy of digestion SVG) — fixes blank yellow circle in WhatIsNewMe section
