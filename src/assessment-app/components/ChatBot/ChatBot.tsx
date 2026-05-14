@@ -372,7 +372,7 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
                 <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
               </div>
             )}
-            <p style={{ fontSize: 10, color: INK3, textAlign: "center", marginTop: 8 }}>Powered by NewME · hello@newme.com</p>
+            <p style={{ fontSize: 10, color: INK3, textAlign: "center", marginTop: 8 }}>Powered by NewME · support@drpalsnewme.com</p>
           </div>
         </div>
       )}
