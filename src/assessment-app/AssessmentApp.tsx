@@ -13,14 +13,39 @@ import { PhaseDetailPage } from "./pages/PhaseDetailPage/PhaseDetailPage";
 import { OrderPage } from "./pages/OrderPage/OrderPage";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage/PaymentSuccessPage";
 
-export default function App() {
+export type AssessmentAppProps = {
+  /**
+   * When provided AND a completed session is in `sessionStorage` (has
+   * `res` + a CRM lead id), the SPA boots directly into that screen
+   * instead of the default "intro". Used by `/assessment/results` to
+   * deep-link returning users to their results without re-running the
+   * quiz. Ignored if the session is missing or incomplete — the SPA
+   * falls back to the intro screen and the route guard does its own
+   * redirect.
+   */
+  initialScreen?: "results";
+};
+
+export default function App({ initialScreen }: AssessmentAppProps = {}) {
   // ── Session restore ───────────────────────────────────────────────────────
   const savedSession = (() => {
     try { const s = sessionStorage.getItem("newme_session"); return s ? JSON.parse(s) : null; } catch { return null; }
   })();
 
-  const [screen,      setScreen]     = useState("intro");
-  const [step,        setStep]       = useState(0);
+  // A session is "results-ready" only when both the routing result AND a
+  // CRM lead id are present. Either alone isn't enough — the ResultsPage
+  // needs both to render properly.
+  const savedLeadId = (() => {
+    try { return localStorage.getItem("newme_lead_id"); } catch { return null; }
+  })();
+  const canBootResults =
+    initialScreen === "results" && !!savedSession?.res && !!savedLeadId;
+
+  const [screen,      setScreen]     = useState<string>(canBootResults ? "results" : "intro");
+  // Explicit <number> type so the `s => s + 1` setStep callbacks elsewhere
+  // in this file don't pick up an implicit `any` from `savedSession?.step`
+  // (which is typed as any because `savedSession` is JSON.parse output).
+  const [step,        setStep]       = useState<number>(canBootResults ? (savedSession?.step ?? 0) : 0);
   const [profile,     setProfile]    = useState<{ dob: string; gender: string; phone: string; dialCode?: string }>(
     savedSession?.profile ?? { dob: "", gender: "", phone: "" }
   );
@@ -30,7 +55,9 @@ export default function App() {
   const [info,        setInfo]       = useState<{ name: string; last: string; email: string; phone: string }>(
     savedSession?.info ?? { name: "", last: "", email: "", phone: "" }
   );
-  const [res,         setRes]        = useState<Record<string, any> | null>(null);
+  const [res,         setRes]        = useState<Record<string, any> | null>(
+    canBootResults ? (savedSession?.res ?? null) : null
+  );
   const [calcIdx,     setCalcIdx]    = useState(0);
   const [calcMsgs,    setCalcMsgs]   = useState<string[]>([]);
   const [calcPct,     setCalcPct]    = useState(0);
@@ -39,7 +66,9 @@ export default function App() {
   const [crmLeadId,      setCrmLeadId]     = useState<string | null>(() => {
     try { return localStorage.getItem("newme_lead_id") || null; } catch { return null; }
   });
-  const [selectedPhase,  setSelectedPhase] = useState<string | null>(null);
+  const [selectedPhase,  setSelectedPhase] = useState<string | null>(
+    canBootResults ? (savedSession?.selectedPhase ?? null) : null
+  );
   const [secExpanded,    setSecExpanded]   = useState(false);
   const [bodyVisible, setBodyVisible] = useState(false);
   const [showSticky,  setShowSticky]  = useState(false);

@@ -19,9 +19,12 @@ type StaticRoute = {
 // Routes are listed in roughly descending priority — top-of-funnel +
 // conversion paths first, supporting content next, legal pages last.
 // Pages that exist in src/app/ but are intentionally NOT listed here:
-//   - /page1        (dev/scratch page, not a real route)
-//   - /studio/...   (Sanity admin, noindexed)
-//   - /blog/[slug]  (dynamic — added below via loadBlogEntries())
+//   - /page1                (dev/scratch page, not a real route)
+//   - /studio/...           (Sanity admin, noindexed)
+//   - /blog/[slug]          (dynamic — added below via loadBlogEntries())
+//   - /assessment/results   (session-gated deep-link; redirects fresh
+//                            visitors to /assessment, so there's no
+//                            crawlable content to advertise)
 const staticRoutes: StaticRoute[] = [
   // Top-of-funnel
   { path: '/', changeFrequency: 'weekly', priority: 1.0 },

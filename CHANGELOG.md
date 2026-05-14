@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-13 · `/assessment/results` deep-link route with session gate
+
+- **New route `src/app/assessment/results/page.tsx`**: returning visitors who completed the quiz can now share/bookmark/revisit their results at `/assessment/results`. Fresh visitors (no session, partial session, or missing CRM lead) are redirected to `/assessment` to start the quiz properly.
+- **AssessmentApp**: added `initialScreen?: "results"` prop. When set AND `sessionStorage.newme_session` has `res` plus a `newme_lead_id` in localStorage, the SPA boots directly into the results screen with `res`, `selectedPhase`, `step`, `info`, `profile`, and `ans` all restored from session.
+- **Atmospheric shell hoisted**: the pine-teal + green wash + noise background previously lived in `assessment/page.tsx` only. Moved to `assessment/layout.tsx` so both `/assessment` and `/assessment/results` render on the same dark background without duplicating the CSS.
+- **Sitemap**: `/assessment/results` is intentionally NOT advertised (session-gated, no public crawlable content). Comment updated.
+- **TypeScript**: explicit `<number>` and `<string>` types on the `step`/`screen` `useState` calls so the new `savedSession?.step` init value (which is `any` from `JSON.parse`) doesn't leak into the `setStep(s => s + 1)` callbacks. Removes 3 pre-existing implicit-`any` warnings.
+
 ## 2026-05-13 · Calendly link updated to the program-specific booking page
 
 - `CALENDLY_URL` in `src/assessment-app/components/ChatBot/ChatBot.tsx` was pointing at `/dr-pal-s-newme` (the older event). Switched to `/dr-pal-s-newme-program` per the new Calendly URL.
