@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-14 20:30 IST · Contact form CRM integration + thank-you page
+
+- **`urlConstants.ts`**: `CRM_LEAD_CONTACT_US` endpoint already present from prior session
+- **`contact/page.tsx`**: removed fake `setTimeout` submit; real `fetch` POST to CRM with `{name, email, message}`; on success `router.push('/contact/thank-you')`; on failure shows inline red error above submit button
+- **`contact/thank-you/page.tsx`**: new page — atmospheric dark design, animated check icon, "Thank You for Reaching Out." heading, `useEffect` fires `dataLayer.push({ event: 'contact_form_submit' })` on mount with commented stubs for GA4 `gtag` and Meta Pixel `fbq`; two CTAs: "Start Free Assessment" → `/assessment`, "Back to Home" → `/`
+- **`Testimonials.tsx`**: fixed TypeScript error — `typeof testimonials` reference replaced with `TestimonialItem` (be4f660)
+
 ## 2026-05-14 20:00 IST · Wire Contact Us form to CRM endpoint
 
 - **`urlConstants.ts`**: added `CRM_LEAD_CONTACT_US` endpoint (`/api/crm/lead/contact-us`) to the shared ENDPOINTS map
