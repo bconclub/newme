@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-15 · Image swaps: RESET banner + "why starting early matters"
+
+- **`src/app/pathways/metabolic/page.tsx`**: RESET prescription banner → `/pathways/MC 3 Inside vertical banners.webp` (was `/images/pathways/reset-banner.jpg`)
+- **`src/components/option1/HIWWhyEarly.tsx`**: "Why starting early matters" image → `/how it works/why starting early matters.webp` (was the typo'd `Why astarting early matters.webp`)
+
 ## 2026-05-15 · Unify hero card height across pathway pages
 
 - **`src/components/option1/PageHero.tsx`**: Changed the card sizing from `minHeight` → `height` with floor `560px` and the same `clamp(560px, calc(694/1880 * 100vw), 694px)` formula. Previously each pathway hero (Continuity / Metabolic / GI) grew to fit its own content length, which made the three sibling cards visually different. Now every PageHero-based page renders the exact same card dimensions — only the content inside changes

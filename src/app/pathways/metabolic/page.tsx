@@ -62,7 +62,7 @@ const PHASES: Phase[] = [
       { num: '06', title: 'Clinical Review & Guidance', desc: 'Case and blood work reviewed by the medical team with insights integrated into your care. (Specialist referrals if clinically necessary)' },
       { num: '07', title: 'Education & Community Support', desc: 'Group sessions, masterclasses, and peer support to reinforce learning and consistency.' },
     ],
-    bannerImg: '/images/pathways/reset-banner.jpg',
+    bannerImg: '/pathways/MC%203%20Inside%20vertical%20banners.webp',
     bannerHeading: 'Who Is Prescribed The RESET Pathway?',
     bannerBody: 'RESET is best suited for patients who need to stabilize the body and establish consistency before deeper metabolic correction begins.',
     bannerOverlay: 'rgba(1,62,55,0.47)',

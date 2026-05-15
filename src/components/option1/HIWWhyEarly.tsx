@@ -18,7 +18,7 @@ import EyebrowPill from './EyebrowPill'
  *         "Don't ignore the signs. The earlier you begin..."
  */
 
-const IMAGE = '/how%20it%20works/Why%20astarting%20early%20matters.webp'
+const IMAGE = '/how%20it%20works/why%20starting%20early%20matters.webp'
 
 export default function HIWWhyEarly() {
   return (
