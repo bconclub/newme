@@ -54,3 +54,5 @@ next-env.d.ts
 # Local scratch — Figma screenshot downloads
 .figma-temp/
 .codex-temp-index-commit
+
+.env*.local

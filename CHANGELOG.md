@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-05-15 · SEO metadata for route segments + .gitignore env hardening
+
+- **`.gitignore`**: added `.env*.local` so any `.env.local`, `.env.development.local` etc. stay out of git (defensive — Next already gitignores `.env*` by default but this is explicit)
+- **`src/app/contact/layout.tsx`** (new): adds `metadata` (title + description) for `/contact`
+- **`src/app/faq/layout.tsx`** (new): adds `metadata` for `/faq`
+- **`src/app/team/layout.tsx`** (new): adds `metadata` for `/team` (NewME Care Team)
+- **`src/app/pathways/layout.tsx`** (new): adds `metadata` for the parent `/pathways` page
+- **`src/app/pathways/metabolic/layout.tsx`** (new): adds `metadata` for `/pathways/metabolic`
+- **`src/app/pathways/gi/layout.tsx`** (new): adds `metadata` for `/pathways/gi`
+- **`src/app/pathways/continuity/layout.tsx`** (new): adds `metadata` for `/pathways/continuity`
+- User-facing: each route now ships a proper `<title>` and meta-description for search engines and social previews
+
 ## 2026-05-15 · Add branded 404 page
 
 - **`src/app/not-found.tsx`** (new): App Router global 404. Composes the `.newme-page` shell + atmospheric ellipse blobs (same family as the home) so the page sits inside the brand world rather than falling back to a stock Next page. Centered glass card with the big "404" headline, "The requested page could not be found." body, and a white "Back to Home" pill linking to `/`
