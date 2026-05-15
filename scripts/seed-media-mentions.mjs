@@ -1,14 +1,40 @@
 /**
  * One-time script: seed 25 mediaMention + 4 mediaOutlet docs into Sanity.
  * Run: node scripts/seed-media-mentions.mjs
+ *
+ * Requires SANITY_API_WRITE_TOKEN in .env.local (gitignored). Never hardcode
+ * tokens here — earlier versions of this file leaked the write token into
+ * git history.
  */
 import { createClient } from '@sanity/client'
+import { readFileSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const root = resolve(__dirname, '..')
+
+const env = Object.fromEntries(
+  readFileSync(resolve(root, '.env.local'), 'utf8')
+    .split('\n')
+    .filter((l) => l && !l.startsWith('#') && l.includes('='))
+    .map((l) => {
+      const i = l.indexOf('=')
+      return [l.slice(0, i).trim(), l.slice(i + 1).trim().replace(/^["']|["']$/g, '')]
+    }),
+)
+
+const token = env.SANITY_API_WRITE_TOKEN
+if (!token) {
+  console.error('Missing SANITY_API_WRITE_TOKEN in .env.local')
+  process.exit(1)
+}
 
 const client = createClient({
-  projectId: 'sljf1wfa',
-  dataset: 'production',
+  projectId: env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'sljf1wfa',
+  dataset: env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-10-01',
-  token: 'skfdz8UNXRoThOspoVGP4uSXHAn6o0lmkscAgYyXXIiah7NNk8O7evh99Gd6gj8krROAbFwRYOVTvJJfK5uzs9Td0joYW31oO5DYHUn9oXB5AuK8nWoSabqPBMxauJJwEaEOUjg9lg8JmZvJJUxBmOoCb9tFyosND4wYJVb4tgP0Jf4wHWXe',
+  token,
   useCdn: false,
 })
 
