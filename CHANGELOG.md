@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-15 · Fix testimonial avatar fallback matching
+
+- **`page.tsx`**: Replaced exact-name `LOCAL_AVATARS` map with `resolveLocalAvatar()` that normalizes names (lowercase, strip spaces) and matches by prefix — handles spelling variants like "Jyoti"/"Jyothi" and "Sai Deepthi"/"Sai Deepti" that previously fell through to the initial-letter placeholder
+- Encoded the space in `sai%20deepti.webp` so the CSS `url()` value is safe across browsers
+- User-facing: Abilash, Ramya, Kavita, Jyoti, Sai Deepthi testimonials now show their photos
+
 ## 2026-05-15 · Testimonial images + drag/touch scroll
 
 - **`page.tsx`**: Added `LOCAL_AVATARS` map — Sanity testimonials without an uploaded `personAvatar` now fall back to matching local `/public/testimonials/*.webp|jpg` files (covers Abilash, Jyothi, Kavita/Kavitha, Ramya, Sai Deepti, plus existing 3)
