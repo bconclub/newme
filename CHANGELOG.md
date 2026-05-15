@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · Continuity pathway: swap both prescription-banner images
+
+- **`src/app/pathways/continuity/page.tsx`**: NewME 360 banner now uses `/pathways/cp1 vertical banners.webp`; NewME Movement banner now uses `/pathways/cp 2 vertical banners.webp`. URL-encoded the spaces in each path. Old refs to `/images/pathways/newme360-banner.jpg` and `/images/pathways/movement-banner.jpg` removed
+
 ## 2026-05-15 · Replace Pathways "One System" section image
 
 - **`src/app/pathways/page.tsx`**: `SECTION_IMG` swapped from `/images/pathways/section-clinical.jpg` to `/pathways/one%20system%20multiple%20pathways.webp` (URL-encoded spaces). User-facing image under the "One System. Multiple Pathways." heading is now the new asset
