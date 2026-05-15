@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · GI pathway: swap both prescription-banner images
+
+- **`src/app/pathways/gi/page.tsx`**: GI Core banner → `/pathways/GI 1 vertical banners.webp`; GI Advanced banner → `/pathways/GI 2 vertical banners.webp`. URL-encoded the spaces. Replaces the old `gi-core-banner.jpg` and `gi-advanced-banner.jpg` refs
+
 ## 2026-05-15 · Continuity pathway: swap both prescription-banner images
 
 - **`src/app/pathways/continuity/page.tsx`**: NewME 360 banner now uses `/pathways/cp1 vertical banners.webp`; NewME Movement banner now uses `/pathways/cp 2 vertical banners.webp`. URL-encoded the spaces in each path. Old refs to `/images/pathways/newme360-banner.jpg` and `/images/pathways/movement-banner.jpg` removed
