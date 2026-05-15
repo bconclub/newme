@@ -132,12 +132,14 @@ export default function PageHero({
           // 48 unified across every hero card so they all read as siblings.
           borderRadius: 'clamp(28px, 2.5vw, 48px)',
           // 694 ceiling = exact Figma 121:93 hero card spec (1880×694).
-          // Earlier reduction to 580 made the panel too elongated at wider
-          // viewports — at 2000px+ the aspect ratio felt like a banner
-          // strip instead of a hero. Restored to spec; HIW (the visual
-          // reference the client called "perfect") composes the same
-          // template so the height now matches across every internal page.
-          minHeight: 'clamp(320px, calc(694 / 1880 * 100vw), 694px)',
+          // FIXED height (not min-height) so sibling pages always render
+          // the same card dimensions regardless of heading/subheading
+          // length — without this, "Continuity Pathways" (short) was
+          // shorter than "GastroIntestinal Care Pathways" (long copy) and
+          // the three pathway heroes looked inconsistent next to each other.
+          // Mobile floor 560 fits the longest heading + body + bottom tab
+          // bar without clipping; scales up to the Figma 694 spec.
+          height: 'clamp(560px, calc(694 / 1880 * 100vw), 694px)',
         }}
       >
         {/* ── Background image (omit when only gradient + overlay needed) ── */}

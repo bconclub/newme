@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-15 · Unify hero card height across pathway pages
+
+- **`src/components/option1/PageHero.tsx`**: Changed the card sizing from `minHeight` → `height` with floor `560px` and the same `clamp(560px, calc(694/1880 * 100vw), 694px)` formula. Previously each pathway hero (Continuity / Metabolic / GI) grew to fit its own content length, which made the three sibling cards visually different. Now every PageHero-based page renders the exact same card dimensions — only the content inside changes
+- User-facing: the Continuity / Metabolic / GI hero cards are now the same size; no more drift
+
 ## 2026-05-15 · GI pathway: swap both prescription-banner images
 
 - **`src/app/pathways/gi/page.tsx`**: GI Core banner → `/pathways/GI 1 vertical banners.webp`; GI Advanced banner → `/pathways/GI 2 vertical banners.webp`. URL-encoded the spaces. Replaces the old `gi-core-banner.jpg` and `gi-advanced-banner.jpg` refs
