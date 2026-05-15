@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-15 · HIW comparison card now matches home behavior
+
+- **`src/components/option1/HIWComparison.tsx`**: removed the mobile-stack layout (`flex flex-col md:flex-row`) — the comparison cards are now always side-by-side at every breakpoint, matching `StructuredCare` on the home page. The click-to-swap scale/dim was effectively invisible on mobile because users only saw one card at a time
+- Converted the `md:`-only Tailwind utilities (`md:flex-[…]`, `md:mt-[…]`, `md:h-[…]`, `md:ml-[…]`, `mt-4`) to single inline `style` values that apply at all widths
+- Switched from fixed `height` to `minHeight` so cards still match the home pattern (home uses `minHeight` and `flex: '… 1 0'`)
+- User-facing: click-to-swap now reads correctly on mobile — clicking either card brings it forward, dims the other
+
 ## 2026-05-15 · Image swaps: RESET banner + "why starting early matters"
 
 - **`src/app/pathways/metabolic/page.tsx`**: RESET prescription banner → `/pathways/MC 3 Inside vertical banners.webp` (was `/images/pathways/reset-banner.jpg`)

@@ -163,7 +163,7 @@ export default function HIWComparison() {
               · Right left-edge x=901 overlaps left right-edge x=941 by 40px
           */}
           <div
-            className="relative mx-auto flex flex-col md:flex-row items-start newme-compare-wrap"
+            className="relative mx-auto flex items-start newme-compare-wrap"
             style={{
               maxWidth: 'clamp(560px, calc(1241 / 1920 * 100vw), 1241px)',
               marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
@@ -171,11 +171,8 @@ export default function HIWComparison() {
             data-active={active}
           >
             {/* Left — What Most People Are Doing (Group 261). Figma 601×1202.
-                Right card is 158px taller and extends 79 above + 79 below this
-                one; left card is offset down 79 inside the row.
-                NOTE: flex-grow ratios only on md+ — on mobile the column
-                stack uses natural content height (avoiding h=0 collapse
-                from flex-basis:0 in flex-col direction). */}
+                Always side-by-side (matches StructuredCare on home) so the
+                click-to-swap scale/dim is visible at every breakpoint. */}
             <motion.div
               role="button"
               tabIndex={0}
@@ -191,8 +188,11 @@ export default function HIWComparison() {
                 y: active === 'typical' ? 0 : 40,
               }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full flex flex-col overflow-hidden newme-typical-col cursor-pointer md:flex-[601_1_0] md:mt-[clamp(40px,calc(79/1920*100vw),79px)] md:h-[clamp(680px,calc(1202/1920*100vw),1202px)]"
+              className="flex flex-col overflow-hidden newme-typical-col cursor-pointer"
               style={{
+                flex: '601 1 0',
+                marginTop: 'clamp(30px, calc(79 / 1920 * 100vw), 79px)',
+                minHeight: 'clamp(560px, calc(1202 / 1920 * 100vw), 1202px)',
                 borderRadius: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
@@ -261,8 +261,8 @@ export default function HIWComparison() {
             {/* Right — The NewME Approach (Group 262). Figma 680×1360, top
                 aligned with row top so it extends 79px above the left card
                 and 79px below it. Overlaps the left card by 40px on its left
-                edge (left ends x=941, right starts x=901).
-                NOTE: same mobile fix — flex ratio only on md+. */}
+                edge (left ends x=941, right starts x=901). Always side-by-side
+                (matches StructuredCare on home). */}
             <motion.div
               role="button"
               tabIndex={0}
@@ -278,8 +278,11 @@ export default function HIWComparison() {
                 y: active === 'newme' ? 0 : 40,
               }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full flex flex-col overflow-hidden newme-newme-col cursor-pointer mt-4 md:flex-[680_1_0] md:mt-0 md:h-[clamp(760px,calc(1360/1920*100vw),1360px)] md:ml-[clamp(-40px,calc(-40/1920*100vw),0px)]"
+              className="flex flex-col overflow-hidden newme-newme-col cursor-pointer"
               style={{
+                flex: '680 1 0',
+                marginLeft: 'clamp(-20px, calc(-40 / 1920 * 100vw), -40px)',
+                minHeight: 'clamp(640px, calc(1360 / 1920 * 100vw), 1360px)',
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 background: '#ffffff',
                 boxShadow: active === 'newme' ? '0 24px 60px -28px rgba(0,0,0,0.55)' : 'none',
