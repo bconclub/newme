@@ -5,13 +5,13 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
-// Placeholder images — using assets from /public/how it works for now
-// since /images/pathways/* don't exist yet. Will swap to real pathway
-// images later.
+// Metabolic pathway card images (Reset / Rebuild / Sustain) live under
+// /public/home/. Indices 3-4 are placeholders for GI Core/Advanced and
+// continuity pathway cards until those assets are ready.
 const PLACEHOLDER_IMAGES = [
-  '/how%20it%20works/Assesment.png',
-  '/how%20it%20works/Prescription.png',
-  '/how%20it%20works/Structured%20Care.png',
+  '/home/reset.webp',
+  '/home/rebuild.webp',
+  '/home/sustain.webp',
   '/how%20it%20works/MOnitoring.png',
   '/how%20it%20works/Continuity.png',
 ]

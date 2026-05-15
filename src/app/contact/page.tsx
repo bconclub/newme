@@ -27,7 +27,7 @@ export default function ContactPage() {
 function ContactHero() {
   return (
     <PageHero
-      imageSrc="/clinic/virtual-clinic-hero.webp"
+      imageSrc="/contact/contact%20us%20opt1.webp"
       imageAlt="NewME clinical team consultation"
       imagePosition="65% center"
       heading={<>Get In Touch With<br />The NewME Team.</>}

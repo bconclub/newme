@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-15 · Image swaps: home metabolic pathway cards + contact hero
+
+- **`src/components/option1/Pathways.tsx`**: Reset / Rebuild / Sustain card images on the home pathway carousel now use `/home/reset.webp`, `/home/rebuild.webp`, `/home/sustain.webp` (replaces the placeholder /how it works/ assets that were standing in)
+- **`src/app/contact/page.tsx`**: contact-page hero image switched from `/clinic/virtual-clinic-hero.webp` to `/contact/contact us opt1.webp` (URL-encoded space)
+
 ## 2026-05-15 · HIW comparison card now matches home behavior
 
 - **`src/components/option1/HIWComparison.tsx`**: removed the mobile-stack layout (`flex flex-col md:flex-row`) — the comparison cards are now always side-by-side at every breakpoint, matching `StructuredCare` on the home page. The click-to-swap scale/dim was effectively invisible on mobile because users only saw one card at a time
