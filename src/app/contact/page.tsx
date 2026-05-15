@@ -70,33 +70,6 @@ function ContactBody() {
         padding: 'clamp(60px, calc(120 / 1920 * 100vw), 120px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
       }}
     >
-      {/* Atmospheric blobs */}
-      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
-        <div style={{
-          position: 'absolute', borderRadius: '50%',
-          width: 'clamp(600px, 80vw, 1400px)', height: 'clamp(600px, 80vw, 1400px)',
-          top: '-10%', left: '-15%',
-          background: 'linear-gradient(180deg, #629675 0%, #013E37 100%)',
-          filter: 'blur(180px)', opacity: 0.38,
-          maskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.7) 65%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(closest-side, black 0%, black 35%, rgba(0,0,0,0.7) 65%, transparent 100%)',
-        }} />
-        <div style={{
-          position: 'absolute', borderRadius: '50%',
-          width: 'clamp(300px, 40vw, 700px)', height: 'clamp(300px, 40vw, 700px)',
-          top: '5%', right: '-8%',
-          background: '#FEF272',
-          filter: 'blur(160px)', opacity: 0.28,
-        }} />
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 0 0.7  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-          backgroundSize: '220px 220px',
-          mixBlendMode: 'soft-light',
-          opacity: 0.35,
-        }} />
-      </div>
-
       <div
         style={{
           position: 'relative', zIndex: 1,

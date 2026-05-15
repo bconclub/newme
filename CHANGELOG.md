@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · Contact page: remove duplicate atmospheric blobs in body
+
+- **`src/app/contact/page.tsx`**: Removed the ContactBody's own atmospheric blobs (green-gradient blob, yellow blob, noise overlay). They created a visible green wash that didn't exist in the area above (around the hero card), producing a noticeable horizontal seam between the hero section and the body. The page already has the global `.newme-page` background, so the body now reads continuously with the hero zone
+
 ## 2026-05-15 · Image swaps: home metabolic pathway cards + contact hero
 
 - **`src/components/option1/Pathways.tsx`**: Reset / Rebuild / Sustain card images on the home pathway carousel now use `/home/reset.webp`, `/home/rebuild.webp`, `/home/sustain.webp` (replaces the placeholder /how it works/ assets that were standing in)
