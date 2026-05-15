@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · Assessment intro: swap social-proof avatars to real testimonials, drop Nithya
+
+- **`src/assessment-app/pages/IntroPage/IntroPage.tsx`**: `AVATARS` array now references real testimonial photos (`abilash.webp`, `ramya.webp`, `kat.jpg`, `thamarai.jpg`, `kavitha.webp`) instead of the previous mix of `/assessment/01{1,2,3}.webp` stock photos + Nithya/Thamarai. Nithya was dropped because her photo is reused as an author byline elsewhere — keeping her in the "10,000+ people have found their clinical pathway" strip made it read as "authors" instead of "patients"
+
 ## 2026-05-15 · Round of small fixes: footer socials, team LinkedIn-only, Trustpilot link, HIW assessment links, pillars rename, IntroPage avatar, VC phone
 
 - **`src/components/option1/Footer.tsx`**: replaced Dr. Pal's personal social channels with the official NewME accounts:

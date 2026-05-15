@@ -10,16 +10,18 @@ type IntroPageProps = {
   savedScreen?: string;
 };
 
-/* Avatar stack — random people for the "10,000+ people have found
-   their clinical pathway" social-proof row. Pulled from randomuser.me
-   (royalty-free photos, hot-link friendly). NOT team members.
-   To swap any specific face, change the {gender}/{0-99}.jpg index. */
+/* Avatar stack — real testimonial photos for the "10,000+ people have
+   found their clinical pathway" social-proof row. Pulled from
+   /public/testimonials/ (same people who appear in the home Testimonials
+   carousel). Nithya was removed because her photo is used as an editorial
+   author byline elsewhere on the site — keeping her here would have made
+   this strip read as "authors" rather than "patients". */
 const AVATARS = [
-  "/assessment/011.webp",
-  "/assessment/012.webp",
-  "/assessment/013.webp",
-  "/testimonials/nithya.jpg",
+  "/testimonials/abilash.webp",
+  "/testimonials/ramya.webp",
+  "/testimonials/kat.jpg",
   "/testimonials/thamarai.jpg",
+  "/testimonials/kavitha.webp",
 ];
 
 export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScreen }: IntroPageProps) {
