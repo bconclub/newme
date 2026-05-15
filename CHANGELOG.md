@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-15 · GI card images on home + FAQ page redesign
+
+- **`src/components/option1/Pathways.tsx`**: GI Core and GI Advanced cards on the home Pathways carousel now use `/home/GI Core.webp` and `/home/GI Advanced.webp` (were sharing placeholder paths)
+- **`src/app/faq/page.tsx`**: rebuilt the FAQ layout to match the reference
+  - Replaced the centered stacked-sections layout with a 2-column grid: section nav on the left (sticky on desktop, stacks on mobile), accordion content on the right
+  - Active section name turns gold; clicking a section swaps the visible content and auto-opens the first item (page never reads "empty" after category change)
+  - Question text turns gold when its panel is open
+  - Replaced the circular-bordered +/− icons with borderless +/− glyphs that match the design reference
+
 ## 2026-05-15 · HIW comparison parity + team name fixes + continuity card images + team-card half-panel on desktop
 
 - **`src/components/option1/HIWComparison.tsx`**: refactored the right "NewME Approach" card to mirror the home StructuredCare structure exactly — outer `motion.div` owns the scroll-entry (`scale: 0.88 → 1`, `opacity: 0 → 1`, 0.8s ease), inner card owns only the click-to-swap `animate`. Previously the entry and the click state were on the SAME `motion.div`, so Framer's `animate` clobbered `whileInView` the moment the parent re-rendered with `active` and the entry pop never read. Now click-to-swap + entry animation behave identically to the home page section
