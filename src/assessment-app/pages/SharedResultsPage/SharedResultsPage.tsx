@@ -25,7 +25,6 @@ export function SharedResultsPage() {
 
   const [secExpanded, setSecExpanded] = useState(false);
   const [showSticky,  setShowSticky]  = useState(false);
-  const [bodyVisible, setBodyVisible] = useState(true);
   const pricingRef   = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -62,13 +61,7 @@ export function SharedResultsPage() {
     if (!data) return;
     const el = containerRef.current;
     if (!el) return;
-    const onScroll = () => {
-      setShowSticky(el.scrollTop > 120);
-      if (pricingRef.current) {
-        const rect = pricingRef.current.getBoundingClientRect();
-        setBodyVisible(rect.top < window.innerHeight * 0.85);
-      }
-    };
+    const onScroll = () => { setShowSticky(el.scrollTop > 120); };
     el.addEventListener("scroll", onScroll);
     return () => el.removeEventListener("scroll", onScroll);
   }, [data]);
@@ -116,7 +109,7 @@ export function SharedResultsPage() {
             secExpanded={secExpanded}
             setSecExpanded={setSecExpanded}
             showSticky={showSticky}
-            bodyVisible={bodyVisible}
+            bodyVisible={true}
             pricingRef={pricingRef}
             onSelectPhase={handleSelectPhase}
             onViewDetail={() => {}}
