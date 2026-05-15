@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-15 · HIW comparison parity + team name fixes + continuity card images + team-card half-panel on desktop
+
+- **`src/components/option1/HIWComparison.tsx`**: refactored the right "NewME Approach" card to mirror the home StructuredCare structure exactly — outer `motion.div` owns the scroll-entry (`scale: 0.88 → 1`, `opacity: 0 → 1`, 0.8s ease), inner card owns only the click-to-swap `animate`. Previously the entry and the click state were on the SAME `motion.div`, so Framer's `animate` clobbered `whileInView` the moment the parent re-rendered with `active` and the entry pop never read. Now click-to-swap + entry animation behave identically to the home page section
+- **`src/app/team/page.tsx`**:
+  - Names: "Shakeela" → "Shakeela Ranjithkum"; "Reshmi Sinha" → "Rashmi Sinha" (corrected spelling)
+  - Desktop team card: inset panel now opens to BOTTOM HALF only (`top: 52%`) so the face stays visible above the panel; photo dim reduced to `brightness(0.95)` on desktop hover. Mobile/touch behaviour unchanged — panel still fills the card as before
+- **`src/components/option1/Pathways.tsx`**: continuity-pathway cards on the home Pathways carousel now use the new images: NewME 360 → `/home/NEwME 360.webp`, NewME Movement → `/home/NEw ME MOvement.webp` (was sharing placeholder paths with the Metabolic cards by index, which would have shown the same image on Reset and NewME 360)
+
 ## 2026-05-15 · Contact page: remove duplicate atmospheric blobs in body
 
 - **`src/app/contact/page.tsx`**: Removed the ContactBody's own atmospheric blobs (green-gradient blob, yellow blob, noise overlay). They created a visible green wash that didn't exist in the area above (around the hero card), producing a noticeable horizontal seam between the hero section and the body. The page already has the global `.newme-page` background, so the body now reads continuously with the hero zone

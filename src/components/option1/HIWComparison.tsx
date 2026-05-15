@@ -258,36 +258,44 @@ export default function HIWComparison() {
               </ul>
             </motion.div>
 
-            {/* Right — The NewME Approach (Group 262). Figma 680×1360, top
-                aligned with row top so it extends 79px above the left card
-                and 79px below it. Overlaps the left card by 40px on its left
-                edge (left ends x=941, right starts x=901). Always side-by-side
-                (matches StructuredCare on home). */}
+            {/* Right — The NewME Approach (Group 262). Mirrors home page
+                StructuredCare exactly: an OUTER wrapper owns the scroll-entry
+                animation (scale + fade-in once in view), and the INNER card
+                owns only the click-to-swap `animate`. Previously the entry
+                and the click state were on the SAME motion.div, so they
+                fought over `scale/opacity/y` and the entry animation got
+                clobbered the moment the parent re-rendered with `active`. */}
+            <motion.div
+              initial={{ scale: 0.88, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                flex: '680 1 0',
+                marginLeft: 'clamp(-20px, calc(-40 / 1920 * 100vw), -40px)',
+                transformOrigin: 'right center',
+                zIndex: active === 'newme' ? 3 : 1,
+              }}
+            >
             <motion.div
               role="button"
               tabIndex={0}
               aria-pressed={active === 'newme'}
               onClick={() => setActive('newme')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('newme') } }}
-              initial={{ opacity: 0, y: 32, scale: 0.91 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.15 }}
               animate={{
                 scale: active === 'newme' ? 1 : 0.88,
                 opacity: active === 'newme' ? 1 : 0.38,
                 y: active === 'newme' ? 0 : 40,
               }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col overflow-hidden newme-newme-col cursor-pointer"
               style={{
-                flex: '680 1 0',
-                marginLeft: 'clamp(-20px, calc(-40 / 1920 * 100vw), -40px)',
                 minHeight: 'clamp(640px, calc(1360 / 1920 * 100vw), 1360px)',
                 borderRadius: 'clamp(24px, calc(48 / 1920 * 100vw), 48px)',
                 background: '#ffffff',
                 boxShadow: active === 'newme' ? '0 24px 60px -28px rgba(0,0,0,0.55)' : 'none',
                 transformOrigin: 'right center',
-                zIndex: active === 'newme' ? 3 : 1,
               }}
             >
               {/* Header band (Rectangle 116) — 192 high, #013E37 */}
@@ -346,6 +354,7 @@ export default function HIWComparison() {
                   </li>
                 ))}
               </ul>
+            </motion.div>
             </motion.div>
           </div>
         </div>

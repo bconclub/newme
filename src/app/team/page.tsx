@@ -30,7 +30,7 @@ const TEAM: TeamMember[] = [
     bio: 'Priya co-founded NewME with a mission to make precision clinical care accessible and sustainable for everyone.',
   },
   {
-    name: 'Shakeela',
+    name: 'Shakeela Ranjithkum',
     role: 'CEO',
     photo: '/images/team/shakeela.jpg',
     bio: 'Shakeela oversees operations and system execution across NewME. She brings a deep understanding of both client care and operational efficiency to ensure consistent, measurable outcomes.',
@@ -48,10 +48,10 @@ const TEAM: TeamMember[] = [
     bio: "Gayatri leads the clinical nutrition team, designing evidence-based protocols tailored to each participant's metabolic markers.",
   },
   {
-    name: 'Reshmi Sinha',
+    name: 'Rashmi Sinha',
     role: 'Clinical Nutrition Lead',
     photo: '/images/team/reshmi-sinha.jpg',
-    bio: 'Reshmi drives the daily nutrition coaching process, translating clinical protocols into personalised, actionable guidance.',
+    bio: 'Rashmi drives the daily nutrition coaching process, translating clinical protocols into personalised, actionable guidance.',
   },
   {
     name: 'Devi Palaniappan',
@@ -330,15 +330,16 @@ function TeamCard({
         cursor: canHover ? 'default' : 'pointer',
       }}
     >
-      {/* ── PHOTO LAYER — always visible. Darkens when the inset panel
-            is showing so the panel reads cleanly against it as a frame. ── */}
+      {/* ── PHOTO LAYER — always visible. On mobile/touch the panel fills the
+            card so we dim the photo heavily; on desktop the panel only covers
+            the bottom half so the face stays bright and visible. ── */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           transition: 'transform 0.6s ease, filter 0.45s ease',
           transform: showPanel ? 'scale(1.04)' : 'scale(1)',
-          filter: showPanel ? 'brightness(0.55)' : 'brightness(1)',
+          filter: showPanel ? (canHover ? 'brightness(0.95)' : 'brightness(0.55)') : 'brightness(1)',
           pointerEvents: 'none',
         }}
       >
@@ -402,8 +403,10 @@ function TeamCard({
       </motion.div>
 
       {/* ── INSET DARK-GREEN PANEL — same component, two trigger modes:
-            • Desktop: hidden by default, fades in on hover.
-            • Mobile / touch: always visible (no hover available).
+            • Desktop (canHover): hidden by default, slides in on hover and
+              covers only the BOTTOM HALF so the face stays visible above it.
+            • Mobile / touch: always visible (no hover available) — fills the
+              full card minus a thin inset frame, as before.
             Content (name → role → bio → social icons) is identical and
             left-aligned per Figma 122:11461..85. */}
       <motion.div
@@ -415,11 +418,21 @@ function TeamCard({
         transition={{ duration: 0.4, ease: EASE }}
         style={{
           position: 'absolute',
-          inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+          // Desktop: pin to bottom half (top: 52%). Mobile: full inset.
+          ...(canHover
+            ? {
+                top: '52%',
+                left: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+                right: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+                bottom: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+              }
+            : { inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)' }),
           background: '#013E37',
           // Inset panel bumped 28 → 34 to track the new 44 outer curve.
           borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
-          padding: 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
+          padding: canHover
+            ? 'clamp(12px, calc(22 / 1920 * 100vw), 24px)'
+            : 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
           pointerEvents: showPanel ? 'auto' : 'none',
           display: 'flex',
           flexDirection: 'column',
