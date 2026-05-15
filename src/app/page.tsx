@@ -86,7 +86,9 @@ export default async function Home() {
           <Pillars />
           <Pathways />
           <StructuredCare />
-          <Testimonials initialTestimonials={sanityTestimonials} />
+          {sanityTestimonials.length > 0 && (
+            <Testimonials initialTestimonials={sanityTestimonials} />
+          )}
         </div>
       </main>
       <Footer />

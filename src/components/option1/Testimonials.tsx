@@ -16,40 +16,14 @@ export type TestimonialItem = {
 // sits Figma 1:6296 (Ellipse 55) — a soft sage-green radial that the
 // backdrop-blur diffuses, giving the card its green undertone.
 // Figma 1:6292 (active/center) = solid white surface, dark text, sage byline.
-const FALLBACK_TESTIMONIALS: TestimonialItem[] = [
-  {
-    quote:
-      'After years of poor gut health and binge eating, my fasting blood sugar improved and my cravings completely stopped. Physically and mentally, I feel much better now.',
-    name: 'Nithya',
-    pathway: 'GI Core Pathway',
-    avatar: '/testimonials/nithya.jpg',
-  },
-  {
-    quote:
-      'In 2 years, my HbA1c dropped from 6.1 to 5.7, LDL from 146 to 86, and my liver size reduced from 16.7 cm to 14.0 cm. I feel healthier and more confident than ever.',
-    name: 'Karan',
-    pathway: 'Sustain Pathway',
-    avatar: '/testimonials/kat.jpg',
-  },
-  {
-    quote:
-      "From being worried about diabetes and fatty liver, I've seen my HbA1c come down from 7.2 to 5.7 and my blood sugar stabilize. I'm now navigating my health with much more confidence.",
-    name: 'Thamarai',
-    pathway: 'Rebuild Pathway',
-    avatar: '/testimonials/thamarai.jpg',
-  },
-]
 
 const EASE = [0.22, 1, 0.36, 1] as const
 const COPIES = 12
 const ADVANCE_MS = 5000
 
 export default function Testimonials({ initialTestimonials }: { initialTestimonials?: TestimonialItem[] }) {
-  // Always keep the 3 hardcoded testimonials (they have real photos).
-  // Append any Sanity testimonials after them.
-  const testimonials = initialTestimonials && initialTestimonials.length > 0
-    ? [...FALLBACK_TESTIMONIALS, ...initialTestimonials]
-    : FALLBACK_TESTIMONIALS
+  // Parent guarantees at least 1 entry; section is rendered conditionally upstream.
+  const testimonials = initialTestimonials ?? []
   const N = testimonials.length
   const TOTAL = COPIES * N
   // `cycle` is a monotonically increasing index into the duplicated card

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-15 · Move 3 hardcoded testimonials into Sanity, drop fallback list
+
+- **`scripts/seed-testimonials.mjs`**: New one-off script — uploads `nithya.jpg`, `kat.jpg`, `thamarai.jpg` as Sanity assets and creates 3 testimonial documents (Nithya / Karan / Thamarai) with `order: 1, 2, 3`. Idempotent — skips if a doc with the same `personName` already exists. Reads creds from `.env.local`
+- **`Testimonials.tsx`**: Removed the `FALLBACK_TESTIMONIALS` array entirely — the component now renders only what's passed in from Sanity
+- **`page.tsx`**: Section is conditionally rendered only when Sanity returns at least 1 testimonial
+- User-facing: all testimonial content is now editable from `/studio` — no more code edits needed to change Nithya/Karan/Thamarai's quotes or photos
+
 ## 2026-05-15 · Fix testimonial avatar fallback matching
 
 - **`page.tsx`**: Replaced exact-name `LOCAL_AVATARS` map with `resolveLocalAvatar()` that normalizes names (lowercase, strip spaces) and matches by prefix — handles spelling variants like "Jyoti"/"Jyothi" and "Sai Deepthi"/"Sai Deepti" that previously fell through to the initial-letter placeholder
