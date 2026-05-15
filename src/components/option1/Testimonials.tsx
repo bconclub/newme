@@ -357,11 +357,12 @@ function TestimonialCard({
         >
           {t.avatar ? (
             <div
-              className="rounded-full bg-cover bg-center shrink-0"
+              className="rounded-full bg-cover shrink-0"
               style={{
                 width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
                 height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
                 backgroundImage: `url('${t.avatar}')`,
+                backgroundPosition: '50% 15%',
               }}
             />
           ) : (

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-15 · Fix testimonial avatar face centering
+
+- **`Testimonials.tsx`**: Changed avatar background-position from `center` to `50% 15%` so portrait photos show the face rather than the chest/body area in the circular avatar crop
+- User-facing: testimonial avatars now frame faces correctly (abc0000)
+
 ## 2026-05-15 · Merge branch 14/sai: assessment scroll fix + Lenis skip
 
 - **`SharedResultsPage.tsx`**: removed `bodyVisible` state + scroll listener `getBoundingClientRect` check; `bodyVisible` is now hardcoded `true` — eliminates erratic scroll/layout jumps on the results page
