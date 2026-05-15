@@ -10,30 +10,6 @@ import Testimonials from '@/components/option1/Testimonials'
 import Footer from '@/components/option1/Footer'
 import type { TestimonialItem } from '@/components/option1/Testimonials'
 
-// All testimonial images available in /public/testimonials/.
-// We match by *normalized name prefix* so "Jyoti"/"Jyothi" and
-// "Sai Deepthi"/"Sai Deepti" both resolve to the right file even when
-// Sanity spells the name slightly differently.
-const LOCAL_AVATAR_FILES = [
-  { match: 'abilash',   src: '/testimonials/abilash.webp' },
-  { match: 'jyoti',     src: '/testimonials/jyothi.webp' },     // "Jyoti" / "Jyothi"
-  { match: 'kavit',     src: '/testimonials/kavitha.webp' },    // "Kavita" / "Kavitha"
-  { match: 'ramya',     src: '/testimonials/ramya.webp' },
-  { match: 'saideep',   src: '/testimonials/sai%20deepti.webp' }, // "Sai Deepti" / "Sai Deepthi"
-  { match: 'nithya',    src: '/testimonials/nithya.jpg' },
-  { match: 'karan',     src: '/testimonials/kat.jpg' },
-  { match: 'thamarai',  src: '/testimonials/thamarai.jpg' },
-] as const
-
-function resolveLocalAvatar(name: string | undefined | null): string | null {
-  if (!name) return null
-  const key = name.toLowerCase().replace(/\s+/g, '').trim()
-  for (const { match, src } of LOCAL_AVATAR_FILES) {
-    if (key.startsWith(match) || match.startsWith(key)) return src
-  }
-  return null
-}
-
 async function loadTestimonials(): Promise<TestimonialItem[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
   try {
@@ -49,7 +25,7 @@ async function loadTestimonials(): Promise<TestimonialItem[]> {
       pathway: d.personRole ?? '',
       avatar: d.personAvatar
         ? urlFor(d.personAvatar).width(120).height(120).fit('crop').url()
-        : resolveLocalAvatar(d.personName),
+        : null,
     }))
   } catch {
     return []

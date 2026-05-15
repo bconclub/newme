@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-15 · All testimonial avatars now live in Sanity (single source of truth)
+
+- **`scripts/attach-testimonial-avatars.mjs`**: New one-off — finds testimonial docs missing `personAvatar`, matches them against local files via the same normalized-prefix rule used previously (`Jyoti`→`jyothi.webp`, `Sai Deepthi`→`sai deepti.webp`, etc.), uploads each as a Sanity asset, and patches the doc. Idempotent — re-runs skip already-attached docs
+- Ran the script: patched 5 docs (Sai Deepthi, Kavita, Jyoti, Abilash, Ramya)
+- **`page.tsx`**: Removed `LOCAL_AVATAR_FILES` map and `resolveLocalAvatar()` helper — `loadTestimonials()` now uses *only* the Sanity `personAvatar` field with no local-file fallback
+- User-facing: every testimonial photo is now editable from Sanity Studio; nothing in `/public/testimonials/` is read at runtime anymore
+
 ## 2026-05-15 · Move 3 hardcoded testimonials into Sanity, drop fallback list
 
 - **`scripts/seed-testimonials.mjs`**: New one-off script — uploads `nithya.jpg`, `kat.jpg`, `thamarai.jpg` as Sanity assets and creates 3 testimonial documents (Nithya / Karan / Thamarai) with `order: 1, 2, 3`. Idempotent — skips if a doc with the same `personName` already exists. Reads creds from `.env.local`
