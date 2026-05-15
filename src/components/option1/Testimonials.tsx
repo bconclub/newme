@@ -63,6 +63,8 @@ export default function Testimonials({ initialTestimonials }: { initialTestimoni
   const trackRef = useRef<HTMLDivElement>(null)
   const firstCardRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const dragStartX = useRef(0)
+  const isDragging = useRef(false)
 
   // Active offset: 0 on mobile (leftmost), 1 on desktop (middle of 3 visible).
   const activeOffset = isMobile ? 0 : 1
@@ -196,15 +198,34 @@ export default function Testimonials({ initialTestimonials }: { initialTestimoni
           className="relative overflow-hidden"
           style={{
             marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
-            // Extend the viewport edge-to-edge so the slide-in / slide-out
-            // cards appear to come from the section boundary.
             marginLeft: 'calc(-1 * clamp(20px, calc(60 / 1920 * 100vw), 60px))',
             marginRight: 'calc(-1 * clamp(20px, calc(60 / 1920 * 100vw), 60px))',
             paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
             paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
             paddingTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
             paddingBottom: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+            cursor: 'grab',
+            userSelect: 'none',
+            touchAction: 'pan-y',
           }}
+          onPointerDown={(e) => {
+            dragStartX.current = e.clientX
+            isDragging.current = true
+          }}
+          onPointerUp={(e) => {
+            if (!isDragging.current) return
+            isDragging.current = false
+            const delta = dragStartX.current - e.clientX
+            if (Math.abs(delta) < 40) return
+            const currentOrig = ((cycle + activeOffset) % N + N) % N
+            if (delta > 0) {
+              goTo((currentOrig + 1) % N)
+            } else {
+              goTo((currentOrig - 1 + N) % N)
+            }
+          }}
+          onPointerLeave={() => { isDragging.current = false }}
+          onPointerCancel={() => { isDragging.current = false }}
         >
           <motion.div
             ref={trackRef}

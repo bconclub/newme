@@ -10,6 +10,18 @@ import Testimonials from '@/components/option1/Testimonials'
 import Footer from '@/components/option1/Footer'
 import type { TestimonialItem } from '@/components/option1/Testimonials'
 
+const LOCAL_AVATARS: Record<string, string> = {
+  'abilash':    '/testimonials/abilash.webp',
+  'jyothi':     '/testimonials/jyothi.webp',
+  'kavita':     '/testimonials/kavitha.webp',
+  'kavitha':    '/testimonials/kavitha.webp',
+  'ramya':      '/testimonials/ramya.webp',
+  'sai deepti': '/testimonials/sai deepti.webp',
+  'nithya':     '/testimonials/nithya.jpg',
+  'karan':      '/testimonials/kat.jpg',
+  'thamarai':   '/testimonials/thamarai.jpg',
+}
+
 async function loadTestimonials(): Promise<TestimonialItem[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
   try {
@@ -23,7 +35,9 @@ async function loadTestimonials(): Promise<TestimonialItem[]> {
       quote: d.quote,
       name: d.personName,
       pathway: d.personRole ?? '',
-      avatar: d.personAvatar ? urlFor(d.personAvatar).width(120).height(120).fit('crop').url() : null,
+      avatar: d.personAvatar
+        ? urlFor(d.personAvatar).width(120).height(120).fit('crop').url()
+        : LOCAL_AVATARS[d.personName?.toLowerCase().trim()] ?? null,
     }))
   } catch {
     return []

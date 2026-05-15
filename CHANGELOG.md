@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-05-15 · Testimonial images + drag/touch scroll
+
+- **`page.tsx`**: Added `LOCAL_AVATARS` map — Sanity testimonials without an uploaded `personAvatar` now fall back to matching local `/public/testimonials/*.webp|jpg` files (covers Abilash, Jyothi, Kavita/Kavitha, Ramya, Sai Deepti, plus existing 3)
+- **`Testimonials.tsx`**: Added pointer-event drag handlers to the carousel viewport — left/right swipe now advances or retreats the carousel; works on both touch and mouse; `touchAction: pan-y` preserves vertical page scroll on mobile
+- User-facing: all testimonial avatars now show photos; carousel is swipeable
+
 ## 2026-05-15 · Fix testimonial avatar face centering
 
 - **`Testimonials.tsx`**: Changed avatar background-position from `center` to `50% 15%` so portrait photos show the face rather than the chest/body area in the circular avatar crop
