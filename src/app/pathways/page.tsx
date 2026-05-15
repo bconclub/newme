@@ -13,7 +13,7 @@ const EASE = [0.22, 1, 0.36, 1] as const
 
 // Images downloaded from Figma
 const HERO_IMG = '/images/pathways/hero-doctor.jpg'
-const SECTION_IMG = '/images/pathways/section-clinical.jpg'
+const SECTION_IMG = '/pathways/one%20system%20multiple%20pathways.webp'
 
 type Tab = 'metabolic' | 'gi' | 'continuity'
 
