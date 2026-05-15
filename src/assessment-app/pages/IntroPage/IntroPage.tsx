@@ -49,7 +49,7 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
               background: "#0a4a45",
             }}>
               <img
-                src="/dr-pal-portrait.png"
+                src="/Dr Pal.webp"
                 alt="Dr. Palaniappan"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
               />

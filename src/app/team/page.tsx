@@ -30,7 +30,7 @@ const TEAM: TeamMember[] = [
     bio: 'Priya co-founded NewME with a mission to make precision clinical care accessible and sustainable for everyone.',
   },
   {
-    name: 'Shakeela Ranjithkum',
+    name: 'Shakeela Ranjithkumar',
     role: 'CEO',
     photo: '/images/team/shakeela.jpg',
     bio: 'Shakeela oversees operations and system execution across NewME. She brings a deep understanding of both client care and operational efficiency to ensure consistent, measurable outcomes.',
@@ -230,27 +230,12 @@ function TeamGrid() {
   )
 }
 
-// ─── Social icons (inline SVG, white/muted; sized fluidly so they
-//     shrink to ~14px on mobile cards and grow to 20px at desktop). ─────────
+// ─── Social icons — LinkedIn only per team card (FB/X/Instagram dropped;
+//     team members keep professional presence on LinkedIn only). ────────────
 function SocialIcons() {
   const size = 'clamp(14px, calc(20 / 1920 * 100vw), 20px)'
-  const gap = 'clamp(8px, calc(14 / 1920 * 100vw), 14px)'
   return (
-    <div style={{ display: 'flex', gap, alignItems: 'center' }}>
-      {/* Facebook */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
-        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-      </svg>
-      {/* X */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-      {/* Instagram */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-      </svg>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       {/* LinkedIn */}
       <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />

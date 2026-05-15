@@ -324,8 +324,8 @@ export function VCDoctorCard() {
             <ContactPill
               kind="whatsapp"
               eyebrow="Whatsapp"
-              value="+91 99441 27006"
-              href="https://wa.me/919944127006"
+              value="+91 97906 27006"
+              href="https://wa.me/919790627006"
               delay={0.3}
             />
           </div>

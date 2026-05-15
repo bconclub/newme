@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-05-15 · Round of small fixes: footer socials, team LinkedIn-only, Trustpilot link, HIW assessment links, pillars rename, IntroPage avatar, VC phone
+
+- **`src/components/option1/Footer.tsx`**: replaced Dr. Pal's personal social channels with the official NewME accounts:
+  - Facebook → `https://www.facebook.com/share/1CzFt2R4SR/?mibextid=wwXIfr`
+  - Instagram → `https://www.instagram.com/dr.pals_newme?igsh=Y3U4NXllMHZjdm9u&utm_source=qr`
+  - Added LinkedIn (`https://www.linkedin.com/company/newme-drpal/`) — previously absent
+  - X and YouTube retained
+- **`src/app/team/page.tsx`**:
+  - "Shakeela Ranjithkum" → "Shakeela Ranjithkumar" (correct surname)
+  - `SocialIcons` now renders LinkedIn only — Facebook / X / Instagram icons removed per team card (team members keep professional presence on LinkedIn only)
+- **`src/components/option1/Testimonials.tsx`**: `RatingBlock` with `trustpilot` flag is now an `<a>` linking to `https://www.trustpilot.com/review/drpalsnewme.com` (target `_blank`, `rel="noopener noreferrer"`). The non-Trustpilot rating block remains plain text
+- **`src/assessment-app/pages/IntroPage/IntroPage.tsx`**: small Dr. Pal portrait chip now uses `/Dr Pal.webp` (the asset used on the home `DrPal` section) instead of `/dr-pal-portrait.png` — keeps the imagery consistent with the home page
+- **`src/app/virtual-clinic/VCSections.tsx`**: virtual-clinic WhatsApp button updated — display value `+91 97906 27006` and href `https://wa.me/919790627006` (was `99441 27006`)
+- **`src/components/option1/HIWHero.tsx`**: both the arrow link and the "Start Your Assessment" pill in the How It Works hero now point to `/assessment` (were going to `#hiw-comparison` and `/pathways` respectively)
+- **`src/components/option1/HIWCTA.tsx`**: bottom-of-page "Start Your Assessment" pill points to `/assessment` (was `/pathways`)
+- **`src/components/option1/Pillars.tsx`**: home-page section heading "The 8 Pillars of Health" → "Foundations of Good Health"
+
 ## 2026-05-15 · Home: force-dynamic + inline CDN-free client for testimonials
 
 - **`src/app/page.tsx`**:

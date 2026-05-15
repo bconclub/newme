@@ -445,8 +445,10 @@ function RatingBlock({
   label: string
   trustpilot?: boolean
 }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center px-2 sm:px-6">
+  // The Trustpilot block becomes a clickable link to the public review page.
+  // Non-Trustpilot blocks (program-completion rate, etc.) remain plain text.
+  const inner = (
+    <>
       <div className="flex items-center gap-[2px] sm:gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
           <Star key={i} size="clamp(10px, calc(14 / 1920 * 100vw), 14px)" />
@@ -490,6 +492,26 @@ function RatingBlock({
           Trustpilot
         </div>
       )}
+    </>
+  )
+
+  if (trustpilot) {
+    return (
+      <a
+        href="https://www.trustpilot.com/review/drpalsnewme.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Read our reviews on Trustpilot"
+        className="flex flex-col items-center justify-center text-center px-2 sm:px-6 transition-opacity hover:opacity-80"
+        style={{ textDecoration: 'none' }}
+      >
+        {inner}
+      </a>
+    )
+  }
+  return (
+    <div className="flex flex-col items-center justify-center text-center px-2 sm:px-6">
+      {inner}
     </div>
   )
 }
