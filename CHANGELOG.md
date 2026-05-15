@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · Add branded 404 page
+
+- **`src/app/not-found.tsx`** (new): App Router global 404. Composes the `.newme-page` shell + atmospheric ellipse blobs (same family as the home) so the page sits inside the brand world rather than falling back to a stock Next page. Centered glass card with the big "404" headline, "The requested page could not be found." body, and a white "Back to Home" pill linking to `/`
+
 ## 2026-05-15 · GI card images on home + FAQ page redesign
 
 - **`src/components/option1/Pathways.tsx`**: GI Core and GI Advanced cards on the home Pathways carousel now use `/home/GI Core.webp` and `/home/GI Advanced.webp` (were sharing placeholder paths)
