@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-15 · Merge branch 14/sai: assessment scroll fix + Lenis skip
+
+- **`SharedResultsPage.tsx`**: removed `bodyVisible` state + scroll listener `getBoundingClientRect` check; `bodyVisible` is now hardcoded `true` — eliminates erratic scroll/layout jumps on the results page
+- **`SmoothScroll.tsx`**: Lenis smooth scroll now also disabled for `/assessment` routes (was only `/studio`) — fixes conflict between Lenis and the assessment SPA's own scroll container (f2d55dc)
+
 ## 2026-05-14 20:30 IST · Contact form CRM integration + thank-you page
 
 - **`urlConstants.ts`**: `CRM_LEAD_CONTACT_US` endpoint already present from prior session
