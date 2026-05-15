@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-15 · Home: force-dynamic + inline CDN-free client for testimonials
+
+- **`src/app/page.tsx`**:
+  - Replaced `revalidate = 60` with `dynamic = 'force-dynamic'` + `revalidate = 0` — the home is now rendered fresh on every request. Previous ISR window meant first viewers after a Sanity edit got the stale static HTML and we were chasing 60s windows
+  - Replaced the `client.fetch(..., { useCdn: false })` per-fetch override (which @sanity/client doesn't actually respect — `useCdn` is locked at client creation) with an inline `createClient({ useCdn: false })` built just for this query. Guarantees we hit `api.sanity.io` directly, bypassing the CDN's ~60s cache
+- User-facing: testimonial avatars will now appear immediately after the deploy lands — no more waiting on cache windows. Future Sanity edits to testimonial photos / quotes also propagate on the next request
+
 ## 2026-05-15 · Home: ISR + bypass Sanity CDN so testimonial photos appear
 
 - **`src/app/page.tsx`**:

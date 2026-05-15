@@ -10,25 +10,35 @@ import Testimonials from '@/components/option1/Testimonials'
 import Footer from '@/components/option1/Footer'
 import type { TestimonialItem } from '@/components/option1/Testimonials'
 
-// ISR — rebuild this page every 60s so Sanity edits (testimonial photos
-// uploaded via Studio or our seed scripts) show up on the live site without
-// having to trigger a manual redeploy. The static HTML otherwise stays
-// frozen on whatever Sanity returned at the last build, which produced
-// the "still missing avatar" bug after we attached the new photos.
-export const revalidate = 60
+// Force this page to be rendered dynamically on every request so the
+// testimonials carousel always reflects what's currently in Sanity. The
+// shared `client` is created with `useCdn: true` (right default for most
+// queries) but the home page needs fresh data after content edits, and a
+// per-fetch override on `client.fetch` is not respected by @sanity/client
+// — `useCdn` is locked at client creation. We work around that below by
+// building a CDN-free client inline just for this query.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 async function loadTestimonials(): Promise<TestimonialItem[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
   try {
-    const [{ client }, { testimonialsQuery }, { urlFor }] = await Promise.all([
-      import('@/lib/sanity/client'),
+    const [{ createClient }, { testimonialsQuery }, { urlFor }] = await Promise.all([
+      import('next-sanity'),
       import('@/lib/sanity/queries'),
       import('@/lib/sanity/image'),
     ])
-    // Force a fresh fetch so we don't get the Sanity CDN's stale snapshot
-    // during the build. The page-level revalidate above caps the staleness
-    // on the rendered HTML; this caps it on the Sanity layer too.
-    const docs = await client.fetch(testimonialsQuery, {}, { useCdn: false })
+    // CDN-free client → bypass the Sanity CDN's ~60s cache so we get the
+    // latest published testimonials (Abilash/Ramya/Jyoti/Sai Deepthi/Kavita
+    // had `personAvatar` attached after the previous build).
+    const freshClient = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+      apiVersion: process.env.SANITY_API_VERSION || '2024-10-01',
+      useCdn: false,
+      perspective: 'published',
+    })
+    const docs = await freshClient.fetch(testimonialsQuery)
     return docs.map((d: any) => ({
       quote: d.quote,
       name: d.personName,
