@@ -10,6 +10,13 @@ import Testimonials from '@/components/option1/Testimonials'
 import Footer from '@/components/option1/Footer'
 import type { TestimonialItem } from '@/components/option1/Testimonials'
 
+// ISR — rebuild this page every 60s so Sanity edits (testimonial photos
+// uploaded via Studio or our seed scripts) show up on the live site without
+// having to trigger a manual redeploy. The static HTML otherwise stays
+// frozen on whatever Sanity returned at the last build, which produced
+// the "still missing avatar" bug after we attached the new photos.
+export const revalidate = 60
+
 async function loadTestimonials(): Promise<TestimonialItem[]> {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
   try {
@@ -18,7 +25,10 @@ async function loadTestimonials(): Promise<TestimonialItem[]> {
       import('@/lib/sanity/queries'),
       import('@/lib/sanity/image'),
     ])
-    const docs = await client.fetch(testimonialsQuery)
+    // Force a fresh fetch so we don't get the Sanity CDN's stale snapshot
+    // during the build. The page-level revalidate above caps the staleness
+    // on the rendered HTML; this caps it on the Sanity layer too.
+    const docs = await client.fetch(testimonialsQuery, {}, { useCdn: false })
     return docs.map((d: any) => ({
       quote: d.quote,
       name: d.personName,

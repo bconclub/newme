@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-15 · Home: ISR + bypass Sanity CDN so testimonial photos appear
+
+- **`src/app/page.tsx`**:
+  - Added `export const revalidate = 60` so the statically-generated home page rebuilds itself every minute, picking up Sanity edits without needing a fresh deploy
+  - `loadTestimonials()` now calls `client.fetch(query, {}, { useCdn: false })` to bypass the Sanity CDN at build/revalidation time — the CDN's ~60s cache was serving stale "no avatar" rows even though the live Sanity docs already had `personAvatar` attached
+- Diagnostics: `scripts/check-testimonials.mjs` (new) lists every testimonial in Sanity with its resolved avatar URL — used to verify the fix
+- User-facing: Abilash, Ramya, Jyoti, Sai Deepthi, Kavita avatars will appear within ~60s of the deploy reaching production (no longer stuck on initial-letter placeholders)
+
 ## 2026-05-15 · SEO metadata for route segments + .gitignore env hardening
 
 - **`.gitignore`**: added `.env*.local` so any `.env.local`, `.env.development.local` etc. stay out of git (defensive — Next already gitignores `.env*` by default but this is explicit)
