@@ -2,9 +2,30 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 // motion-enhanced Link — avoids the deprecated legacyBehavior wrapper pattern
 const MotionLink = motion(Link)
+
+/**
+ * Match rules for the active nav indicator:
+ *   • Home is an exact match — otherwise every other route would also be
+ *     "under /" and Home would never turn off.
+ *   • Top-level routes use a prefix match so nested children (e.g.
+ *     /pathways/metabolic) still light up the "Pathways" tab.
+ *   • Dropdown parents (Resources) light up when the current path matches
+ *     the parent OR any sublink (/blog, /media, /faq).
+ */
+function isLinkActive(link: NavLink, pathname: string): boolean {
+  if (link.href === '/') return pathname === '/'
+  if (link.sublinks?.length) {
+    return (
+      pathname.startsWith(link.href) ||
+      link.sublinks.some((s) => pathname.startsWith(s.href))
+    )
+  }
+  return pathname.startsWith(link.href)
+}
 
 type SubLink = { label: string; href: string }
 type NavLink = {
@@ -41,6 +62,7 @@ const navLinks: NavLink[] = [
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname() ?? '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
@@ -117,6 +139,8 @@ export default function Header() {
                 )
               }
 
+              const active = isLinkActive(link, pathname)
+
               // Dropdown — hover/focus opens a panel of sublinks. The trigger
               // itself stays a real <Link> so keyboard users can still tab to
               // the parent destination (/faq for Resources).
@@ -125,12 +149,23 @@ export default function Header() {
                   <div key={link.href} className="relative group">
                     <Link
                       href={link.href}
-                      className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
+                      aria-current={active ? 'page' : undefined}
+                      className={`relative inline-flex items-center gap-1 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] ${
+                        active ? 'text-[#FEF272]' : 'text-white/85 hover:text-white'
+                      }`}
                     >
                       {link.label}
                       <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-70 transition-transform duration-200 group-hover:rotate-180">
                         <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
+                      {active && (
+                        <motion.span
+                          layoutId="nav-active-underline"
+                          className="absolute left-0 right-0 bg-[#FEF272] rounded-full"
+                          style={{ bottom: -6, height: 2 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                        />
+                      )}
                     </Link>
                     {/* Dropdown panel — `overflow-hidden` on the inner panel
                         clips item hover backgrounds to the rounded corners
@@ -145,16 +180,24 @@ export default function Header() {
                           padding: 6,
                         }}
                       >
-                        {link.sublinks.map((sub) => (
-                          <Link
-                            key={sub.href}
-                            href={sub.href}
-                            className="block rounded-lg text-[14px] text-white/85 hover:text-white hover:bg-white/[0.08] font-medium font-[family-name:var(--font-urbanist)] transition-colors duration-150"
-                            style={{ padding: '10px 14px' }}
-                          >
-                            {sub.label}
-                          </Link>
-                        ))}
+                        {link.sublinks.map((sub) => {
+                          const subActive = pathname.startsWith(sub.href)
+                          return (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              aria-current={subActive ? 'page' : undefined}
+                              className={`block rounded-lg text-[14px] font-medium font-[family-name:var(--font-urbanist)] transition-colors duration-150 ${
+                                subActive
+                                  ? 'text-[#FEF272] bg-white/[0.06]'
+                                  : 'text-white/85 hover:text-white hover:bg-white/[0.08]'
+                              }`}
+                              style={{ padding: '10px 14px' }}
+                            >
+                              {sub.label}
+                            </Link>
+                          )
+                        })}
                       </div>
                     </div>
                   </div>
@@ -165,13 +208,24 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="inline-flex items-center gap-1 text-white/85 hover:text-white text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)]"
+                  aria-current={active ? 'page' : undefined}
+                  className={`relative inline-flex items-center gap-1 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] ${
+                    active ? 'text-[#FEF272]' : 'text-white/85 hover:text-white'
+                  }`}
                 >
                   {link.label}
                   {link.hasMenu && (
                     <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-70">
                       <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
+                  )}
+                  {active && (
+                    <motion.span
+                      layoutId="nav-active-underline"
+                      className="absolute left-0 right-0 bg-[#FEF272] rounded-full"
+                      style={{ bottom: -6, height: 2 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                    />
                   )}
                 </Link>
               )
@@ -246,37 +300,49 @@ export default function Header() {
                 the hierarchy reads). All items are always visible — no
                 tap-to-expand, no nested panel — just a single scrollable
                 vertical list with two text sizes. */}
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.04 }}
-                className="flex flex-col items-center gap-3"
-              >
-                <Link
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-white text-2xl font-medium font-[family-name:var(--font-bricolage)] hover:text-[#FEF272] transition-colors"
+            {navLinks.map((link, i) => {
+              const active = isLinkActive(link, pathname)
+              return (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                  className="flex flex-col items-center gap-3"
                 >
-                  {link.label}
-                </Link>
-                {link.sublinks && link.sublinks.length > 0 && (
-                  <div className="flex flex-col items-center gap-2">
-                    {link.sublinks.map((sub) => (
-                      <Link
-                        key={sub.href}
-                        href={sub.href}
-                        onClick={() => setMobileOpen(false)}
-                        className="text-white/75 text-lg font-medium font-[family-name:var(--font-bricolage)] hover:text-[#FEF272] transition-colors"
-                      >
-                        {sub.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            ))}
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    aria-current={active ? 'page' : undefined}
+                    className={`text-2xl font-medium font-[family-name:var(--font-bricolage)] transition-colors ${
+                      active ? 'text-[#FEF272]' : 'text-white hover:text-[#FEF272]'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                  {link.sublinks && link.sublinks.length > 0 && (
+                    <div className="flex flex-col items-center gap-2">
+                      {link.sublinks.map((sub) => {
+                        const subActive = pathname.startsWith(sub.href)
+                        return (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => setMobileOpen(false)}
+                            aria-current={subActive ? 'page' : undefined}
+                            className={`text-lg font-medium font-[family-name:var(--font-bricolage)] transition-colors ${
+                              subActive ? 'text-[#FEF272]' : 'text-white/75 hover:text-[#FEF272]'
+                            }`}
+                          >
+                            {sub.label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
+                </motion.div>
+              )
+            })}
             <MotionLink
               href="/assessment"
               initial={{ opacity: 0, y: 10 }}

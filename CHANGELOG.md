@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-15 · Header: active-page indicator in desktop + mobile nav
+
+- **`src/components/option1/Header.tsx`**:
+  - Header now calls `usePathname()` to know which route is live
+  - Added `isLinkActive(link, pathname)` helper. Home matches exactly; other top-level routes match on prefix so nested pages (e.g. `/pathways/metabolic`) still light up their parent tab; the Resources dropdown is active when the path matches the parent OR any sublink (`/blog`, `/media`, `/faq`)
+  - Active desktop link: text colour shifts to gold `#FEF272` and a 2px gold underline appears beneath it. The underline uses `motion.span` with `layoutId="nav-active-underline"` so it slides between tabs on client-side route changes instead of fading in/out
+  - Active sublinks inside the Resources dropdown also get the gold colour + a subtle `bg-white/[0.06]` highlight
+  - Mobile menu picks up the same active gold colour for both top-level links and sublinks
+  - Every active link now also exposes `aria-current="page"` for assistive tech
+
 ## 2026-05-15 · Assessment intro: swap social-proof avatars to real testimonials, drop Nithya
 
 - **`src/assessment-app/pages/IntroPage/IntroPage.tsx`**: `AVATARS` array now references real testimonial photos (`abilash.webp`, `ramya.webp`, `kat.jpg`, `thamarai.jpg`, `kavitha.webp`) instead of the previous mix of `/assessment/01{1,2,3}.webp` stock photos + Nithya/Thamarai. Nithya was dropped because her photo is reused as an author byline elsewhere — keeping her in the "10,000+ people have found their clinical pathway" strip made it read as "authors" instead of "patients"
