@@ -315,7 +315,10 @@ export default function GIPathwayPage() {
         subheading="Our two GI pathways are designed to address digestive dysfunction through structured dietary protocols, clinical oversight, and continuous symptom monitoring. Each pathway reflects a different level of gastrointestinal complexity, from moderate instability to long-standing or chronic conditions."
         overlayImage="/pathways/Gastro.webp"
         overlayImageAlt="Glowing digestive system illustration"
-        overlayStyle={{ right: '5%', bottom: '8%', height: '80%' }}
+        // GI anatomy fills the card edge-to-edge and bleeds slightly past
+        // the bottom — matches the Figma reference (gut organs are tall
+        // and intentionally extend past the lower card boundary).
+        overlayStyle={{ right: '-2%', bottom: '-12%', height: '120%' }}
         pathwayBlobs
         cta={<PathwayTabs active="/pathways/gi" />}
       />

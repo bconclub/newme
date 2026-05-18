@@ -371,12 +371,11 @@ export default function MetabolicPathwayPage() {
         subheading="These pathways are designed to address metabolic health through structured lifestyle correction, guided accountability, and continuous monitoring. Each pathway reflects a different level of need, from foundational stabilization to long-term sustainability."
         overlayImage="/pathways/Metabolic%20care.webp"
         overlayImageAlt="Glowing thyroid illustration"
-        // Fit the anatomy fully inside the card with breathing room on every
-        // side. Previous values (height: 125%, right: -5%, bottom: -15%) bled
-        // the image past the top, right and bottom edges. The new pre-cropped
-        // images are sized correctly already, so we just need to seat them
-        // properly within the card.
-        overlayStyle={{ right: '5%', bottom: '8%', height: '80%' }}
+        // Metabolic is the only pathway where the anatomy reads as a
+        // smaller, fully-contained organ in the Figma reference — the
+        // thyroid sits inside the card with margins. GI and Continuity
+        // are intentionally edge-to-edge (with bleed past the bottom).
+        overlayStyle={{ right: '5%', bottom: '8%', height: '85%' }}
         pathwayBlobs
         cta={<PathwayTabs active="/pathways/metabolic" />}
       />

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-15 · Pathway hero overlay sizing — per-pathway, not uniform
+
+- **`src/app/pathways/metabolic/page.tsx`**: overlayStyle `{ right: 5%, bottom: 8%, height: 85% }` — thyroid stays smaller and fully contained inside the card (matches Figma — only metabolic is meant to be smaller)
+- **`src/app/pathways/gi/page.tsx`**: overlayStyle `{ right: -2%, bottom: -12%, height: 120% }` — gut organs fill the card edge-to-edge and bleed slightly past the bottom
+- **`src/app/pathways/continuity/page.tsx`**: overlayStyle `{ right: -2%, bottom: -12%, height: 120% }` — body silhouette fills edge-to-edge and bleeds past the bottom
+- Previous commit had all three at the smaller value, which was wrong — only metabolic should be small per Figma
+
 ## 2026-05-15 · Pathway hero anatomy: seat the overlays inside the card (no more bleed)
 
 - **All three pathway pages** (`metabolic`, `gi`, `continuity`): `overlayStyle` changed from `{ right: '-5%', bottom: '-15%', height: '125%' }` to `{ right: '5%', bottom: '8%', height: '80%' }`. Previous values made the anatomy 125% of the card height and bled it past the top / right / bottom edges (the thyroid in particular was getting visibly clipped on the right). The new values seat the anatomy fully inside the card with breathing room on every side — matches the Figma reference

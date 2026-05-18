@@ -287,7 +287,10 @@ export default function ContinuityPathwayPage() {
           subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
           overlayImage="/pathways/Continuity.webp"
           overlayImageAlt="Glowing upper body nervous system illustration"
-          overlayStyle={{ right: '5%', bottom: '8%', height: '80%' }}
+          // Continuity anatomy fills the card edge-to-edge and bleeds slightly
+          // past the bottom — matches Figma where the human body is tall and
+          // intentionally extends past the lower card boundary.
+          overlayStyle={{ right: '-2%', bottom: '-12%', height: '120%' }}
           pathwayBlobs
           cta={<PathwayTabs active="/pathways/continuity" />}
         />
