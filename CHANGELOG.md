@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-05-15 · Update pathway pricing across the assessment
+
+- **`src/assessment-app/data/pathways.ts`**: `PRICING` and `PRICING_CENTS` updated to the new figures
+  - Reset: $200 → **$249 / month** (4 weeks)
+  - Rebuild: **$699 / 3 months** (unchanged)
+  - Sustain: $999 / 6 months display kept, cents corrected from 89900 → **99900**
+  - GI Core: $300 / month → **$399 / month**
+  - GI Advanced: $599 / month → **$699 / month**
+  - $/day labels recomputed for every changed plan
+- **`src/assessment-app/constants/zohoCheckout.ts`**: `GI_BILLING` toggles updated
+  - GI Core monthly: $300 → **$399** (day $13.30); 3-month upfront: $849 → **$1,099** (day $12.21, savings $98)
+  - GI Advanced monthly: $599 → **$699** (day $23.30); 3-month upfront: $1,699 → **$1,999** (day $22.21, savings $98)
+  - Inline TODO notes on the monthly Zoho URLs updated to reflect the new amounts that those Zoho pages need to be priced at
+- Every customer-facing surface that reads from `PRICING` (`ResultsPage`, `OrderPage`, etc.) picks up the new numbers automatically — no per-page edits needed
+
 ## 2026-05-15 · Team page: wire LinkedIn profile URLs (hide icon when absent)
 
 - **`src/app/team/page.tsx`**:

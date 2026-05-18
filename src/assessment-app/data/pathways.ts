@@ -13,20 +13,23 @@ export const PHASE_META: Record<string, { duration: string; durationLong: string
 
 export const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+// Per-phase prices in USD cents. Reset/Rebuild/Sustain are charged once
+// upfront for the full pathway duration; GI plans default to monthly billing
+// (see GI_BILLING in zohoCheckout.ts for the 3-month upfront option + savings).
 export const PRICING_CENTS: Record<string, number> = {
-  Reset:       20000,
-  Rebuild:     69900,
-  Sustain:     89900,
-  GI_Core:     30000,
-  GI_Advanced: 60000,
+  Reset:       24900,  // $249 for 4 weeks
+  Rebuild:     69900,  // $699 for 12 weeks
+  Sustain:     99900,  // $999 for 24 weeks
+  GI_Core:     39900,  // $399 / month (3-month upfront: $1099 — see GI_BILLING)
+  GI_Advanced: 69900,  // $699 / month (3-month upfront: $1999 — see GI_BILLING)
 };
 
 export const PRICING: Record<string, { main: string; sub: string; day: string }> = {
-  Reset:       { main: "$200 / month",    sub: `${PHASE_META.Reset.duration} clinical pathway`,       day: "$6.67 / day" },
+  Reset:       { main: "$249 / month",    sub: `${PHASE_META.Reset.duration} clinical pathway`,       day: "$8.30 / day" },
   Rebuild:     { main: "$699 / 3 months", sub: `${PHASE_META.Rebuild.duration} clinical pathway`,     day: "$7.77 / day" },
   Sustain:     { main: "$999 / 6 months", sub: `${PHASE_META.Sustain.duration} clinical pathway`,     day: "$5.55 / day" },
-  GI_Core:     { main: "$300 / month",    sub: `${PHASE_META.GI_Core.duration} clinical pathway`,     day: "$10.00 / day" },
-  GI_Advanced: { main: "$599 / month",    sub: `${PHASE_META.GI_Advanced.duration} clinical pathway`, day: "$19.97 / day" },
+  GI_Core:     { main: "$399 / month",    sub: `${PHASE_META.GI_Core.duration} clinical pathway`,     day: "$13.30 / day" },
+  GI_Advanced: { main: "$699 / month",    sub: `${PHASE_META.GI_Advanced.duration} clinical pathway`, day: "$23.30 / day" },
 };
 
 export const SEC: Record<string, string> = {
