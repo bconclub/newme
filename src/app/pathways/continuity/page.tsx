@@ -285,7 +285,7 @@ export default function ContinuityPathwayPage() {
         <PageHero
           heading="Continuity Pathways"
           subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
-          overlayImage="/images/pathways/continuity-anatomy.png"
+          overlayImage="/pathways/Continuity.webp"
           overlayImageAlt="Glowing upper body nervous system illustration"
           overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
           pathwayBlobs

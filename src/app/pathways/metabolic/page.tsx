@@ -369,7 +369,7 @@ export default function MetabolicPathwayPage() {
       <PageHero
         heading="Metabolic Care Pathways"
         subheading="These pathways are designed to address metabolic health through structured lifestyle correction, guided accountability, and continuous monitoring. Each pathway reflects a different level of need, from foundational stabilization to long-term sustainability."
-        overlayImage="/images/pathways/metabolic-anatomy.png"
+        overlayImage="/pathways/Metabolic%20care.webp"
         overlayImageAlt="Glowing thyroid illustration"
         overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
         pathwayBlobs

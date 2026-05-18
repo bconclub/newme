@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-15 · Pathway hero anatomy overlays: swap to new pre-cropped images
+
+- New assets in `public/pathways/`:
+  - `Metabolic care.webp` (thyroid)
+  - `Gastro.webp` (digestive system)
+  - `Continuity.webp` (upper body / nervous system)
+- **`src/app/pathways/metabolic/page.tsx`**: overlayImage → `/pathways/Metabolic%20care.webp`
+- **`src/app/pathways/gi/page.tsx`**: overlayImage → `/pathways/Gastro.webp`
+- **`src/app/pathways/continuity/page.tsx`**: overlayImage → `/pathways/Continuity.webp`
+- Old `/images/pathways/{metabolic,gi,continuity}-anatomy.png` files left in place but no longer referenced. The new images are cropped to a consistent aspect ratio so all 3 pathway heroes now render at the same horizontal footprint without per-page CSS tweaks
+
 ## 2026-05-15 · Revert continuity overlay maxWidth cap
 
 - **`src/app/pathways/continuity/page.tsx`**: Reverted the `maxWidth` cap added in the previous commit. The cap shrank the body silhouette but introduced its own clipping at the right edge. All 3 pathway pages are back to the same overlay recipe (`right: -5%, bottom: -15%, height: 125%`). The remaining size discrepancy between the 3 anatomy images is a source-asset problem — they need to be re-cropped to a consistent aspect ratio, then dropped into `public/pathways/`
