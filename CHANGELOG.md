@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · Revert continuity overlay maxWidth cap
+
+- **`src/app/pathways/continuity/page.tsx`**: Reverted the `maxWidth` cap added in the previous commit. The cap shrank the body silhouette but introduced its own clipping at the right edge. All 3 pathway pages are back to the same overlay recipe (`right: -5%, bottom: -15%, height: 125%`). The remaining size discrepancy between the 3 anatomy images is a source-asset problem — they need to be re-cropped to a consistent aspect ratio, then dropped into `public/pathways/`
+
 ## 2026-05-15 · Continuity pathway hero: cap overlay width so all 3 pathway heroes read at the same size
 
 - **`src/app/pathways/continuity/page.tsx`**: Added `maxWidth: 'clamp(280px, calc(560 / 1920 * 100vw), 560px)'` to the anatomy overlay style. The continuity anatomy is a wide upper-body silhouette, so at `height: 125%, width: auto` (the same recipe Metabolic and GI use) it ended up ~45% of the card width — visibly larger than the narrow thyroid and the medium GI organ overlays on the sibling pages. Capping the width brings all three pathway heroes to the same horizontal footprint (~30% of card width at desktop 1920w, scaling down on smaller viewports)
