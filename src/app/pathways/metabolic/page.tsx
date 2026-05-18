@@ -371,7 +371,12 @@ export default function MetabolicPathwayPage() {
         subheading="These pathways are designed to address metabolic health through structured lifestyle correction, guided accountability, and continuous monitoring. Each pathway reflects a different level of need, from foundational stabilization to long-term sustainability."
         overlayImage="/pathways/Metabolic%20care.webp"
         overlayImageAlt="Glowing thyroid illustration"
-        overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
+        // Fit the anatomy fully inside the card with breathing room on every
+        // side. Previous values (height: 125%, right: -5%, bottom: -15%) bled
+        // the image past the top, right and bottom edges. The new pre-cropped
+        // images are sized correctly already, so we just need to seat them
+        // properly within the card.
+        overlayStyle={{ right: '5%', bottom: '8%', height: '80%' }}
         pathwayBlobs
         cta={<PathwayTabs active="/pathways/metabolic" />}
       />

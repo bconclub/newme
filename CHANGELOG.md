@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-05-15 · Pathway hero anatomy: seat the overlays inside the card (no more bleed)
+
+- **All three pathway pages** (`metabolic`, `gi`, `continuity`): `overlayStyle` changed from `{ right: '-5%', bottom: '-15%', height: '125%' }` to `{ right: '5%', bottom: '8%', height: '80%' }`. Previous values made the anatomy 125% of the card height and bled it past the top / right / bottom edges (the thyroid in particular was getting visibly clipped on the right). The new values seat the anatomy fully inside the card with breathing room on every side — matches the Figma reference
+
 ## 2026-05-15 · Pathway hero anatomy overlays: swap to new pre-cropped images
 
 - New assets in `public/pathways/`:
