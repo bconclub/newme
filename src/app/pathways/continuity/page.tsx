@@ -287,7 +287,17 @@ export default function ContinuityPathwayPage() {
           subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
           overlayImage="/images/pathways/continuity-anatomy.png"
           overlayImageAlt="Glowing upper body nervous system illustration"
-          overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
+          // The continuity anatomy is a wide upper-body silhouette, so at
+          // `height: 125%, width: auto` it ends up ~45% of the card width
+          // — visibly larger than the metabolic thyroid and GI organs
+          // overlays on the sibling pages. Cap the width so all three
+          // pathway heros read at a comparable horizontal footprint.
+          overlayStyle={{
+            right: '-5%',
+            bottom: '-15%',
+            height: '125%',
+            maxWidth: 'clamp(280px, calc(560 / 1920 * 100vw), 560px)',
+          }}
           pathwayBlobs
           cta={<PathwayTabs active="/pathways/continuity" />}
         />
