@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-15 · Team page: wire LinkedIn profile URLs (hide icon when absent)
+
+- **`src/app/team/page.tsx`**:
+  - Added optional `linkedin?: string` field to `TeamMember`. URLs added for Dr. Pal, Shakeela Ranjithkumar, Karthik Ravi, Gayatri Rajamani, Namratha Nataraj
+  - Other members (Priya, Rashmi, Devi, Ashwini, Dr. Indira) intentionally left without — the icon is hidden entirely on those cards rather than rendering a dead-looking inert icon
+  - `SocialIcons` now takes a `linkedin` prop, returns `null` if missing, and wraps the icon in an `<a target="_blank" rel="noopener noreferrer">` with `aria-label="LinkedIn profile"` when present
+- User-facing: clicking the LinkedIn icon on Dr. Pal / Shakeela / Karthik / Gayatri / Namratha now opens their profile in a new tab. Other team cards no longer show a clickable-looking but inert icon
+
 ## 2026-05-15 · Header: active-page indicator in desktop + mobile nav
 
 - **`src/components/option1/Header.tsx`**:

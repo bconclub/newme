@@ -14,6 +14,9 @@ type TeamMember = {
   role: string
   photo: string
   bio: string
+  /** Optional LinkedIn profile URL. Omit if the member doesn't have one —
+   *  the SocialIcons block is then hidden on that card. */
+  linkedin?: string
 }
 
 const TEAM: TeamMember[] = [
@@ -22,6 +25,7 @@ const TEAM: TeamMember[] = [
     role: 'Founder',
     photo: '/images/team/dr-palaniappan.jpg',
     bio: 'A gastroenterologist and metabolic health specialist, Dr. Pal founded NewME to deliver structured, clinical-grade care at scale.',
+    linkedin: 'https://www.linkedin.com/in/drpal/',
   },
   {
     name: 'Priya Pal',
@@ -34,18 +38,21 @@ const TEAM: TeamMember[] = [
     role: 'CEO',
     photo: '/images/team/shakeela.jpg',
     bio: 'Shakeela oversees operations and system execution across NewME. She brings a deep understanding of both client care and operational efficiency to ensure consistent, measurable outcomes.',
+    linkedin: 'https://www.linkedin.com/in/shakeela-r-19aa0b290/',
   },
   {
     name: 'Karthik Ravi',
     role: 'Head of Business Operations',
     photo: '/images/team/karthik-ravi.jpg',
     bio: 'Karthik oversees all business and operational functions, ensuring the NewME system runs with precision and efficiency.',
+    linkedin: 'https://www.linkedin.com/in/karthikrav%C3%AE/',
   },
   {
     name: 'Gayatri Rajamani',
     role: 'Head of Clinical Nutrition',
     photo: '/images/team/gayatri-rajamani.jpg',
     bio: "Gayatri leads the clinical nutrition team, designing evidence-based protocols tailored to each participant's metabolic markers.",
+    linkedin: 'https://www.linkedin.com/in/gayatrirajamani/?skipRedirect=true',
   },
   {
     name: 'Rashmi Sinha',
@@ -64,6 +71,7 @@ const TEAM: TeamMember[] = [
     role: 'Head of Research & QA',
     photo: '/images/team/namratha-nataraj.jpg',
     bio: 'Namratha oversees research integrity and quality assurance, ensuring all NewME protocols are evidence-based and outcomes-driven.',
+    linkedin: 'https://www.linkedin.com/in/drnamrathan/',
   },
   {
     name: 'Ashwini Saras',
@@ -230,18 +238,33 @@ function TeamGrid() {
   )
 }
 
-// ─── Social icons — LinkedIn only per team card (FB/X/Instagram dropped;
-//     team members keep professional presence on LinkedIn only). ────────────
-function SocialIcons() {
+// ─── Social icons — LinkedIn only per team card. The icon is hidden
+//     entirely on members without a `linkedin` URL (rather than rendering
+//     a dead-looking inert icon). Opens in a new tab with the usual
+//     `noopener noreferrer` security pair. ─────────────────────────────────
+function SocialIcons({ linkedin }: { linkedin?: string }) {
+  if (!linkedin) return null
   const size = 'clamp(14px, calc(20 / 1920 * 100vw), 20px)'
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      {/* LinkedIn */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-        <rect x="2" y="9" width="4" height="12" />
-        <circle cx="4" cy="4" r="2" />
-      </svg>
+      <a
+        href={linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn profile"
+        className="transition-opacity hover:opacity-100"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          opacity: 0.85,
+        }}
+      >
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="#ffffff" aria-hidden>
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+          <rect x="2" y="9" width="4" height="12" />
+          <circle cx="4" cy="4" r="2" />
+        </svg>
+      </a>
     </div>
   )
 }
@@ -472,7 +495,7 @@ function TeamCard({
           {member.bio}
         </p>
         <div style={{ marginTop: 'auto', paddingTop: 'clamp(6px, calc(14 / 1920 * 100vw), 16px)' }}>
-          <SocialIcons />
+          <SocialIcons linkedin={member.linkedin} />
         </div>
       </motion.div>
     </motion.div>
