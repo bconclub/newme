@@ -77,7 +77,7 @@ export default function WhatIsNewMe() {
               }}
               whileHover={{ scale: 1.07, rotate: -6, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="relative rounded-full bg-[#F08B55] flex items-center justify-center cursor-pointer will-change-transform"
+              className="relative rounded-full bg-[#F08B55] flex items-center justify-center will-change-transform"
               style={{
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
@@ -115,7 +115,7 @@ export default function WhatIsNewMe() {
               }}
               whileHover={{ scale: 1.07, rotate: 6, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="relative rounded-full bg-[#FEF272] flex items-center justify-center cursor-pointer will-change-transform"
+              className="relative rounded-full bg-[#FEF272] flex items-center justify-center will-change-transform"
               style={{
                 width: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
                 height: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
@@ -198,6 +198,65 @@ export default function WhatIsNewMe() {
             Our system brings your symptoms, history, and responses into one cohesive
             pathway, instead of having to rely on isolated, short-term interventions.
           </motion.p>
+
+          {/* CTA — matches the Hero "Know more" pair (yellow pill + orange
+              arrow circle, pill overlaps arrow's left edge). Points users
+              from the What-is-NewME section into the assessment funnel. */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="group/cta flex items-center flex-row-reverse justify-end"
+            style={{ marginTop: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)' }}
+          >
+            <motion.a
+              href="/assessment"
+              aria-label="Start my assessment"
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative z-0 rounded-full bg-[#FF8547] hover:bg-[#F08B55] text-white flex items-center justify-center shrink-0 transition-colors will-change-transform"
+              style={{
+                width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+              }}
+            >
+              <svg
+                viewBox="0 0 30 30"
+                fill="none"
+                aria-hidden
+                className="transition-transform duration-300 ease-out group-hover/cta:translate-x-[2px] group-hover/cta:-translate-y-[2px]"
+                style={{
+                  width: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                  height: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                }}
+              >
+                <path
+                  d="M9 21L21 9M21 9H11M21 9V19"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.a>
+            <motion.a
+              href="/assessment"
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative z-10 inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
+              style={{
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+                fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+                lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+                marginRight: 'clamp(-10px, calc(-7 / 1920 * 100vw), -7px)',
+              }}
+            >
+              Start My Assessment
+            </motion.a>
+          </motion.div>
         </div>
       </div>
     </section>

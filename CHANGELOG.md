@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-15 · Home: Hero "Know more" wired + What-is-NewME gets its own CTA + circle badges no longer claim to be clickable
+
+- **`src/components/option1/Hero.tsx`**: Arrow circle next to "Know more" was pointing to `#assessment` (no such anchor). Both the arrow and the yellow "Know more" pill now point to `#how-it-works`, which is the `id` on the What is NewME section — clicking either scrolls there
+- **`src/components/option1/WhatIsNewMe.tsx`**:
+  - Removed `cursor-pointer` from the orange + yellow circular icon badges. The hover micro-interaction (scale/rotate) is preserved; only the cursor change is gone, so users no longer get a false "this is clickable" signal
+  - Added a CTA cluster at the bottom of the section: a yellow "Start My Assessment" pill + orange arrow circle (same recipe as the Hero pair). Both link to `/assessment`
+- User-facing: Hero CTAs now scroll cleanly into the What is NewME section; that section ends with a working CTA into the assessment funnel
+
 ## 2026-05-15 · Pathway hero overlay sizing — per-pathway, not uniform
 
 - **`src/app/pathways/metabolic/page.tsx`**: overlayStyle `{ right: 5%, bottom: 8%, height: 85% }` — thyroid stays smaller and fully contained inside the card (matches Figma — only metabolic is meant to be smaller)

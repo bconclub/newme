@@ -165,8 +165,8 @@ export default function Hero() {
                   paints it on the RIGHT visually. Stays behind because the
                   pill carries a higher stacking context via z-index. */}
               <motion.a
-                href="#assessment"
-                aria-label="Start assessment"
+                href="#how-it-works"
+                aria-label="Know more about NewME"
                 initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 transition={{ duration: 0.55, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
