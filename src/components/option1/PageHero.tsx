@@ -135,15 +135,12 @@ export default function PageHero({
           backgroundColor: '#013E37',
           // 48 unified across every hero card so they all read as siblings.
           borderRadius: 'clamp(28px, 2.5vw, 48px)',
-          // 694 ceiling = exact Figma 121:93 hero card spec (1880×694).
-          // FIXED height (not min-height) so sibling pages always render
-          // the same card dimensions regardless of heading/subheading
-          // length — without this, "Continuity Pathways" (short) was
-          // shorter than "GastroIntestinal Care Pathways" (long copy) and
-          // the three pathway heroes looked inconsistent next to each other.
-          // Mobile floor 560 fits the longest heading + body + bottom tab
-          // bar without clipping; scales up to the Figma 694 spec.
-          height: 'clamp(560px, calc(694 / 1880 * 100vw), 694px)',
+          // Internal-page heroes are intentionally shorter than the home
+          // hero (which has its own Hero.tsx). 520px ceiling keeps them
+          // compact while still giving the photo room to breathe.
+          // Mobile floor 440px comfortably fits heading + body + bottom
+          // tab bar on the pathway sub-pages.
+          height: 'clamp(440px, calc(520 / 1880 * 100vw), 520px)',
         }}
       >
         {/* ── Background image (omit when only gradient + overlay needed) ── */}
@@ -260,14 +257,13 @@ export default function PageHero({
         <div
           className="relative z-10 flex flex-col"
           style={{
-            // Restored to Figma 121:93 — heading at y=233 from card top,
-            // body at y=401, body bottom at y=580, CTA at y=612. Putting
-            // the content block in the lower-half of the 694 card lets
-            // the hero photo breathe through the top.
-            paddingTop: 'clamp(170px, calc(233 / 1920 * 100vw), 233px)',
+            // Scaled down proportionally with the shorter card height.
+            // Top padding pushes heading to ~30% down the card so the
+            // photo still breathes above the text.
+            paddingTop: 'clamp(120px, calc(160 / 1920 * 100vw), 160px)',
             paddingLeft: 'clamp(28px, calc(100 / 1920 * 100vw), 100px)',
             paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
-            paddingBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
+            paddingBottom: 'clamp(28px, calc(52 / 1920 * 100vw), 52px)',
             maxWidth: 'clamp(360px, calc(1186 / 1920 * 100vw), 1186px)',
           }}
         >
