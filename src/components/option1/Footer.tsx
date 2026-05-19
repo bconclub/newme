@@ -329,13 +329,12 @@ function NewsletterForm() {
   // ── Idle / loading / error state ─────────────────────────────────────────
   return (
     <>
-      {/* Newsletter form — side-by-side pill on sm+, stacked on mobile */}
+      {/* Newsletter form — always a single combined pill row */}
       <form
-        className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0"
+        className="mt-5 flex flex-row items-center"
         onSubmit={handleSubmit}
         style={{ maxWidth: 417 }}
       >
-        {/* Input — full pill on mobile, left-half of pill on sm+ */}
         <input
           type="email"
           required
@@ -353,11 +352,10 @@ function NewsletterForm() {
             paddingRight: 20,
           }}
         />
-        {/* Button — full pill on mobile, right-half on sm+ */}
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="shrink-0 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors sm:-ml-10 disabled:opacity-60"
+          className="shrink-0 -ml-10 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors disabled:opacity-60"
           style={{
             height: 52,
             paddingLeft: 24,
