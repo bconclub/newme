@@ -47,7 +47,7 @@ const navLinks: NavLink[] = [
   { label: 'NewME Care Team', href: '/team', live: true },
   {
     label: 'Resources',
-    href: '/faq',
+    href: '',
     hasMenu: true,
     live: true,
     sublinks: [
@@ -147,10 +147,13 @@ export default function Header() {
               if (link.sublinks && link.sublinks.length > 0) {
                 return (
                   <div key={link.href} className="relative group">
-                    <Link
-                      href={link.href}
-                      aria-current={active ? 'page' : undefined}
-                      className={`relative inline-flex items-center gap-1 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] ${
+                    {/* Dropdown trigger — intentionally NOT a link so clicking
+                        the parent label doesn't navigate anywhere. Only the
+                        sub-items (Blog / Media / FAQ) navigate on click. */}
+                    <button
+                      type="button"
+                      aria-haspopup="true"
+                      className={`relative inline-flex items-center gap-1 text-[14px] font-medium transition-colors duration-200 font-[family-name:var(--font-urbanist)] bg-transparent border-0 p-0 cursor-default ${
                         active ? 'text-[#FEF272]' : 'text-white/85 hover:text-white'
                       }`}
                     >
@@ -166,7 +169,7 @@ export default function Header() {
                           transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                         />
                       )}
-                    </Link>
+                    </button>
                     {/* Dropdown panel — `overflow-hidden` on the inner panel
                         clips item hover backgrounds to the rounded corners
                         (otherwise the first item's hover rectangle pokes out
