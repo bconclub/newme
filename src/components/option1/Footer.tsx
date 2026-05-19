@@ -287,39 +287,33 @@ function NewsletterForm() {
     }
   }
 
-  // ── Success state ────────────────────────────────────────────────────────
+  // ── Success state — same pill shape, gold fill, tick + label animate in ──
   if (done) {
     return (
       <div
-        className="mt-5 flex items-center gap-3"
-        style={{ maxWidth: 417, animation: 'newsletter-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) both' }}
+        className="mt-5 flex items-center justify-center gap-2 font-[family-name:var(--font-bricolage)]"
+        style={{
+          maxWidth: 417,
+          height: 52,
+          borderRadius: 9999,
+          background: '#FEF272',
+          color: '#173B39',
+          fontWeight: 600,
+          fontSize: 15,
+          animation: 'nl-pill 0.5s cubic-bezier(0.34,1.56,0.64,1) both',
+        }}
       >
-        {/* Animated tick circle */}
-        <span
-          className="shrink-0 flex items-center justify-center rounded-full bg-[#FEF272]"
-          style={{ width: 40, height: 40, animation: 'newsletter-tick 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both' }}
+        <svg
+          width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden
+          style={{ animation: 'nl-tick 0.45s cubic-bezier(0.34,1.56,0.64,1) 0.15s both', flexShrink: 0 }}
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-            <path d="M4.5 10.5l4 4 7-8" stroke="#173B39" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </span>
-        <div>
-          <p className="text-white font-[family-name:var(--font-bricolage)]" style={{ fontSize: 'clamp(14px, calc(17 / 1920 * 100vw), 17px)', fontWeight: 600, lineHeight: 1.3 }}>
-            You&apos;re subscribed!
-          </p>
-          <p className="text-white/65 font-[family-name:var(--font-urbanist)]" style={{ fontSize: 'clamp(12px, calc(14 / 1920 * 100vw), 14px)', marginTop: 2 }}>
-            Expect insights, not spam.
-          </p>
-        </div>
+          <path d="M4.5 10.5l4 4 7-8" stroke="#173B39" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span style={{ animation: 'nl-label 0.35s ease 0.2s both' }}>You&apos;re subscribed!</span>
         <style>{`
-          @keyframes newsletter-pop {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-          }
-          @keyframes newsletter-tick {
-            from { opacity: 0; transform: scale(0.4); }
-            to   { opacity: 1; transform: scale(1); }
-          }
+          @keyframes nl-pill  { from { opacity:0; transform:scale(0.88); } to { opacity:1; transform:scale(1); } }
+          @keyframes nl-tick  { from { opacity:0; transform:scale(0) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0deg); } }
+          @keyframes nl-label { from { opacity:0; transform:translateX(-6px); } to { opacity:1; transform:translateX(0); } }
         `}</style>
       </div>
     )
