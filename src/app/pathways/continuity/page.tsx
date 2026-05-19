@@ -247,34 +247,42 @@ function PhaseSection({ phase }: { phase: Phase }) {
         >
           <Image src={phase.bannerImg} alt={phase.bannerHeading} fill unoptimized style={{ objectFit: 'cover', objectPosition: 'center' }} />
           <div style={{ position: 'absolute', inset: 0, background: phase.bannerOverlay }} />
-          <div style={{ position: 'relative', zIndex: 1, padding: 'clamp(24px,4.17vw,80px)' }}>
-            <h3
-              className="font-[family-name:var(--font-bricolage)]"
-              style={{ fontSize: 'clamp(20px,2.5vw,48px)', fontWeight: 600, color: '#fff', lineHeight: 1.15, maxWidth: 720, marginBottom: 'clamp(10px,1.04vw,20px)' }}
-            >
-              {phase.bannerHeading}
-            </h3>
-            <p
-              className="font-[family-name:var(--font-urbanist)]"
-              style={{ fontSize: 'clamp(13px,1.04vw,18px)', color: 'rgba(255,255,255,0.80)', lineHeight: 1.65, maxWidth: 640, fontWeight: 500 }}
-            >
-              {phase.bannerBody}
-            </p>
-            <a
-              href="/assessment"
-              className="font-[family-name:var(--font-bricolage)] inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium transition-[background-color,box-shadow] duration-300 hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)]"
-              style={{
-                marginTop: 'clamp(20px,2.08vw,40px)',
-                height: 'clamp(44px,3.33vw,64px)',
-                paddingLeft: 'clamp(18px,1.46vw,28px)',
-                paddingRight: 'clamp(18px,1.46vw,28px)',
-                fontSize: 'clamp(14px,1.04vw,20px)',
-                fontWeight: 600,
-                textDecoration: 'none',
-              }}
-            >
-              Get Assessed
-            </a>
+          <div
+            className="flex flex-col md:flex-row md:items-center md:justify-between"
+            style={{ position: 'relative', zIndex: 1, padding: 'clamp(24px,4.17vw,80px)', gap: 'clamp(20px,3.13vw,60px)' }}
+          >
+            {/* Left — heading + body */}
+            <div style={{ flex: 1 }}>
+              <h3
+                className="font-[family-name:var(--font-bricolage)]"
+                style={{ fontSize: 'clamp(20px,2.5vw,48px)', fontWeight: 600, color: '#fff', lineHeight: 1.15, maxWidth: 720, marginBottom: 'clamp(10px,1.04vw,20px)' }}
+              >
+                {phase.bannerHeading}
+              </h3>
+              <p
+                className="font-[family-name:var(--font-urbanist)]"
+                style={{ fontSize: 'clamp(13px,1.04vw,18px)', color: 'rgba(255,255,255,0.80)', lineHeight: 1.65, maxWidth: 640, fontWeight: 500 }}
+              >
+                {phase.bannerBody}
+              </p>
+            </div>
+            {/* Right — CTA */}
+            <div className="shrink-0">
+              <a
+                href="/assessment"
+                className="font-[family-name:var(--font-bricolage)] inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium transition-[background-color,box-shadow] duration-300 hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)]"
+                style={{
+                  height: 'clamp(44px,3.33vw,64px)',
+                  paddingLeft: 'clamp(18px,1.46vw,28px)',
+                  paddingRight: 'clamp(18px,1.46vw,28px)',
+                  fontSize: 'clamp(14px,1.04vw,20px)',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                Get Assessed
+              </a>
+            </div>
           </div>
         </motion.div>
       </div>
