@@ -143,17 +143,23 @@ function FAQSections() {
       }}
     >
       <div
-        className="mx-auto grid items-start gap-[clamp(32px,calc(64/1920*100vw),96px)] md:grid-cols-[clamp(220px,calc(320/1920*100vw),320px)_1fr]"
+        className="mx-auto grid items-start gap-[clamp(24px,calc(64/1920*100vw),96px)] grid-cols-1 md:grid-cols-[clamp(220px,calc(320/1920*100vw),320px)_1fr]"
         style={{ maxWidth: 1400 }}
       >
-        {/* ── Section nav (sidebar) ─────────────────────────────────────── */}
+        {/* ── Section nav ───────────────────────────────────────────────────
+             Mobile: horizontal scrollable pill strip (no scrollbar visible)
+             Desktop (md+): vertical sticky sidebar with plain text buttons  */}
         <nav
           aria-label="FAQ sections"
-          className="md:sticky md:top-[clamp(80px,calc(120/1920*100vw),120px)]"
+          className="faq-cat-nav md:sticky md:top-[clamp(80px,calc(120/1920*100vw),120px)] md:flex-col md:overflow-x-visible md:flex-wrap"
           style={{
+            /* Mobile: row with overflow-x scroll */
             display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+            flexDirection: 'row',
+            overflowX: 'auto',
+            flexWrap: 'nowrap',
+            gap: 10,
+            paddingBottom: 4,
           }}
         >
           {SECTIONS.map((s) => {
@@ -167,18 +173,26 @@ function FAQSections() {
                   setOpenIdx(0)
                 }}
                 aria-current={isActive ? 'true' : undefined}
-                className="font-[family-name:var(--font-bricolage)] text-left"
+                className="font-[family-name:var(--font-bricolage)] shrink-0"
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
                   cursor: 'pointer',
-                  fontWeight: isActive ? 600 : 500,
-                  fontSize: 'clamp(16px, calc(20 / 1920 * 100vw), 22px)',
+                  fontWeight: 500,
+                  fontSize: 'clamp(13px, calc(15 / 1920 * 100vw), 15px)',
+                  lineHeight: 1,
+                  whiteSpace: 'nowrap',
+                  // Pill shape — matches site EyebrowPill
+                  height: 'clamp(36px, calc(44 / 1920 * 100vw), 44px)',
+                  paddingLeft: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                  paddingRight: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+                  borderRadius: 9999,
+                  border: isActive
+                    ? '1px solid #FEF272'
+                    : '1px solid rgba(255,255,255,0.30)',
+                  background: isActive
+                    ? 'rgba(254,242,114,0.12)'
+                    : 'rgba(255,255,255,0.06)',
                   color: isActive ? '#FEF272' : 'rgba(255,255,255,0.78)',
-                  lineHeight: 1.3,
-                  letterSpacing: '-0.005em',
-                  transition: 'color 0.2s ease',
+                  transition: 'color 0.2s ease, border-color 0.2s ease, background 0.2s ease',
                 }}
               >
                 {s.heading}

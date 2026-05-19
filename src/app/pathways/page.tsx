@@ -103,13 +103,13 @@ export default function PathwaysPage() {
           NewME is designed as a structured clinical system where care is delivered through distinct pathways. Each pathway is built for a different level of metabolic, gastrointestinal, or long-term support.
         </motion.p>
 
-        {/* Interior photo */}
+        {/* Interior photo — edge-to-edge on mobile, centered+rounded on md+ */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, ease: EASE }}
-          style={{ margin: '0 auto clamp(32px,3.13vw,60px)', maxWidth: 'clamp(280px,calc(1194/1920*100vw),1194px)', borderRadius: 'clamp(14px,1.04vw,20px)', overflow: 'hidden', aspectRatio: '1194/533' }}
+          className="pathways-section-img"
         >
           <Image
             src={SECTION_IMG}
