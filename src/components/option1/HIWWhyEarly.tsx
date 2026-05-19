@@ -131,55 +131,46 @@ export default function HIWWhyEarly() {
             wasn&rsquo;t part of the system.
           </p>
 
-          {/*
-            Bottom callout — Figma Group 426: 864×182 at (921,5266), inner text
-            (590×102 at 961,5306) → 40px padding all around. Pine card with
-            yellow accent.
-          */}
-          {/*
-            Figma Group 426 (58:2629): 864×182 sage-green panel, left-aligned
-            yellow body. Matches the same translucent sage recipe as the
-            unified-system cards above so the page rhythm stays consistent.
-          */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
+          {/* Callout paragraph — plain body, no box */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.55, delay: 0.2 }}
-            className="relative overflow-hidden"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="font-[family-name:var(--font-urbanist)] text-white"
             style={{
-              marginTop: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
-              padding:
-                'clamp(20px, calc(40 / 1920 * 100vw), 40px) clamp(24px, calc(48 / 1920 * 100vw), 48px)',
-              borderRadius: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
-              // Figma 58:1304 / 58:2629 recipe: linear top→0 + 30% white base
-              // + 2px solid white-92 border + ~10px backdrop-blur. The "glow"
-              // sits as a soft top-edge highlight evenly across the box, not
-              // pinned to a corner.
-              background:
-                'radial-gradient(150% 60% at 50% 0%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 100%), rgba(0,0,0,0.30)',
-              backdropFilter: 'blur(10.25px)',
-              WebkitBackdropFilter: 'blur(10.25px)',
-              border: '1.5px solid rgba(255,255,255,0.30)',
-              boxShadow:
-                'inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -1px 0 rgba(0,0,0,0.05)',
-              maxWidth: 'clamp(320px, calc(864 / 1920 * 100vw), 864px)',
+              fontWeight: 500,
+              fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
+              lineHeight: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
+              marginTop: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
+              maxWidth: 'clamp(320px, calc(933 / 1920 * 100vw), 933px)',
             }}
           >
-            <p
-              className="relative font-[family-name:var(--font-urbanist)] text-[#FEF272]"
-              style={{
-                // Figma 58:2631 — Urbanist Medium 28/34 #FEF272
-                fontWeight: 500,
-                fontSize: 'clamp(15px, calc(28 / 1920 * 100vw), 28px)',
-                lineHeight: 'clamp(22px, calc(34 / 1920 * 100vw), 34px)',
-              }}
-            >
-              Don&rsquo;t ignore the signs.<br />
-              The earlier you begin, the more responsive your treatment is
-              likely to be.
-            </p>
-          </motion.div>
+            Don&rsquo;t ignore the signs. The earlier you begin, the more
+            responsive your treatment is likely to be.
+          </motion.p>
+
+          {/* CTA — yellow pill only, no arrow */}
+          <motion.a
+            href="/assessment"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            className="self-start inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)] transition-[background-color,box-shadow] duration-300 ease-out will-change-transform"
+            style={{
+              height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+              paddingLeft: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+              paddingRight: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+              fontSize: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
+              lineHeight: 'clamp(20px, calc(30 / 1920 * 100vw), 30px)',
+              marginTop: 'clamp(28px, calc(40 / 1920 * 100vw), 40px)',
+            }}
+          >
+            Start My Assessment
+          </motion.a>
         </motion.div>
       </div>
     </section>
