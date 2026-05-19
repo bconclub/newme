@@ -305,27 +305,42 @@ export default function Header() {
                 vertical list with two text sizes. */}
             {navLinks.map((link, i) => {
               const active = isLinkActive(link, pathname)
+              const hasDropdown = link.sublinks && link.sublinks.length > 0
               return (
                 <motion.div
-                  key={link.href}
+                  key={link.href || link.label}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04 }}
                   className="flex flex-col items-center gap-3"
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    aria-current={active ? 'page' : undefined}
-                    className={`text-2xl font-medium font-[family-name:var(--font-bricolage)] transition-colors ${
-                      active ? 'text-[#FEF272]' : 'text-white hover:text-[#FEF272]'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                  {link.sublinks && link.sublinks.length > 0 && (
-                    <div className="flex flex-col items-center gap-2">
-                      {link.sublinks.map((sub) => {
+                  {/* Dropdown parents (Resources) are non-navigating labels on
+                      mobile — only the sub-items navigate. Regular links keep
+                      the standard <Link> behaviour. */}
+                  {hasDropdown ? (
+                    <span
+                      aria-current={active ? 'page' : undefined}
+                      className={`text-2xl font-medium font-[family-name:var(--font-bricolage)] ${
+                        active ? 'text-[#FEF272]' : 'text-white/60'
+                      }`}
+                    >
+                      {link.label}
+                    </span>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={active ? 'page' : undefined}
+                      className={`text-2xl font-medium font-[family-name:var(--font-bricolage)] transition-colors ${
+                        active ? 'text-[#FEF272]' : 'text-white hover:text-[#FEF272]'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+                  {hasDropdown && (
+                    <div className="flex flex-col items-center gap-3">
+                      {link.sublinks!.map((sub) => {
                         const subActive = pathname.startsWith(sub.href)
                         return (
                           <Link
@@ -333,8 +348,8 @@ export default function Header() {
                             href={sub.href}
                             onClick={() => setMobileOpen(false)}
                             aria-current={subActive ? 'page' : undefined}
-                            className={`text-lg font-medium font-[family-name:var(--font-bricolage)] transition-colors ${
-                              subActive ? 'text-[#FEF272]' : 'text-white/75 hover:text-[#FEF272]'
+                            className={`text-2xl font-medium font-[family-name:var(--font-bricolage)] transition-colors ${
+                              subActive ? 'text-[#FEF272]' : 'text-white hover:text-[#FEF272]'
                             }`}
                           >
                             {sub.label}
