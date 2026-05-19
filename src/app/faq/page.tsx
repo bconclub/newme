@@ -149,56 +149,25 @@ function FAQSections() {
         {/* ── Section nav ───────────────────────────────────────────────────
              Mobile: horizontal scrollable pill strip (no scrollbar visible)
              Desktop (md+): vertical sticky sidebar with plain text buttons  */}
+        {/* Mobile: horizontal scrollable pill strip
+            Desktop: vertical sticky plain-text sidebar
+            All sizing/colour is handled in globals.css (.faq-cat-nav / .faq-cat-btn) */}
         <nav
           aria-label="FAQ sections"
-          className="faq-cat-nav md:sticky md:top-[clamp(80px,calc(120/1920*100vw),120px)] md:flex-col md:overflow-x-visible md:flex-wrap"
-          style={{
-            /* Mobile: row with overflow-x scroll */
-            display: 'flex',
-            flexDirection: 'row',
-            overflowX: 'auto',
-            flexWrap: 'nowrap',
-            gap: 10,
-            paddingBottom: 4,
-          }}
+          className="faq-cat-nav md:sticky md:top-[clamp(80px,calc(120/1920*100vw),120px)]"
+          style={{ display: 'flex', flexDirection: 'row', overflowX: 'auto', flexWrap: 'nowrap', gap: 10, paddingBottom: 4 }}
         >
-          {SECTIONS.map((s) => {
-            const isActive = s.id === activeId
-            return (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => {
-                  setActiveId(s.id)
-                  setOpenIdx(0)
-                }}
-                aria-current={isActive ? 'true' : undefined}
-                className="font-[family-name:var(--font-bricolage)] shrink-0"
-                style={{
-                  cursor: 'pointer',
-                  fontWeight: 500,
-                  fontSize: 'clamp(13px, calc(15 / 1920 * 100vw), 15px)',
-                  lineHeight: 1,
-                  whiteSpace: 'nowrap',
-                  // Pill shape — matches site EyebrowPill
-                  height: 'clamp(36px, calc(44 / 1920 * 100vw), 44px)',
-                  paddingLeft: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  paddingRight: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
-                  borderRadius: 9999,
-                  border: isActive
-                    ? '1px solid #FEF272'
-                    : '1px solid rgba(255,255,255,0.30)',
-                  background: isActive
-                    ? 'rgba(254,242,114,0.12)'
-                    : 'rgba(255,255,255,0.06)',
-                  color: isActive ? '#FEF272' : 'rgba(255,255,255,0.78)',
-                  transition: 'color 0.2s ease, border-color 0.2s ease, background 0.2s ease',
-                }}
-              >
-                {s.heading}
-              </button>
-            )
-          })}
+          {SECTIONS.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => { setActiveId(s.id); setOpenIdx(0) }}
+              aria-current={s.id === activeId ? 'true' : undefined}
+              className="faq-cat-btn font-[family-name:var(--font-bricolage)]"
+            >
+              {s.heading}
+            </button>
+          ))}
         </nav>
 
         {/* ── Active section content (heading + accordion list) ─────────── */}

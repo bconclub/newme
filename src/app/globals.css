@@ -272,10 +272,69 @@ html.lenis body {
 }
 
 /* ============================================================
-   FAQ category nav — hides horizontal scrollbar on pill strip
+   FAQ category nav
+   Mobile  → horizontal scrollable pill strip
+   Desktop → vertical plain-text sidebar (sticky)
    ============================================================ */
+
+/* ── shared ── */
 .faq-cat-nav::-webkit-scrollbar { display: none; }
 .faq-cat-nav { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── button base (mobile pill) ── */
+.faq-cat-btn {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: clamp(13px, calc(15 / 1920 * 100vw), 15px);
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: clamp(36px, calc(44 / 1920 * 100vw), 44px);
+  padding-left:  clamp(14px, calc(20 / 1920 * 100vw), 20px);
+  padding-right: clamp(14px, calc(20 / 1920 * 100vw), 20px);
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.78);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.faq-cat-btn[aria-current="true"] {
+  border-color: #FEF272;
+  background: rgba(254,242,114,0.12);
+  color: #FEF272;
+}
+
+/* ── desktop: revert to plain vertical text ── */
+@media (min-width: 768px) {
+  .faq-cat-nav {
+    flex-direction: column !important;
+    overflow-x: visible !important;
+    flex-wrap: wrap !important;
+    gap: 2px !important;
+    padding-bottom: 0 !important;
+  }
+  .faq-cat-btn {
+    height: auto;
+    padding: clamp(8px, calc(12 / 1920 * 100vw), 12px) 0;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    white-space: normal;
+    flex-shrink: 1;
+    font-weight: 400;
+    text-align: left;
+    color: rgba(255,255,255,0.60);
+  }
+  .faq-cat-btn[aria-current="true"] {
+    border: none;
+    background: transparent;
+    color: #FEF272;
+    font-weight: 600;
+  }
+  .faq-cat-btn:hover {
+    color: rgba(255,255,255,0.90);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
