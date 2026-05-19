@@ -26,18 +26,21 @@ const tabGroups = [
         duration: 'Duration: 4 Weeks',
         desc: 'A lifestyle stabilisation for early-stage imbalance or inconsistent habits and patterns.',
         image: PLACEHOLDER_IMAGES[0],
+        href: '/pathways/metabolic#reset',
       },
       {
         title: 'Rebuild',
         duration: 'Duration: 12 Weeks',
         desc: 'A structured metabolic correction for those with stable foundations.',
         image: PLACEHOLDER_IMAGES[1],
+        href: '/pathways/metabolic#rebuild',
       },
       {
         title: 'Sustain',
         duration: 'Duration: 24 Weeks',
         desc: 'A consolidated approach to metabolic & gut stability that reinforces good habits for the long run.',
         image: PLACEHOLDER_IMAGES[2],
+        href: '/pathways/metabolic#sustain',
       },
     ],
   },
@@ -50,12 +53,14 @@ const tabGroups = [
         duration: 'Duration: 4 Weeks',
         desc: 'Prescribed for moderate digestive dysfunction impacting overall metabolic stability.',
         image: '/home/GI%20Core.webp',
+        href: '/pathways/gi#gi-core',
       },
       {
         title: 'GI Advanced',
         duration: 'Duration: 4 Weeks',
         desc: 'A clinically supervised pathway for complex and/or long-standing gastrointestinal conditions.',
         image: '/home/GI%20Advanced.webp',
+        href: '/pathways/gi#gi-advanced',
       },
     ],
   },
@@ -68,12 +73,14 @@ const tabGroups = [
         duration: 'Duration: 12 / 52 Weeks',
         desc: 'Structured continuation for long-term metabolic & gut stability.',
         image: '/home/NEwME%20360.webp',
+        href: '/pathways/continuity#newme360',
       },
       {
         title: 'NewME Movement',
         duration: 'Duration: 12 / 52 Weeks',
         desc: 'A carefully crafted fitness regiment designed to focus on physical performance and strength building.',
         image: '/home/NEw%20ME%20MOvement.webp',
+        href: '/pathways/continuity#movement',
       },
     ],
   },
@@ -351,71 +358,85 @@ export default function Pathways() {
                 initial={{ opacity: 0, y: 28 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.32, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden"
-                style={{
-                  borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
-                  border: '1px solid rgba(255,255,255,0.20)',
-                  backdropFilter: 'blur(10px) saturate(110%)',
-                  WebkitBackdropFilter: 'blur(10px) saturate(110%)',
-                  background:
-                    'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), linear-gradient(180deg, rgba(0,38,34,0.25) 0%, rgba(0,26,23,0.32) 100%)',
-                  boxShadow:
-                    'inset 0 1px 0 rgba(255,255,255,0.08), 0 22px 44px -18px rgba(0,0,0,0.60), 0 6px 14px -6px rgba(0,0,0,0.40)',
-                }}
               >
-                <div
-                  className="grid"
-                  style={{ gridTemplateColumns: 'clamp(90px, calc(200 / 1920 * 100vw), 200px) 1fr' }}
+                <Link
+                  href={card.href}
+                  className="group/card block overflow-hidden transition-[border-color,box-shadow] duration-300 hover:border-white/40"
+                  style={{
+                    borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
+                    border: '1px solid rgba(255,255,255,0.20)',
+                    backdropFilter: 'blur(10px) saturate(110%)',
+                    WebkitBackdropFilter: 'blur(10px) saturate(110%)',
+                    background:
+                      'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%), linear-gradient(180deg, rgba(0,38,34,0.25) 0%, rgba(0,26,23,0.32) 100%)',
+                    boxShadow:
+                      'inset 0 1px 0 rgba(255,255,255,0.08), 0 22px 44px -18px rgba(0,0,0,0.60), 0 6px 14px -6px rgba(0,0,0,0.40)',
+                    textDecoration: 'none',
+                  }}
                 >
                   <div
-                    className="bg-cover bg-center bg-[#0a4a45]"
-                    style={{
-                      backgroundImage: `url('${card.image}')`,
-                      margin: 'clamp(3px, calc(5 / 1920 * 100vw), 5px)',
-                      borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
-                      minHeight: 'clamp(100px, calc(150 / 1920 * 100vw), 150px)',
-                    }}
-                  />
-                  <div style={{ padding: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)' }}>
-                    <div className="flex items-center flex-wrap" style={{ gap: 'clamp(6px, calc(12 / 1920 * 100vw), 12px)' }}>
-                      <h3
-                        className="text-white font-[family-name:var(--font-bricolage)]"
-                        style={{ fontWeight: 600, fontSize: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)', lineHeight: 1.1 }}
-                      >
-                        {card.title}
-                      </h3>
-                      <span
-                        className="rounded-full font-[family-name:var(--font-bricolage)] inline-flex items-center shrink-0"
+                    className="grid"
+                    style={{ gridTemplateColumns: 'clamp(90px, calc(200 / 1920 * 100vw), 200px) 1fr' }}
+                  >
+                    <div
+                      className="bg-cover bg-center bg-[#0a4a45] transition-transform duration-500 group-hover/card:scale-[1.03]"
+                      style={{
+                        backgroundImage: `url('${card.image}')`,
+                        margin: 'clamp(3px, calc(5 / 1920 * 100vw), 5px)',
+                        borderRadius: 'clamp(12px, calc(18 / 1920 * 100vw), 18px)',
+                        minHeight: 'clamp(100px, calc(150 / 1920 * 100vw), 150px)',
+                      }}
+                    />
+                    <div style={{ padding: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)' }}>
+                      <div className="flex items-center flex-wrap" style={{ gap: 'clamp(6px, calc(12 / 1920 * 100vw), 12px)' }}>
+                        <h3
+                          className="text-white font-[family-name:var(--font-bricolage)]"
+                          style={{ fontWeight: 600, fontSize: 'clamp(18px, calc(32 / 1920 * 100vw), 32px)', lineHeight: 1.1 }}
+                        >
+                          {card.title}
+                        </h3>
+                        <span
+                          className="rounded-full font-[family-name:var(--font-bricolage)] inline-flex items-center shrink-0"
+                          style={{
+                            fontWeight: 500,
+                            fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
+                            color: '#FEF272',
+                            background: 'linear-gradient(180deg, rgba(254,242,114,0.16) 0%, rgba(254,242,114,0.07) 100%)',
+                            backdropFilter: 'blur(8px) saturate(110%)',
+                            WebkitBackdropFilter: 'blur(8px) saturate(110%)',
+                            border: '1px solid rgba(254,242,114,0.38)',
+                            boxShadow: 'inset 0 1px 0 rgba(254,242,114,0.18)',
+                            paddingLeft: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
+                            paddingRight: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
+                            height: 'clamp(22px, calc(30 / 1920 * 100vw), 30px)',
+                          }}
+                        >
+                          {card.duration}
+                        </span>
+                        {/* Arrow — slides in on card hover */}
+                        <span
+                          aria-hidden
+                          className="ml-auto opacity-0 group-hover/card:opacity-100 translate-x-[-4px] group-hover/card:translate-x-0 transition-[opacity,transform] duration-300 text-white/70"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M4.5 13.5L13.5 4.5M13.5 4.5H7.5M13.5 4.5V10.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      </div>
+                      <p
+                        className="text-white/85 font-[family-name:var(--font-urbanist)]"
                         style={{
-                          fontWeight: 500,
-                          fontSize: 'clamp(11px, calc(14 / 1920 * 100vw), 14px)',
-                          color: '#FEF272',
-                          background: 'linear-gradient(180deg, rgba(254,242,114,0.16) 0%, rgba(254,242,114,0.07) 100%)',
-                          backdropFilter: 'blur(8px) saturate(110%)',
-                          WebkitBackdropFilter: 'blur(8px) saturate(110%)',
-                          border: '1px solid rgba(254,242,114,0.38)',
-                          boxShadow: 'inset 0 1px 0 rgba(254,242,114,0.18)',
-                          paddingLeft: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
-                          paddingRight: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
-                          height: 'clamp(22px, calc(30 / 1920 * 100vw), 30px)',
+                          fontWeight: 400,
+                          fontSize: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+                          lineHeight: 'clamp(16px, calc(26 / 1920 * 100vw), 26px)',
+                          marginTop: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
                         }}
                       >
-                        {card.duration}
-                      </span>
+                        {card.desc}
+                      </p>
                     </div>
-                    <p
-                      className="text-white/85 font-[family-name:var(--font-urbanist)]"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-                        lineHeight: 'clamp(16px, calc(26 / 1920 * 100vw), 26px)',
-                        marginTop: 'clamp(8px, calc(14 / 1920 * 100vw), 14px)',
-                      }}
-                    >
-                      {card.desc}
-                    </p>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
