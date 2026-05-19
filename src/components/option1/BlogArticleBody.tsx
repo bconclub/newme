@@ -3,6 +3,10 @@ import type { BlogPost } from '@/app/blog/[slug]/page'
 import { urlFor } from '@/lib/sanity/image'
 import BlogTOC from './BlogTOC'
 
+function hasAsset(img: unknown): img is { asset: { _ref: string }; [k: string]: unknown } {
+  return typeof (img as { asset?: { _ref?: string } } | null)?.asset?._ref === 'string'
+}
+
 type Span = { _type: 'span'; text: string; marks?: string[]; _key?: string }
 type PtBlock = {
   _type: 'block' | 'image'
@@ -426,7 +430,7 @@ export default function BlogArticleBody({ post, tocEntries }: { post: BlogPost; 
         <footer style={{ marginTop: 80, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.15)' }}>
           <p className={`${BODY_FONT} text-white/60`} style={{ fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 20 }}>About the author</p>
           <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-            {post.author.avatar && (() => {
+            {hasAsset(post.author.avatar) && (() => {
               const avatarUrl = urlFor(post.author!.avatar!).width(120).height(120).fit('crop').url()
               return (
                 <div style={{

@@ -83,6 +83,10 @@ function formatDate(iso: string) {
  * Map either a Sanity `MediaMention` or a `LocalMention` fallback into
  * a single `Card` shape that the JSX below renders.
  */
+function hasAsset(img: unknown): img is { asset: { _ref: string }; [k: string]: unknown } {
+  return typeof (img as { asset?: { _ref?: string } } | null)?.asset?._ref === 'string'
+}
+
 function toCard(m: MediaMention | LocalMention): Card {
   // LocalMention has a discriminator field
   if ('coverFallback' in m) {
@@ -99,8 +103,8 @@ function toCard(m: MediaMention | LocalMention): Card {
       outletLogoAlt: m.outletName,
     }
   }
-  const cover = m.coverImage ? urlFor(m.coverImage).width(900).height(506).fit('crop').url() : ''
-  const logo = m.outlet?.logo ? urlFor(m.outlet.logo).width(140).height(140).fit('max').url() : undefined
+  const cover = hasAsset(m.coverImage) ? urlFor(m.coverImage).width(900).height(506).fit('crop').url() : ''
+  const logo = hasAsset(m.outlet?.logo) ? urlFor(m.outlet!.logo).width(140).height(140).fit('max').url() : undefined
   return {
     key: m._id,
     title: m.title,

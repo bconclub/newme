@@ -183,7 +183,10 @@ body {
   font-family: var(--font-bricolage);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* clip instead of hidden — hidden implicitly propagates body as the
+     vertical scroll container, so window scroll events never reach Lenis.
+     clip does the same visual clipping without creating a scroll container. */
+  overflow-x: clip;
 }
 
 html.lenis,

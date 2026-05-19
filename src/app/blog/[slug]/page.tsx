@@ -13,6 +13,13 @@ export const revalidate = 60
 
 type SanityImg = { asset?: { _ref?: string }; alt?: string } & Record<string, unknown>
 
+/** Returns true only when the image object has a resolvable Sanity asset ref.
+ *  Images stored without a linked asset (e.g. only _type + alt) cause urlFor()
+ *  to throw — this guard prevents that at every call site. */
+function hasAsset(img: SanityImg | null | undefined): img is SanityImg & { asset: { _ref: string } } {
+  return typeof img?.asset?._ref === 'string' && img.asset._ref.length > 0
+}
+
 export type BlogPost = {
   _id: string
   title: string
@@ -78,7 +85,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogTitle = post.ogTitle ?? title
   const ogDescription = post.ogDescription ?? description
   const ogImageRef = post.ogImage ?? post.coverImage
-  const ogImageUrl = ogImageRef ? urlFor(ogImageRef).width(1200).height(630).fit('crop').url() : undefined
+  const ogImageUrl = hasAsset(ogImageRef) ? urlFor(ogImageRef).width(1200).height(630).fit('crop').url() : undefined
 
   return {
     title: title.includes('NewME') ? title : `${title} | Dr. Pal's NewME`,
@@ -127,9 +134,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = await loadPost(slug)
   if (!post) notFound()
 
-  const coverUrl = post.coverImage ? urlFor(post.coverImage).width(1800).height(1012).fit('crop').url() : null
+  const coverUrl = hasAsset(post.coverImage) ? urlFor(post.coverImage).width(1800).height(1012).fit('crop').url() : null
   const coverAlt = (post.coverImage as { alt?: string } | undefined)?.alt ?? post.title
-  const authorAvatarUrl = post.author?.avatar
+  const authorAvatarUrl = hasAsset(post.author?.avatar)
     ? urlFor(post.author.avatar).width(120).height(120).fit('crop').url()
     : null
   const tocEntries = post.body ? extractTOCHeadings(post.body as unknown[]) : []

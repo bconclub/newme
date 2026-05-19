@@ -2,6 +2,11 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
+
+// ─── Replace this with your actual CRM/webhook endpoint ───────────────────────
+const NEWSLETTER_ENDPOINT = 'https://YOUR_CRM_ENDPOINT_HERE'
+// ──────────────────────────────────────────────────────────────────────────────
 
 // Figma "Group 139" (1:2834) at y=9054, 1920×490. Quick Links + Resources
 // columns are trimmed from the original Figma list — "Your Phase of Care"
@@ -220,43 +225,7 @@ export default function Footer() {
               The input is the green pill itself (placeholder text inside),
               with the button overlapping the right side.
             */}
-            {/* Newsletter form — side-by-side pill on sm+, stacked on mobile */}
-            <form
-              className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0"
-              onSubmit={(e) => e.preventDefault()}
-              style={{ maxWidth: 417 }}
-            >
-              {/* Input — full pill on mobile, left-half of pill on sm+ */}
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 min-w-0 text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none"
-                style={{
-                  fontSize: 14,
-                  background: '#629675',
-                  borderRadius: 9999,
-                  height: 52,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  // On sm+ override to flush against the button
-                }}
-              />
-              {/* Button — full pill on mobile, right-half on sm+ */}
-              <button
-                type="submit"
-                className="shrink-0 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors sm:-ml-10"
-                style={{
-                  height: 52,
-                  paddingLeft: 24,
-                  paddingRight: 24,
-                  borderRadius: 9999,
-                  fontSize: 14,
-                  fontWeight: 500,
-                }}
-              >
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
@@ -295,6 +264,122 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  )
+}
+
+// ─── Newsletter subscription form ────────────────────────────────────────────
+function NewsletterForm() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [errorMsg, setErrorMsg] = useState('')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email) return
+    setStatus('loading')
+    setErrorMsg('')
+    try {
+      const res = await fetch(NEWSLETTER_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (!res.ok) throw new Error(`Server responded with ${res.status}`)
+      setStatus('success')
+      setEmail('')
+    } catch (err) {
+      console.error('[Newsletter]', err)
+      setErrorMsg('Something went wrong — please try again.')
+      setStatus('error')
+    }
+  }
+
+  // ── Success state ────────────────────────────────────────────────────────
+  if (status === 'success') {
+    return (
+      <div
+        className="mt-5 flex items-center gap-3"
+        style={{ maxWidth: 417 }}
+      >
+        {/* Checkmark circle */}
+        <span
+          className="shrink-0 flex items-center justify-center rounded-full bg-[#FEF272]"
+          style={{ width: 36, height: 36 }}
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+            <path
+              d="M4 9.5l3.5 3.5L14 6"
+              stroke="#173B39"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+        <p
+          className="text-white font-[family-name:var(--font-urbanist)]"
+          style={{ fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)', lineHeight: 1.5 }}
+        >
+          You&apos;re in! Check your inbox for a confirmation.
+        </p>
+      </div>
+    )
+  }
+
+  // ── Idle / loading / error state ─────────────────────────────────────────
+  return (
+    <>
+      {/* Newsletter form — side-by-side pill on sm+, stacked on mobile */}
+      <form
+        className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0"
+        onSubmit={handleSubmit}
+        style={{ maxWidth: 417 }}
+      >
+        {/* Input — full pill on mobile, left-half of pill on sm+ */}
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email address"
+          disabled={status === 'loading'}
+          className="flex-1 min-w-0 text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none disabled:opacity-60"
+          style={{
+            fontSize: 14,
+            background: '#629675',
+            borderRadius: 9999,
+            height: 52,
+            paddingLeft: 20,
+            paddingRight: 20,
+          }}
+        />
+        {/* Button — full pill on mobile, right-half on sm+ */}
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="shrink-0 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors sm:-ml-10 disabled:opacity-60"
+          style={{
+            height: 52,
+            paddingLeft: 24,
+            paddingRight: 24,
+            borderRadius: 9999,
+            fontSize: 14,
+            fontWeight: 500,
+          }}
+        >
+          {status === 'loading' ? 'Sending…' : 'Subscribe'}
+        </button>
+      </form>
+      {/* Error message */}
+      {status === 'error' && (
+        <p
+          className="mt-2 font-[family-name:var(--font-poppins)] text-white/70"
+          style={{ fontSize: 13 }}
+        >
+          {errorMsg}
+        </p>
+      )}
+    </>
   )
 }
 

@@ -30,9 +30,13 @@ function formatDate(iso: string) {
   return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
+function hasAsset(img: unknown): img is { asset: { _ref: string }; [k: string]: unknown } {
+  return typeof (img as { asset?: { _ref?: string } } | null)?.asset?._ref === 'string'
+}
+
 function toCard(p: BlogPostCard): Card {
-  const cover = p.coverImage ? urlFor(p.coverImage).width(900).height(506).fit('crop').url() : ''
-  const avatar = p.author?.avatar ? urlFor(p.author.avatar).width(96).height(96).fit('crop').url() : undefined
+  const cover = hasAsset(p.coverImage) ? urlFor(p.coverImage).width(900).height(506).fit('crop').url() : ''
+  const avatar = hasAsset(p.author?.avatar) ? urlFor(p.author!.avatar!).width(96).height(96).fit('crop').url() : undefined
   return {
     key: p._id,
     title: p.title,
