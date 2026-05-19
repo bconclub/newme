@@ -295,8 +295,12 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-[#013E37] flex flex-col items-center justify-center gap-7 lg:hidden"
+            className="fixed inset-0 z-40 bg-[#013E37] overflow-y-auto lg:hidden"
           >
+          {/* Inner wrapper: centres content when it fits, scrolls when it
+              doesn't. pt-24 clears the fixed header (logo + close button)
+              so the first item (Home) never gets hidden behind it. */}
+          <div className="flex flex-col items-center justify-center gap-7 min-h-full py-24 px-5">
             {/* Mobile menu — Resources retains its parent label and the
                 Blog / Media / FAQ sublinks render INLINE underneath at the
                 same visual stack (smaller font + slightly muted colour so
@@ -373,6 +377,7 @@ export default function Header() {
             >
               Start My Assessment
             </MotionLink>
+          </div>{/* end inner centering wrapper */}
           </motion.div>
         )}
       </AnimatePresence>

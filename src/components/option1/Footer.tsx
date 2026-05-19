@@ -220,32 +220,33 @@ export default function Footer() {
               The input is the green pill itself (placeholder text inside),
               with the button overlapping the right side.
             */}
+            {/* Newsletter form — side-by-side pill on sm+, stacked on mobile */}
             <form
-              className="mt-5 relative flex items-center"
+              className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0"
               onSubmit={(e) => e.preventDefault()}
-              style={{
-                background: '#629675',
-                borderRadius: 9999,
-                height: 64,
-                paddingLeft: 24,
-                paddingRight: 4,
-                maxWidth: 417,
-              }}
+              style={{ maxWidth: 417 }}
             >
+              {/* Input — full pill on mobile, left-half of pill on sm+ */}
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 min-w-0 bg-transparent text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none"
+                className="flex-1 min-w-0 text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none"
                 style={{
                   fontSize: 14,
-                  paddingRight: 8,
+                  background: '#629675',
+                  borderRadius: 9999,
+                  height: 52,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  // On sm+ override to flush against the button
                 }}
               />
+              {/* Button — full pill on mobile, right-half on sm+ */}
               <button
                 type="submit"
-                className="shrink-0 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors"
+                className="shrink-0 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors sm:-ml-10"
                 style={{
-                  height: 56,
+                  height: 52,
                   paddingLeft: 24,
                   paddingRight: 24,
                   borderRadius: 9999,
