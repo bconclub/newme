@@ -279,6 +279,21 @@ function PhaseSection({ phase }: { phase: Phase }) {
             >
               {phase.bannerBody}
             </p>
+            <a
+              href="/assessment"
+              className="font-[family-name:var(--font-bricolage)] inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium transition-[background-color,box-shadow] duration-300 hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)]"
+              style={{
+                marginTop: 'clamp(20px,2.08vw,40px)',
+                height: 'clamp(44px,3.33vw,64px)',
+                paddingLeft: 'clamp(18px,1.46vw,28px)',
+                paddingRight: 'clamp(18px,1.46vw,28px)',
+                fontSize: 'clamp(14px,1.04vw,20px)',
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              Get Assessed
+            </a>
           </div>
         </motion.div>
       </div>
