@@ -4,44 +4,28 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
+export type TestimonialItem = {
+  quote: string
+  name: string
+  pathway: string
+  avatar: string | null
+}
+
 // Figma 1:6293 (default/inactive) = backdrop-blur-10.25px, 2px solid white
 // border, gradient (white 0.20→0) + white 0.30, rounded-34. Behind each card
 // sits Figma 1:6296 (Ellipse 55) — a soft sage-green radial that the
 // backdrop-blur diffuses, giving the card its green undertone.
 // Figma 1:6292 (active/center) = solid white surface, dark text, sage byline.
-const testimonials = [
-  {
-    quote:
-      'After years of poor gut health and binge eating, my fasting blood sugar improved and my cravings completely stopped. Physically and mentally, I feel much better now.',
-    name: 'Nithya',
-    pathway: 'GI Core Pathway',
-    avatar: '/testimonials/nithya.jpg',
-  },
-  {
-    quote:
-      'In 2 years, my HbA1c dropped from 6.1 to 5.7, LDL from 146 to 86, and my liver size reduced from 16.7 cm to 14.0 cm. I feel healthier and more confident than ever.',
-    name: 'Karan',
-    pathway: 'Sustain Pathway',
-    avatar: '/testimonials/kat.jpg',
-  },
-  {
-    quote:
-      "From being worried about diabetes and fatty liver, I've seen my HbA1c come down from 7.2 to 5.7 and my blood sugar stabilize. I'm now navigating my health with much more confidence.",
-    name: 'Thamarai',
-    pathway: 'Rebuild Pathway',
-    avatar: '/testimonials/thamarai.jpg',
-  },
-]
 
 const EASE = [0.22, 1, 0.36, 1] as const
-const N = testimonials.length // 3
-// Duplicate the array so the carousel can cycle for several minutes before
-// needing to snap back to the start. 12 copies × 3 = 36 visible card slots.
 const COPIES = 12
-const TOTAL = COPIES * N
 const ADVANCE_MS = 5000
 
-export default function Testimonials() {
+export default function Testimonials({ initialTestimonials }: { initialTestimonials?: TestimonialItem[] }) {
+  // Parent guarantees at least 1 entry; section is rendered conditionally upstream.
+  const testimonials = initialTestimonials ?? []
+  const N = testimonials.length
+  const TOTAL = COPIES * N
   // `cycle` is a monotonically increasing index into the duplicated card
   // array. On desktop the active card is the CENTER one (cycle + 1) — 3
   // cards visible. On mobile only one card fits, so the active card is the
@@ -53,6 +37,8 @@ export default function Testimonials() {
   const trackRef = useRef<HTMLDivElement>(null)
   const firstCardRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const dragStartX = useRef(0)
+  const isDragging = useRef(false)
 
   // Active offset: 0 on mobile (leftmost), 1 on desktop (middle of 3 visible).
   const activeOffset = isMobile ? 0 : 1
@@ -186,15 +172,34 @@ export default function Testimonials() {
           className="relative overflow-hidden"
           style={{
             marginTop: 'clamp(40px, calc(64 / 1920 * 100vw), 64px)',
-            // Extend the viewport edge-to-edge so the slide-in / slide-out
-            // cards appear to come from the section boundary.
             marginLeft: 'calc(-1 * clamp(20px, calc(60 / 1920 * 100vw), 60px))',
             marginRight: 'calc(-1 * clamp(20px, calc(60 / 1920 * 100vw), 60px))',
             paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
             paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
             paddingTop: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
             paddingBottom: 'clamp(12px, calc(24 / 1920 * 100vw), 24px)',
+            cursor: 'grab',
+            userSelect: 'none',
+            touchAction: 'pan-y',
           }}
+          onPointerDown={(e) => {
+            dragStartX.current = e.clientX
+            isDragging.current = true
+          }}
+          onPointerUp={(e) => {
+            if (!isDragging.current) return
+            isDragging.current = false
+            const delta = dragStartX.current - e.clientX
+            if (Math.abs(delta) < 40) return
+            const currentOrig = ((cycle + activeOffset) % N + N) % N
+            if (delta > 0) {
+              goTo((currentOrig + 1) % N)
+            } else {
+              goTo((currentOrig - 1 + N) % N)
+            }
+          }}
+          onPointerLeave={() => { isDragging.current = false }}
+          onPointerCancel={() => { isDragging.current = false }}
         >
           <motion.div
             ref={trackRef}
@@ -266,7 +271,7 @@ function TestimonialCard({
   isActive,
   measureRef,
 }: {
-  testimonial: (typeof testimonials)[number]
+  testimonial: TestimonialItem
   isActive: boolean
   measureRef?: React.Ref<HTMLDivElement>
 }) {
@@ -345,14 +350,32 @@ function TestimonialCard({
             paddingTop: 'clamp(20px, calc(40 / 1920 * 100vw), 40px)',
           }}
         >
-          <div
-            className="rounded-full bg-cover bg-center shrink-0"
-            style={{
-              width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-              height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
-              backgroundImage: `url('${t.avatar}')`,
-            }}
-          />
+          {t.avatar ? (
+            <div
+              className="rounded-full bg-cover shrink-0"
+              style={{
+                width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                backgroundImage: `url('${t.avatar}')`,
+                backgroundPosition: '50% 15%',
+              }}
+            />
+          ) : (
+            <div
+              className="rounded-full shrink-0 flex items-center justify-center font-[family-name:var(--font-bricolage)]"
+              style={{
+                width: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                height: 'clamp(48px, calc(64 / 1920 * 100vw), 64px)',
+                background: 'rgba(254,242,114,0.18)',
+                border: '1.5px solid rgba(254,242,114,0.35)',
+                color: '#FEF272',
+                fontSize: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
+                fontWeight: 600,
+              }}
+            >
+              {t.name.charAt(0)}
+            </div>
+          )}
           <div>
             <p
               className="testimonial-name font-[family-name:var(--font-bricolage)]"
@@ -422,8 +445,10 @@ function RatingBlock({
   label: string
   trustpilot?: boolean
 }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center px-2 sm:px-6">
+  // The Trustpilot block becomes a clickable link to the public review page.
+  // Non-Trustpilot blocks (program-completion rate, etc.) remain plain text.
+  const inner = (
+    <>
       <div className="flex items-center gap-[2px] sm:gap-1">
         {[0, 1, 2, 3, 4].map((i) => (
           <Star key={i} size="clamp(10px, calc(14 / 1920 * 100vw), 14px)" />
@@ -467,6 +492,26 @@ function RatingBlock({
           Trustpilot
         </div>
       )}
+    </>
+  )
+
+  if (trustpilot) {
+    return (
+      <a
+        href="https://www.trustpilot.com/review/drpalsnewme.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Read our reviews on Trustpilot"
+        className="flex flex-col items-center justify-center text-center px-2 sm:px-6 transition-opacity hover:opacity-80"
+        style={{ textDecoration: 'none' }}
+      >
+        {inner}
+      </a>
+    )
+  }
+  return (
+    <div className="flex flex-col items-center justify-center text-center px-2 sm:px-6">
+      {inner}
     </div>
   )
 }

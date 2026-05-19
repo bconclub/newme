@@ -66,7 +66,7 @@ const PHASES: Phase[] = [
       { num: '07', title: 'Movement Readiness & Activity Support', desc: 'Physiotherapy screening and access to guided movement through the NewME Virtual Gym.' },
       { num: '08', title: 'Education & Clinical Guidance', desc: 'Monthly sessions with Dr. Pal and ongoing support to build sustainable gut-friendly habits.' },
     ],
-    bannerImg: '/images/pathways/gi-core-banner.jpg',
+    bannerImg: '/pathways/GI%201%20vertical%20banners.webp',
     bannerHeading: 'Who Is Prescribed The GI CORE Pathway?',
     bannerBody: 'The GI Core pathway is prescribed for individuals who require structured support to identify triggers, stabilize digestion, and build sustainable dietary and lifestyle patterns.',
     bannerOverlay: 'rgba(1,62,55,0.47)',
@@ -97,7 +97,7 @@ const PHASES: Phase[] = [
       { num: '06', title: 'Symptom Tracking & Clinical Monitoring', desc: 'Close tracking of symptoms with continuous recalibration of care, and access to guided sessions at NewME Virtual Gym.' },
       { num: '07', title: 'Movement & Recovery Integration', desc: 'Physiotherapist screening for fitness readiness assessment and safe exercise guidance.' },
     ],
-    bannerImg: '/images/pathways/gi-advanced-banner.jpg',
+    bannerImg: '/pathways/GI%202%20vertical%20banners.webp',
     bannerHeading: 'Who Is Prescribed The GI ADVANCED Pathway?',
     bannerBody: 'The GI Advanced pathway is prescribed for individuals with complex or long-standing digestive conditions who require intensive support, closer clinical supervision, and coordinated care.',
     bannerOverlay: 'rgba(1,62,55,0.57)',
@@ -313,9 +313,12 @@ export default function GIPathwayPage() {
       <PageHero
         heading="GastroIntestinal Care Pathways"
         subheading="Our two GI pathways are designed to address digestive dysfunction through structured dietary protocols, clinical oversight, and continuous symptom monitoring. Each pathway reflects a different level of gastrointestinal complexity, from moderate instability to long-standing or chronic conditions."
-        overlayImage="/images/pathways/gi-anatomy.png"
+        overlayImage="/pathways/Gastro.webp"
         overlayImageAlt="Glowing digestive system illustration"
-        overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
+        // GI anatomy fills the card edge-to-edge and bleeds slightly past
+        // the bottom — matches the Figma reference (gut organs are tall
+        // and intentionally extend past the lower card boundary).
+        overlayStyle={{ right: '-2%', bottom: '-12%', height: '120%' }}
         pathwayBlobs
         cta={<PathwayTabs active="/pathways/gi" />}
       />

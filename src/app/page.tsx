@@ -8,8 +8,52 @@ import Pathways from '@/components/option1/Pathways'
 import StructuredCare from '@/components/option1/StructuredCare'
 import Testimonials from '@/components/option1/Testimonials'
 import Footer from '@/components/option1/Footer'
+import type { TestimonialItem } from '@/components/option1/Testimonials'
 
-export default function Home() {
+// Force this page to be rendered dynamically on every request so the
+// testimonials carousel always reflects what's currently in Sanity. The
+// shared `client` is created with `useCdn: true` (right default for most
+// queries) but the home page needs fresh data after content edits, and a
+// per-fetch override on `client.fetch` is not respected by @sanity/client
+// — `useCdn` is locked at client creation. We work around that below by
+// building a CDN-free client inline just for this query.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+async function loadTestimonials(): Promise<TestimonialItem[]> {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) return []
+  try {
+    const [{ createClient }, { testimonialsQuery }, { urlFor }] = await Promise.all([
+      import('next-sanity'),
+      import('@/lib/sanity/queries'),
+      import('@/lib/sanity/image'),
+    ])
+    // CDN-free client → bypass the Sanity CDN's ~60s cache so we get the
+    // latest published testimonials (Abilash/Ramya/Jyoti/Sai Deepthi/Kavita
+    // had `personAvatar` attached after the previous build).
+    const freshClient = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+      apiVersion: process.env.SANITY_API_VERSION || '2024-10-01',
+      useCdn: false,
+      perspective: 'published',
+    })
+    const docs = await freshClient.fetch(testimonialsQuery)
+    return docs.map((d: any) => ({
+      quote: d.quote,
+      name: d.personName,
+      pathway: d.personRole ?? '',
+      avatar: d.personAvatar
+        ? urlFor(d.personAvatar).width(120).height(120).fit('crop').url()
+        : null,
+    }))
+  } catch {
+    return []
+  }
+}
+
+export default async function Home() {
+  const sanityTestimonials = await loadTestimonials()
   return (
     <>
       <Header />
@@ -38,7 +82,9 @@ export default function Home() {
           <Pillars />
           <Pathways />
           <StructuredCare />
-          <Testimonials />
+          {sanityTestimonials.length > 0 && (
+            <Testimonials initialTestimonials={sanityTestimonials} />
+          )}
         </div>
       </main>
       <Footer />

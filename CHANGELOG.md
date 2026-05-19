@@ -1,5 +1,245 @@
 # Changelog
 
+## 2026-05-15 · Pathway hero overlay sizing — per-pathway, not uniform
+
+- **`src/app/pathways/metabolic/page.tsx`**: overlayStyle `{ right: 5%, bottom: 8%, height: 85% }` — thyroid stays smaller and fully contained inside the card (matches Figma — only metabolic is meant to be smaller)
+- **`src/app/pathways/gi/page.tsx`**: overlayStyle `{ right: -2%, bottom: -12%, height: 120% }` — gut organs fill the card edge-to-edge and bleed slightly past the bottom
+- **`src/app/pathways/continuity/page.tsx`**: overlayStyle `{ right: -2%, bottom: -12%, height: 120% }` — body silhouette fills edge-to-edge and bleeds past the bottom
+- Previous commit had all three at the smaller value, which was wrong — only metabolic should be small per Figma
+
+## 2026-05-15 · Pathway hero anatomy: seat the overlays inside the card (no more bleed)
+
+- **All three pathway pages** (`metabolic`, `gi`, `continuity`): `overlayStyle` changed from `{ right: '-5%', bottom: '-15%', height: '125%' }` to `{ right: '5%', bottom: '8%', height: '80%' }`. Previous values made the anatomy 125% of the card height and bled it past the top / right / bottom edges (the thyroid in particular was getting visibly clipped on the right). The new values seat the anatomy fully inside the card with breathing room on every side — matches the Figma reference
+
+## 2026-05-15 · Pathway hero anatomy overlays: swap to new pre-cropped images
+
+- New assets in `public/pathways/`:
+  - `Metabolic care.webp` (thyroid)
+  - `Gastro.webp` (digestive system)
+  - `Continuity.webp` (upper body / nervous system)
+- **`src/app/pathways/metabolic/page.tsx`**: overlayImage → `/pathways/Metabolic%20care.webp`
+- **`src/app/pathways/gi/page.tsx`**: overlayImage → `/pathways/Gastro.webp`
+- **`src/app/pathways/continuity/page.tsx`**: overlayImage → `/pathways/Continuity.webp`
+- Old `/images/pathways/{metabolic,gi,continuity}-anatomy.png` files left in place but no longer referenced. The new images are cropped to a consistent aspect ratio so all 3 pathway heroes now render at the same horizontal footprint without per-page CSS tweaks
+
+## 2026-05-15 · Revert continuity overlay maxWidth cap
+
+- **`src/app/pathways/continuity/page.tsx`**: Reverted the `maxWidth` cap added in the previous commit. The cap shrank the body silhouette but introduced its own clipping at the right edge. All 3 pathway pages are back to the same overlay recipe (`right: -5%, bottom: -15%, height: 125%`). The remaining size discrepancy between the 3 anatomy images is a source-asset problem — they need to be re-cropped to a consistent aspect ratio, then dropped into `public/pathways/`
+
+## 2026-05-15 · Continuity pathway hero: cap overlay width so all 3 pathway heroes read at the same size
+
+- **`src/app/pathways/continuity/page.tsx`**: Added `maxWidth: 'clamp(280px, calc(560 / 1920 * 100vw), 560px)'` to the anatomy overlay style. The continuity anatomy is a wide upper-body silhouette, so at `height: 125%, width: auto` (the same recipe Metabolic and GI use) it ended up ~45% of the card width — visibly larger than the narrow thyroid and the medium GI organ overlays on the sibling pages. Capping the width brings all three pathway heroes to the same horizontal footprint (~30% of card width at desktop 1920w, scaling down on smaller viewports)
+
+## 2026-05-15 · Update pathway pricing across the assessment
+
+- **`src/assessment-app/data/pathways.ts`**: `PRICING` and `PRICING_CENTS` updated to the new figures
+  - Reset: $200 → **$249 / month** (4 weeks)
+  - Rebuild: **$699 / 3 months** (unchanged)
+  - Sustain: $999 / 6 months display kept, cents corrected from 89900 → **99900**
+  - GI Core: $300 / month → **$399 / month**
+  - GI Advanced: $599 / month → **$699 / month**
+  - $/day labels recomputed for every changed plan
+- **`src/assessment-app/constants/zohoCheckout.ts`**: `GI_BILLING` toggles updated
+  - GI Core monthly: $300 → **$399** (day $13.30); 3-month upfront: $849 → **$1,099** (day $12.21, savings $98)
+  - GI Advanced monthly: $599 → **$699** (day $23.30); 3-month upfront: $1,699 → **$1,999** (day $22.21, savings $98)
+  - Inline TODO notes on the monthly Zoho URLs updated to reflect the new amounts that those Zoho pages need to be priced at
+- Every customer-facing surface that reads from `PRICING` (`ResultsPage`, `OrderPage`, etc.) picks up the new numbers automatically — no per-page edits needed
+
+## 2026-05-15 · Team page: wire LinkedIn profile URLs (hide icon when absent)
+
+- **`src/app/team/page.tsx`**:
+  - Added optional `linkedin?: string` field to `TeamMember`. URLs added for Dr. Pal, Shakeela Ranjithkumar, Karthik Ravi, Gayatri Rajamani, Namratha Nataraj
+  - Other members (Priya, Rashmi, Devi, Ashwini, Dr. Indira) intentionally left without — the icon is hidden entirely on those cards rather than rendering a dead-looking inert icon
+  - `SocialIcons` now takes a `linkedin` prop, returns `null` if missing, and wraps the icon in an `<a target="_blank" rel="noopener noreferrer">` with `aria-label="LinkedIn profile"` when present
+- User-facing: clicking the LinkedIn icon on Dr. Pal / Shakeela / Karthik / Gayatri / Namratha now opens their profile in a new tab. Other team cards no longer show a clickable-looking but inert icon
+
+## 2026-05-15 · Header: active-page indicator in desktop + mobile nav
+
+- **`src/components/option1/Header.tsx`**:
+  - Header now calls `usePathname()` to know which route is live
+  - Added `isLinkActive(link, pathname)` helper. Home matches exactly; other top-level routes match on prefix so nested pages (e.g. `/pathways/metabolic`) still light up their parent tab; the Resources dropdown is active when the path matches the parent OR any sublink (`/blog`, `/media`, `/faq`)
+  - Active desktop link: text colour shifts to gold `#FEF272` and a 2px gold underline appears beneath it. The underline uses `motion.span` with `layoutId="nav-active-underline"` so it slides between tabs on client-side route changes instead of fading in/out
+  - Active sublinks inside the Resources dropdown also get the gold colour + a subtle `bg-white/[0.06]` highlight
+  - Mobile menu picks up the same active gold colour for both top-level links and sublinks
+  - Every active link now also exposes `aria-current="page"` for assistive tech
+
+## 2026-05-15 · Assessment intro: swap social-proof avatars to real testimonials, drop Nithya
+
+- **`src/assessment-app/pages/IntroPage/IntroPage.tsx`**: `AVATARS` array now references real testimonial photos (`abilash.webp`, `ramya.webp`, `kat.jpg`, `thamarai.jpg`, `kavitha.webp`) instead of the previous mix of `/assessment/01{1,2,3}.webp` stock photos + Nithya/Thamarai. Nithya was dropped because her photo is reused as an author byline elsewhere — keeping her in the "10,000+ people have found their clinical pathway" strip made it read as "authors" instead of "patients"
+
+## 2026-05-15 · Round of small fixes: footer socials, team LinkedIn-only, Trustpilot link, HIW assessment links, pillars rename, IntroPage avatar, VC phone
+
+- **`src/components/option1/Footer.tsx`**: replaced Dr. Pal's personal social channels with the official NewME accounts:
+  - Facebook → `https://www.facebook.com/share/1CzFt2R4SR/?mibextid=wwXIfr`
+  - Instagram → `https://www.instagram.com/dr.pals_newme?igsh=Y3U4NXllMHZjdm9u&utm_source=qr`
+  - Added LinkedIn (`https://www.linkedin.com/company/newme-drpal/`) — previously absent
+  - X and YouTube retained
+- **`src/app/team/page.tsx`**:
+  - "Shakeela Ranjithkum" → "Shakeela Ranjithkumar" (correct surname)
+  - `SocialIcons` now renders LinkedIn only — Facebook / X / Instagram icons removed per team card (team members keep professional presence on LinkedIn only)
+- **`src/components/option1/Testimonials.tsx`**: `RatingBlock` with `trustpilot` flag is now an `<a>` linking to `https://www.trustpilot.com/review/drpalsnewme.com` (target `_blank`, `rel="noopener noreferrer"`). The non-Trustpilot rating block remains plain text
+- **`src/assessment-app/pages/IntroPage/IntroPage.tsx`**: small Dr. Pal portrait chip now uses `/Dr Pal.webp` (the asset used on the home `DrPal` section) instead of `/dr-pal-portrait.png` — keeps the imagery consistent with the home page
+- **`src/app/virtual-clinic/VCSections.tsx`**: virtual-clinic WhatsApp button updated — display value `+91 97906 27006` and href `https://wa.me/919790627006` (was `99441 27006`)
+- **`src/components/option1/HIWHero.tsx`**: both the arrow link and the "Start Your Assessment" pill in the How It Works hero now point to `/assessment` (were going to `#hiw-comparison` and `/pathways` respectively)
+- **`src/components/option1/HIWCTA.tsx`**: bottom-of-page "Start Your Assessment" pill points to `/assessment` (was `/pathways`)
+- **`src/components/option1/Pillars.tsx`**: home-page section heading "The 8 Pillars of Health" → "Foundations of Good Health"
+
+## 2026-05-15 · Home: force-dynamic + inline CDN-free client for testimonials
+
+- **`src/app/page.tsx`**:
+  - Replaced `revalidate = 60` with `dynamic = 'force-dynamic'` + `revalidate = 0` — the home is now rendered fresh on every request. Previous ISR window meant first viewers after a Sanity edit got the stale static HTML and we were chasing 60s windows
+  - Replaced the `client.fetch(..., { useCdn: false })` per-fetch override (which @sanity/client doesn't actually respect — `useCdn` is locked at client creation) with an inline `createClient({ useCdn: false })` built just for this query. Guarantees we hit `api.sanity.io` directly, bypassing the CDN's ~60s cache
+- User-facing: testimonial avatars will now appear immediately after the deploy lands — no more waiting on cache windows. Future Sanity edits to testimonial photos / quotes also propagate on the next request
+
+## 2026-05-15 · Home: ISR + bypass Sanity CDN so testimonial photos appear
+
+- **`src/app/page.tsx`**:
+  - Added `export const revalidate = 60` so the statically-generated home page rebuilds itself every minute, picking up Sanity edits without needing a fresh deploy
+  - `loadTestimonials()` now calls `client.fetch(query, {}, { useCdn: false })` to bypass the Sanity CDN at build/revalidation time — the CDN's ~60s cache was serving stale "no avatar" rows even though the live Sanity docs already had `personAvatar` attached
+- Diagnostics: `scripts/check-testimonials.mjs` (new) lists every testimonial in Sanity with its resolved avatar URL — used to verify the fix
+- User-facing: Abilash, Ramya, Jyoti, Sai Deepthi, Kavita avatars will appear within ~60s of the deploy reaching production (no longer stuck on initial-letter placeholders)
+
+## 2026-05-15 · SEO metadata for route segments + .gitignore env hardening
+
+- **`.gitignore`**: added `.env*.local` so any `.env.local`, `.env.development.local` etc. stay out of git (defensive — Next already gitignores `.env*` by default but this is explicit)
+- **`src/app/contact/layout.tsx`** (new): adds `metadata` (title + description) for `/contact`
+- **`src/app/faq/layout.tsx`** (new): adds `metadata` for `/faq`
+- **`src/app/team/layout.tsx`** (new): adds `metadata` for `/team` (NewME Care Team)
+- **`src/app/pathways/layout.tsx`** (new): adds `metadata` for the parent `/pathways` page
+- **`src/app/pathways/metabolic/layout.tsx`** (new): adds `metadata` for `/pathways/metabolic`
+- **`src/app/pathways/gi/layout.tsx`** (new): adds `metadata` for `/pathways/gi`
+- **`src/app/pathways/continuity/layout.tsx`** (new): adds `metadata` for `/pathways/continuity`
+- User-facing: each route now ships a proper `<title>` and meta-description for search engines and social previews
+
+## 2026-05-15 · Add branded 404 page
+
+- **`src/app/not-found.tsx`** (new): App Router global 404. Composes the `.newme-page` shell + atmospheric ellipse blobs (same family as the home) so the page sits inside the brand world rather than falling back to a stock Next page. Centered glass card with the big "404" headline, "The requested page could not be found." body, and a white "Back to Home" pill linking to `/`
+
+## 2026-05-15 · GI card images on home + FAQ page redesign
+
+- **`src/components/option1/Pathways.tsx`**: GI Core and GI Advanced cards on the home Pathways carousel now use `/home/GI Core.webp` and `/home/GI Advanced.webp` (were sharing placeholder paths)
+- **`src/app/faq/page.tsx`**: rebuilt the FAQ layout to match the reference
+  - Replaced the centered stacked-sections layout with a 2-column grid: section nav on the left (sticky on desktop, stacks on mobile), accordion content on the right
+  - Active section name turns gold; clicking a section swaps the visible content and auto-opens the first item (page never reads "empty" after category change)
+  - Question text turns gold when its panel is open
+  - Replaced the circular-bordered +/− icons with borderless +/− glyphs that match the design reference
+
+## 2026-05-15 · HIW comparison parity + team name fixes + continuity card images + team-card half-panel on desktop
+
+- **`src/components/option1/HIWComparison.tsx`**: refactored the right "NewME Approach" card to mirror the home StructuredCare structure exactly — outer `motion.div` owns the scroll-entry (`scale: 0.88 → 1`, `opacity: 0 → 1`, 0.8s ease), inner card owns only the click-to-swap `animate`. Previously the entry and the click state were on the SAME `motion.div`, so Framer's `animate` clobbered `whileInView` the moment the parent re-rendered with `active` and the entry pop never read. Now click-to-swap + entry animation behave identically to the home page section
+- **`src/app/team/page.tsx`**:
+  - Names: "Shakeela" → "Shakeela Ranjithkum"; "Reshmi Sinha" → "Rashmi Sinha" (corrected spelling)
+  - Desktop team card: inset panel now opens to BOTTOM HALF only (`top: 52%`) so the face stays visible above the panel; photo dim reduced to `brightness(0.95)` on desktop hover. Mobile/touch behaviour unchanged — panel still fills the card as before
+- **`src/components/option1/Pathways.tsx`**: continuity-pathway cards on the home Pathways carousel now use the new images: NewME 360 → `/home/NEwME 360.webp`, NewME Movement → `/home/NEw ME MOvement.webp` (was sharing placeholder paths with the Metabolic cards by index, which would have shown the same image on Reset and NewME 360)
+
+## 2026-05-15 · Contact page: remove duplicate atmospheric blobs in body
+
+- **`src/app/contact/page.tsx`**: Removed the ContactBody's own atmospheric blobs (green-gradient blob, yellow blob, noise overlay). They created a visible green wash that didn't exist in the area above (around the hero card), producing a noticeable horizontal seam between the hero section and the body. The page already has the global `.newme-page` background, so the body now reads continuously with the hero zone
+
+## 2026-05-15 · Image swaps: home metabolic pathway cards + contact hero
+
+- **`src/components/option1/Pathways.tsx`**: Reset / Rebuild / Sustain card images on the home pathway carousel now use `/home/reset.webp`, `/home/rebuild.webp`, `/home/sustain.webp` (replaces the placeholder /how it works/ assets that were standing in)
+- **`src/app/contact/page.tsx`**: contact-page hero image switched from `/clinic/virtual-clinic-hero.webp` to `/contact/contact us opt1.webp` (URL-encoded space)
+
+## 2026-05-15 · HIW comparison card now matches home behavior
+
+- **`src/components/option1/HIWComparison.tsx`**: removed the mobile-stack layout (`flex flex-col md:flex-row`) — the comparison cards are now always side-by-side at every breakpoint, matching `StructuredCare` on the home page. The click-to-swap scale/dim was effectively invisible on mobile because users only saw one card at a time
+- Converted the `md:`-only Tailwind utilities (`md:flex-[…]`, `md:mt-[…]`, `md:h-[…]`, `md:ml-[…]`, `mt-4`) to single inline `style` values that apply at all widths
+- Switched from fixed `height` to `minHeight` so cards still match the home pattern (home uses `minHeight` and `flex: '… 1 0'`)
+- User-facing: click-to-swap now reads correctly on mobile — clicking either card brings it forward, dims the other
+
+## 2026-05-15 · Image swaps: RESET banner + "why starting early matters"
+
+- **`src/app/pathways/metabolic/page.tsx`**: RESET prescription banner → `/pathways/MC 3 Inside vertical banners.webp` (was `/images/pathways/reset-banner.jpg`)
+- **`src/components/option1/HIWWhyEarly.tsx`**: "Why starting early matters" image → `/how it works/why starting early matters.webp` (was the typo'd `Why astarting early matters.webp`)
+
+## 2026-05-15 · Unify hero card height across pathway pages
+
+- **`src/components/option1/PageHero.tsx`**: Changed the card sizing from `minHeight` → `height` with floor `560px` and the same `clamp(560px, calc(694/1880 * 100vw), 694px)` formula. Previously each pathway hero (Continuity / Metabolic / GI) grew to fit its own content length, which made the three sibling cards visually different. Now every PageHero-based page renders the exact same card dimensions — only the content inside changes
+- User-facing: the Continuity / Metabolic / GI hero cards are now the same size; no more drift
+
+## 2026-05-15 · GI pathway: swap both prescription-banner images
+
+- **`src/app/pathways/gi/page.tsx`**: GI Core banner → `/pathways/GI 1 vertical banners.webp`; GI Advanced banner → `/pathways/GI 2 vertical banners.webp`. URL-encoded the spaces. Replaces the old `gi-core-banner.jpg` and `gi-advanced-banner.jpg` refs
+
+## 2026-05-15 · Continuity pathway: swap both prescription-banner images
+
+- **`src/app/pathways/continuity/page.tsx`**: NewME 360 banner now uses `/pathways/cp1 vertical banners.webp`; NewME Movement banner now uses `/pathways/cp 2 vertical banners.webp`. URL-encoded the spaces in each path. Old refs to `/images/pathways/newme360-banner.jpg` and `/images/pathways/movement-banner.jpg` removed
+
+## 2026-05-15 · Replace Pathways "One System" section image
+
+- **`src/app/pathways/page.tsx`**: `SECTION_IMG` swapped from `/images/pathways/section-clinical.jpg` to `/pathways/one%20system%20multiple%20pathways.webp` (URL-encoded spaces). User-facing image under the "One System. Multiple Pathways." heading is now the new asset
+
+## 2026-05-15 · All testimonial avatars now live in Sanity (single source of truth)
+
+- **`scripts/attach-testimonial-avatars.mjs`**: New one-off — finds testimonial docs missing `personAvatar`, matches them against local files via the same normalized-prefix rule used previously (`Jyoti`→`jyothi.webp`, `Sai Deepthi`→`sai deepti.webp`, etc.), uploads each as a Sanity asset, and patches the doc. Idempotent — re-runs skip already-attached docs
+- Ran the script: patched 5 docs (Sai Deepthi, Kavita, Jyoti, Abilash, Ramya)
+- **`page.tsx`**: Removed `LOCAL_AVATAR_FILES` map and `resolveLocalAvatar()` helper — `loadTestimonials()` now uses *only* the Sanity `personAvatar` field with no local-file fallback
+- User-facing: every testimonial photo is now editable from Sanity Studio; nothing in `/public/testimonials/` is read at runtime anymore
+
+## 2026-05-15 · Move 3 hardcoded testimonials into Sanity, drop fallback list
+
+- **`scripts/seed-testimonials.mjs`**: New one-off script — uploads `nithya.jpg`, `kat.jpg`, `thamarai.jpg` as Sanity assets and creates 3 testimonial documents (Nithya / Karan / Thamarai) with `order: 1, 2, 3`. Idempotent — skips if a doc with the same `personName` already exists. Reads creds from `.env.local`
+- **`Testimonials.tsx`**: Removed the `FALLBACK_TESTIMONIALS` array entirely — the component now renders only what's passed in from Sanity
+- **`page.tsx`**: Section is conditionally rendered only when Sanity returns at least 1 testimonial
+- User-facing: all testimonial content is now editable from `/studio` — no more code edits needed to change Nithya/Karan/Thamarai's quotes or photos
+
+## 2026-05-15 · Fix testimonial avatar fallback matching
+
+- **`page.tsx`**: Replaced exact-name `LOCAL_AVATARS` map with `resolveLocalAvatar()` that normalizes names (lowercase, strip spaces) and matches by prefix — handles spelling variants like "Jyoti"/"Jyothi" and "Sai Deepthi"/"Sai Deepti" that previously fell through to the initial-letter placeholder
+- Encoded the space in `sai%20deepti.webp` so the CSS `url()` value is safe across browsers
+- User-facing: Abilash, Ramya, Kavita, Jyoti, Sai Deepthi testimonials now show their photos
+
+## 2026-05-15 · Testimonial images + drag/touch scroll
+
+- **`page.tsx`**: Added `LOCAL_AVATARS` map — Sanity testimonials without an uploaded `personAvatar` now fall back to matching local `/public/testimonials/*.webp|jpg` files (covers Abilash, Jyothi, Kavita/Kavitha, Ramya, Sai Deepti, plus existing 3)
+- **`Testimonials.tsx`**: Added pointer-event drag handlers to the carousel viewport — left/right swipe now advances or retreats the carousel; works on both touch and mouse; `touchAction: pan-y` preserves vertical page scroll on mobile
+- User-facing: all testimonial avatars now show photos; carousel is swipeable
+
+## 2026-05-15 · Fix testimonial avatar face centering
+
+- **`Testimonials.tsx`**: Changed avatar background-position from `center` to `50% 15%` so portrait photos show the face rather than the chest/body area in the circular avatar crop
+- User-facing: testimonial avatars now frame faces correctly (abc0000)
+
+## 2026-05-15 · Merge branch 14/sai: assessment scroll fix + Lenis skip
+
+- **`SharedResultsPage.tsx`**: removed `bodyVisible` state + scroll listener `getBoundingClientRect` check; `bodyVisible` is now hardcoded `true` — eliminates erratic scroll/layout jumps on the results page
+- **`SmoothScroll.tsx`**: Lenis smooth scroll now also disabled for `/assessment` routes (was only `/studio`) — fixes conflict between Lenis and the assessment SPA's own scroll container (f2d55dc)
+
+## 2026-05-14 20:30 IST · Contact form CRM integration + thank-you page
+
+- **`urlConstants.ts`**: `CRM_LEAD_CONTACT_US` endpoint already present from prior session
+- **`contact/page.tsx`**: removed fake `setTimeout` submit; real `fetch` POST to CRM with `{name, email, message}`; on success `router.push('/contact/thank-you')`; on failure shows inline red error above submit button
+- **`contact/thank-you/page.tsx`**: new page — atmospheric dark design, animated check icon, "Thank You for Reaching Out." heading, `useEffect` fires `dataLayer.push({ event: 'contact_form_submit' })` on mount with commented stubs for GA4 `gtag` and Meta Pixel `fbq`; two CTAs: "Start Free Assessment" → `/assessment`, "Back to Home" → `/`
+- **`Testimonials.tsx`**: fixed TypeScript error — `typeof testimonials` reference replaced with `TestimonialItem` (be4f660)
+
+## 2026-05-14 20:00 IST · Wire Contact Us form to CRM endpoint
+
+- **`urlConstants.ts`**: added `CRM_LEAD_CONTACT_US` endpoint (`/api/crm/lead/contact-us`) to the shared ENDPOINTS map
+- **`contact/page.tsx`**: replaced fake `setTimeout` submit with real `fetch` POST to CRM; added `error` state that shows a fallback message if the request fails; success/sending/error states all handled
+- User-facing: form now stores leads in the CRM on submission; errors surface inline above the Send button
+
+## 2026-05-14 19:30 IST · Fix missing circle icon, Order Summary favicon, and 8-testimonial carousel
+
+- **`public/icons/pillar-1.svg`**: created missing icon file (copy of digestion SVG) — fixes blank yellow circle in WhatIsNewMe section
+- **`OrderPage.tsx`**: replaced `LogoMark` asterisk SVG with `<img src="/favicon.png">` in Order Summary card header — shows actual brand favicon
+- **`Testimonials.tsx`**: exported `TestimonialItem` type; component now accepts `initialTestimonials` prop; Sanity data is merged after the 3 hardcoded testimonials (which keep their photos); no-avatar testimonials render an initials circle (gold ring + first initial)
+- **`page.tsx`**: `Home` is now an async server component that fetches testimonials from Sanity via guarded dynamic import and passes them as props
+- **Sanity**: 5 new testimonials seeded (Abilash, Ramya, Jyoti, Sai Deepthi, Kavita) — carousel now shows 8 total
+
+## 2026-05-14 18:00 IST · Seed 25 media mentions + 4 outlets into Sanity
+
+- **scripts/seed-media-mentions.mjs**: one-time migration script that reads 25 Dr. Pal press articles from the spreadsheet and populates Sanity
+- **4 mediaOutlet docs created**: Indian Express, Times of India, Hindustan Times, Economic Times — each with logo uploaded as a Sanity image asset
+- **25 mediaMention docs created**: all articles from the spreadsheet, with OG cover images scraped and uploaded, article dates from `article:published_time` meta, and excerpts from `og:description`; 8 articles that had no OG image use the outlet logo as fallback cover
+- **User-facing**: /media page now shows 25 real press articles sorted newest-first, each card links out to the original article
+
+## 2026-05-14 · Merge branch 14/sai: shareable results + email update
+
+- **`src/app/assessment/results/page.tsx`**: removed session gate; results page now accepts `?email=` param and is fully shareable as a deep link
+- **`SharedResultsPage`**: new component that fetches results from CRM by email, manages results → order → payment_success screen flow, and handles Zoho payment redirect
+- **Support email** updated from `hello@newme.com` → `support@drpalsnewme.com` in ChatBot, PhaseDetailPage, and QuizPage (two spots)
+
 ## 2026-05-13 · `/assessment/results` deep-link route with session gate
 
 - **New route `src/app/assessment/results/page.tsx`**: returning visitors who completed the quiz can now share/bookmark/revisit their results at `/assessment/results`. Fresh visitors (no session, partial session, or missing CRM lead) are redirected to `/assessment` to start the quiz properly.

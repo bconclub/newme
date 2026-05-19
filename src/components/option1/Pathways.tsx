@@ -5,13 +5,13 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
 
-// Placeholder images — using assets from /public/how it works for now
-// since /images/pathways/* don't exist yet. Will swap to real pathway
-// images later.
+// Metabolic pathway card images (Reset / Rebuild / Sustain) live under
+// /public/home/. Indices 3-4 are placeholders for GI Core/Advanced and
+// continuity pathway cards until those assets are ready.
 const PLACEHOLDER_IMAGES = [
-  '/how%20it%20works/Assesment.png',
-  '/how%20it%20works/Prescription.png',
-  '/how%20it%20works/Structured%20Care.png',
+  '/home/reset.webp',
+  '/home/rebuild.webp',
+  '/home/sustain.webp',
   '/how%20it%20works/MOnitoring.png',
   '/how%20it%20works/Continuity.png',
 ]
@@ -49,13 +49,13 @@ const tabGroups = [
         title: 'GI Core',
         duration: 'Duration: 4 Weeks',
         desc: 'Prescribed for moderate digestive dysfunction impacting overall metabolic stability.',
-        image: PLACEHOLDER_IMAGES[3],
+        image: '/home/GI%20Core.webp',
       },
       {
         title: 'GI Advanced',
         duration: 'Duration: 4 Weeks',
         desc: 'A clinically supervised pathway for complex and/or long-standing gastrointestinal conditions.',
-        image: PLACEHOLDER_IMAGES[4],
+        image: '/home/GI%20Advanced.webp',
       },
     ],
   },
@@ -67,13 +67,13 @@ const tabGroups = [
         title: 'NewME 360',
         duration: 'Duration: 12 / 52 Weeks',
         desc: 'Structured continuation for long-term metabolic & gut stability.',
-        image: PLACEHOLDER_IMAGES[0],
+        image: '/home/NEwME%20360.webp',
       },
       {
         title: 'NewME Movement',
         duration: 'Duration: 12 / 52 Weeks',
         desc: 'A carefully crafted fitness regiment designed to focus on physical performance and strength building.',
-        image: PLACEHOLDER_IMAGES[1],
+        image: '/home/NEw%20ME%20MOvement.webp',
       },
     ],
   },

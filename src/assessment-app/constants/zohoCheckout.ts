@@ -24,9 +24,9 @@ export const ZOHO_PLAN_URLS: Record<string, string> = {
   Rebuild:            "https://zohosecurepay.com/checkout/p4oyii7-248bp9em0dweaq/NewMERebuild",
   Sustain:            "https://zohosecurepay.com/checkout/xfeizzh-1i9wyz5h6nt55x/NewMESustain",
   GI_Core:            "https://zohosecurepay.com/checkout/9vh488g-tjd8k5py37qcvu/NewMEGICORE", // 3-month upfront page
-  GI_Core_monthly:    "https://zohosecurepay.com/checkout/f5uo22n-uk3s9rgejh4nt4/NewMEGICOREMonthly", // TODO: create a separate Zoho page priced at $300
+  GI_Core_monthly:    "https://zohosecurepay.com/checkout/f5uo22n-uk3s9rgejh4nt4/NewMEGICOREMonthly", // ensure Zoho page priced at $399/month
   GI_Advanced:        "https://zohosecurepay.com/checkout/10zp55l-u106qfh7kbxl5k/NewMEGIAdvance3M", // 3-month upfront page
-  GI_Advanced_monthly: "https://zohosecurepay.com/checkout/925hpp9-oe4hpsrwbcn8gw/GIAdvancedMonthly", // TODO: create a separate Zoho page priced at $600
+  GI_Advanced_monthly: "https://zohosecurepay.com/checkout/925hpp9-oe4hpsrwbcn8gw/GIAdvancedMonthly", // ensure Zoho page priced at $699/month
 };
 
 /**
@@ -40,27 +40,27 @@ export const GI_BILLING: Record<string, {
   GI_Core: {
     monthly: {
       key:      "GI_Core_monthly",
-      label:    "$300 / month",
-      dayLabel: "$10.00 / day",
+      label:    "$399 / month",
+      dayLabel: "$13.30 / day",
     },
     upfront: {
       key:      "GI_Core",
-      label:    "$849 / 3 months",
-      dayLabel: "$9.43 / day",
-      savings:   51,   // 3 × $300 − $849
+      label:    "$1,099 / 3 months",
+      dayLabel: "$12.21 / day",
+      savings:   98,   // 3 × $399 − $1,099
     },
   },
   GI_Advanced: {
     monthly: {
       key:      "GI_Advanced_monthly",
-      label:    "$599 / month",
-      dayLabel: "$19.97 / day",
+      label:    "$699 / month",
+      dayLabel: "$23.30 / day",
     },
     upfront: {
       key:      "GI_Advanced",
-      label:    "$1,699 / 3 months",
-      dayLabel: "$18.88 / day",
-      savings:   98,   // 3 × $599 − $1,699
+      label:    "$1,999 / 3 months",
+      dayLabel: "$22.21 / day",
+      savings:   98,   // 3 × $699 − $1,999
     },
   },
 };

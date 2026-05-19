@@ -123,100 +123,117 @@ function FAQHero() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// FAQ accordion sections
+// FAQ — 2-column layout: section nav on the left, accordion on the right.
+// Switching the sidebar swaps the visible section. First item of the new
+// section auto-opens so the page never reads "empty" after a category change.
+// On mobile the nav stacks on top of the content (no sticky behaviour).
 // ─────────────────────────────────────────────────────────────────────────────
 function FAQSections() {
+  const [activeId, setActiveId] = useState<string>(SECTIONS[0].id)
+  const [openIdx, setOpenIdx] = useState<number | null>(0)
+  const active = SECTIONS.find((s) => s.id === activeId) ?? SECTIONS[0]
+
   return (
     <div
       style={{
         position: 'relative',
         zIndex: 1,
-        padding: 'clamp(60px, calc(100 / 1920 * 100vw), 100px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
+        padding:
+          'clamp(60px, calc(100 / 1920 * 100vw), 100px) clamp(20px, calc(60 / 1920 * 100vw), 60px) clamp(80px, calc(140 / 1920 * 100vw), 140px)',
       }}
     >
-      {SECTIONS.map((section, si) => (
-        <div key={section.id}>
-          <FAQSection section={section} index={si} />
-          {/* Figma: full-width hairline dividers at y=1950 (after section 1) and y=3354 (after section 2) */}
-          {si < SECTIONS.length - 1 && (
-            <div
-              style={{
-                borderTop: '1px solid rgba(255,255,255,0.18)',
-                marginTop: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-                marginBottom: 'clamp(40px, calc(80 / 1920 * 100vw), 80px)',
-              }}
+      <div
+        className="mx-auto grid items-start gap-[clamp(32px,calc(64/1920*100vw),96px)] md:grid-cols-[clamp(220px,calc(320/1920*100vw),320px)_1fr]"
+        style={{ maxWidth: 1400 }}
+      >
+        {/* ── Section nav (sidebar) ─────────────────────────────────────── */}
+        <nav
+          aria-label="FAQ sections"
+          className="md:sticky md:top-[clamp(80px,calc(120/1920*100vw),120px)]"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+          }}
+        >
+          {SECTIONS.map((s) => {
+            const isActive = s.id === activeId
+            return (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => {
+                  setActiveId(s.id)
+                  setOpenIdx(0)
+                }}
+                aria-current={isActive ? 'true' : undefined}
+                className="font-[family-name:var(--font-bricolage)] text-left"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  fontWeight: isActive ? 600 : 500,
+                  fontSize: 'clamp(16px, calc(20 / 1920 * 100vw), 22px)',
+                  color: isActive ? '#FEF272' : 'rgba(255,255,255,0.78)',
+                  lineHeight: 1.3,
+                  letterSpacing: '-0.005em',
+                  transition: 'color 0.2s ease',
+                }}
+              >
+                {s.heading}
+              </button>
+            )
+          })}
+        </nav>
+
+        {/* ── Active section content (heading + accordion list) ─────────── */}
+        <motion.div
+          key={active.id}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: EASE }}
+        >
+          <h2
+            className="font-[family-name:var(--font-bricolage)] text-white"
+            style={{
+              fontWeight: 600,
+              fontSize: 'clamp(26px, calc(58 / 1920 * 100vw), 58px)',
+              lineHeight: 1.05,
+              letterSpacing: '-0.01em',
+              marginBottom: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
+            }}
+          >
+            {active.heading}
+          </h2>
+          <p
+            className="font-[family-name:var(--font-urbanist)]"
+            style={{
+              fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)',
+              color: 'rgba(255,255,255,0.7)',
+              lineHeight: 1.55,
+              maxWidth: 720,
+              marginBottom: 'clamp(28px, calc(56 / 1920 * 100vw), 56px)',
+            }}
+          >
+            {active.sub}
+          </p>
+
+          {/* Hairline divider above first item — mirrors design reference */}
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }} />
+
+          {active.items.map((item, i) => (
+            <AccordionItem
+              key={`${active.id}-${i}`}
+              question={item.q}
+              answer={item.a}
+              isOpen={openIdx === i}
+              onToggle={() => setOpenIdx(openIdx === i ? null : i)}
             />
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function FAQSection({
-  section,
-  index,
-}: {
-  section: (typeof SECTIONS)[number]
-  index: number
-}) {
-  const [openIdx, setOpenIdx] = useState<number | null>(index === 0 ? 0 : null)
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.6, ease: EASE, delay: index * 0.05 }}
-      style={{
-        maxWidth: 1193,
-        margin: '0 auto',
-      }}
-    >
-      {/* Section header */}
-      <div style={{ marginBottom: 'clamp(28px, calc(48 / 1920 * 100vw), 48px)' }}>
-        <h2
-          className="font-[family-name:var(--font-bricolage)] text-white"
-          style={{
-            fontWeight: 600,
-            fontSize: 'clamp(22px, calc(46 / 1920 * 100vw), 46px)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.01em',
-            textAlign: 'center',
-            marginBottom: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)',
-          }}
-        >
-          {section.heading}
-        </h2>
-        <p
-          className="font-[family-name:var(--font-urbanist)]"
-          style={{
-            fontSize: 'clamp(13px, calc(18 / 1920 * 100vw), 18px)',
-            color: 'rgba(255,255,255,0.65)',
-            lineHeight: 1.6,
-            textAlign: 'center',
-            maxWidth: 800,
-            margin: '0 auto',
-          }}
-        >
-          {section.sub}
-        </p>
+          ))}
+        </motion.div>
       </div>
-
-      {/* Hairline divider above first item */}
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)' }} />
-
-      {/* Accordion items */}
-      {section.items.map((item, i) => (
-        <AccordionItem
-          key={i}
-          question={item.q}
-          answer={item.a}
-          isOpen={openIdx === i}
-          onToggle={() => setOpenIdx(openIdx === i ? null : i)}
-        />
-      ))}
-    </motion.div>
+    </div>
   )
 }
 
@@ -241,44 +258,55 @@ function AccordionItem({
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 24,
-          padding: 'clamp(18px, calc(28 / 1920 * 100vw), 28px) 0',
+          padding: 'clamp(20px, calc(32 / 1920 * 100vw), 32px) 0',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
         }}
       >
         <span
-          className="font-[family-name:var(--font-bricolage)] text-white"
+          className="font-[family-name:var(--font-bricolage)]"
           style={{
             fontWeight: 500,
-            fontSize: 'clamp(15px, calc(20 / 1920 * 100vw), 20px)',
-            lineHeight: 1.35,
+            fontSize: 'clamp(16px, calc(22 / 1920 * 100vw), 24px)',
+            lineHeight: 1.3,
+            color: isOpen ? '#FEF272' : '#ffffff',
+            transition: 'color 0.2s ease',
             flex: 1,
           }}
         >
           {question}
         </span>
 
-        {/* Plus / Minus icon */}
+        {/* +/− glyph — borderless to match the reference. Open = minus, closed = plus. */}
         <span
+          aria-hidden
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: 32,
-            height: 32,
-            borderRadius: '50%',
-            border: '1.5px solid rgba(255,255,255,0.35)',
-            color: '#fff',
+            width: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+            height: 'clamp(20px, calc(28 / 1920 * 100vw), 28px)',
+            color: isOpen ? '#FEF272' : 'rgba(255,255,255,0.75)',
             flexShrink: 0,
-            transition: 'background 0.2s, border-color 0.2s, transform 0.3s',
-            background: isOpen ? 'rgba(254,242,114,0.15)' : 'transparent',
-            borderColor: isOpen ? 'rgba(254,242,114,0.5)' : 'rgba(255,255,255,0.35)',
-            transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+            transition: 'color 0.2s ease',
           }}
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-            <path d="M7 1v12M1 7h12" stroke={isOpen ? '#FEF272' : 'currentColor'} strokeWidth="1.8" strokeLinecap="round" />
+          <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M4 12h16"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+            {!isOpen && (
+              <path
+                d="M12 4v16"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+            )}
           </svg>
         </span>
       </button>
@@ -297,9 +325,9 @@ function AccordionItem({
               className="font-[family-name:var(--font-urbanist)]"
               style={{
                 fontSize: 'clamp(13px, calc(17 / 1920 * 100vw), 17px)',
-                color: 'rgba(255,255,255,0.72)',
+                color: 'rgba(255,255,255,0.78)',
                 lineHeight: 1.7,
-                paddingBottom: 'clamp(18px, calc(28 / 1920 * 100vw), 28px)',
+                paddingBottom: 'clamp(20px, calc(32 / 1920 * 100vw), 32px)',
                 maxWidth: 900,
               }}
             >

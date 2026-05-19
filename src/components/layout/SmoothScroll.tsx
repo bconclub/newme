@@ -7,7 +7,7 @@ import Lenis from 'lenis'
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
   const pathname = usePathname()
-  const skipLenis = pathname?.startsWith('/studio')
+  const skipLenis = pathname?.startsWith('/studio') || pathname?.startsWith('/assessment')
 
   useEffect(() => {
     if (skipLenis) return

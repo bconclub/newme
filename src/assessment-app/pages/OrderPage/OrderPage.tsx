@@ -98,7 +98,7 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
         <div style={{ ...glassCard, marginBottom: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, paddingBottom: 20, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(98,150,117,0.15)", border: "1.5px solid rgba(98,150,117,0.4)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <LogoMark size={22} color={GRN} />
+              <img src="/favicon.png" alt="NewME" style={{ width: 26, height: 26, objectFit: "contain" }} />
             </div>
             <div>
               <p style={{ fontSize: 16, fontWeight: 700, color: INK, marginBottom: 2, fontFamily: FONT_HEADING }}>{phaseName}</p>

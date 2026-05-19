@@ -34,7 +34,7 @@ function HIWCta() {
   return (
     <div className="group/cta flex items-center flex-row-reverse justify-end">
       <motion.a
-        href="#hiw-comparison"
+        href="/assessment"
         aria-label="Start your assessment"
         initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -67,7 +67,7 @@ function HIWCta() {
         </svg>
       </motion.a>
       <motion.a
-        href="/pathways"
+        href="/assessment"
         initial={{ opacity: 0, x: -14 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.55, delay: 0.28, ease: EASE }}

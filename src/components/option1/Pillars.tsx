@@ -162,7 +162,7 @@ export default function Pillars() {
             letterSpacing: 0,
           }}
         >
-          The 8 Pillars of Health
+          Foundations of Good Health
         </h2>
         <p
           className="text-white font-[family-name:var(--font-urbanist)]"

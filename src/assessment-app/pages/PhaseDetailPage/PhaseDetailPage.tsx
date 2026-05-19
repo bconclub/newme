@@ -184,7 +184,7 @@ export function PhaseDetailPage({ detailKey, ans, info, profile, res, onBack, on
             </div>
             {attemptsLeft > 0
               ? <button onClick={onRetry} className="btnout" style={{ whiteSpace: "nowrap", flexShrink: 0, fontFamily: FONT_BUTTON }}>Retake assessment →</button>
-              : <a href="mailto:hello@newme.com" style={{ fontSize: 13, color: GRN, fontWeight: 600, textDecoration: "none", flexShrink: 0 }}>Contact us →</a>
+              : <a href="mailto:support@drpalsnewme.com" style={{ fontSize: 13, color: GRN, fontWeight: 600, textDecoration: "none", flexShrink: 0 }}>Contact us →</a>
             }
           </div>
         </div>

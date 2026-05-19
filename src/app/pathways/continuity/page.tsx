@@ -57,7 +57,7 @@ const PHASES: Phase[] = [
       { num: '05', title: 'Movement & Activity Access', desc: 'Continued access to the NewME virtual gym and structured movement support to help you maintain an active lifestyle.' },
       { num: '06', title: 'Ongoing Accountability Framework', desc: 'Regular progress tracking and goal-setting to keep you aligned with your long-term health outcomes beyond the core pathway.' },
     ],
-    bannerImg: '/images/pathways/newme360-banner.jpg',
+    bannerImg: '/pathways/cp1%20vertical%20banners.webp',
     bannerHeading: 'Who Is Prescribed The NewME 360 Pathway?',
     bannerBody: 'NewME 360 is prescribed for individuals who need continued accountability and structured oversight to maintain results and prevent relapse after completing their primary pathway.',
     bannerOverlay: 'rgba(1,62,55,0.47)',
@@ -83,7 +83,7 @@ const PHASES: Phase[] = [
       { num: '03', title: 'Strength & Mobility Training', desc: 'Structured programs targeting functional strength, joint mobility, and physical performance improvements over time.' },
       { num: '04', title: 'Community-Based Participation', desc: 'Group-based workout formats and community engagement to support consistency, motivation, and long-term adherence.' },
     ],
-    bannerImg: '/images/pathways/movement-banner.jpg',
+    bannerImg: '/pathways/cp%202%20vertical%20banners.webp',
     bannerHeading: 'Who Is Prescribed The NewME Movement Pathway?',
     bannerBody: 'NewME Movement is prescribed for individuals who want to maintain physical fitness through structured workouts, without the need for ongoing clinical or lifestyle intervention.',
     bannerOverlay: 'rgba(1,62,55,0.47)',
@@ -285,9 +285,12 @@ export default function ContinuityPathwayPage() {
         <PageHero
           heading="Continuity Pathways"
           subheading="The Continuity pathways are designed to support long-term stability through continued accountability, monitoring, and lifestyle alignment. They are recommended after structured care to help maintain progress and prevent relapse."
-          overlayImage="/images/pathways/continuity-anatomy.png"
+          overlayImage="/pathways/Continuity.webp"
           overlayImageAlt="Glowing upper body nervous system illustration"
-          overlayStyle={{ right: '-5%', bottom: '-15%', height: '125%' }}
+          // Continuity anatomy fills the card edge-to-edge and bleeds slightly
+          // past the bottom — matches Figma where the human body is tall and
+          // intentionally extends past the lower card boundary.
+          overlayStyle={{ right: '-2%', bottom: '-12%', height: '120%' }}
           pathwayBlobs
           cta={<PathwayTabs active="/pathways/continuity" />}
         />

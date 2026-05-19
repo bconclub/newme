@@ -14,6 +14,9 @@ type TeamMember = {
   role: string
   photo: string
   bio: string
+  /** Optional LinkedIn profile URL. Omit if the member doesn't have one —
+   *  the SocialIcons block is then hidden on that card. */
+  linkedin?: string
 }
 
 const TEAM: TeamMember[] = [
@@ -22,6 +25,7 @@ const TEAM: TeamMember[] = [
     role: 'Founder',
     photo: '/images/team/dr-palaniappan.jpg',
     bio: 'A gastroenterologist and metabolic health specialist, Dr. Pal founded NewME to deliver structured, clinical-grade care at scale.',
+    linkedin: 'https://www.linkedin.com/in/drpal/',
   },
   {
     name: 'Priya Pal',
@@ -30,28 +34,31 @@ const TEAM: TeamMember[] = [
     bio: 'Priya co-founded NewME with a mission to make precision clinical care accessible and sustainable for everyone.',
   },
   {
-    name: 'Shakeela',
+    name: 'Shakeela Ranjithkumar',
     role: 'CEO',
     photo: '/images/team/shakeela.jpg',
     bio: 'Shakeela oversees operations and system execution across NewME. She brings a deep understanding of both client care and operational efficiency to ensure consistent, measurable outcomes.',
+    linkedin: 'https://www.linkedin.com/in/shakeela-r-19aa0b290/',
   },
   {
     name: 'Karthik Ravi',
     role: 'Head of Business Operations',
     photo: '/images/team/karthik-ravi.jpg',
     bio: 'Karthik oversees all business and operational functions, ensuring the NewME system runs with precision and efficiency.',
+    linkedin: 'https://www.linkedin.com/in/karthikrav%C3%AE/',
   },
   {
     name: 'Gayatri Rajamani',
     role: 'Head of Clinical Nutrition',
     photo: '/images/team/gayatri-rajamani.jpg',
     bio: "Gayatri leads the clinical nutrition team, designing evidence-based protocols tailored to each participant's metabolic markers.",
+    linkedin: 'https://www.linkedin.com/in/gayatrirajamani/?skipRedirect=true',
   },
   {
-    name: 'Reshmi Sinha',
+    name: 'Rashmi Sinha',
     role: 'Clinical Nutrition Lead',
     photo: '/images/team/reshmi-sinha.jpg',
-    bio: 'Reshmi drives the daily nutrition coaching process, translating clinical protocols into personalised, actionable guidance.',
+    bio: 'Rashmi drives the daily nutrition coaching process, translating clinical protocols into personalised, actionable guidance.',
   },
   {
     name: 'Devi Palaniappan',
@@ -64,6 +71,7 @@ const TEAM: TeamMember[] = [
     role: 'Head of Research & QA',
     photo: '/images/team/namratha-nataraj.jpg',
     bio: 'Namratha oversees research integrity and quality assurance, ensuring all NewME protocols are evidence-based and outcomes-driven.',
+    linkedin: 'https://www.linkedin.com/in/drnamrathan/',
   },
   {
     name: 'Ashwini Saras',
@@ -230,33 +238,33 @@ function TeamGrid() {
   )
 }
 
-// ─── Social icons (inline SVG, white/muted; sized fluidly so they
-//     shrink to ~14px on mobile cards and grow to 20px at desktop). ─────────
-function SocialIcons() {
+// ─── Social icons — LinkedIn only per team card. The icon is hidden
+//     entirely on members without a `linkedin` URL (rather than rendering
+//     a dead-looking inert icon). Opens in a new tab with the usual
+//     `noopener noreferrer` security pair. ─────────────────────────────────
+function SocialIcons({ linkedin }: { linkedin?: string }) {
+  if (!linkedin) return null
   const size = 'clamp(14px, calc(20 / 1920 * 100vw), 20px)'
-  const gap = 'clamp(8px, calc(14 / 1920 * 100vw), 14px)'
   return (
-    <div style={{ display: 'flex', gap, alignItems: 'center' }}>
-      {/* Facebook */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
-        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-      </svg>
-      {/* X */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-      {/* Instagram */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-      </svg>
-      {/* LinkedIn */}
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="rgba(255,255,255,0.75)" aria-hidden>
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-        <rect x="2" y="9" width="4" height="12" />
-        <circle cx="4" cy="4" r="2" />
-      </svg>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <a
+        href={linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn profile"
+        className="transition-opacity hover:opacity-100"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          opacity: 0.85,
+        }}
+      >
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="#ffffff" aria-hidden>
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+          <rect x="2" y="9" width="4" height="12" />
+          <circle cx="4" cy="4" r="2" />
+        </svg>
+      </a>
     </div>
   )
 }
@@ -330,15 +338,16 @@ function TeamCard({
         cursor: canHover ? 'default' : 'pointer',
       }}
     >
-      {/* ── PHOTO LAYER — always visible. Darkens when the inset panel
-            is showing so the panel reads cleanly against it as a frame. ── */}
+      {/* ── PHOTO LAYER — always visible. On mobile/touch the panel fills the
+            card so we dim the photo heavily; on desktop the panel only covers
+            the bottom half so the face stays bright and visible. ── */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           transition: 'transform 0.6s ease, filter 0.45s ease',
           transform: showPanel ? 'scale(1.04)' : 'scale(1)',
-          filter: showPanel ? 'brightness(0.55)' : 'brightness(1)',
+          filter: showPanel ? (canHover ? 'brightness(0.95)' : 'brightness(0.55)') : 'brightness(1)',
           pointerEvents: 'none',
         }}
       >
@@ -402,8 +411,10 @@ function TeamCard({
       </motion.div>
 
       {/* ── INSET DARK-GREEN PANEL — same component, two trigger modes:
-            • Desktop: hidden by default, fades in on hover.
-            • Mobile / touch: always visible (no hover available).
+            • Desktop (canHover): hidden by default, slides in on hover and
+              covers only the BOTTOM HALF so the face stays visible above it.
+            • Mobile / touch: always visible (no hover available) — fills the
+              full card minus a thin inset frame, as before.
             Content (name → role → bio → social icons) is identical and
             left-aligned per Figma 122:11461..85. */}
       <motion.div
@@ -415,11 +426,21 @@ function TeamCard({
         transition={{ duration: 0.4, ease: EASE }}
         style={{
           position: 'absolute',
-          inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+          // Desktop: pin to bottom half (top: 52%). Mobile: full inset.
+          ...(canHover
+            ? {
+                top: '52%',
+                left: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+                right: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+                bottom: 'clamp(8px, calc(20 / 435 * 100%), 22px)',
+              }
+            : { inset: 'clamp(8px, calc(20 / 435 * 100%), 22px)' }),
           background: '#013E37',
           // Inset panel bumped 28 → 34 to track the new 44 outer curve.
           borderRadius: 'clamp(20px, calc(34 / 1920 * 100vw), 34px)',
-          padding: 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
+          padding: canHover
+            ? 'clamp(12px, calc(22 / 1920 * 100vw), 24px)'
+            : 'clamp(12px, calc(28 / 1920 * 100vw), 30px)',
           pointerEvents: showPanel ? 'auto' : 'none',
           display: 'flex',
           flexDirection: 'column',
@@ -474,7 +495,7 @@ function TeamCard({
           {member.bio}
         </p>
         <div style={{ marginTop: 'auto', paddingTop: 'clamp(6px, calc(14 / 1920 * 100vw), 16px)' }}>
-          <SocialIcons />
+          <SocialIcons linkedin={member.linkedin} />
         </div>
       </motion.div>
     </motion.div>
