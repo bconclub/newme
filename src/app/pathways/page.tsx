@@ -30,11 +30,11 @@ const SUB_PILLS: Record<Tab, { label: string; href: string }[]> = {
     { label: 'Sustain', href: '/pathways/metabolic#sustain' },
   ],
   gi: [
-    { label: 'GastroIntestinal Core',     href: '/pathways/gi#core' },
-    { label: 'GastroIntestinal Advanced', href: '/pathways/gi#advanced' },
+    { label: 'GastroIntestinal Core',     href: '/pathways/gi#gi-core' },
+    { label: 'GastroIntestinal Advanced', href: '/pathways/gi#gi-advanced' },
   ],
   continuity: [
-    { label: 'NewME 360',      href: '/pathways/continuity#360' },
+    { label: 'NewME 360',      href: '/pathways/continuity#newme360' },
     { label: 'NewME Movement', href: '/pathways/continuity#movement' },
   ],
 }
