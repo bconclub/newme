@@ -20,6 +20,8 @@ export default function MediaHero() {
       }
       subheading="Our work in metabolic and gut regulation has received praise by leading media platforms."
       headingMaxWidthPx={719}
+      overlayOpacity={1}
+      gradientMaskEnd={80}
     />
   )
 }

@@ -60,6 +60,9 @@ export type PageHeroProps = {
    * horizontal center.
    */
   gradientMaskEnd?: number
+  /** Gradient wash opacity. Default 0.9; pass 1 for photos where text
+   *  competes with a bright background in the left zone. */
+  overlayOpacity?: number
   /**
    * Optional anatomy / illustration overlay positioned on the RIGHT side
    * of the hero card (used on pathway pages). Should be a PNG with a
@@ -98,6 +101,7 @@ export default function PageHero({
   headingMaxWidthPx = 880,
   bodyMaxWidthPx = 783,
   gradientMaskEnd = 70,
+  overlayOpacity = 0.9,
   overlayImage,
   overlayImageAlt = '',
   overlayStyle,
@@ -231,7 +235,7 @@ export default function PageHero({
           style={{
             background:
               'linear-gradient(118deg, #629675 0%, #2F7269 30%, #144F49 55%, #013E37 80%)',
-            opacity: 0.9,
+            opacity: overlayOpacity,
             maskImage: maskGrad,
             WebkitMaskImage: maskGrad,
           }}

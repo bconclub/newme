@@ -18,13 +18,15 @@ const MotionLink = motion(Link)
  */
 function isLinkActive(link: NavLink, pathname: string): boolean {
   if (link.href === '/') return pathname === '/'
+  // Guard empty href — pathname.startsWith('') is always true and would
+  // light up Resources on every page.
   if (link.sublinks?.length) {
     return (
-      pathname.startsWith(link.href) ||
+      (link.href !== '' && pathname.startsWith(link.href)) ||
       link.sublinks.some((s) => pathname.startsWith(s.href))
     )
   }
-  return pathname.startsWith(link.href)
+  return link.href !== '' && pathname.startsWith(link.href)
 }
 
 type SubLink = { label: string; href: string }
