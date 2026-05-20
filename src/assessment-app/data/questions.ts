@@ -54,7 +54,7 @@ export const ROUTING = [
   ]},
   {id:"r3_diagnoses",type:"m",hl:"Context matters here.",q:"Has anything been formally diagnosed?",sub:"Select everything that applies.",opts:[
     {v:"obesity",l:"Obesity"},
-    {v:"pcos",l:"PCOS or hormonal imbalance"},
+    {v:"pcos",l:"PMOS or hormonal imbalance"},
     {v:"thyroid",l:"Thyroid condition"},
     {v:"diabetes",l:"Type 2 diabetes or pre-diabetes"},
     {v:"cholesterol",l:"High cholesterol or blood pressure"},
