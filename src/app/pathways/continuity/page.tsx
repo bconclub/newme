@@ -248,7 +248,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
           <Image src={phase.bannerImg} alt={phase.bannerHeading} fill unoptimized style={{ objectFit: 'cover', objectPosition: 'center' }} />
           <div style={{ position: 'absolute', inset: 0, background: phase.bannerOverlay }} />
           <div
-            className="flex flex-col md:flex-row md:items-center md:justify-between"
+            className="flex flex-col md:flex-row md:items-end md:justify-between"
             style={{ position: 'relative', zIndex: 1, padding: 'clamp(24px,4.17vw,80px)', gap: 'clamp(20px,3.13vw,60px)' }}
           >
             {/* Left — heading + body */}

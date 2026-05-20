@@ -118,25 +118,7 @@ export default function ResearchEvidence() {
             marginTop: 'clamp(20px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          {/* Left CTA — solid white pill, dark text */}
-          <motion.a
-            href="#research"
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center justify-center bg-white text-[#013E37] hover:bg-[#FDF185] transition-colors duration-300 font-[family-name:var(--font-bricolage)] shrink-0"
-            style={{
-              width: 'clamp(280px, calc(440 / 1920 * 100vw), 440px)',
-              height: 'clamp(64px, calc(80 / 1920 * 100vw), 80px)',
-              borderRadius: 9999,
-              fontWeight: 500,
-              fontSize: 'clamp(15px, calc(24 / 1920 * 100vw), 24px)',
-              lineHeight: 1,
-            }}
-          >
-            Learn more about our research
-          </motion.a>
-
-          {/* Right CTA — frosted glass pill with email input + green Notify pill */}
+          {/* CTA — frosted glass pill with email input + green Notify pill */}
           <form
             onSubmit={onSubmit}
             className="relative inline-flex items-center"
