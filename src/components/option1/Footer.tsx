@@ -247,11 +247,18 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-5">
             <Link
-              href="/cookie-policy"
+              href="/privacy-policy"
               className="text-white/55 hover:text-white font-[family-name:var(--font-bricolage)] transition-colors"
               style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)' }}
             >
               Privacy
+            </Link>
+            <Link
+              href="/cookie-policy"
+              className="text-white/55 hover:text-white font-[family-name:var(--font-bricolage)] transition-colors"
+              style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)' }}
+            >
+              Cookies
             </Link>
             <Link
               href="/terms"

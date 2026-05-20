@@ -46,6 +46,7 @@ const staticRoutes: StaticRoute[] = [
   { path: '/contact', changeFrequency: 'yearly', priority: 0.5 },
   // Legal
   { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/privacy-policy', changeFrequency: 'yearly', priority: 0.3 },
   { path: '/cookie-policy', changeFrequency: 'yearly', priority: 0.3 },
 ]
 
