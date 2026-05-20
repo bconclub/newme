@@ -132,8 +132,8 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
         setOpen(true);
         setMessages(prev => [
           ...prev,
-          { from: "bot", text: "Your call has been booked! ✅ You'll receive a confirmation email shortly." },
-          { from: "bot", text: "Our care advisor will call you at the scheduled time. In the meantime, feel free to go ahead and start your pathway." },
+          { from: "bot", text: "Your call has been booked! ✅  A confirmation email along with the Google Meet invite and meeting link has been sent to your registered email address." },
+          { from: "bot", text: "Please join the meeting at your scheduled time using the link provided in the email. In the meantime, feel free to go ahead and start your pathway." },
         ]);
         setStep("book");
       }
