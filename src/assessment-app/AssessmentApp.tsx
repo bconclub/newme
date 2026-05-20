@@ -3,7 +3,7 @@ import { globalCss } from "./constants/styles";
 import { TOTAL, ALL_Q } from "./data/questions";
 import { SEC, PW, PRICING } from "./data/pathways";
 import { routeAnswers, getCalcMessages } from "./utils/routing";
-import { createLead, createLeadFromProfile, updateLeadQuizData, selectPhase, convertLead, attachResultsPDF, toIsoDob } from "./services/crmService";
+import { createLead, updateLeadQuizData, selectPhase, convertLead, attachResultsPDF, toIsoDob } from "./services/crmService";
 import { recordAssessmentAttempt } from "./services/assessmentService";
 import { IntroPage } from "./pages/IntroPage/IntroPage";
 import { QuizPage } from "./pages/QuizPage/QuizPage";
@@ -194,7 +194,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
 
   function pickSingle(v: string) {
     setAns(a => ({ ...a, [q!.id]: v }));
-    setTimeout(() => { if (step < TOTAL) setStep(s => s + 1); else setStep(TOTAL + 1); }, 210);
+    setTimeout(() => { if (step < TOTAL) setStep(s => s + 1); else startCalc(crmLeadId); }, 210);
   }
 
   function toggleMulti(v: string) {
@@ -209,7 +209,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
   }
 
   function advanceMulti() {
-    if (step < TOTAL) setStep(s => s + 1); else setStep(TOTAL + 1);
+    if (step < TOTAL) setStep(s => s + 1); else startCalc(crmLeadId);
   }
 
   function startCalc(preQuizLeadId: string | null = null) {
@@ -327,19 +327,10 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
         pickSingle={pickSingle}
         toggleMulti={toggleMulti}
         advanceMulti={advanceMulti}
-        startCalc={startCalc}
         existingLeadId={crmLeadId}
         goBack={() => setStep(s => s - 1)}
-        onAdvanceProfile={() => {
-          // Only create a new CRM lead if we don't already have one for this user
-          if (!crmLeadId) {
-            createLeadFromProfile({
-              firstName: info.name,
-              phone: profile.phone,
-              dob: profile.dob,
-              gender: profile.gender,
-            }).then(d => { if (d?.leadId) setCrmLeadId(d.leadId); }).catch(() => {});
-          }
+        onAdvanceProfile={(leadId) => {
+          if (leadId) setCrmLeadId(leadId);
           setStep(1);
         }}
         onLimitChecked={(left) => setAttemptsLeft(left)}

@@ -17,6 +17,8 @@ export async function createLeadFromProfile(payload: {
   phone?: string;
   dob?: string;
   gender?: string;
+  email?:string
+
 }): Promise<{ leadId?: string }> {
   const r = await fetch(ENDPOINTS.CRM_LEAD_PROFILE, {
     method: "POST",
@@ -64,6 +66,7 @@ export async function checkLeadByEmail(email: string): Promise<{ id: string; sta
 }
 
 export async function createPreQuizLead(name: string, last: string, email: string): Promise<{ leadId?: string }> {
+  console.log("create lead api")
   const r = await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
