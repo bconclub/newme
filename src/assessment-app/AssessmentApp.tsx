@@ -330,7 +330,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
         existingLeadId={crmLeadId}
         goBack={() => setStep(s => s - 1)}
         onAdvanceProfile={(leadId) => {
-          if (leadId) setCrmLeadId(leadId);
+          setCrmLeadId(leadId);   // always set — null clears any stale session ID
           setStep(1);
         }}
         onLimitChecked={(left) => setAttemptsLeft(left)}
