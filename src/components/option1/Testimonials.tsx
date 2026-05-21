@@ -140,7 +140,7 @@ export default function Testimonials({ initialTestimonials }: { initialTestimoni
                 maxWidth: 611,
               }}
             >
-              Real Clients.
+              Real People.
               <br />
               Real Experiences.
             </motion.h2>
