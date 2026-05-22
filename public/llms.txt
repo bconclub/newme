@@ -5,12 +5,11 @@
 > insights with structured care to better understand your body and provide
 > the care it needs.
 
-NewME isn't a wellness trend or a fad. It's a structured clinical system. The
-patient journey begins with a free 3-minute clinical assessment that maps the
-patient's metabolic and gut patterns, then guides them into the appropriate
-phase of care. Every program is reviewed by a medical committee before it
-begins, and each patient is assigned a Clinical Health Coach who works with
-them throughout the program.
+NewME is a structured clinical system. The journey begins with a free
+3-minute clinical assessment that maps metabolic and gut patterns, then
+guides you into the appropriate phase of care. Every program is reviewed
+by a medical committee before it begins, and each member is assigned a
+Clinical Health Coach who works with them throughout the program.
 
 ## Core pages
 
@@ -28,11 +27,11 @@ them throughout the program.
 NewME offers three main pathway tracks. Each is doctor-led, time-bound, and
 includes a Clinical Health Coach plus medical committee oversight.
 
-- [Metabolic Pathway](https://drpalsnewme.com/pathways/metabolic): For patients with metabolic dysregulation — weight, energy, blood sugar, and related concerns.
-- [GI Pathway](https://drpalsnewme.com/pathways/gi): For patients with gut conditions such as IBS, SIBO, bloating, constipation, and reflux. Available in 1-month monthly or 3-month upfront billing.
-- [Continuity Pathway](https://drpalsnewme.com/pathways/continuity): Ongoing maintenance care for patients who have completed an initial pathway.
+- [Metabolic Pathway](https://drpalsnewme.com/pathways/metabolic): For those experiencing metabolic dysregulation — weight, energy, blood sugar, and related concerns.
+- [GI Pathway](https://drpalsnewme.com/pathways/gi): For those with gut conditions such as IBS, SIBO, bloating, constipation, and reflux. Available in 1-month monthly or 3-month upfront billing.
+- [Continuity Pathway](https://drpalsnewme.com/pathways/continuity): Ongoing maintenance care for members who have completed an initial pathway.
 
-After the structured pathway, patients can transition to NewME 360 (ongoing
+After the structured pathway, members can transition to NewME 360 (ongoing
 coaching and relapse prevention) or NewME Movement (fitness programming
 and live sessions). These are optional and not part of the core pathway
 purchase.
@@ -50,10 +49,8 @@ NewME. He leads a system that focuses on restoring metabolic and gut
 health through structured, evidence-based care — not generic wellness
 advice. His clinical perspective drives every pathway design decision.
 
-## What NewME is not
+## Important context
 
-- Not a wellness app, supplement company, or generic coaching service
-- Not a fad diet or short-term cleanse
 - Not a substitute for emergency medical care
 - Not an insurance-billable service in most regions (direct-pay)
 
