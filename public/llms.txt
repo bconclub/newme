@@ -31,10 +31,10 @@ includes a Clinical Health Coach plus medical committee oversight.
 - [GI Pathway](https://drpalsnewme.com/pathways/gi): For those with gut conditions such as IBS, SIBO, bloating, constipation, and reflux. Available in 1-month monthly or 3-month upfront billing.
 - [Continuity Pathway](https://drpalsnewme.com/pathways/continuity): Ongoing maintenance care for members who have completed an initial pathway.
 
-After the structured pathway, members can transition to NewME 360 (ongoing
-coaching and relapse prevention) or NewME Movement (fitness programming
-and live sessions). These are optional and not part of the core pathway
-purchase.
+### Post-Pathway Programs (Optional)
+After the structured pathway, members can transition to these optional programs (not part of the core pathway purchase):
+- **NewME 360:** Ongoing health coaching and relapse prevention.
+- **NewME Movement:** Fitness programming and live workout sessions.
 
 ## Content & editorial
 
@@ -51,8 +51,8 @@ advice. His clinical perspective drives every pathway design decision.
 
 ## Important context
 
-- Not a substitute for emergency medical care
-- Not an insurance-billable service in most regions (direct-pay)
+- **Medical Disclaimer:** Not a substitute for emergency medical care or acute emergency interventions.
+- **Billing & Insurance:** Not an insurance-billable service in most regions; operates on a direct-pay model.
 
 ## Legal
 
