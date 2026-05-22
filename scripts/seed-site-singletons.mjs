@@ -1,4 +1,54 @@
-# Dr. Pal's NewME
+#!/usr/bin/env node
+/**
+ * Seeds the two singleton documents that drive /robots.txt and /llms.txt.
+ *
+ * Without this step, the route handlers fall back to a minimal default
+ * until an editor opens each singleton in Studio for the first time
+ * (which triggers the schema's `initialValue` insert). Running this
+ * script up-front populates both singletons immediately so the live
+ * site serves the full content right away.
+ *
+ * Idempotent: uses `createIfNotExists` with the same fixed IDs the
+ * route handlers query for. If the docs already exist (manually edited
+ * in Studio), this script leaves them alone — editor changes win.
+ *
+ * How to run:
+ *   SANITY_API_TOKEN=skXXXX... node scripts/seed-site-singletons.mjs
+ *
+ * (or with SANITY_API_WRITE_TOKEN from .env.local — same effect.)
+ */
+import { createClient } from '@sanity/client'
+
+const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'sljf1wfa'
+const DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+const TOKEN = process.env.SANITY_API_TOKEN || process.env.SANITY_API_WRITE_TOKEN
+const API_VERSION = '2024-10-01'
+
+if (!TOKEN) {
+  console.error('ERROR: SANITY_API_TOKEN (or SANITY_API_WRITE_TOKEN) env var required.')
+  process.exit(1)
+}
+
+const client = createClient({
+  projectId: PROJECT_ID,
+  dataset: DATASET,
+  apiVersion: API_VERSION,
+  token: TOKEN,
+  useCdn: false,
+})
+
+// ─── robots.txt content (current pre-launch default) ──────────────────────
+const ROBOTS_TXT =
+  '# Pre-launch — all crawlers blocked.\n' +
+  "# To allow indexing at launch, replace 'Disallow: /' with 'Allow: /'\n" +
+  '# AND remove the X-Robots-Tag header from next.config.ts\n' +
+  '# AND set robots: { index: true, follow: true } in src/app/layout.tsx.\n' +
+  '\n' +
+  'User-agent: *\n' +
+  'Disallow: /\n'
+
+// ─── llms.txt content (mirrors what was at public/llms.txt) ──────────────
+const LLMS_TXT = `# Dr. Pal's NewME
 
 > A doctor-led clinical system for metabolic and gut regulation, founded by
 > Dr. Palaniappan Manickam, MD (gastroenterologist). NewME combines clinical
@@ -59,3 +109,28 @@ advice. His clinical perspective drives every pathway design decision.
 - [Terms](https://drpalsnewme.com/terms)
 - [Privacy Policy](https://drpalsnewme.com/privacy-policy)
 - [Cookie Policy](https://drpalsnewme.com/cookie-policy)
+`
+
+const docs = [
+  { _id: 'site-robots-txt', _type: 'robotsTxt', content: ROBOTS_TXT },
+  { _id: 'site-llms-txt', _type: 'llmsTxt', content: LLMS_TXT },
+]
+
+async function main() {
+  console.log(`Seeding site singletons to Sanity (${PROJECT_ID} / ${DATASET})…\n`)
+  for (const doc of docs) {
+    try {
+      const result = await client.createIfNotExists(doc)
+      console.log(`  ✓ ${result._id}  (${doc._type})`)
+    } catch (err) {
+      console.error(`  ✗ ${doc._id}  failed: ${err.message ?? err}`)
+      process.exit(1)
+    }
+  }
+  console.log('\nDone. Verify in Studio: /studio → Site → robots.txt / llms.txt')
+}
+
+main().catch((err) => {
+  console.error('Fatal:', err)
+  process.exit(1)
+})

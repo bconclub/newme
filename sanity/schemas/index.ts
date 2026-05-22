@@ -2,11 +2,13 @@ import type { SchemaTypeDefinition } from "sanity";
 
 import author from "./author";
 import faq from "./faq";
+import llmsTxt from "./llmsTxt";
 import mediaMention from "./mediaMention";
 import mediaOutlet from "./mediaOutlet";
 import page from "./page";
 import post from "./post";
 import redirect from "./redirect";
+import robotsTxt from "./robotsTxt";
 import seo from "./seo";
 import teamMember from "./teamMember";
 import testimonial from "./testimonial";
@@ -35,4 +37,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 
   // Site operations
   redirect,
+  robotsTxt,
+  llmsTxt,
 ];

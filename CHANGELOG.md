@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-05-22 · robots.txt and llms.txt now Sanity-driven (editable from Studio → Site)
+
+The SEO team can now edit both `/robots.txt` and `/llms.txt` content directly from Sanity Studio without a developer or deploy. Sits under Studio → Site, alongside Redirects.
+
+- **`sanity/schemas/robotsTxt.ts`** (new) — singleton document type for `/robots.txt`. Fields: `content` (the raw robots.txt text, required, validated to contain at least one `User-agent:` line), `lastEditedBy`, internal `note`. Schema `initialValue` ships the safe pre-launch default ("Disallow: /") so a fresh dataset auto-populates correctly.
+- **`sanity/schemas/llmsTxt.ts`** (new) — singleton document type for `/llms.txt`. Same shape (content + lastEditedBy + note), with the schema `initialValue` carrying the full markdown brand description that used to live in `public/llms.txt`.
+- **`sanity/schemas/index.ts`** — registers both new types.
+- **`sanity/structure.ts`** — adds both singletons under the "Site" sidebar group alongside Redirects. Uses `S.editor().documentId(...)` so editors open straight into the one fixed document for each type (no list view, no "create new" affordance).
+- **`sanity.config.ts`** — locks down the singletons via two safeguards: `schema.templates` filter (so they don't show up in any global "new document" template list) and `document.actions` filter (strips Duplicate / Delete / Unpublish for these types so editors can't accidentally wipe them out).
+- **`src/app/robots.txt/route.ts`** (new route handler) — replaces the previous static `src/app/robots.ts` (which was Next.js `MetadataRoute.Robots` — build-time only, couldn't read from Sanity at request time). New handler fetches the `robotsTxt` singleton from Sanity on each request (60s revalidate), falls back to `Disallow: /` if Sanity is unreachable (safe default — never accidentally exposes a half-built site).
+- **`src/app/llms.txt/route.ts`** (new route handler) — replaces the static `public/llms.txt`. Fetches the `llmsTxt` singleton from Sanity, serves with `Content-Type: text/markdown`, falls back to a minimal brand stub if Sanity is unreachable.
+- **`public/llms.txt`** deleted (now served by route handler). `src/app/robots.ts` deleted (replaced by route handler).
+- **`scripts/seed-site-singletons.mjs`** (new) — bulk-seeds both singletons via `createIfNotExists` with the deterministic IDs `site-robots-txt` and `site-llms-txt`. Idempotent — editor changes in Studio are preserved across re-runs. **Already run** against production using the `SANITY_API_WRITE_TOKEN` from `.env.local`, so the live `/robots.txt` and `/llms.txt` now serve the same content they did before (just via Sanity instead of the filesystem).
+- User-facing: **no visible change** — the served content is identical to what was there before. What's new is that the SEO team can edit either from Studio → Site → robots.txt or llms.txt and the live site reflects the change within ~60 seconds. No code change, no deploy, no developer required.
+- Pre-launch note: robots.txt is now ONE of THREE noindex layers. The other two (`X-Robots-Tag` header in `next.config.ts`, `robots: { index: false }` in `src/app/layout.tsx`) remain in code. At launch all three must be flipped together — robots.txt via Studio, the other two via PR.
+
 ## 2026-05-22 · /blog → /blogs URL migration + LISTEN widget removal + 41 legacy WordPress redirects seeded to Sanity
 
 - **Removed LISTEN audio player from blog posts**: deleted `src/components/option1/BlogListen.tsx` (orphaned after removing its only call site in `src/app/blogs/[slug]/page.tsx`), dropped `public/audio/Test sample blog bloating 01.mp3` and `public/audio/blog-sample.mp3`. The audio widget was a per-post feature only enabled on the "Why am I so bloated" post; team decided to remove it.

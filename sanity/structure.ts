@@ -82,6 +82,26 @@ export const customStructure = (S: StructureBuilder) =>
             .title("Site")
             .items([
               S.documentTypeListItem("redirect").title("Redirects"),
+              // robots.txt and llms.txt are singletons — exactly one document
+              // of each type, opened directly into its editor (no list view,
+              // no "create new" affordance). The fixed document IDs match
+              // what the route handlers query for.
+              S.listItem()
+                .title("robots.txt")
+                .child(
+                  S.editor()
+                    .id("robotsTxt")
+                    .schemaType("robotsTxt")
+                    .documentId("site-robots-txt")
+                ),
+              S.listItem()
+                .title("llms.txt")
+                .child(
+                  S.editor()
+                    .id("llmsTxt")
+                    .schemaType("llmsTxt")
+                    .documentId("site-llms-txt")
+                ),
             ])
         ),
     ]);

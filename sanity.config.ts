@@ -39,13 +39,23 @@ function pathForDocument(document?: { _type?: string; slug?: { current?: string 
   return undefined;
 }
 
+// Singleton document types — exactly one document of each type exists,
+// edited from a fixed entry under "Site". We hide them from global "New
+// document" templates AND strip Duplicate/Delete actions so editors
+// can't accidentally create dupes or wipe them out.
+const SINGLETONS = new Set(["robotsTxt", "llmsTxt"]);
+
 export default defineConfig({
   name: "default",
   title: "NewME",
   basePath: "/studio",
   projectId,
   dataset,
-  schema: { types: schemaTypes },
+  schema: {
+    types: schemaTypes,
+    // Prevent singletons from appearing in the global "create new" template list.
+    templates: (prev) => prev.filter((t) => !SINGLETONS.has(t.schemaType)),
+  },
   plugins: [
     structureTool({ structure: customStructure }),
     visionTool({ defaultApiVersion: apiVersion }),
@@ -54,6 +64,17 @@ export default defineConfig({
     productionUrl: async (prev, { document }) => {
       const path = pathForDocument(document);
       return path ? `${siteUrl}${path}` : prev;
+    },
+    // For singleton types, strip the actions that could break the
+    // "exactly one doc with a fixed id" assumption: duplicate, delete,
+    // unpublish. Publish + edit + restore are preserved.
+    actions: (prev, ctx) => {
+      if (SINGLETONS.has(ctx.schemaType)) {
+        return prev.filter(
+          (a) => !["duplicate", "delete", "unpublish"].includes(a.action ?? ""),
+        );
+      }
+      return prev;
     },
   },
 });
