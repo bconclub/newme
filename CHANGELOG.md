@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-22 · Seed script for the 42 legacy WordPress redirects (not yet run)
+
+- **`scripts/seed-legacy-redirects.mjs`** (new) — Node.js script that bulk-creates the 42 Tier 1–4 WordPress migration redirects as `redirect` documents in Sanity. Uses `@sanity/client` + the existing `redirect` schema. Idempotent: each doc gets a deterministic ID (`redirect-<slugified-source>`) and uses `createIfNotExists` so re-running the script doesn't duplicate or overwrite existing entries. If an editor has tweaked a destination in Studio, manual changes win.
+- **How to run** (documented in the script header):
+  1. Generate a fresh Sanity write token at `sanity.io/manage/personal/project/sljf1wfa/api/tokens` (the old one was leaked in git history and needs rotation — pending LAUNCH-CHECKLIST item 4.14)
+  2. `npm install --no-save @sanity/client`
+  3. `SANITY_API_TOKEN=skXXXX... node scripts/seed-legacy-redirects.mjs`
+  4. Verify in Studio: `/studio` → "Redirect" should show 42 new entries with internal notes like "WordPress: diabetes care program → metabolic pathway"
+- **Not run yet** — waiting on token rotation and explicit go-ahead. The script is committed as a deliverable so it's reviewable and re-runnable forever.
+- **Rationale recap** — Sanity chosen over hard-coding in `next.config.ts` because the redirect infrastructure was built for exactly this case (migration), editors can disable/edit destinations without redeploys, and we get a single source of truth alongside future editorial redirects.
+
 ## 2026-05-22 · url-map.pdf layout fixes — narrow-column inheritance and wrapping bugs
 
 - **`scripts/generate-url-map-pdf.mjs`** — PDFKit bug fix. After `doc.text(str, x, y, { width })` the internal cursor remembers the last x-position AND the last constrained text region; subsequent `doc.text(str)` calls inherit both, so section headers (Tier 5, Dynamic routes, Excluded from sitemap) rendered in narrow columns with text wrapping awkwardly. Fix: added a `resetCursor()` helper that clears the cursor + text region, called after every table row + at the top of every section header. Also: every text() call in the post-table content now passes explicit `MARGIN, doc.y, { width: FULL_W }` so nothing inherits a narrow constraint. Page constants extracted (`PAGE_W`, `MARGIN`, `FULL_W`) so column widths are obvious and consistent.
