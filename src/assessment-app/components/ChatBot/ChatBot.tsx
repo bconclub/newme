@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { saveCalendlyAppointment } from "../../services/crmService";
+import { saveCalendlyAppointment, AppointmentDetails } from "../../services/crmService";
 import { GRN, INK2, INK3, GOLD, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { LogoMark } from "../Logo";
 
@@ -17,6 +17,10 @@ export interface ChatBotProps {
   bullets: string[];
   onStartNow: () => void;
   leadId?: string | null;
+  userEmail?: string;
+  userPhone?: string;
+  hasBooked?: boolean;
+  appointmentDetails?: AppointmentDetails | null;
 }
 
 interface QAItem { label: string; answer: string[]; }
@@ -72,11 +76,21 @@ function openWhatsApp(phaseName: string) {
   window.open(url, "_blank");
 }
 
-function openCalendly() {
+function openCalendly(prefill?: { name?: string; email?: string; phone?: string }) {
   const url: string = CALENDLY_URL || "https://calendly.com";
   const cal = (window as any).Calendly;
-  if (cal && CALENDLY_URL) cal.initPopupWidget({ url });
-  else window.open(url, "_blank");
+  if (cal && CALENDLY_URL) {
+    cal.initPopupWidget({
+      url,
+      prefill: {
+        name:          prefill?.name  || "",
+        email:         prefill?.email || "",
+        customAnswers: { a1: prefill?.phone || "" },
+      },
+    });
+  } else {
+    window.open(url, "_blank");
+  }
 }
 
 /* ── Chat bubbles ── */
@@ -112,14 +126,71 @@ function CtaButton({ label, onClick, variant = "primary" }: { label: string; onC
 }
 
 /* ── Main component ── */
-export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProps) {
-  const [open,     setOpen]     = useState(false);
-  const [pulse,    setPulse]    = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [step,     setStep]     = useState<Step>("welcome");
-  const [prevMenu, setPrevMenu] = useState<MenuStep>("about_menu");
-  const [typing,   setTyping]   = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+function loadApptFromStorage(email: string): AppointmentDetails | null {
+  try {
+    const raw = localStorage.getItem(`newme_appt_${email}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function saveApptToStorage(email: string, appt: AppointmentDetails) {
+  try { localStorage.setItem(`newme_appt_${email}`, JSON.stringify(appt)); } catch {}
+}
+
+function formatApptTime(iso: string): string {
+  try {
+    return new Date(iso).toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata", day: "numeric", month: "short",
+      year: "numeric", hour: "2-digit", minute: "2-digit",
+    }) + " IST";
+  } catch { return iso; }
+}
+
+export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, userPhone, hasBooked, appointmentDetails }: ChatBotProps) {
+  const [open,         setOpen]         = useState(false);
+  const [pulse,        setPulse]        = useState(false);
+  const [messages,     setMessages]     = useState<Message[]>([]);
+  const [step,         setStep]         = useState<Step>("welcome");
+  const [prevMenu,     setPrevMenu]     = useState<MenuStep>("about_menu");
+  const [typing,       setTyping]       = useState(false);
+  const [alreadyBooked, setAlreadyBooked] = useState(() => {
+    if (hasBooked) return true;
+    if (userEmail) {
+      try { return !!(localStorage.getItem(`newme_appt_${userEmail}`) || localStorage.getItem(`newme_booked_${userEmail}`)); } catch {}
+    }
+    return false;
+  });
+  const [apptDetails, setApptDetails] = useState<AppointmentDetails | null>(() => {
+    
+    if (appointmentDetails) return appointmentDetails;
+    console.log("Appoint",JSON.stringify(appointmentDetails))
+    if (userEmail) return loadApptFromStorage(userEmail);
+    return null;
+  });
+  const bottomRef    = useRef<HTMLDivElement>(null);
+  const userEmailRef = useRef<string | undefined>(userEmail);
+
+  useEffect(() => { userEmailRef.current = userEmail; }, [userEmail]);
+
+  // Handles async cases: CRM prop resolves after mount (SharedResultsPage)
+  useEffect(() => {
+    if (hasBooked) setAlreadyBooked(true);
+    if (appointmentDetails) setApptDetails(appointmentDetails);
+    console.log("appt details",JSON.stringify(appointmentDetails))
+  }, [hasBooked, appointmentDetails]);
+
+  useEffect(() => {
+    if (!userEmail) return;
+    try {
+      if (localStorage.getItem(`newme_appt_${userEmail}`) || localStorage.getItem(`newme_booked_${userEmail}`)) {
+        setAlreadyBooked(true);
+        setApptDetails(loadApptFromStorage(userEmail));
+      }
+    } catch {}
+  }, [userEmail]);
+
+  const leadIdRef = useRef<string | null | undefined>(leadId);
+  useEffect(() => { leadIdRef.current = leadId; }, [leadId]);
 
   useEffect(() => {
     function onCalendlyEvent(e: MessageEvent) {
@@ -128,7 +199,20 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
         if (cal?.closePopupWidget) cal.closePopupWidget();
         const eventUri   = e.data.payload?.event?.uri;
         const inviteeUri = e.data.payload?.invitee?.uri;
-        if (leadId && eventUri && inviteeUri) saveCalendlyAppointment(leadId, eventUri, inviteeUri);
+        // Persist booked state immediately — before any async call
+        if (userEmailRef.current) {
+          try { localStorage.setItem(`newme_booked_${userEmailRef.current}`, "1"); } catch {}
+        }
+        // Fetch appointment details from backend (fires-and-updates if available)
+        if (leadIdRef.current && eventUri && inviteeUri) {
+          saveCalendlyAppointment(leadIdRef.current, eventUri, inviteeUri).then(appt => {
+            if (appt && userEmailRef.current) {
+              saveApptToStorage(userEmailRef.current, appt);
+              setApptDetails(appt);
+            }
+          });
+        }
+        setAlreadyBooked(true);
         setOpen(true);
         setMessages(prev => [
           ...prev,
@@ -198,7 +282,10 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
     setMessages(prev => [...prev, { from: "user", text: label }]);
     setStep(nextStep);
     if (nextStep === "talk") { addBotMessage("I'll open WhatsApp for you — our care team typically replies within a few hours."); setTimeout(() => openWhatsApp(phaseName), 1200); }
-    if (nextStep === "book") { addBotMessage("Opening our booking page — pick a time that works and a care advisor will call you."); setTimeout(() => openCalendly(), 1200); }
+    if (nextStep === "book") {
+      addBotMessage("Opening our booking page — pick a time that works and a care advisor will call you.");
+      setTimeout(() => openCalendly({ name: [userName, ""].join(" ").trim() || undefined, email: userEmail, phone: userPhone }), 1200);
+    }
   }
 
   function reset() {
@@ -345,10 +432,53 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
 
           {/* CTAs */}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "12px", background: "rgba(0,0,0,0.2)", overflowY: "auto", maxHeight: "min(280px, 42vh)", flexShrink: 0 }}>
+            {/* Reusable booking details card */}
+            {(() => { console.log("[ChatBot] apptDetails:", apptDetails, "alreadyBooked:", alreadyBooked); return null; })()}
+            {alreadyBooked && (
+              <div style={{ background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 14, padding: "12px 14px", marginBottom: 7 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#4ade80", marginBottom: apptDetails ? 8 : 0 }}>✓ Call Scheduled</p>
+                {apptDetails?.startTime && 
+                
+                
+                (
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", marginBottom: 8 }}>
+                    {formatApptTime(apptDetails.startTime)}
+                  </p>
+                )}
+                {apptDetails?.joinUrl && (
+                  <a href={apptDetails.joinUrl} target="_blank" rel="noreferrer"
+                    style={{ display: "block", fontSize: 12, color: "#4ade80", textDecoration: "none", marginBottom: 8, fontWeight: 600 }}>
+                    Join Meeting ↗
+                  </a>
+                )}
+                {(apptDetails?.rescheduleUrl || apptDetails?.cancelUrl) && (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    {apptDetails.rescheduleUrl && (
+                      <button
+                        onClick={() => {
+                          const cal = (window as any).Calendly;
+                          if (cal?.initPopupWidget) cal.initPopupWidget({ url: apptDetails.rescheduleUrl });
+                          else window.open(apptDetails.rescheduleUrl!, "_blank");
+                        }}
+                        style={{ flex: 1, textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.6)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 50, padding: "6px 0", cursor: "pointer", fontWeight: 500, fontFamily: FONT_BODY }}>
+                        Reschedule
+                      </button>
+                    )}
+                    {apptDetails.cancelUrl && (
+                      <a href={apptDetails.cancelUrl} target="_blank" rel="noreferrer"
+                        style={{ flex: 1, textAlign: "center", fontSize: 12, color: "rgba(239,68,68,0.8)", background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 50, padding: "6px 0", textDecoration: "none", fontWeight: 500 }}>
+                        Cancel ↗
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {step === "welcome" && (
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 {CATEGORIES.map(cat => <CtaButton key={cat.step} label={cat.label} onClick={() => handleCategory(cat)} />)}
-                <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />
+                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
                 <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
               </div>
             )}
@@ -361,7 +491,7 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId }: ChatBotProp
             {step === "answered" && (
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 <CtaButton label="Ask another question" onClick={() => setStep(prevMenu)} />
-                <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />
+                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
                 <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
                 <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
               </div>

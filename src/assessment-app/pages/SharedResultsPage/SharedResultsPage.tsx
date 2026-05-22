@@ -118,6 +118,8 @@ export function SharedResultsPage() {
             pct={100}
             total={100}
             crmLeadId={data.crmLeadId}
+            hasBooked={data.status === "Appointment Scheduled"}
+            appointmentDetails={data.appointment ?? null}
           />
         )}
 

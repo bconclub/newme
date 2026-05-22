@@ -118,15 +118,15 @@ export function QuizPage({
     try {
       // Create/upsert the lead first — email must be captured before they
       // start the quiz even if the limit-check later fails.
-      let leadId: string | null = existingLeadId ?? null;
+      let leadId: string | null = null;
       if (foundCrmLead) {
-        console.log("lead found",foundCrmLead)
+        // Existing CRM lead for this email — reuse it, clean up any orphan
         if (existingLeadId && existingLeadId !== foundCrmLead.id) deleteLeadById(existingLeadId);
         leadId = foundCrmLead.id;
-      } else if (!leadId) {
-            console.log("create prof1")
+      } else {
+        // No CRM lead for this email — always create one, even if a stale
+        // existingLeadId exists from a previous session with a different email.
         try {
-          console.log("create prof",info)
           const r = await createPreQuizLead(info.name, info.last, info.email);
           leadId = r.leadId ?? null;
         } catch {}

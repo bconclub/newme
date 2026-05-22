@@ -4,6 +4,7 @@ import { Header } from "../../components/Header/Header";
 import { SectionLabel, Dot } from "../../components/SectionLabel";
 import { PW, PRICING, PATHWAY_SEVERITY, FRAMING_BODY, BRIDGE_SENTENCE, ASSURANCE, ACTIONABLE_POINTS } from "../../data/pathways";
 import { ChatBot } from "../../components/ChatBot/ChatBot";
+import type { AppointmentDetails } from "../../services/crmService";
 import { GI_BILLING } from "../../constants/zohoCheckout";
 import EyebrowPill from "../../../components/option1/EyebrowPill";
 
@@ -25,6 +26,8 @@ export type ResultsPageProps = {
   pct: number;
   total: number;
   crmLeadId?: string | null;
+  hasBooked?: boolean;
+  appointmentDetails?: AppointmentDetails | null;
 };
 
 /* Shared dark glass card style */
@@ -37,10 +40,10 @@ const glassCard: React.CSSProperties = {
 };
 
 export function ResultsPage({
-  res, info,
+  res, info, profile,
   showSticky, bodyVisible, pricingRef,
   onSelectPhase,
-  pct, total, crmLeadId,
+  pct, total, crmLeadId, hasBooked, appointmentDetails,
 }: ResultsPageProps) {
   const pw = PW[res.pathway];
   const sev = PATHWAY_SEVERITY[res.pathway];
@@ -310,6 +313,10 @@ export function ResultsPage({
         bullets={pw.bullets}
         onStartNow={() => onSelectPhase(res.pathway)}
         leadId={crmLeadId}
+        userEmail={info.email || ""}
+        userPhone={profile?.phone || info.phone || ""}
+        hasBooked={hasBooked}
+        appointmentDetails={appointmentDetails}
       />
     </div>
   );
