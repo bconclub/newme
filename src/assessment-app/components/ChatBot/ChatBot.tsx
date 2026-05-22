@@ -454,10 +454,15 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
                 {(apptDetails?.rescheduleUrl || apptDetails?.cancelUrl) && (
                   <div style={{ display: "flex", gap: 8 }}>
                     {apptDetails.rescheduleUrl && (
-                      <a href={apptDetails.rescheduleUrl} target="_blank" rel="noreferrer"
-                        style={{ flex: 1, textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.6)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 50, padding: "6px 0", textDecoration: "none", fontWeight: 500 }}>
-                        Reschedule ↗
-                      </a>
+                      <button
+                        onClick={() => {
+                          const cal = (window as any).Calendly;
+                          if (cal?.initPopupWidget) cal.initPopupWidget({ url: apptDetails.rescheduleUrl });
+                          else window.open(apptDetails.rescheduleUrl!, "_blank");
+                        }}
+                        style={{ flex: 1, textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.6)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 50, padding: "6px 0", cursor: "pointer", fontWeight: 500, fontFamily: FONT_BODY }}>
+                        Reschedule
+                      </button>
                     )}
                     {apptDetails.cancelUrl && (
                       <a href={apptDetails.cancelUrl} target="_blank" rel="noreferrer"
