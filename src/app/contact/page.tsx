@@ -8,6 +8,7 @@ import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
 import EyebrowPill from '@/components/option1/EyebrowPill'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
+import { trackEvent } from '@/lib/analytics'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -48,6 +49,9 @@ function ContactBody() {
     e.preventDefault()
     setSending(true)
     setError(null)
+    // Fire the analytics event before the network call so we capture intent
+    // even when the CRM endpoint is unreachable.
+    trackEvent('contact_form_submitted', { location: 'contact_page' })
     try {
       const res = await fetch(ENDPOINTS.CRM_LEAD_CONTACT_US, {
         method: 'POST',

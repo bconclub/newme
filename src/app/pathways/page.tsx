@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { trackEvent } from '@/lib/analytics'
 import { motion } from 'framer-motion'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
@@ -361,6 +362,7 @@ function PathwaysHeroCta() {
         href="/assessment"
         aria-hidden
         tabIndex={-1}
+        onClick={() => trackEvent('cta_click', { location: 'pathways_hero_arrow', label: 'Start Assessment' })}
         initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
         transition={{ duration: 0.55, delay: 0.42, ease: EASE }}
@@ -393,6 +395,7 @@ function PathwaysHeroCta() {
       </motion.a>
       <motion.a
         href="/assessment"
+        onClick={() => trackEvent('cta_click', { location: 'pathways_hero_pill', label: 'Start Assessment' })}
         initial={{ opacity: 0, x: -14 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.55, delay: 0.28, ease: EASE }}

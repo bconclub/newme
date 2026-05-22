@@ -48,6 +48,11 @@ export type EventName =
   // to disambiguate (footer / research_evidence / research_lab_waitlist).
   | 'email_subscribed'
 
+  // Contact-us form submission (the /contact page). Fires when the user
+  // hits Send — wired before the network call so it captures intent even
+  // if the CRM endpoint is down.
+  | 'contact_form_submitted'
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { trackEvent } from '@/lib/analytics'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import PageHero from '@/components/option1/PageHero'
@@ -289,6 +290,7 @@ function PhaseSection({ phase }: { phase: Phase }) {
             <div className="shrink-0">
               <a
                 href="/assessment"
+                onClick={() => trackEvent('cta_click', { location: 'pathways_gi_phase_cta', label: 'Start Assessment' })}
                 className="font-[family-name:var(--font-bricolage)] inline-flex items-center rounded-full bg-[#FEF272] hover:bg-[#FDF185] text-[#173B39] font-medium transition-[background-color,box-shadow] duration-300 hover:shadow-[0_10px_24px_-12px_rgba(0,0,0,0.45)]"
                 style={{
                   height: 'clamp(44px,3.33vw,64px)',
