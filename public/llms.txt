@@ -1,0 +1,64 @@
+# Dr. Pal's NewME
+
+> A doctor-led clinical system for metabolic and gut regulation, founded by
+> Dr. Palaniappan Manickam, MD (gastroenterologist). NewME combines clinical
+> insights with structured care to better understand your body and provide
+> the care it needs.
+
+NewME isn't a wellness trend or a fad. It's a structured clinical system. The
+patient journey begins with a free 3-minute clinical assessment that maps the
+patient's metabolic and gut patterns, then guides them into the appropriate
+phase of care. Every program is reviewed by a medical committee before it
+begins, and each patient is assigned a Clinical Health Coach who works with
+them throughout the program.
+
+## Core pages
+
+- [Home](https://drpalsnewme.com/): Overview of the NewME clinical system
+- [How It Works](https://drpalsnewme.com/how-it-works): Step-by-step explanation of the assessment → pathway → care flow
+- [Pathways](https://drpalsnewme.com/pathways): All five clinical pathways at a glance
+- [Clinical Assessment](https://drpalsnewme.com/assessment): Free 3-minute assessment that maps the user to a pathway
+- [Virtual Clinic](https://drpalsnewme.com/virtual-clinic): Doctor-led virtual consultations
+- [Research Lab](https://drpalsnewme.com/research-lab): Ongoing clinical observations and research
+- [Team](https://drpalsnewme.com/team): NewME clinical team
+- [FAQ](https://drpalsnewme.com/faq): Detailed answers about pathways, pricing, and care
+
+## Clinical pathways
+
+NewME offers three main pathway tracks. Each is doctor-led, time-bound, and
+includes a Clinical Health Coach plus medical committee oversight.
+
+- [Metabolic Pathway](https://drpalsnewme.com/pathways/metabolic): For patients with metabolic dysregulation — weight, energy, blood sugar, and related concerns.
+- [GI Pathway](https://drpalsnewme.com/pathways/gi): For patients with gut conditions such as IBS, SIBO, bloating, constipation, and reflux. Available in 1-month monthly or 3-month upfront billing.
+- [Continuity Pathway](https://drpalsnewme.com/pathways/continuity): Ongoing maintenance care for patients who have completed an initial pathway.
+
+After the structured pathway, patients can transition to NewME 360 (ongoing
+coaching and relapse prevention) or NewME Movement (fitness programming
+and live sessions). These are optional and not part of the core pathway
+purchase.
+
+## Content & editorial
+
+- [Blog](https://drpalsnewme.com/blog): Long-form articles on gut health, metabolic health, and preventive medicine
+- [Media](https://drpalsnewme.com/media): Press features and brand mentions
+- [Contact](https://drpalsnewme.com/contact): Get in touch with the NewME team
+
+## About Dr. Pal
+
+Dr. Palaniappan Manickam, MD is a gastroenterologist and the founder of
+NewME. He leads a system that focuses on restoring metabolic and gut
+health through structured, evidence-based care — not generic wellness
+advice. His clinical perspective drives every pathway design decision.
+
+## What NewME is not
+
+- Not a wellness app, supplement company, or generic coaching service
+- Not a fad diet or short-term cleanse
+- Not a substitute for emergency medical care
+- Not an insurance-billable service in most regions (direct-pay)
+
+## Legal
+
+- [Terms](https://drpalsnewme.com/terms)
+- [Privacy Policy](https://drpalsnewme.com/privacy-policy)
+- [Cookie Policy](https://drpalsnewme.com/cookie-policy)
