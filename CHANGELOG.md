@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-05-22 · url-map.pdf layout fixes — narrow-column inheritance and wrapping bugs
+
+- **`scripts/generate-url-map-pdf.mjs`** — PDFKit bug fix. After `doc.text(str, x, y, { width })` the internal cursor remembers the last x-position AND the last constrained text region; subsequent `doc.text(str)` calls inherit both, so section headers (Tier 5, Dynamic routes, Excluded from sitemap) rendered in narrow columns with text wrapping awkwardly. Fix: added a `resetCursor()` helper that clears the cursor + text region, called after every table row + at the top of every section header. Also: every text() call in the post-table content now passes explicit `MARGIN, doc.y, { width: FULL_W }` so nothing inherits a narrow constraint. Page constants extracted (`PAGE_W`, `MARGIN`, `FULL_W`) so column widths are obvious and consistent.
+- **`docs/url-map.pdf`** — regenerated with the fixed renderer. Layout now renders correctly across all 4 sections.
+
 ## 2026-05-22 · URL map PDF (supersedes legacy redirects PDF) + mobile HIW image width
 
 - **`docs/url-map.pdf`** (new, ~14 KB) — single comprehensive reference document covering:

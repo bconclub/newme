@@ -203,42 +203,71 @@ doc.font('Helvetica').fontSize(10).fillColor('#222')
    .text('All routes are currently blocked from search engines via three layers (src/app/robots.ts, X-Robots-Tag header in next.config.ts, robots metadata in layout.tsx). All three must be removed in a single commit on launch day before any of the URLs in this document will appear in search results.')
 
 // Helpers ────────────────────────────────────────────────────────────────────
+//
+// PDFKit gotcha: after `doc.text(str, x, y, { width })` the internal cursor
+// remembers the last x-position AND the last text region width. The very
+// next `doc.text(str)` call (without explicit args) inherits both, which
+// makes following text render into a narrow column at a weird offset.
+// We work around this with `resetCursor()` after every table + by always
+// passing explicit `width` on every text() call.
+const PAGE_W = 595          // A4 in pt
+const MARGIN = 40
+const FULL_W = PAGE_W - MARGIN * 2  // 515pt usable width
 const FONT = 8
+
+function resetCursor() {
+  // Move the cursor back to the left margin and clear any pinned text region.
+  doc.x = MARGIN
+  // Calling text() with empty content + an explicit width re-establishes the
+  // default text region so subsequent text() calls don't inherit a narrow one.
+  doc.text('', MARGIN, doc.y, { width: FULL_W, continued: false })
+}
 function ensureSpace(rowH = 14) {
-  if (doc.y + rowH > doc.page.height - 50) doc.addPage()
+  if (doc.y + rowH > doc.page.height - 50) {
+    doc.addPage()
+    resetCursor()
+  }
 }
 function sectionHeader(title, desc) {
   ensureSpace(60)
   doc.moveDown(0.8)
-  doc.font('Helvetica-Bold').fontSize(13).fillColor('#013E37').text(title)
+  resetCursor()
+  doc.font('Helvetica-Bold').fontSize(13).fillColor('#013E37')
+     .text(title, MARGIN, doc.y, { width: FULL_W })
   if (desc) {
     doc.moveDown(0.15)
-    doc.font('Helvetica').fontSize(9).fillColor('#555').text(desc, { width: doc.page.width - 80 })
+    doc.font('Helvetica').fontSize(9).fillColor('#555')
+       .text(desc, MARGIN, doc.y, { width: FULL_W })
   }
   doc.moveDown(0.35)
+  resetCursor()
 }
 function tableHeader(cols) {
   ensureSpace(20)
   const top = doc.y
-  doc.rect(40, top, doc.page.width - 80, 16).fill('#013E37')
+  doc.rect(MARGIN, top, FULL_W, 16).fill('#013E37')
   doc.fillColor('#FEF272').font('Helvetica-Bold').fontSize(9)
-  let x = 44
+  let x = MARGIN + 4
   for (const c of cols) {
-    doc.text(c.label, x, top + 4, { width: c.width - 8 })
+    doc.text(c.label, x, top + 4, { width: c.width - 8, lineBreak: false })
     x += c.width
   }
   doc.y = top + 18
   doc.fillColor('#222')
+  resetCursor()
 }
 function tableRow(cells, alt) {
-  doc.font('Courier').fontSize(FONT)
-  const rowH = Math.max(
-    ...cells.map((c, i) => doc.heightOfString(c.text, { width: c.width - 8 }))
-  ) + 10
+  // Pre-measure each cell with its OWN font to get an accurate row height
+  // (cells with longer strings or smaller widths drive the height).
+  const heights = cells.map((c) => {
+    doc.font(c.mono ? 'Courier' : 'Helvetica').fontSize(FONT)
+    return doc.heightOfString(c.text, { width: c.width - 8 })
+  })
+  const rowH = Math.max(...heights) + 10
   ensureSpace(rowH + 4)
   const top = doc.y
-  if (alt) doc.rect(40, top, doc.page.width - 80, rowH).fill('#F4F4F1')
-  let x = 44
+  if (alt) doc.rect(MARGIN, top, FULL_W, rowH).fill('#F4F4F1')
+  let x = MARGIN + 4
   for (const c of cells) {
     const font = c.mono ? 'Courier' : 'Helvetica'
     const color = c.color ?? '#222'
@@ -247,6 +276,7 @@ function tableRow(cells, alt) {
     x += c.width
   }
   doc.y = top + rowH
+  resetCursor()
 }
 
 // ─── Section 1: Live Routes ────────────────────────────────────────────────
@@ -271,19 +301,27 @@ for (const r of liveRoutes) {
 }
 
 doc.moveDown(0.6)
-doc.font('Helvetica-Bold').fontSize(11).fillColor('#013E37').text('Dynamic routes')
+resetCursor()
+doc.font('Helvetica-Bold').fontSize(11).fillColor('#013E37')
+   .text('Dynamic routes', MARGIN, doc.y, { width: FULL_W })
 doc.moveDown(0.2)
 for (const d of dynamicRoutes) {
-  doc.font('Courier').fontSize(9).fillColor('#0A5A47').text(`  ${d.path}`)
-  doc.font('Helvetica').fontSize(9).fillColor('#555').text(`    ${d.label}`)
+  doc.font('Courier').fontSize(9).fillColor('#0A5A47')
+     .text(`  ${d.path}`, MARGIN, doc.y, { width: FULL_W })
+  doc.font('Helvetica').fontSize(9).fillColor('#555')
+     .text(`    ${d.label}`, MARGIN, doc.y, { width: FULL_W })
 }
 
 doc.moveDown(0.6)
-doc.font('Helvetica-Bold').fontSize(11).fillColor('#013E37').text('Excluded from sitemap (intentional)')
+resetCursor()
+doc.font('Helvetica-Bold').fontSize(11).fillColor('#013E37')
+   .text('Excluded from sitemap (intentional)', MARGIN, doc.y, { width: FULL_W })
 doc.moveDown(0.2)
 for (const e of excluded) {
-  doc.font('Courier').fontSize(9).fillColor('#A33').text(`  ${e.path}`)
-  doc.font('Helvetica').fontSize(9).fillColor('#555').text(`    ${e.why}`)
+  doc.font('Courier').fontSize(9).fillColor('#A33')
+     .text(`  ${e.path}`, MARGIN, doc.y, { width: FULL_W })
+  doc.font('Helvetica').fontSize(9).fillColor('#555')
+     .text(`    ${e.why}`, MARGIN, doc.y, { width: FULL_W })
 }
 
 // ─── Section 2: Code-level Redirects ──────────────────────────────────────
@@ -318,9 +356,12 @@ sectionHeader(
 for (const tier of legacyTiers) {
   ensureSpace(60)
   doc.moveDown(0.4)
-  doc.font('Helvetica-Bold').fontSize(11).fillColor('#013E37').text(tier.label)
+  resetCursor()
+  doc.font('Helvetica-Bold').fontSize(11).fillColor('#013E37')
+     .text(tier.label, MARGIN, doc.y, { width: FULL_W })
   doc.moveDown(0.15)
-  doc.font('Helvetica').fontSize(9).fillColor('#555').text(tier.desc, { width: doc.page.width - 80 })
+  doc.font('Helvetica').fontSize(9).fillColor('#555')
+     .text(tier.desc, MARGIN, doc.y, { width: FULL_W })
   doc.moveDown(0.3)
   tableHeader([
     { label: 'Old URL',         width: 240 },
@@ -344,22 +385,32 @@ sectionHeader(
   '4. Sanity-driven editorial redirects (reference only)',
   'Managed in Sanity Studio under the "Redirect" document type. Picked up by src/middleware.ts and refreshed every 60 seconds — no redeploy needed. Best used for content-driven changes (renamed blog slugs, moved articles).',
 )
+resetCursor()
 doc.font('Helvetica').fontSize(10).fillColor('#222')
-doc.text('How to add one (for editors):', { continued: false })
+   .text('How to add one (for editors):', MARGIN, doc.y, { width: FULL_W })
 doc.moveDown(0.2)
-doc.font('Helvetica').fontSize(10).fillColor('#222')
-doc.text('1. Open /studio')
-doc.text('2. Click "Redirect" in the sidebar')
-doc.text('3. Click "Create new" — fill in source, destination, permanent toggle, optional note')
-doc.text('4. Publish — middleware picks it up within ~60 seconds')
+const steps = [
+  '1. Open /studio',
+  '2. Click "Redirect" in the sidebar',
+  '3. Click "Create new" — fill in source, destination, permanent toggle, optional note',
+  '4. Publish — middleware picks it up within ~60 seconds',
+]
+for (const s of steps) {
+  doc.font('Helvetica').fontSize(10).fillColor('#222')
+     .text(s, MARGIN, doc.y, { width: FULL_W })
+}
 doc.moveDown(0.5)
 doc.font('Helvetica-Oblique').fontSize(9).fillColor('#888')
-doc.text("This PDF doesn't enumerate Sanity-driven redirects because they're managed in Studio. Check sanity.io/manage → project sljf1wfa → Studio for the live list.", { width: doc.page.width - 80 })
+   .text(
+     "This PDF doesn't enumerate Sanity-driven redirects because they're managed in Studio. Check sanity.io/manage → project sljf1wfa → Studio for the live list.",
+     MARGIN, doc.y, { width: FULL_W }
+   )
 
 // Footer
 doc.moveDown(2)
+resetCursor()
 doc.font('Helvetica-Oblique').fontSize(9).fillColor('#888')
-doc.text('Generated by scripts/generate-url-map-pdf.mjs', { align: 'center' })
+   .text('Generated by scripts/generate-url-map-pdf.mjs', MARGIN, doc.y, { width: FULL_W, align: 'center' })
 
 doc.end()
 console.log(`✓ Wrote ${OUT}`)
