@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
         destination: '/assessment?zoho_payment=success',
         permanent: false,
       },
+      {
+        // Rebranded the page from "Virtual Clinic" to "Virtual Consult"
+        // (text + URL). Old URL preserved as a 308 so any external
+        // backlinks, Google index, or shared links keep working.
+        // Code-level redirect (not Sanity) because this is a permanent
+        // URL change tied to the codebase, not an editorial decision.
+        source: '/virtual-clinic',
+        destination: '/virtual-consult',
+        permanent: true,
+      },
     ]
   },
   async headers() {

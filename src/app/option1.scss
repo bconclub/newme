@@ -346,7 +346,7 @@ html:has(main.newme-page) .newme-header a {
    Footer — applies on EVERY page, not scoped to a specific
    <main> class. Previously this was scoped to `main.newme-page`
    only, so on /pathways (which uses `main.pathway-page`) and
-   /virtual-clinic (`main.vc-page`) the gradient bg + gold heading
+   /virtual-consult (`main.vc-page`) the gradient bg + gold heading
    colors were missing. The component itself uses `.newme-footer`
    regardless of which page it's on, so we just drop the scope.
 

@@ -38,7 +38,7 @@ const staticRoutes: StaticRoute[] = [
   { path: '/pathways/gi', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/pathways/continuity', changeFrequency: 'monthly', priority: 0.8 },
   // Other primary pages
-  { path: '/virtual-clinic', changeFrequency: 'monthly', priority: 0.8 },
+  { path: '/virtual-consult', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/blog', changeFrequency: 'daily', priority: 0.8 },
   { path: '/research-lab', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/team', changeFrequency: 'monthly', priority: 0.7 },

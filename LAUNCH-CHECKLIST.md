@@ -19,7 +19,7 @@ Legend: ✅ Done · ⚠️ Action needed · 🔲 To verify · ❌ Not done
 | 1.6 | Favicon (`.ico` + `.png`) | ✅ | Both formats present |
 | 1.7 | `sitemap.xml` | ✅ | Auto-generated via `sitemap.ts`, covers all routes |
 | 1.8 | Per-page meta title — `/how-it-works` | ✅ | |
-| 1.9 | Per-page meta title — `/virtual-clinic` | ✅ | |
+| 1.9 | Per-page meta title — `/virtual-consult` | ✅ | |
 | 1.10 | Per-page meta title — `/research-lab` | ✅ | |
 | 1.11 | Per-page meta title — `/blog` | ✅ | |
 | 1.12 | Per-page meta title — `/media` | ✅ | |

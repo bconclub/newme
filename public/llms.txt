@@ -17,7 +17,7 @@ Clinical Health Coach who works with them throughout the program.
 - [How It Works](https://drpalsnewme.com/how-it-works): Step-by-step explanation of the assessment → pathway → care flow
 - [Pathways](https://drpalsnewme.com/pathways): All five clinical pathways at a glance
 - [Clinical Assessment](https://drpalsnewme.com/assessment): Free 3-minute assessment that maps the user to a pathway
-- [Virtual Clinic](https://drpalsnewme.com/virtual-clinic): Doctor-led virtual consultations
+- [Virtual Consult](https://drpalsnewme.com/virtual-consult): Doctor-led virtual consultations
 - [Research Lab](https://drpalsnewme.com/research-lab): Ongoing clinical observations and research
 - [Team](https://drpalsnewme.com/team): NewME clinical team
 - [FAQ](https://drpalsnewme.com/faq): Detailed answers about pathways, pricing, and care

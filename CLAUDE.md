@@ -35,7 +35,7 @@ src/
 │   ├── page.tsx                # Home — composes the 9 home sections
 │   ├── how-it-works/page.tsx   # /how-it-works
 │   ├── pathways/page.tsx       # /pathways (+ /metabolic, /gi, /continuity)
-│   ├── virtual-clinic/page.tsx
+│   ├── virtual-consult/page.tsx
 │   ├── research-lab/page.tsx
 │   ├── studio/                 # Sanity mount
 │   └── sitemap.ts, robots.ts

@@ -50,10 +50,10 @@ const pages = [
       "Ongoing care and monitoring after your primary pathway — keeping your metabolic and gut health on track long-term.",
   },
   {
-    route: "/virtual-clinic",
-    metaTitle: "Virtual Clinic | Dr. Pal's NewME",
+    route: "/virtual-consult",
+    metaTitle: "Virtual Consult | Dr. Pal's NewME",
     metaDescription:
-      "Doctor-led virtual clinic from NewME. Consult with our clinical team from wherever you are — focused, evidence-based care without referral chains or waiting.",
+      "Doctor-led virtual consult from NewME. Consult with our clinical team from wherever you are — focused, evidence-based care without referral chains or waiting.",
   },
   {
     route: "/research-lab",

@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-05-22 · Virtual Clinic → Virtual Consult full URL migration (route + redirect + internal links)
+
+- **Renamed route**: `src/app/virtual-clinic/` → `src/app/virtual-consult/` (3 files: page.tsx, VCSections.tsx, VCHeroCta.tsx). The new canonical URL is `/virtual-consult`.
+- **`next.config.ts`** — added a permanent 308 redirect from `/virtual-clinic` → `/virtual-consult` so any existing inbound links (Google index, social shares, external mentions) continue working. Code-level redirect (not Sanity) because this is a permanent URL change tied to the codebase, not editorial.
+- **Internal links updated**:
+  - `src/components/option1/Header.tsx` — nav link href `/virtual-clinic` → `/virtual-consult`
+  - `src/components/option1/Footer.tsx` — same in footer column
+- **Sitemap** — `src/app/sitemap.ts` now lists `/virtual-consult` instead of `/virtual-clinic`. Search Console will re-discover via the redirect for now.
+- **Sanity** — `sanity/schemas/page.ts` dropdown option and `sanity/migrations/seed-pages.ts` seed data both updated to the new route + new Virtual Consult metaTitle/Description.
+- **`public/llms.txt`** — the AI-discoverability map's "Virtual Consult" entry now points at the new URL.
+- **Stale comments / docs cleaned** in `src/app/virtual-consult/VCHeroCta.tsx`, `src/app/option1.scss`, `CLAUDE.md`, `LAUNCH-CHECKLIST.md`, and `public/virtual-clinic/README.md` (the asset folder is intentionally NOT renamed to avoid breaking image paths; the README now flags that the page URL is `/virtual-consult` while the asset folder kept its old name).
+- User-facing: visiting `/virtual-clinic` now 308-redirects to `/virtual-consult` with the rebranded heading + body intact. Nav and footer link directly to the new URL. SEO authority preserved via the redirect.
+
 ## 2026-05-22 · Internal hero resize + vertical centering, pathway prescription banners, Virtual Consult rename, mobile HIW card breathing room
 
 - **`src/components/option1/PageHero.tsx`** — Internal-page hero card grew from 520px → 620px max (mobile floor 440px → 480px). The flex content container gains `justify-center` + `h-full` so heading + body (+ optional CTA) sit at the vertical midpoint of the card instead of being top-anchored. Padding rebalanced to 110 top / 90 bottom — only acts as a safe-area minimum now since centering does the actual placement. Pages without a CTA (Contact, Team, FAQ, Blog, Media, Research Lab) no longer feel top-heavy; pages with a CTA (Pathways, Virtual Consult, How It Works) still fill the card edge to edge because their content is taller.

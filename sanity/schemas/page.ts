@@ -36,7 +36,7 @@ export default defineType({
           { title: "Pathway — Metabolic  (/pathways/metabolic)", value: "/pathways/metabolic" },
           { title: "Pathway — GI  (/pathways/gi)", value: "/pathways/gi" },
           { title: "Pathway — Continuity  (/pathways/continuity)", value: "/pathways/continuity" },
-          { title: "Virtual Clinic  (/virtual-clinic)", value: "/virtual-clinic" },
+          { title: "Virtual Consult  (/virtual-consult)", value: "/virtual-consult" },
           { title: "Research Lab  (/research-lab)", value: "/research-lab" },
           { title: "Team  (/team)", value: "/team" },
           { title: "Contact  (/contact)", value: "/contact" },

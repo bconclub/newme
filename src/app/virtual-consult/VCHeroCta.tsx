@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
  * every other CTA pair in the site.
  *
  * Lives in its own client-component file because the parent page
- * (/virtual-clinic) is a server component (exports `metadata`) and
+ * (/virtual-consult) is a server component (exports `metadata`) and
  * can't import framer-motion directly. Same animation cadence as
  * HIWCta and PathwaysHeroCta — both pieces fade-up TOGETHER under one
  * wrapper transition so the cluster reads as one unit.

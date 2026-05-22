@@ -1,6 +1,11 @@
 # /public/virtual-clinic
 
-**Used by:** /virtual-clinic page — hero photo, doctor card, gallery photos.
+**Used by:** /virtual-consult page — hero photo, doctor card, gallery photos.
+
+> ⚠️ This folder is still named `virtual-clinic` for historical reasons; the
+> page URL was renamed from `/virtual-clinic` to `/virtual-consult` but the
+> asset folder kept its old name to avoid touching unrelated image paths.
+> Files inside are still served at `/virtual-clinic/{filename}`.
 
 ## How to add an image
 1. Drop the file in this folder (recommended naming: `hero.webp`, `section-{name}.webp`, etc.)
