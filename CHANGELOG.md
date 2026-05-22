@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-05-22 · Replace all page banners + HIW step cards + home pathway images with finalized art
+
+- **Page banners (7 pages)**: home Hero, FAQ, Blog, How It Works, Team, Pathways, Virtual Clinic — all now use the final WebP banners under their respective `/public/<page>/...` paths instead of the temporary Figma-export placeholders
+  - `src/components/option1/Hero.tsx`: home hero → `/home/Main Banner.webp`
+  - `src/components/option1/BlogHero.tsx`: → `/blog/Main Banner.webp` (heading also changed to "Our Blogs", subhead removed in a prior commit)
+  - `src/components/option1/HIWHero.tsx`: → `/how it works/How it Works Banner.webp`
+  - `src/app/faq/page.tsx`: → `/faq/FAQ Banner.webp`
+  - `src/app/team/page.tsx`: → `/team/NewME Care Team Banner.webp`
+  - `src/app/pathways/page.tsx`: → `/pathways/Main Banner.webp` + `imagePosition` changed from `60% center` to `center top` so the doctor's head and the patient's face stay fully visible (image is 1.91:1 in a 3.62:1 container, so vertical crop is unavoidable — anchoring to top sacrifices the lower coat/clipboard instead)
+  - `src/app/virtual-clinic/page.tsx`: → `/virtual clinic/Virtual Consult Banner.webp` with the same `center top` anchor
+- **HIW step cards (5 images)**: `src/components/option1/HIWUnifiedSystem.tsx` — Assessment, Prescription, Structured Care, Monitoring & Recalibration, Continuity. Migrated from `.png` to `.webp` and fixed two filename typos in the source paths (`Assesment.png` → `Assessment.webp`, `MOnitoring.png` → `Monitoring and Recalibration.webp`)
+- **HIW Coach vs AI section**: `src/components/option1/HIWHumanGuidance.tsx` — swapped the section image to `/how it works/Health Coach vs AI Coach.webp` (was `Structred care needs human guidance.webp`, also a typo)
+- **Home pathway card images (5)**: GI Core, GI Advanced, Reset, Rebuild, Sustain — the WebP files in `/public/home/` were replaced in place. No code change needed since `src/components/option1/Pathways.tsx` already referenced these paths. Renamed user-dropped `GI Advance.webp` → `GI Advanced.webp` to match the existing brand naming convention (past participle)
+- **Also bundled**: 3 untracked `Pathways Small Banner 1/2/3.webp` files dropped in `/public/pathways/` — assets added but not yet wired into any component (pending decision on where they're meant to live), and `public/pathways/one system multiple pathways.webp` updated in place
+- **Untracked dev artifacts also committed**: `docs/legacy-redirects.pdf` (the WordPress → new-site migration map deliverable) and `scripts/generate-legacy-redirects-pdf.mjs` (re-runnable generator for the PDF — uses `pdfkit` installed via `--no-save`, so regenerate-anytime works after `npm install pdfkit`)
+- User-facing: every hero across the site now shows the production photography. Old Figma-export images are no longer referenced anywhere
+
 ## 2026-05-15 · Home: Hero "Know more" wired + What-is-NewME gets its own CTA + circle badges no longer claim to be clickable
 
 - **`src/components/option1/Hero.tsx`**: Arrow circle next to "Know more" was pointing to `#assessment` (no such anchor). Both the arrow and the yellow "Know more" pill now point to `#how-it-works`, which is the `id` on the What is NewME section — clicking either scrolls there

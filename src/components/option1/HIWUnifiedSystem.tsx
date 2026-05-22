@@ -33,35 +33,35 @@ const CARDS: Card[] = [
     title: 'Assessment',
     body:
       'A structured clinical intake that maps your symptoms, health history, and metabolic patterns. This is not a quiz. It is the foundation of your care.',
-    image: '/how%20it%20works/Assesment.png',
+    image: '/how%20it%20works/Assessment.webp',
     imageAlt: 'Clinical assessment',
   },
   {
     title: 'Prescription',
     body:
       'Based on your assessment, you are guided into a specific phase of care. Your pathway is prescribed to address what your body needs right now.',
-    image: '/how%20it%20works/Prescription.png',
+    image: '/how%20it%20works/Prescription.webp',
     imageAlt: 'Prescribed care pathway',
   },
   {
     title: 'Structured Care',
     body:
       'You enter your phase with a dedicated clinical health coach & an expert care team. Nutrition, movement, sleep, and stress are addressed in a coordinated, week-by-week structure.',
-    image: '/how%20it%20works/Structured%20Care.png',
+    image: '/how%20it%20works/Structured%20Care.webp',
     imageAlt: 'Structured weekly care',
   },
   {
     title: 'Monitoring & Recalibration',
     body:
       'Your progress is tracked against clinical markers and real responses. Your care is adjusted as your body stabilizes, not left unchanged.',
-    image: '/how%20it%20works/MOnitoring.png',
+    image: '/how%20it%20works/Monitoring%20and%20Recalibration.webp',
     imageAlt: 'Clinical monitoring',
   },
   {
     title: 'Continuity',
     body:
       'Care does not end with one phase. Ongoing monitoring and structured accountability help maintain stability over the long term.',
-    image: '/how%20it%20works/Continuity.png',
+    image: '/how%20it%20works/Continuity.webp',
     imageAlt: 'Long-term continuity',
   },
   {

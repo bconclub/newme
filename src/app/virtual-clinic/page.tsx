@@ -77,9 +77,9 @@ function VCBlobs() {
 function VCHero() {
   return (
     <PageHero
-      imageSrc="/clinic/virtual-clinic-hero.webp"
-      imageAlt="NewME clinician on a virtual consultation"
-      imagePosition="65% center"
+      imageSrc="/virtual%20clinic/Virtual%20Consult%20Banner.webp"
+      imageAlt="NewME virtual consult"
+      imagePosition="center top"
       heading={<>Doctor-led Care,<br />Without The Wait.</>}
       subheading="Consult with NewME's clinical team from wherever you are. Focused, evidence-based care without referral chains or waiting."
       headingMaxWidthPx={1086}

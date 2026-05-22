@@ -103,8 +103,8 @@ export default function TeamPage() {
 function TeamHero() {
   return (
     <PageHero
-      imageSrc="/images/team/team-hero.webp"
-      imageAlt="NewME clinical care team"
+      imageSrc="/team/NewME%20Care%20Team%20Banner.webp"
+      imageAlt="NewME care team"
       imagePosition="center"
       eyebrow="NewME Care Team"
       heading={<>Meet The Clinical Team<br />Behind Your Care.</>}

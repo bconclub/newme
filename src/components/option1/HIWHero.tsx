@@ -12,8 +12,8 @@ import { trackEvent } from '@/lib/analytics'
 export default function HIWHero() {
   return (
     <PageHero
-      imageSrc="/how%20it%20works/hero.webp"
-      imageAlt="Doctor and patient consultation"
+      imageSrc="/how%20it%20works/How%20it%20Works%20Banner.webp"
+      imageAlt="NewME how it works cover"
       heading={
         <>
           You Don&rsquo;t Choose A Program.

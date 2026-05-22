@@ -112,9 +112,9 @@ export default function FAQPage() {
 function FAQHero() {
   return (
     <PageHero
-      imageSrc="/clinic/doctor-hero.png"
-      imageAlt="NewME clinical care"
-      imagePosition="60% center"
+      imageSrc="/faq/FAQ%20Banner.webp"
+      imageAlt="NewME FAQ cover"
+      imagePosition="center"
       heading={<>Frequently Asked<br />Questions.</>}
       subheading="Everything you need to know about our clinical pathways, team, and commitment to your health."
       headingMaxWidthPx={760}

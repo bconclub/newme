@@ -13,7 +13,7 @@ import PageHero from '@/components/option1/PageHero'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 // Images downloaded from Figma
-const HERO_IMG = '/images/pathways/hero-doctor.jpg'
+const HERO_IMG = '/pathways/Main%20Banner.webp'
 const SECTION_IMG = '/pathways/one%20system%20multiple%20pathways.webp'
 
 type Tab = 'metabolic' | 'gi' | 'continuity'
@@ -62,7 +62,7 @@ export default function PathwaysPage() {
       <PageHero
         imageSrc={HERO_IMG}
         imageAlt="Dr. Pal with patient"
-        imagePosition="60% center"
+        imagePosition="center top"
         heading={<>You Don&apos;t Choose A Program. You&apos;re Prescribed A Path.</>}
         subheading="NewME is a structured clinical system. Your assessment maps your health patterns and guides you into the pathway designed for your body's needs."
         headingMaxWidthPx={1086}

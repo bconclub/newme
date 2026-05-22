@@ -48,7 +48,7 @@ const POINTS = [
   },
 ]
 
-const IMAGE = '/how%20it%20works/Structred%20care%20needs%20human%20guidance.webp'
+const IMAGE = '/how%20it%20works/Health%20Coach%20vs%20AI%20Coach.webp'
 
 export default function HIWHumanGuidance() {
   return (
