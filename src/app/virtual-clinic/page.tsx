@@ -6,7 +6,7 @@ import VCHeroCta from './VCHeroCta'
 import { VCWhatIs, VCHowItWorks, VCDoctorCard } from './VCSections'
 
 export const metadata: Metadata = {
-  title: 'Virtual Clinic | Dr. Pal\'s NewME',
+  title: 'Virtual Consult | Dr. Pal\'s NewME',
   description:
     'Doctor-led virtual clinic from NewME. Consult with our clinical team from wherever you are — focused, evidence-based care without referral chains or waiting.',
 }

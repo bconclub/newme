@@ -75,7 +75,7 @@ const TEAM: TeamMember[] = [
   },
   {
     name: 'Ashwini Saras',
-    role: 'Operation Lead',
+    role: 'Operations Lead',
     photo: '/images/team/ashwini-saras.jpg',
     bio: 'Ashwini leads day-to-day operational delivery, ensuring seamless coordination between clinical, coaching, and administrative teams.',
   },
@@ -188,7 +188,7 @@ function TeamGrid() {
           className="font-[family-name:var(--font-urbanist)]"
           style={{ fontSize: 'clamp(14px, calc(20 / 1920 * 100vw), 20px)', color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, maxWidth: 680, margin: '0 auto' }}
         >
-          Each member of our team brings deep clinical expertise, aligned under Dr. Pal&rsquo;s structured approach to metabolic and gut health.
+          Each member of our team brings deep clinical expertise, aligned under Dr.&nbsp;Pal&rsquo;s structured approach to metabolic and gut health.
         </p>
       </motion.div>
 

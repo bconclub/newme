@@ -159,9 +159,10 @@ export default function Testimonials({ initialTestimonials }: { initialTestimoni
               marginTop: 'clamp(40px, calc(96 / 1920 * 100vw), 96px)',
             }}
           >
-            Structured care produces measurable, sustained outcomes. These are
-            not before-and-after stories. They are accounts of bodies returning
-            to regulation.
+            Structured care creates measurable, sustained outcomes. These are
+            not before-and-after stories. These are real people regaining
+            health, returning to regulation, and improving their quality of
+            life.
           </motion.p>
         </div>
 

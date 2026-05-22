@@ -187,7 +187,7 @@ export default function TermsPage() {
           <SectionHeading n={6}>Privacy and Confidentiality</SectionHeading>
 
           <SubHeading>Data Usage</SubHeading>
-          <P>Any personal and health information a user provides will be used solely for Program / Service purposes and kept confidential in accordance with NewME&apos;s <a href="/privacy-policy" style={{ color: 'var(--color-pine-teal)', textDecoration: 'underline' }}>Privacy Policy</a>.</P>
+          <P>Any personal and health information a user provides will be used solely for Program / Service / Research purposes and kept confidential in accordance with NewME&apos;s <a href="/privacy-policy" style={{ color: 'var(--color-pine-teal)', textDecoration: 'underline' }}>Privacy Policy</a>.</P>
 
           <SubHeading>Group Communication Limits</SubHeading>
           <P>Features of the Programs and Services include but are not limited to group video call discussions, online training sessions, interactive forums, and discussion groups (&ldquo;Interactive Areas&rdquo;), where users may interact with others, including but not limited to other users, trainers and health professionals. While NewME strives to maintain confidentiality, NewME cannot guarantee it in Interactive Areas. Users are advised and encouraged to avoid disclosing personal information or sensitive health information in Interactive Areas. Any such information voluntarily disclosed by the user in the Interactive Areas shall be the user&apos;s sole responsibility. NewME shall not be held liable for any consequences arising from such disclosures.</P>

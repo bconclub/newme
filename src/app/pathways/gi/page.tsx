@@ -42,13 +42,13 @@ const PHASES: Phase[] = [
     id: 'gi-core',
     heading: 'GastroIntestinal Core',
     description: 'Structured gastrointestinal stabilization for moderate digestive dysfunction, including conditions such IBS, Gastritis, amongst other GI conditions.',
-    duration: 'Duration: 4 Weeks',
+    duration: 'Duration: 12 Weeks',
     whoFor: [
       'Individuals with IBS, GERD, bloating, constipation, or diarrhea',
-      'People suffering from certain skin conditions like Psoriasis, Rosacia, Eczema, Urticaria/Hives',
+      'People suffering from certain skin conditions like Psoriasis, rosacea, Eczema, Urticaria/Hives',
       'Individuals with multiple food intolerances',
-      'Individuals with co-morbidities such as Insulin-dependent Type 2 Diabetes, Fatty Liver Type 2, Cardiac conditions',
-      'Patients with auto-immune conditions who require structured support to manage digestive symptoms',
+      'Individuals with co-morbidities such as Insulin-dependent Type 2 Diabetes, Fatty liver, Cardiac conditions',
+      'Patients with auto-immune conditions who require structured support to manage symptoms',
     ],
     areasOfFocus: [
       'Identification of food triggers',
@@ -90,8 +90,8 @@ const PHASES: Phase[] = [
     ],
     careItems: [
       { num: '01', title: 'Direct Clinical Supervision', desc: "Program delivered under Dr. Pal's direct guidance with mid-program consultation." },
-      { num: '02', title: 'Senior Medical Team Involvement', desc: 'Initial consultation with senior doctors and coordinated clinical oversight.' },
-      { num: '03', title: 'Specialized GI Coaching', desc: 'Weekly sessions with senior GI nutritionists supported by daily check-ins and dietary review.' },
+      { num: '02', title: 'Senior Medical Team Involvement', desc: 'Initial consultation with Senior doctor and coordinated clinical oversight.' },
+      { num: '03', title: 'Specialized GI Coaching', desc: 'Weekly sessions with senior GI nutritionist supported by daily check-ins and dietary review.' },
       { num: '04', title: 'Advanced Nutrition Protocols', desc: 'Deeper elimination, reintroduction, and ongoing dietary adjustments based on complex symptoms.' },
       { num: '05', title: 'Therapeutic Gut-Brain Support', desc: 'Weekly therapy sessions and integrative mind-body sessions.' },
       { num: '06', title: 'Symptom Tracking & Clinical Monitoring', desc: 'Close tracking of symptoms with continuous recalibration of care, and access to guided sessions at NewME Virtual Gym.' },

@@ -45,7 +45,7 @@ const navLinks: NavLink[] = [
   { label: 'Home', href: '/', live: true },
   { label: 'How It Works', href: '/how-it-works', live: true },
   { label: 'Pathways', href: '/pathways', live: true },
-  { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
+  { label: 'Virtual Consult', href: '/virtual-clinic', live: true },
   { label: 'NewME Care Team', href: '/team', live: true },
   {
     label: 'Resources',

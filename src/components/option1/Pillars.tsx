@@ -33,6 +33,16 @@ type Pillar = { name: string; desc: string; icon: string }
 // (metabolism.svg + fitness.svg are new additions to the icons folder.)
 const PILLARS: Pillar[] = [
   {
+    name: 'Circadian Rhythm',
+    desc: "Regulates your body's internal clock — energy, metabolism, recovery.",
+    icon: '/icons/circadian.svg',
+  },
+  {
+    name: 'Sleep',
+    desc: 'Regulates hormones, recovery, and insulin sensitivity overnight.',
+    icon: '/icons/sleep.svg',
+  },
+  {
     name: 'Fitness',
     desc: 'Builds strength, metabolic efficiency, and long-term health.',
     icon: '/icons/fitness.svg',
@@ -43,17 +53,7 @@ const PILLARS: Pillar[] = [
     icon: '/icons/mobility.svg',
   },
   {
-    name: 'Sleep',
-    desc: 'Regulates hormones, recovery, and insulin sensitivity overnight.',
-    icon: '/icons/sleep.svg',
-  },
-  {
-    name: 'Circadian Rhythm',
-    desc: "Regulates your body's internal clock — energy, metabolism, recovery.",
-    icon: '/icons/circadian.svg',
-  },
-  {
-    name: 'Stress',
+    name: 'Stress Regulation',
     desc: 'Impacts physical, mental, and cardiovascular health.',
     icon: '/icons/stress.svg',
   },
@@ -175,7 +175,7 @@ export default function Pillars() {
         >
           Your body comprises eight interconnected systems working cohesively to
           ensure that your body runs smoothly. The NewME framework is designed
-          keeping these 8 pillars in mind.
+          keeping these 8 foundational elements in mind.
         </p>
       </div>
 

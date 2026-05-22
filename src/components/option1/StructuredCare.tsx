@@ -17,7 +17,7 @@ const typical = [
 const newme = [
   'Pathway personalised to your physiology and history',
   'Baseline assessment with scheduled clinical reviews',
-  'Doctor-led oversight through every phase',
+  'Doctor-led guidance through every phase',
   'Integrated approach across gut, metabolic, and lifestyle system',
   'Coordinated team of coaches, clinicians, and specialists',
   'Built for long-term stability and sustained outcomes',

@@ -52,7 +52,7 @@ export default function ResearchEvidence() {
             letterSpacing: 0,
           }}
         >
-          Built On Clinical Evidence
+          Built From Real-World Care.
         </motion.h2>
 
         {/* Subhead — 24px gap below heading bottom (heading h=72, +24 = y=1062) */}
@@ -71,7 +71,7 @@ export default function ResearchEvidence() {
             marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          All NewME research has been derived from real-world care.
+          NewME&apos;s research initiatives are centered around understanding lifestyle care and health outcomes through structured program data and clinical observations.
         </motion.p>
 
         {/* Body — 24px gap below subhead bottom */}
@@ -91,13 +91,16 @@ export default function ResearchEvidence() {
           }}
         >
           <p>
-            The NewME Research Lab publishes clinical findings drawn directly
-            from our practice.
+            Our ongoing research aims to better understand the relationship
+            between behavior change, coaching, client journeys, lifestyle
+            interventions, and long-term health outcomes.
           </p>
           <p>
-            Each insight is rigorously reviewed and grounded in observed patient
-            outcomes, ensuring that what we share reflects how structured care
-            works in reality.
+            By building structured research frameworks and datasets, our goal is
+            to contribute meaningful observations and outcome-driven research in
+            gut health, preventive health and lifestyle medicine, while working
+            towards future clinical publications grounded in everyday clinical
+            practice.
           </p>
           {/* Figma 83:4837 includes a trailing empty paragraph — preserves
               the 136px block height and the 24px CTA gap below it. */}

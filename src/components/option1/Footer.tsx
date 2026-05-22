@@ -15,13 +15,13 @@ const NEWSLETTER_ENDPOINT = 'https://YOUR_CRM_ENDPOINT_HERE'
 //
 // `live: true` means the page exists and the link is clickable. Non-live
 // items render grayed out with a no-op click and a small lighten-on-hover.
-type FooterLink = { label: string; href: string; live?: boolean }
+type FooterLink = { label: string; href: string; live?: boolean; highlight?: boolean }
 
 const quickLinks: FooterLink[] = [
   { label: 'Home', href: '/', live: true },
   { label: 'How it Works', href: '/how-it-works', live: true },
   { label: 'Pathways', href: '/pathways', live: true },
-  { label: 'Virtual Clinic', href: '/virtual-clinic', live: true },
+  { label: 'Virtual Consult', href: '/virtual-clinic', live: true },
   { label: 'Dr Pal & Team', href: '/team', live: true },
   { label: 'Contact', href: '/contact', live: true },
 ]
@@ -30,7 +30,7 @@ const resources: FooterLink[] = [
   { label: 'Blog', href: '/blog', live: true },
   { label: 'Media', href: '/media', live: true },
   { label: 'Research Lab', href: '/research-lab', live: true },
-  { label: 'Take the Assessment', href: '/assessment', live: true },
+  { label: 'Take the Assessment', href: '/assessment', live: true, highlight: true },
 ]
 
 // Dr. Pal's NewME official social channels. Order: Facebook, X, Instagram,
@@ -186,8 +186,8 @@ export default function Footer() {
                   {l.live ? (
                     <Link
                       href={l.href}
-                      className="text-white/65 hover:text-white font-[family-name:var(--font-poppins)] transition-colors"
-                      style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
+                      className={`${l.highlight ? 'text-[#FEF272] hover:text-white' : 'text-white/65 hover:text-white'} font-[family-name:var(--font-poppins)] transition-colors`}
+                      style={{ fontWeight: l.highlight ? 500 : 400, fontSize: 'clamp(13px, calc(20 / 1920 * 100vw), 20px)', lineHeight: '1.6' }}
                     >
                       {l.label}
                     </Link>
@@ -216,7 +216,7 @@ export default function Footer() {
               Connect
             </h4>
             <p className="mt-4 text-white/65 text-[13px] leading-[1.55] font-[family-name:var(--font-poppins)] max-w-[280px]">
-              Receive structured health insights from Dr Pal&apos;s clinical team. No spam. Just science.
+              Receive structured health insights from Dr&nbsp;Pal&apos;s clinical team. No spam. Just science.
             </p>
             {/*
               Figma 58:2604 — Subscribe pill: 417×64 outer container with
@@ -243,7 +243,7 @@ export default function Footer() {
             className="text-white/70 font-[family-name:var(--font-bricolage)]"
             style={{ fontWeight: 400, fontSize: 'clamp(13px, calc(16 / 1920 * 100vw), 16px)', lineHeight: '24px' }}
           >
-            © 2026 Dr Pal&apos;s NewME. All rights reserved.
+            © 2026 Dr&nbsp;Pal&apos;s NewME. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             <Link
