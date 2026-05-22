@@ -28,14 +28,25 @@ export async function createLeadFromProfile(payload: {
   return r.json();
 }
 
-export async function saveCalendlyAppointment(leadId: string, eventUri: string, inviteeUri: string): Promise<void> {
+export interface AppointmentDetails {
+  startTime:     string | null;
+  joinUrl:       string | null;
+  cancelUrl:     string | null;
+  rescheduleUrl: string | null;
+}
+
+export async function saveCalendlyAppointment(leadId: string, eventUri: string, inviteeUri: string): Promise<AppointmentDetails | null> {
   try {
-    await fetch(ENDPOINTS.CRM_LEAD_APPOINTMENT(leadId), {
+    const r = await fetch(ENDPOINTS.CRM_LEAD_APPOINTMENT(leadId), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ eventUri, inviteeUri }),
     });
-  } catch { /* fire-and-forget */ }
+    const data = await r.json();
+    return data.appointment ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function attachResultsPDF(leadId: string, payload: Record<string, any>): Promise<void> {
