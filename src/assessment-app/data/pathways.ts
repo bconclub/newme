@@ -52,7 +52,8 @@ export const PW: Record<string, any> = {
   Reset: {
     badge: `Reset · ${PHASE_META.Reset.duration} Clinical Pathway`,
     headline: "You're early. This is when change is easiest.",
-    severityStatement: "Based on your assessment, your gut-brain axis dysfunction is at risk.",
+    //severityStatement: "Based on your assessment, your gut-brain axis dysfunction is at risk.",
+      severityStatement: "Based on your assessment, your gut-brain axis dysfunction.",
     isGI: false,
     h1: (n: string, l: boolean) => l ? `${n}, you've had inconsistent habits for a while. Reset is where that changes.` : `${n}, your body can't change until your habits stop fighting you.`,
     h2: (_l: boolean) => "Four weeks of structured, coached stabilization before anything else.",
@@ -77,7 +78,8 @@ export const PW: Record<string, any> = {
   Rebuild: {
     badge: `Rebuild · ${PHASE_META.Rebuild.duration} Clinical Pathway`,
     headline: "Time and the right protocol. That's what your body needs.",
-    severityStatement: "Based on your assessment, your gut-brain axis dysfunction is mild.",
+    //severityStatement: "Based on your assessment, your gut-brain axis dysfunction is mild.",
+      severityStatement: "Based on your assessment, your gut-brain axis dysfunction.",
     isGI: false,
     h1: (n: string, l: boolean) => l ? `${n}, you already know short phases don't work for this.` : `${n}, your body needs more than a generic plan.`,
     h2: (l: boolean) => l ? "Rebuild is built around your diagnosis. Twelve weeks of targeted correction with the time your body actually needs." : "Twelve weeks of targeted metabolic correction, built around your specific symptoms and what your body actually needs to shift.",
@@ -101,7 +103,8 @@ export const PW: Record<string, any> = {
   Sustain: {
     badge: `Sustain · ${PHASE_META.Sustain.duration} Clinical Pathway`,
     headline: "Multiple layers, one coordinated plan. That's what makes change hold.",
-    severityStatement: "Based on your assessment, your gut-brain axis dysfunction is moderate.",
+    // severityStatement: "Based on your assessment, your gut-brain axis dysfunction is moderate.",
+     severityStatement: "Based on your assessment, your gut-brain axis dysfunction.",
     isGI: false,
     h1: (n: string, l: boolean) => l ? `${n}, the results came before. And then quietly left.` : `${n}, three months isn't enough for what you're dealing with.`,
     h2: (l: boolean) => l ? "Sustain is built so that doesn't happen again." : `${cap(PHASE_META.Sustain.durationLong)} of structured clinical support, built for complexity and designed so results hold when the phase ends.`,
@@ -143,7 +146,8 @@ export const PW: Record<string, any> = {
   GI_Advanced: {
     badge: `GI Advanced · ${PHASE_META.GI_Advanced.duration} Clinical Pathway`,
     headline: "You've worked around your gut for years. Let's work with it.",
-    severityStatement: "Based on your assessment, your gut-brain axis dysfunction is very severe.",
+    // severityStatement: "Based on your assessment, your gut-brain axis dysfunction is very severe.",
+     severityStatement: "Based on your assessment, your gut-brain axis dysfunction.",
     isGI: true,
     h1: (n: string, l: boolean) => l ? `${n}, you're on medication and your gut is still making your life difficult.` : `${n}, complex gut conditions need more than a diet plan.`,
     h2: (l: boolean) => l ? "GI Advanced is the phase for that." : "It needs a full clinical team working your case.",
@@ -242,7 +246,9 @@ export const PATHWAY_SEVERITY: Record<string, { label: string; color: string; bg
 
 export const FRAMING_BODY = "When the gut-brain axis is disrupted by food, stress, or inflammation, symptoms go beyond digestion: energy, skin, mood, sleep. Identifying what your body reacts to is where change starts.";
 
-export const BRIDGE_SENTENCE = "Based on the above and your entire history, here's your recommended plan.";
+// export const BRIDGE_SENTENCE = "Based on the above and your entire history, here's your recommended plan.";
+
+export const BRIDGE_SENTENCE = "Considering the duration and intensity of your symptoms, here is your recommended plan.";
 
 export const ASSURANCE: Record<string, string> = {
   Reset:       "Your body isn't broken, it just hasn't been given a pattern to work with. Set the rhythm, and your energy, hunger and hormones fall back into place.",
