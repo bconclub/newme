@@ -86,7 +86,7 @@ const pages = [
       "NewME in the media — coverage of our work in metabolic and gut regulation across leading publications.",
   },
   {
-    route: "/blog",
+    route: "/blogs",
     metaTitle: "Blog | Dr. Pal's NewME",
     metaDescription:
       "Long-form articles on metabolic health, gut regulation, and structured care from the NewME team.",

@@ -18,7 +18,7 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://drpalsnewme.com").
  *   directly to the publication's external URL. We point editors at
  *   /media (the listing) so they can confirm the card renders.
  * - `mediaOutlet` is a reference-only document; no public page.
- * - `post` opens at /blog/{slug}.
+ * - `post` opens at /blogs/{slug}.
  * - `teamMember` opens at /care-team/{slug} (route in progress).
  */
 function pathForDocument(document?: { _type?: string; slug?: { current?: string } }) {
@@ -29,7 +29,7 @@ function pathForDocument(document?: { _type?: string; slug?: { current?: string 
   }
 
   if (document._type === "post" && document.slug?.current) {
-    return `/blog/${document.slug.current}`;
+    return `/blogs/${document.slug.current}`;
   }
 
   if (document._type === "teamMember" && document.slug?.current) {

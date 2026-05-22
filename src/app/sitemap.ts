@@ -20,7 +20,7 @@ type StaticRoute = {
 // conversion paths first, supporting content next, legal pages last.
 // Pages that exist in src/app/ but are intentionally NOT listed here:
 //   - /studio/...           (Sanity admin, noindexed)
-//   - /blog/[slug]          (dynamic — added below via loadBlogEntries())
+//   - /blogs/[slug]         (dynamic — added below via loadBlogEntries())
 //   - /assessment/results   (session-gated deep-link; redirects fresh
 //                            visitors to /assessment, so there's no
 //                            crawlable content to advertise)
@@ -39,7 +39,7 @@ const staticRoutes: StaticRoute[] = [
   { path: '/pathways/continuity', changeFrequency: 'monthly', priority: 0.8 },
   // Other primary pages
   { path: '/virtual-consult', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/blog', changeFrequency: 'daily', priority: 0.8 },
+  { path: '/blogs', changeFrequency: 'daily', priority: 0.8 },
   { path: '/research-lab', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/team', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/media', changeFrequency: 'weekly', priority: 0.6 },
@@ -66,7 +66,7 @@ async function loadBlogEntries(): Promise<MetadataRoute.Sitemap> {
       }`
     )
     return (posts ?? []).map((p) => ({
-      url: `${SITE_URL}/blog/${p.slug}`,
+      url: `${SITE_URL}/blogs/${p.slug}`,
       lastModified: p._updatedAt ? new Date(p._updatedAt) : (p.publishedAt ? new Date(p.publishedAt) : new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.7,

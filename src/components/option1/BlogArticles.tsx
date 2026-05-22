@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { urlFor } from '@/lib/sanity/image'
-import type { BlogPostCard } from '@/app/blog/page'
+import type { BlogPostCard } from '@/app/blogs/page'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 const PER_PAGE = 6
@@ -42,7 +42,7 @@ function toCard(p: BlogPostCard): Card {
     title: p.title,
     excerpt: p.excerpt ?? p.subtitle,
     publishedAt: p.publishedAt,
-    href: `/blog/${p.slug}`,
+    href: `/blogs/${p.slug}`,
     cover,
     coverAlt: (p.coverImage as { alt?: string } | undefined)?.alt ?? p.title,
     authorName: p.author?.name,

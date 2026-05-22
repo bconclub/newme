@@ -42,7 +42,7 @@ export default defineType({
           { title: "Contact  (/contact)", value: "/contact" },
           { title: "FAQ  (/faq)", value: "/faq" },
           { title: "Media  (/media)", value: "/media" },
-          { title: "Blog  (/blog)", value: "/blog" },
+          { title: "Blog  (/blogs)", value: "/blogs" },
           { title: "Terms  (/terms)", value: "/terms" },
           { title: "Cookie Policy  (/cookie-policy)", value: "/cookie-policy" },
         ],

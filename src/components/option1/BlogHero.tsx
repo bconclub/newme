@@ -11,7 +11,7 @@ import PageHero from './PageHero'
 export default function BlogHero() {
   return (
     <PageHero
-      imageSrc="/blog/Main%20Banner.webp"
+      imageSrc="/blogs/Main%20Banner.webp"
       imageAlt="NewME blog cover"
       imagePosition="center"
       heading={<>Our Blogs</>}

@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 import BlogArticleBody, { extractTOCHeadings } from '@/components/option1/BlogArticleBody'
-import BlogListen from '@/components/option1/BlogListen'
 import { postBySlugQuery, postSlugsQuery } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
@@ -92,14 +91,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     keywords: post.keywords && post.keywords.length > 0 ? post.keywords.join(', ') : undefined,
     alternates: {
-      canonical: post.canonicalUrl || `/blog/${post.slug}`,
+      canonical: post.canonicalUrl || `/blogs/${post.slug}`,
     },
     robots: post.noIndex ? { index: false, follow: false, googleBot: { index: false, follow: false } } : undefined,
     openGraph: {
       type: 'article',
       title: ogTitle,
       description: ogDescription,
-      url: `/blog/${post.slug}`,
+      url: `/blogs/${post.slug}`,
       publishedTime: post.publishedAt,
       authors: post.author?.name ? [post.author.name] : undefined,
       images: ogImageUrl
@@ -180,7 +179,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L7.5 6L4.5 9.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-white/90 transition-colors">Blog</Link>
+                <Link href="/blogs" className="hover:text-white/90 transition-colors">Blog</Link>
               </li>
               <li aria-hidden style={{ opacity: 0.4 }}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L7.5 6L4.5 9.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -285,20 +284,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </span>
               </div>
             </div>
-
-
-            {/* Listen player — bloating post only */}
-            {slug === 'why-am-i-so-bloated-i-look-pregnant' && (
-              <div style={{ marginTop: 28 }}>
-                <BlogListen
-                  body={post.body ?? []}
-                  audioSrc={[
-                    '/audio/Test sample blog bloating 01.mp3',
-                    '/audio/blog-sample.mp3',
-                  ]}
-                />
-              </div>
-            )}
           </header>
 
           {/* Cover image */}

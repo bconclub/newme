@@ -21,7 +21,7 @@ Legend: ✅ Done · ⚠️ Action needed · 🔲 To verify · ❌ Not done
 | 1.8 | Per-page meta title — `/how-it-works` | ✅ | |
 | 1.9 | Per-page meta title — `/virtual-consult` | ✅ | |
 | 1.10 | Per-page meta title — `/research-lab` | ✅ | |
-| 1.11 | Per-page meta title — `/blog` | ✅ | |
+| 1.11 | Per-page meta title — `/blogs` | ✅ | |
 | 1.12 | Per-page meta title — `/media` | ✅ | |
 | 1.13 | Per-page meta title — `/terms`, `/privacy-policy`, `/cookie-policy` | ✅ | |
 | 1.14 | Per-page meta title — `/pathways` | ⚠️ | Missing `export const metadata` |

@@ -21,6 +21,21 @@ const nextConfig: NextConfig = {
         destination: '/virtual-consult',
         permanent: true,
       },
+      {
+        // Renamed the blog section from /blog → /blogs (plural reads more
+        // naturally for a multi-post index). Both the index AND individual
+        // post URLs need to redirect — splitting into two rules so the
+        // exact match for /blog also covers (otherwise the wildcard would
+        // accidentally consume bare /blog requests too).
+        source: '/blog',
+        destination: '/blogs',
+        permanent: true,
+      },
+      {
+        source: '/blog/:slug*',
+        destination: '/blogs/:slug*',
+        permanent: true,
+      },
     ]
   },
   async headers() {

@@ -25,7 +25,7 @@ const quickLinks: FooterLink[] = [
 ]
 const resources: FooterLink[] = [
   { label: 'FAQ', href: '/faq', live: true },
-  { label: 'Blog', href: '/blog', live: true },
+  { label: 'Blog', href: '/blogs', live: true },
   { label: 'Media', href: '/media', live: true },
   { label: 'Research Lab', href: '/research-lab', live: true },
   { label: 'Take the Assessment', href: '/assessment', live: true, highlight: true },

@@ -54,7 +54,7 @@ const navLinks: NavLink[] = [
     hasMenu: true,
     live: true,
     sublinks: [
-      { label: 'Blog', href: '/blog' },
+      { label: 'Blog', href: '/blogs' },
       { label: 'Media', href: '/media' },
       { label: 'FAQ', href: '/faq' },
     ],

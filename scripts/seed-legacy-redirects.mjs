@@ -85,7 +85,6 @@ const REDIRECTS = [
   ['/faq/', '/faq', 'WordPress: FAQ — trailing slash strip'],
   ['/privacy-policy/', '/privacy-policy', 'WordPress: privacy policy — trailing slash strip'],
   ['/newme-team/', '/team', 'WordPress: team page renamed'],
-  ['/blogs/', '/blog', 'WordPress: plural → singular'],
   ['/terms-and-conditions/', '/terms', 'WordPress: terms page renamed'],
 
   // ─── Tier 3 — Loose match (sensible closest destination) ─────────────────
@@ -101,7 +100,7 @@ const REDIRECTS = [
   ['/terms-and-conditions-of-newme-fit-llc/', '/terms', 'WordPress: entity-specific T&C (NewME Fit LLC) → unified terms'],
   ['/terms-and-conditions-of-gutmansquad/', '/terms', 'WordPress: entity-specific T&C (GutmansSquad) → unified terms'],
   ['/shipping-policy/', '/terms', 'WordPress: shipping policy → terms (confirm if shipping policy is added separately)'],
-  ['/feed-2/', '/blog', 'WordPress: old RSS feed → blog index (RSS may be re-added later)'],
+  ['/feed-2/', '/blogs', 'WordPress: old RSS feed → blog index (RSS may be re-added later)'],
   ['/category/podcasts/', '/media', 'WordPress: podcast category archive → media features'],
   ['/author/infodrpalsnewme-com/', '/', 'WordPress: author archive — no equivalent on new site'],
 

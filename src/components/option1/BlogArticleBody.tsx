@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import type { BlogPost } from '@/app/blog/[slug]/page'
+import type { BlogPost } from '@/app/blogs/[slug]/page'
 import { urlFor } from '@/lib/sanity/image'
 import BlogTOC from './BlogTOC'
 

@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-05-22 · /blog → /blogs URL migration + LISTEN widget removal + 41 legacy WordPress redirects seeded to Sanity
+
+- **Removed LISTEN audio player from blog posts**: deleted `src/components/option1/BlogListen.tsx` (orphaned after removing its only call site in `src/app/blogs/[slug]/page.tsx`), dropped `public/audio/Test sample blog bloating 01.mp3` and `public/audio/blog-sample.mp3`. The audio widget was a per-post feature only enabled on the "Why am I so bloated" post; team decided to remove it.
+
+- **`/blog` → `/blogs` URL rename (full migration)**:
+  - Renamed `src/app/blog/` → `src/app/blogs/` (covers both the index page.tsx and `[slug]/page.tsx`)
+  - Renamed `public/blog/` → `public/blogs/` so asset URL (Main Banner.webp) lives at the same canonical prefix as the page route. Avoids the `/blog/:slug*` redirect accidentally catching asset paths.
+  - Added 2 permanent (308) redirects in `next.config.ts`: `/blog` → `/blogs` AND `/blog/:slug*` → `/blogs/:slug*`. Splitting into two rules avoids the wildcard accidentally swallowing the bare-index request.
+  - Updated all internal references: Header + Footer nav hrefs, `sitemap.ts` (both the static entry AND `loadBlogEntries()` URL builder), `sanity/schemas/page.ts` dropdown, `sanity/migrations/seed-pages.ts`, `sanity.config.ts` (Studio "open in production" handler + JSDoc), `BlogHero.tsx` image src, internal `<Link href="/blog">` breadcrumb in `[slug]/page.tsx`, canonical + OpenGraph URL builders, `BlogArticleBody.tsx` and `BlogArticles.tsx` type imports.
+  - Updated docs: `public/llms.txt`, `LAUNCH-CHECKLIST.md`.
+
+- **Sanity seed script ran successfully — 42 redirects now live**:
+  - `scripts/seed-legacy-redirects.mjs` executed against the production Sanity dataset using `SANITY_API_WRITE_TOKEN` from `.env.local`. First run created 41/42 (one failed with `ETIMEDOUT`); re-run was idempotent via deterministic IDs + `createIfNotExists` and got the last one.
+  - Removed the now-redundant `/blogs/` → `/blog` legacy entry from the script (since `/blogs` is now canonical, trailing-slash variant is handled by Next.js automatically).
+  - Updated `/feed-2/` destination from `/blog` → `/blogs` in both the seed script and the URL-map PDF generator.
+  - Editors can now disable / edit any of the 42 redirects from Studio (Redirect document type) without a redeploy.
+
+- **Regenerated `docs/url-map.pdf`** to reflect: `/blogs` (and `/blogs/[slug]`) as canonical, the two new `/blog → /blogs` code redirects, the updated legacy redirect destinations.
+
+- User-facing: visiting `/blog` or `/blog/<slug>` now 308-redirects to `/blogs/...`. Old WordPress URLs (`/diabetes-care-program/`, etc.) start redirecting within ~60s of the middleware refresh. LISTEN player no longer renders on any blog post.
+
 ## 2026-05-22 · Seed script for the 42 legacy WordPress redirects (not yet run)
 
 - **`scripts/seed-legacy-redirects.mjs`** (new) — Node.js script that bulk-creates the 42 Tier 1–4 WordPress migration redirects as `redirect` documents in Sanity. Uses `@sanity/client` + the existing `redirect` schema. Idempotent: each doc gets a deterministic ID (`redirect-<slugified-source>`) and uses `createIfNotExists` so re-running the script doesn't duplicate or overwrite existing entries. If an editor has tweaked a destination in Studio, manual changes win.

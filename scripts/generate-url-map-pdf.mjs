@@ -33,7 +33,7 @@ const liveRoutes = [
   { path: '/pathways/gi', label: 'Pathway · GI', priority: 0.8 },
   { path: '/pathways/continuity', label: 'Pathway · Continuity', priority: 0.8 },
   { path: '/virtual-consult', label: 'Virtual Consult', priority: 0.8 },
-  { path: '/blog', label: 'Blog (index)', priority: 0.8 },
+  { path: '/blogs', label: 'Blog (index)', priority: 0.8 },
   { path: '/research-lab', label: 'Research Lab', priority: 0.7 },
   { path: '/team', label: 'NewME Care Team', priority: 0.7 },
   { path: '/media', label: 'Media mentions', priority: 0.6 },
@@ -45,7 +45,7 @@ const liveRoutes = [
 ]
 
 const dynamicRoutes = [
-  { path: '/blog/[slug]', label: 'Blog post pages — dynamic from Sanity, one per published post' },
+  { path: '/blogs/[slug]', label: 'Blog post pages — dynamic from Sanity, one per published post' },
 ]
 
 const excluded = [
@@ -99,7 +99,6 @@ const legacyTiers = [
       ['/faq/', '/faq', 'Trailing-slash strip'],
       ['/privacy-policy/', '/privacy-policy', 'Trailing-slash strip'],
       ['/newme-team/', '/team', 'URL renamed'],
-      ['/blogs/', '/blog', 'Plural → singular'],
       ['/terms-and-conditions/', '/terms', 'URL renamed'],
     ],
   },
@@ -119,7 +118,7 @@ const legacyTiers = [
       ['/terms-and-conditions-of-newme-fit-llc/', '/terms', 'Entity-specific T&C'],
       ['/terms-and-conditions-of-gutmansquad/', '/terms', 'Entity-specific T&C'],
       ['/shipping-policy/', '/terms', 'Or skip if no shipping policy on new site'],
-      ['/feed-2/', '/blog', 'Old WordPress RSS feed'],
+      ['/feed-2/', '/blogs', 'Old WordPress RSS feed'],
       ['/category/podcasts/', '/media', 'Category archive'],
       ['/author/infodrpalsnewme-com/', '/', 'Author archive — no equivalent'],
     ],
