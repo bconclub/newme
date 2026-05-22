@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { saveCalendlyAppointment, AppointmentDetails } from "../../services/crmService";
 import { GRN, INK2, INK3, GOLD, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { LogoMark } from "../Logo";
+import { trackEvent } from "@/lib/analytics";
 
 type MessageFrom = "bot" | "user";
 interface Message { from: MessageFrom; text: string; }
@@ -199,6 +200,10 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
         if (cal?.closePopupWidget) cal.closePopupWidget();
         const eventUri   = e.data.payload?.event?.uri;
         const inviteeUri = e.data.payload?.invitee?.uri;
+        trackEvent("call_booked", {
+          has_lead_id: !!leadIdRef.current,
+          source: "chatbot",
+        });
         // Persist booked state immediately — before any async call
         if (userEmailRef.current) {
           try { localStorage.setItem(`newme_booked_${userEmailRef.current}`, "1"); } catch {}

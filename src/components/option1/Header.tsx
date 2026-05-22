@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { trackEvent } from '@/lib/analytics'
 // motion-enhanced Link — avoids the deprecated legacyBehavior wrapper pattern
 const MotionLink = motion(Link)
 
@@ -250,6 +251,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center">
             <MotionLink
               href="/assessment"
+              onClick={() => trackEvent('cta_click', { location: 'header_desktop', label: 'Start My Assessment' })}
               whileHover={{ scale: 1.04, boxShadow: '0 4px 20px rgba(254,242,114,0.40)' }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
@@ -373,7 +375,10 @@ export default function Header() {
               animate={{ opacity: 1, y: 0 }}
               whileTap={{ scale: 0.96 }}
               transition={{ delay: navLinks.length * 0.04 }}
-              onClick={() => setMobileOpen(false)}
+              onClick={() => {
+                trackEvent('cta_click', { location: 'header_mobile', label: 'Start My Assessment' })
+                setMobileOpen(false)
+              }}
               className="mt-3 inline-flex items-center justify-center bg-[#FEF272] text-[#013E37] rounded-full font-[family-name:var(--font-bricolage)]"
               style={{ padding: '14px 28px', minHeight: 52, fontWeight: 500, fontSize: 16 }}
             >

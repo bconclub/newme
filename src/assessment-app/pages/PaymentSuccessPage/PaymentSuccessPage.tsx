@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { LogoMark } from "../../components/Logo";
 import { PW } from "../../data/pathways";
+import { trackEvent } from "@/lib/analytics";
 
 type PaymentSuccessPageProps = {
   paidPhase: string;
@@ -16,6 +18,12 @@ const glassCard: React.CSSProperties = {
 
 export function PaymentSuccessPage({ paidPhase }: PaymentSuccessPageProps) {
   const phaseName = PW[paidPhase]?.badge?.split(" · ")[0] ?? paidPhase;
+
+  // Fire payment_completed once per mount. Conversion event for GA — pair
+  // with a `value` param once revenue tracking is wired through Zoho.
+  useEffect(() => {
+    trackEvent("payment_completed", { phase: paidPhase, phase_name: phaseName });
+  }, [paidPhase, phaseName]);
   const STEPS = [
     { n: 1, title: "Check your email",              body: "Your onboarding form will be waiting. Fill it in at your earliest convenience." },
     { n: 2, title: "Medical committee review",      body: "Your case is reviewed by our medical committee before your clinical pathway begins." },

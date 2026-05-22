@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
+import { trackEvent } from '@/lib/analytics'
 
 /**
  * Figma 58:2628 + 58:2640 — "Why Starting Early Matters?"
@@ -153,6 +154,7 @@ export default function HIWWhyEarly() {
           {/* CTA — yellow pill only, no arrow */}
           <motion.a
             href="/assessment"
+            onClick={() => trackEvent('cta_click', { location: 'hiw_why_early', label: 'Start My Assessment' })}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}

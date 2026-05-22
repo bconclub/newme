@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import PageHero from './PageHero'
+import { trackEvent } from '@/lib/analytics'
 
 /**
  * /how-it-works hero — Figma 58:31 / 121:93 template.
@@ -36,6 +37,7 @@ function HIWCta() {
       <motion.a
         href="/assessment"
         aria-label="Start your assessment"
+        onClick={() => trackEvent('cta_click', { location: 'hiw_hero_arrow', label: 'Start Your Assessment' })}
         initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
         transition={{ duration: 0.55, delay: 0.42, ease: EASE }}
@@ -68,6 +70,7 @@ function HIWCta() {
       </motion.a>
       <motion.a
         href="/assessment"
+        onClick={() => trackEvent('cta_click', { location: 'hiw_hero_pill', label: 'Start Your Assessment' })}
         initial={{ opacity: 0, x: -14 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.55, delay: 0.28, ease: EASE }}

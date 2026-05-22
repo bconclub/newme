@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
+import { trackEvent } from '@/lib/analytics'
 
 /**
  * Figma 58:1478 (Group 423) — "Let's Discover Your Path To Better Health"
@@ -92,6 +93,7 @@ export default function HIWCTA() {
             {/* CTA — Figma 58:1488 — solid pill 319×64 (no arrow circle here) */}
             <motion.a
               href="/assessment"
+              onClick={() => trackEvent('cta_click', { location: 'hiw_cta', label: 'Start Your Assessment' })}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}

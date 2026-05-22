@@ -5,6 +5,7 @@ import { SEC, PW, PRICING } from "./data/pathways";
 import { routeAnswers, getCalcMessages } from "./utils/routing";
 import { createLead, updateLeadQuizData, selectPhase, convertLead, attachResultsPDF, toIsoDob } from "./services/crmService";
 import { recordAssessmentAttempt } from "./services/assessmentService";
+import { trackEvent } from "@/lib/analytics";
 import { IntroPage } from "./pages/IntroPage/IntroPage";
 import { QuizPage } from "./pages/QuizPage/QuizPage";
 import { CalcPage } from "./pages/CalcPage/CalcPage";
@@ -238,6 +239,10 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
       const result = routeAnswers(ans);
       setRes(result);
       setScreen("results");
+      trackEvent("assessment_completed", {
+        pathway: result.pathway,
+        secondary: SEC[result.pathway] ?? null,
+      });
       // Fire-and-forget: attach results PDF to CRM lead
       const leadIdNow = effectiveLeadId;
       if (leadIdNow) {
@@ -258,6 +263,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     if (crmLeadId) {
       selectPhase(crmLeadId, phase).catch(() => {});
     }
+    trackEvent("payment_initiated", { phase });
     setScreen("order");
   }
 
@@ -285,6 +291,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     setInfo({ name: "", last: "", email: "", phone: "" });
     setProfile({ dob: "", gender: "", phone: "" });
     setRes(null); setCrmLeadId(null); setAttemptsLeft(null); setStep(0); setScreen("q");
+    trackEvent("assessment_started", { source: "intro_cta" });
   }
 
   function handleRetry() {

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import EyebrowPill from './EyebrowPill'
+import { trackEvent } from '@/lib/analytics'
 
 export default function WhatIsNewMe() {
   return (
@@ -204,6 +205,7 @@ export default function WhatIsNewMe() {
               from the What-is-NewME section into the assessment funnel. */}
           <motion.a
             href="/assessment"
+            onClick={() => trackEvent('cta_click', { location: 'home_what_is', label: 'Start My Assessment' })}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
