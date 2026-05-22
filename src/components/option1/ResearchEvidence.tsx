@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { trackEvent } from '@/lib/analytics'
+import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -24,8 +25,18 @@ export default function ResearchEvidence() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
+    // Optimistic UI — clear the input immediately, fire-and-forget POST.
+    // Same shape as the Footer newsletter handler (which uses the same
+    // CRM endpoint) so behavior stays consistent across both subscribe
+    // surfaces. No dedicated success state in this design — the cleared
+    // input is the only visual confirmation.
+    setEmail('')
     trackEvent('email_subscribed', { location: 'research_evidence_notify' })
-    // No backend wired yet — silent submit so the form remains interactive.
+    fetch(ENDPOINTS.CRM_LEAD_NEWSLETTER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    }).catch((err) => console.error('[ResearchEvidence Notify]', err))
   }
 
   return (

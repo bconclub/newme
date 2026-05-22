@@ -4,10 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { trackEvent } from '@/lib/analytics'
-
-// ─── Replace this with your actual CRM/webhook endpoint ───────────────────────
-const NEWSLETTER_ENDPOINT = 'https://YOUR_CRM_ENDPOINT_HERE'
-// ──────────────────────────────────────────────────────────────────────────────
+import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 
 // Figma "Group 139" (1:2834) at y=9054, 1920×490. Quick Links + Resources
 // columns are trimmed from the original Figma list — "Your Phase of Care"
@@ -283,17 +280,18 @@ function NewsletterForm() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
-    // Show success immediately (optimistic) — fire-and-forget to CRM
+    // Show success immediately (optimistic) — fire-and-forget to CRM.
+    // We don't await the response because newsletter subscribes are low-risk
+    // and the UI feels snappier with optimistic confirmation. If the POST
+    // genuinely fails the user can resubscribe; we log to console for debug.
     setDone(true)
     setEmail('')
     trackEvent('email_subscribed', { location: 'footer_newsletter' })
-    if (NEWSLETTER_ENDPOINT && !NEWSLETTER_ENDPOINT.includes('YOUR_CRM')) {
-      fetch(NEWSLETTER_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      }).catch((err) => console.error('[Newsletter]', err))
-    }
+    fetch(ENDPOINTS.CRM_LEAD_NEWSLETTER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    }).catch((err) => console.error('[Newsletter]', err))
   }
 
   // ── Success state — same pill shape, gold fill, tick + label animate in ──
