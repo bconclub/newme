@@ -82,8 +82,8 @@ export default function HIWUnifiedSystem() {
         paddingTop: 'clamp(72px, calc(120 / 1920 * 100vw), 120px)',
         // Cards end y=2323, comparison section y=2454 → 131 gap.
         paddingBottom: 'clamp(72px, calc(131 / 1920 * 100vw), 131px)',
-        paddingLeft: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
-        paddingRight: 'clamp(20px, calc(60 / 1920 * 100vw), 60px)',
+        paddingLeft: 'clamp(14px, calc(60 / 1920 * 100vw), 60px)',
+        paddingRight: 'clamp(14px, calc(60 / 1920 * 100vw), 60px)',
       }}
     >
       <div className="mx-auto" style={{ maxWidth: 1800 }}>
@@ -249,7 +249,7 @@ function UnifiedCard({ card, delay }: { card: Card; delay: number }) {
         <div
           className="relative shrink-0 overflow-hidden"
           style={{
-            width: 'clamp(110px, calc(215 / 1920 * 100vw), 215px)',
+            width: 'clamp(96px, calc(215 / 1920 * 100vw), 215px)',
             margin: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
             borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
             background:

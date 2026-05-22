@@ -136,11 +136,14 @@ export default function PageHero({
           // 48 unified across every hero card so they all read as siblings.
           borderRadius: 'clamp(28px, 2.5vw, 48px)',
           // Internal-page heroes are intentionally shorter than the home
-          // hero (which has its own Hero.tsx). 520px ceiling keeps them
-          // compact while still giving the photo room to breathe.
-          // Mobile floor 440px comfortably fits heading + body + bottom
+          // hero (which has its own Hero.tsx) but were previously too
+          // short — 520px capped felt cramped on desktop and pushed the
+          // heading to look top-heavy. 620px ceiling now leaves enough
+          // room for the heading + body + CTA without crowding, while
+          // still reading as visibly shorter than the 947px home hero.
+          // Mobile floor 480px comfortably fits heading + body + bottom
           // tab bar on the pathway sub-pages.
-          height: 'clamp(440px, calc(520 / 1880 * 100vw), 520px)',
+          height: 'clamp(480px, calc(620 / 1880 * 100vw), 620px)',
         }}
       >
         {/* ── Background image (omit when only gradient + overlay needed) ── */}
@@ -253,17 +256,23 @@ export default function PageHero({
           }}
         />
 
-        {/* ── Content (LEFT-anchored, Figma 121:93 spec) ── */}
+        {/* ── Content (LEFT-anchored horizontally, vertically centered) ──
+            justifyContent: center makes the heading + body (+ optional CTA)
+            sit at the vertical midpoint of the card no matter how much
+            content there is. Pages WITH a CTA naturally fill more of the
+            card so they still feel grounded. Pages WITHOUT a CTA (Contact,
+            Team, FAQ, Blog, Media, Research Lab) used to look top-heavy
+            with the bottom of the card empty — now the heading drifts
+            down to center and the breathing room splits above/below.
+            The clamp padding values still set min top/bottom margins so
+            content never crashes the card edges on very short heroes. */}
         <div
-          className="relative z-10 flex flex-col"
+          className="relative z-10 flex flex-col justify-center h-full"
           style={{
-            // Scaled down proportionally with the shorter card height.
-            // Top padding pushes heading to ~30% down the card so the
-            // photo still breathes above the text.
-            paddingTop: 'clamp(120px, calc(160 / 1920 * 100vw), 160px)',
+            paddingTop: 'clamp(80px, calc(110 / 1920 * 100vw), 110px)',
             paddingLeft: 'clamp(28px, calc(100 / 1920 * 100vw), 100px)',
             paddingRight: 'clamp(20px, calc(20 / 1920 * 100vw), 20px)',
-            paddingBottom: 'clamp(28px, calc(52 / 1920 * 100vw), 52px)',
+            paddingBottom: 'clamp(56px, calc(90 / 1920 * 100vw), 90px)',
             maxWidth: 'clamp(360px, calc(1186 / 1920 * 100vw), 1186px)',
           }}
         >

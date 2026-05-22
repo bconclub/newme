@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 // Hero — final design.
 // Single rounded photo card. No notch / no slider / no inline stats.
-const HERO_IMAGE = '/home/Main Banner.webp'
+const HERO_IMAGE = '/home/Homepage Hero.webp'
 
 export default function Hero() {
   return (

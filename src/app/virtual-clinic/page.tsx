@@ -8,7 +8,7 @@ import { VCWhatIs, VCHowItWorks, VCDoctorCard } from './VCSections'
 export const metadata: Metadata = {
   title: 'Virtual Consult | Dr. Pal\'s NewME',
   description:
-    'Doctor-led virtual clinic from NewME. Consult with our clinical team from wherever you are — focused, evidence-based care without referral chains or waiting.',
+    'Doctor-led virtual consult from NewME. Consult with our clinical team from wherever you are — focused, evidence-based care without referral chains or waiting.',
 }
 
 // Figma node 83:49 — "Dr pals Newme - Virtual clinic". 1920×3881 artboard.

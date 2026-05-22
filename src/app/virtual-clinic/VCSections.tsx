@@ -38,7 +38,7 @@ export function VCWhatIs() {
             maxWidth: 'clamp(280px, calc(706 / 1920 * 100vw), 706px)',
           }}
         >
-          What Is The NewME Virtual Clinic?
+          What Is The NewME Virtual Consult?
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -54,7 +54,7 @@ export function VCWhatIs() {
             marginTop: 'clamp(16px, calc(24 / 1920 * 100vw), 24px)',
           }}
         >
-          The NewME Virtual Clinic offers direct access point to qualified
+          The NewME Virtual Consult offers direct access point to qualified
           doctors for focused medical consultations. It is designed for
           individuals who need clinical clarity, guidance, or evaluation.
         </motion.p>

@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-05-22 · Internal hero resize + vertical centering, pathway prescription banners, Virtual Consult rename, mobile HIW card breathing room
+
+- **`src/components/option1/PageHero.tsx`** — Internal-page hero card grew from 520px → 620px max (mobile floor 440px → 480px). The flex content container gains `justify-center` + `h-full` so heading + body (+ optional CTA) sit at the vertical midpoint of the card instead of being top-anchored. Padding rebalanced to 110 top / 90 bottom — only acts as a safe-area minimum now since centering does the actual placement. Pages without a CTA (Contact, Team, FAQ, Blog, Media, Research Lab) no longer feel top-heavy; pages with a CTA (Pathways, Virtual Consult, How It Works) still fill the card edge to edge because their content is taller.
+- **`src/components/option1/Hero.tsx`** — Home hero image swapped to `/home/Homepage Hero.webp` (was `/home/Main Banner.webp` from the prior commit). Old file left on disk in case of revert.
+- **`src/app/pathways/{metabolic,gi,continuity}/page.tsx`** — All 7 "Who Is Prescribed The X Pathway?" prescription banners now use the new `Pathways Small Banner 1/2/3.webp` assets, distributed by phase index:
+  - Metabolic (3 phases): Reset → Banner 1, Rebuild → Banner 2, Sustain → Banner 3
+  - GI (2 phases): Core → Banner 1, Advanced → Banner 2
+  - Continuity (2 phases): NewME 360 → Banner 1, NewME Movement → Banner 2
+  - Old jpg paths (`/images/pathways/rebuild-banner.jpg`, `sustain-banner.jpg`) and old vertical-banners WebPs are no longer referenced.
+- **Virtual Clinic → Virtual Consult (text only, URL preserved)**:
+  - `src/app/virtual-clinic/VCSections.tsx` — Heading "What Is The NewME Virtual Clinic?" → "...Virtual Consult?" + body sentence likewise.
+  - `src/app/virtual-clinic/page.tsx` — Meta description "Doctor-led virtual clinic from NewME..." → "...virtual consult..."
+  - `src/app/faq/layout.tsx` + `src/app/contact/layout.tsx` — Meta descriptions also mentioned "virtual clinic"; updated for consistency.
+  - URL route `/virtual-clinic` deliberately NOT changed — would require a 308 redirect, sitemap update, and breakage of any external backlinks. Defer until SEO team weighs in.
+- **`src/components/option1/HIWUnifiedSystem.tsx`** — Mobile cards on the "Unified System of Care" section had cramped text wrapping (~190px text area on a 375px viewport). Two tweaks: section side padding floor 20px → 14px, card image width floor 110px → 96px. Net ~30px more text width on mobile so step descriptions wrap into 4 lines instead of 6.
+- User-facing: all internal page heroes feel properly proportioned now (taller card, content centered). Pathway sub-page prescription banners use finalized photography. Virtual Consult naming is consistent across page content + adjacent meta descriptions. Mobile How-It-Works cards breathe.
+
 ## 2026-05-22 · Replace all page banners + HIW step cards + home pathway images with finalized art
 
 - **Page banners (7 pages)**: home Hero, FAQ, Blog, How It Works, Team, Pathways, Virtual Clinic — all now use the final WebP banners under their respective `/public/<page>/...` paths instead of the temporary Figma-export placeholders
