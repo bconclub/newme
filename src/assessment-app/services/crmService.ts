@@ -29,6 +29,7 @@ export async function createLeadFromProfile(payload: {
 }
 
 export interface AppointmentDetails {
+  eventId:       string | null;
   startTime:     string | null;
   joinUrl:       string | null;
   cancelUrl:     string | null;

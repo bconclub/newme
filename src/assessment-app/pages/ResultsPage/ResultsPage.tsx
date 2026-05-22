@@ -4,6 +4,7 @@ import { Header } from "../../components/Header/Header";
 import { SectionLabel, Dot } from "../../components/SectionLabel";
 import { PW, PRICING, PATHWAY_SEVERITY, FRAMING_BODY, BRIDGE_SENTENCE, ASSURANCE, ACTIONABLE_POINTS } from "../../data/pathways";
 import { ChatBot } from "../../components/ChatBot/ChatBot";
+import type { AppointmentDetails } from "../../services/crmService";
 import { GI_BILLING } from "../../constants/zohoCheckout";
 import EyebrowPill from "../../../components/option1/EyebrowPill";
 
@@ -26,7 +27,7 @@ export type ResultsPageProps = {
   total: number;
   crmLeadId?: string | null;
   hasBooked?: boolean;
-  appointmentDetails?: { startTime: string | null; joinUrl: string | null; cancelUrl: string | null; rescheduleUrl: string | null } | null;
+  appointmentDetails?: AppointmentDetails | null;
 };
 
 /* Shared dark glass card style */
