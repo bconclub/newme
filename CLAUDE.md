@@ -37,22 +37,16 @@ src/
 │   ├── pathways/page.tsx       # /pathways (+ /metabolic, /gi, /continuity)
 │   ├── virtual-clinic/page.tsx
 │   ├── research-lab/page.tsx
-│   ├── media/[slug]/page.tsx   # Individual media/article pages (Sanity-backed)
-│   ├── admin/page.tsx          # Internal page directory (noindex) — lists all routes + Sanity status
 │   ├── studio/                 # Sanity mount
-│   ├── sitemap.ts, robots.ts
-│   └── page1/                  # Standalone wellness design (NOT newme-page scope)
+│   └── sitemap.ts, robots.ts
 ├── components/
 │   ├── option1/                # The home + supporting sections
 │   │   ├── Header.tsx, Hero.tsx, StatsBand.tsx, WhatIsNewMe.tsx,
 │   │   ├── DrPal.tsx, Pillars.tsx, Pathways.tsx, StructuredCare.tsx,
 │   │   ├── Testimonials.tsx, Footer.tsx
 │   │   ├── EyebrowPill.tsx     # ← reusable label pill (light + dark variants)
-│   │   ├── PageStub.tsx        # Placeholder for unbuilt pages
 │   │   └── HIW*.tsx            # /how-it-works subsections
-│   ├── layout/SmoothScroll.tsx # Lenis wrapper
-│   ├── sections/               # (currently empty / shared)
-│   └── ui/                     # (currently empty / shared)
+│   └── layout/SmoothScroll.tsx # Lenis wrapper
 ├── lib/
 │   └── sanity/
 │       ├── client.ts           # createClient() — reads env vars via env.ts
