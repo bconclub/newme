@@ -88,7 +88,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogImageUrl = hasAsset(ogImageRef) ? urlFor(ogImageRef).width(1200).height(630).fit('crop').url() : undefined
 
   return {
-    title: title.includes('NewME') ? title : `${title} | Dr. Pal's NewME`,
+    title: title.includes('NewME') ? title : `${title} | Dr. Pal's NewME`,
     description,
     keywords: post.keywords && post.keywords.length > 0 ? post.keywords.join(', ') : undefined,
     alternates: {

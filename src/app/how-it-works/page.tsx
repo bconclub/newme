@@ -11,7 +11,7 @@ import HIWHumanGuidance from '@/components/option1/HIWHumanGuidance'
 import HIWCTA from '@/components/option1/HIWCTA'
 
 export const metadata: Metadata = {
-  title: 'How It Works | Dr. Pal\'s NewME',
+  title: 'How It Works | Dr. Pal\'s NewME',
   description:
     'How NewME structures care across assessment, pathways, and continuity — a doctor-led clinical system for metabolic and gut regulation.',
 }

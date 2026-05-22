@@ -3,7 +3,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Dr. Pal\'s NewME',
+  title: 'Privacy Policy | Dr. Pal\'s NewME',
   description: 'Privacy Policy for NEWMEFIT LLC — how we collect, use, and protect your personal information.',
   robots: { index: true, follow: true },
 }

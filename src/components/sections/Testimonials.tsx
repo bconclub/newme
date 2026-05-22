@@ -10,7 +10,7 @@ const items = [
   {
     title: '"I feel that I have really discovered my NewME',
     body:
-      "Hi..I started my weight loss journey in July 2023. I was weighing 82.3 kgs then. Randomly, I bumped into one of Dr Pal's you tube videos and immediately got hooked on to his channel. Thereafter, got addicted/inspired with the various you tube videos.",
+      "Hi..I started my weight loss journey in July 2023. I was weighing 82.3 kgs then. Randomly, I bumped into one of Dr Pal's you tube videos and immediately got hooked on to his channel. Thereafter, got addicted/inspired with the various you tube videos.",
     name: 'Kishore Raviprolu',
     location: 'Bangalore, Karnataka',
   },

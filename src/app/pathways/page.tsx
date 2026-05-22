@@ -60,7 +60,7 @@ export default function PathwaysPage() {
       {/* ─── HERO SECTION — composes <PageHero> (Figma 121:93 template) ─ */}
       <PageHero
         imageSrc={HERO_IMG}
-        imageAlt="Dr. Pal with patient"
+        imageAlt="Dr. Pal with patient"
         imagePosition="60% center"
         heading={<>You Don&apos;t Choose A Program. You&apos;re Prescribed A Path.</>}
         subheading="NewME is a structured clinical system. Your assessment maps your health patterns and guides you into the pathway designed for your body's needs."

@@ -21,7 +21,7 @@ export default function NewMELogo({
         gap: size * 0.04,
         lineHeight: 1,
       }}
-      aria-label="Dr. Pal's NewME"
+      aria-label="Dr. Pal's NewME"
     >
       {/* Spinning favicon — driven by rotateValue when provided, else auto-spins */}
       <motion.img

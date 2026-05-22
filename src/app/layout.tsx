@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   title: 'NewME | Doctor-Led Care, Personalized For Your Body',
   description:
     'NewME combines clinical insights with structured care to better understand your body and provide the care it needs. A doctor-led clinical system for metabolic and gut regulation.',
-  keywords: ['metabolic health', 'gut health', 'Dr Pal', 'NewME', 'clinical care'],
+  keywords: ['metabolic health', 'gut health', 'Dr Pal', 'NewME', 'clinical care'],
   alternates: {
     canonical: '/',
   },
@@ -45,15 +45,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NewME | Doctor-Led Care, Personalized For Your Body',
     description:
-      'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
+      'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
     url: '/',
-    siteName: "Dr. Pal's NewME",
+    siteName: "Dr. Pal's NewME",
     images: [
       {
         url: '/media/Media Hero.webp',
         width: 1880,
         height: 694,
-        alt: "Dr. Pal's NewME",
+        alt: "Dr. Pal's NewME",
       },
     ],
     type: 'website',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'NewME | Doctor-Led Care, Personalized For Your Body',
     description:
-      'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
+      'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
     images: ['/media/Media Hero.webp'],
   },
   icons: {

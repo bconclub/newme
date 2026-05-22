@@ -22,7 +22,7 @@ const quickLinks: FooterLink[] = [
   { label: 'How it Works', href: '/how-it-works', live: true },
   { label: 'Pathways', href: '/pathways', live: true },
   { label: 'Virtual Consult', href: '/virtual-clinic', live: true },
-  { label: 'Dr Pal & Team', href: '/team', live: true },
+  { label: 'Dr Pal & Team', href: '/team', live: true },
   { label: 'Contact', href: '/contact', live: true },
 ]
 const resources: FooterLink[] = [
@@ -94,7 +94,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-4">
             <Image
               src="/newme-logo.png"
-              alt="Dr. Pal's NewME"
+              alt="Dr. Pal's NewME"
               width={240}
               height={74}
               unoptimized
@@ -121,7 +121,7 @@ export default function Footer() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Dr. Pal on ${s.label} (opens in a new tab)`}
+                  aria-label={`Dr. Pal on ${s.label} (opens in a new tab)`}
                   className="text-white hover:text-[#FEF272] transition-colors"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

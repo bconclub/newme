@@ -38,7 +38,7 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px 64px" }}>
         <div className="fu" style={{ maxWidth: 560, width: "100%" }}>
 
-          {/* ── Designed-by chip — small Dr. Pal portrait + attribution. Lives
+          {/* ── Designed-by chip — small Dr. Pal portrait + attribution. Lives
               above the eyebrow so the trust signal lands first, before the
               category label. Plain <img> matches the rest of the assessment
               app (no next/image inside this scope). ── */}
@@ -52,7 +52,7 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
             }}>
               <img
                 src="/Dr Pal.webp"
-                alt="Dr. Palaniappan"
+                alt="Dr. Palaniappan"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
               />
             </div>
@@ -69,7 +69,7 @@ export function IntroPage({ onStart, onContinue, savedStep, savedTotal, savedScr
                 lineHeight: 1.15, letterSpacing: "-0.01em",
                 fontFamily: FONT_HEADING,
               }}>
-                Dr. Palaniappan Manickam, MD
+                Dr. Palaniappan Manickam, MD
               </p>
               <p style={{ fontSize: 12, color: INK3, marginTop: 5, fontFamily: FONT_BODY }}>
                 Gastroenterologist · NewME Founder

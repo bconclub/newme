@@ -6,7 +6,7 @@ import BlogArticles from '@/components/option1/BlogArticles'
 import { postsQuery } from '@/lib/sanity/queries'
 
 export const metadata: Metadata = {
-  title: "Blog | Dr. Pal's NewME",
+  title: "Blog | Dr. Pal's NewME",
   description:
     'Long-form articles on metabolic health, gut regulation, and structured care from the NewME team.',
 }

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
-  title: 'Health Assessment | Dr. Pal\'s NewME',
+  title: 'Health Assessment | Dr. Pal\'s NewME',
   description:
     'Start your NewME health assessment. Answer a few questions about your lifestyle and health goals so we can recommend the right care pathway for you.',
 }

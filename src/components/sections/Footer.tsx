@@ -127,7 +127,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-6 border-t border-white/15 flex flex-col md:flex-row items-center justify-between gap-3 text-white/55 text-[12.5px] font-[family-name:var(--font-bricolage)] font-light">
-          <p>© {new Date().getFullYear()} Dr. Pal&rsquo;s NewME. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Dr. Pal&rsquo;s NewME. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <a href="#" className="hover:text-white">Privacy Policy</a>
             <a href="#" className="hover:text-white">Terms of Service</a>

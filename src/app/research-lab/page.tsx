@@ -5,7 +5,7 @@ import ResearchHero from '@/components/option1/ResearchHero'
 import ResearchEvidence from '@/components/option1/ResearchEvidence'
 
 export const metadata: Metadata = {
-  title: "Research Lab | Dr. Pal's NewME",
+  title: "Research Lab | Dr. Pal's NewME",
   description:
     'The NewME Research Lab publishes clinical findings drawn directly from our practice — evidence-led protocols and observed patient outcomes.',
 }

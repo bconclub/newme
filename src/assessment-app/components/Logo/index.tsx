@@ -17,7 +17,7 @@ export function LogoFull({ height = 38 }: { height?: number; light?: boolean }) 
   return (
     <img
       src="/newme-logo.png"
-      alt="Dr. Pal's NewME"
+      alt="Dr. Pal's NewME"
       style={{ height, width: "auto", display: "block" }}
     />
   );

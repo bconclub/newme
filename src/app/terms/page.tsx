@@ -3,7 +3,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 
 export const metadata: Metadata = {
-  title: 'Terms and Conditions | Dr. Pal\'s NewME',
+  title: 'Terms and Conditions | Dr. Pal\'s NewME',
   description: 'Terms and Conditions governing participation in NewME\'s programs and services provided by NEWME.FIT LLC.',
   robots: { index: true, follow: true },
 }

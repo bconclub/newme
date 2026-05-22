@@ -21,10 +21,10 @@ type TeamMember = {
 
 const TEAM: TeamMember[] = [
   {
-    name: 'Dr. Palaniappan Manickam',
+    name: 'Dr. Palaniappan Manickam',
     role: 'Founder',
     photo: '/images/team/dr-palaniappan.jpg',
-    bio: 'A gastroenterologist and metabolic health specialist, Dr. Pal founded NewME to deliver structured, clinical-grade care at scale.',
+    bio: 'A gastroenterologist and metabolic health specialist, Dr. Pal founded NewME to deliver structured, clinical-grade care at scale.',
     linkedin: 'https://www.linkedin.com/in/drpal/',
   },
   {

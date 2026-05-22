@@ -40,15 +40,15 @@ const SECTIONS = [
     items: [
       {
         q: 'Is NewME a medical service?',
-        a: 'NewME is a structured clinical programme led by a licensed physician. While it is not a replacement for emergency or primary care, all pathways are clinically designed and overseen by Dr. Pal and our licensed clinical team. Participants with active medical conditions are reviewed before onboarding.',
+        a: 'NewME is a structured clinical programme led by a licensed physician. While it is not a replacement for emergency or primary care, all pathways are clinically designed and overseen by Dr. Pal and our licensed clinical team. Participants with active medical conditions are reviewed before onboarding.',
       },
       {
         q: 'Are your outcomes evidence-based?',
         a: 'Yes. All NewME pathways draw on peer-reviewed research in metabolic medicine, gut health, and lifestyle medicine. Outcome data from participants is tracked throughout, and protocol adjustments are made based on clinical markers rather than subjective experience alone.',
       },
       {
-        q: 'Do I get to speak with Dr Pal directly?',
-        a: 'Dr. Pal is involved in protocol design and clinical oversight for all pathways. Direct consultations with Dr. Pal are available within the NewME 360 Continuity track. All other pathways are managed by our specialist clinical team under Dr. Pal\'s supervision.',
+        q: 'Do I get to speak with Dr Pal directly?',
+        a: 'Dr. Pal is involved in protocol design and clinical oversight for all pathways. Direct consultations with Dr. Pal are available within the NewME 360 Continuity track. All other pathways are managed by our specialist clinical team under Dr. Pal\'s supervision.',
       },
       {
         q: 'I have a diagnosed condition, multiple health concerns, and I\'m on medication. Can I still join?',

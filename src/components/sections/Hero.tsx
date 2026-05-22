@@ -84,7 +84,7 @@ export default function Hero() {
             <div className="relative z-10 w-[85%] h-[85%] mx-auto mt-[7%] rounded-[28px] overflow-hidden ring-1 ring-white/10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5)]">
               <Image
                 src="/dr-pal-portrait.png"
-                alt="Dr. Palaniappan Manickam"
+                alt="Dr. Palaniappan Manickam"
                 width={824}
                 height={874}
                 priority

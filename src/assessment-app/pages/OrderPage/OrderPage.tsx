@@ -174,7 +174,7 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
             </svg>
           </span>
           <p style={{ fontSize: 13, color: INK3, lineHeight: 1.6, margin: 0 }}>
-            <strong style={{ color: INK }}>10% of your programme fee</strong> goes towards Dr. Pal's Foundation, supporting access to healthcare for those who need it most.
+            <strong style={{ color: INK }}>10% of your programme fee</strong> goes towards Dr. Pal's Foundation, supporting access to healthcare for those who need it most.
           </p>
         </div>
 

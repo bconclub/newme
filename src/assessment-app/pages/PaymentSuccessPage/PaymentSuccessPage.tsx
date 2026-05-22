@@ -45,7 +45,7 @@ export function PaymentSuccessPage({ paidPhase }: PaymentSuccessPageProps) {
           textAlign: "center", lineHeight: 1.15, marginBottom: 16,
           letterSpacing: "-0.025em", fontFamily: FONT_HEADING,
         }}>
-          Welcome to your<br />Dr. Pal's NewME Journey.
+          Welcome to your<br />Dr. Pal's NewME Journey.
         </h1>
 
         {/* Pathway pill */}

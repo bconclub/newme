@@ -64,7 +64,7 @@ const PHASES: Phase[] = [
       { num: '05', title: 'Targeted Supplement Guidance', desc: 'Supplement recommendations aligned with your symptoms and nutritional requirements.' },
       { num: '06', title: 'Mental Health Support', desc: 'Behavioural therapist evaluation for habit change and stress management, with a focus on assessment of behavioral and psychological factors that may impact gut health.' },
       { num: '07', title: 'Movement Readiness & Activity Support', desc: 'Physiotherapy screening and access to guided movement through the NewME Virtual Gym.' },
-      { num: '08', title: 'Education & Clinical Guidance', desc: 'Monthly sessions with Dr. Pal and ongoing support to build sustainable gut-friendly habits.' },
+      { num: '08', title: 'Education & Clinical Guidance', desc: 'Monthly sessions with Dr. Pal and ongoing support to build sustainable gut-friendly habits.' },
     ],
     bannerImg: '/pathways/GI%201%20vertical%20banners.webp',
     bannerHeading: 'Who Is Prescribed The GI CORE Pathway?',
@@ -89,7 +89,7 @@ const PHASES: Phase[] = [
       'Coordinated clinical care and monitoring',
     ],
     careItems: [
-      { num: '01', title: 'Direct Clinical Supervision', desc: "Program delivered under Dr. Pal's direct guidance with mid-program consultation." },
+      { num: '01', title: 'Direct Clinical Supervision', desc: "Program delivered under Dr. Pal's direct guidance with mid-program consultation." },
       { num: '02', title: 'Senior Medical Team Involvement', desc: 'Initial consultation with Senior doctor and coordinated clinical oversight.' },
       { num: '03', title: 'Specialized GI Coaching', desc: 'Weekly sessions with senior GI nutritionist supported by daily check-ins and dietary review.' },
       { num: '04', title: 'Advanced Nutrition Protocols', desc: 'Deeper elimination, reintroduction, and ongoing dietary adjustments based on complex symptoms.' },

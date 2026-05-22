@@ -36,7 +36,7 @@ const FALLBACK: LocalMention[] = [
   {
     _id: 'fallback-2',
     title:
-      "Stop blaming your boss: Dr. Pal's 5 stress-management habits for working professionals",
+      "Stop blaming your boss: Dr. Pal's 5 stress-management habits for working professionals",
     excerpt: "We've all been there: it's 3:00 PM and you've got 14 tabs open.",
     publishedAt: '2026-04-11',
     externalUrl: 'https://www.hindustantimes.com/lifestyle',

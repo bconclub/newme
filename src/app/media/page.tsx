@@ -6,7 +6,7 @@ import MediaArticles from '@/components/option1/MediaArticles'
 import { mediaMentionsQuery } from '@/lib/sanity/queries'
 
 export const metadata: Metadata = {
-  title: "Media | Dr. Pal's NewME",
+  title: "Media | Dr. Pal's NewME",
   description:
     'NewME in the media — coverage of our work in metabolic and gut regulation across leading publications.',
 }

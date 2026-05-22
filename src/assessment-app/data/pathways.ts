@@ -69,7 +69,7 @@ export const PW: Record<string, any> = {
       "Physiotherapist evaluation at baseline with exercise routine recommendations",
       "Breathwork and stress-regulation practices",
       "Behavioural therapist training to support habit change",
-      "Virtual health education sessions with Dr. Pal and his team of doctors",
+      "Virtual health education sessions with Dr. Pal and his team of doctors",
       "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga, Strength, Zumba and Tabata.",
     ],
     tags: ["Habits first", "Daily coach access", "Clinically reviewed"],
@@ -93,7 +93,7 @@ export const PW: Record<string, any> = {
       "Blood work reviewed by the medical team, with ongoing symptom tracking",
       "Physiotherapist evaluation at baseline with exercise routine recommendations",
       "1:1 behavioural therapist evaluation for habit change and stress support",
-      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
+      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
       "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga, Strength, Zumba and Tabata.",
     ],
     tags: ["Built around your diagnosis", "12 weeks of targeted correction", "Progress you can measure"],
@@ -112,7 +112,7 @@ export const PW: Record<string, any> = {
       "Physiotherapist evaluation at baseline with exercise routine recommendations, reassessed at mid-pathway",
       "Weekly physiotherapist sessions or 1:1 personal trainer sessions, prescribed based on your assessment",
       "1:1 behavioural therapist evaluation for habit change and stress support",
-      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
+      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
       "Symptoms, progress and labs monitored by the medical team",
       "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga, Strength, Zumba and Tabata.",
     ],
@@ -131,11 +131,11 @@ export const PW: Record<string, any> = {
       return null;
     },
     bullets: [
-      "Initial consultation with a Senior Doctor from Dr. Pal's team",
+      "Initial consultation with a Senior Doctor from Dr. Pal's team",
       "Weekly consultations with a GI dietitian, daily text-based check-ins",
       "Physiotherapist evaluation at baseline with exercise routine recommendations",
       "Monthly 1:1 gut-brain focused behavioural therapist evaluation and counselling",
-      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
+      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
       "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga, Strength, Zumba and Tabata.",
     ],
     tags: ["Medically overseen", "Triggers identified precisely", "Daily GI coach support"],
@@ -147,22 +147,22 @@ export const PW: Record<string, any> = {
     isGI: true,
     h1: (n: string, l: boolean) => l ? `${n}, you're on medication and your gut is still making your life difficult.` : `${n}, complex gut conditions need more than a diet plan.`,
     h2: (l: boolean) => l ? "GI Advanced is the phase for that." : "It needs a full clinical team working your case.",
-    hook: () => "A full clinical team works your case from day one, with a direct Dr. Pal consultation at the mid-point of your phase.",
+    hook: () => "A full clinical team works your case from day one, with a direct Dr. Pal consultation at the mid-point of your phase.",
     extra: (ans: Record<string, any>) => {
       if (["gut_med", "multiple_med"].includes(ans.r4_medication)) return "You're already on medication. This phase is built for exactly that, not despite it.";
       return null;
     },
     bullets: [
-      "Initial consultation with a Senior Doctor from Dr. Pal's team",
-      "One-on-one mid-month consultation with Dr. Pal",
+      "Initial consultation with a Senior Doctor from Dr. Pal's team",
+      "One-on-one mid-month consultation with Dr. Pal",
       "Weekly one-on-one sessions with a Senior GI Nutritionist, daily text access and diet review",
       "Weekly 1:1 gut-brain focused behavioural therapist evaluation and counselling",
       "Weekly integrative mind-body therapy sessions",
       "Physiotherapist evaluation at baseline with exercise routine recommendations",
-      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
+      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
       "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga, Strength, Zumba and Tabata.",
     ],
-    tags: ["Dr. Pal directly involved", "Gut-brain therapy included", "Built for chronic and complex"],
+    tags: ["Dr. Pal directly involved", "Gut-brain therapy included", "Built for chronic and complex"],
   },
 };
 
@@ -171,14 +171,14 @@ export const PW_SEC: Record<string, any> = {
   Rebuild:     { h1: "Rebuild is twelve weeks of targeted metabolic correction.",       h2: "Built around your specific symptoms and what your body actually needs to shift.",              hook: "Real metabolic change takes time. Rebuild gives it the twelve weeks it actually needs." },
   Sustain:     { h1: "Sustain is twenty-four weeks of structured clinical support.",    h2: "Built for complexity and designed so results hold when the phase ends.",                       hook: "For complex conditions, overlapping diagnoses and real complexity that needs time." },
   GI_Core:     { h1: "GI Core is a medically overseen one-month gut reset.",           h2: "Structured elimination, guided reintroduction and daily coaching.",                            hook: "A structured elimination plan and daily GI coaching, so you know exactly what your body tolerates and why." },
-  GI_Advanced: { h1: "GI Advanced is Dr. Pal's most intensive clinical gut phase.",    h2: "A full clinical team working your case from day one.",                                         hook: "A full clinical team works your case from day one, with a direct Dr. Pal consultation at the mid-point of your phase." },
+  GI_Advanced: { h1: "GI Advanced is Dr. Pal's most intensive clinical gut phase.",    h2: "A full clinical team working your case from day one.",                                         hook: "A full clinical team works your case from day one, with a direct Dr. Pal consultation at the mid-point of your phase." },
 };
 
 export const SEC_COPY: Record<string, string> = {
   Reset:       "Twelve weeks of targeted metabolic correction, built around your specific symptoms and what your body actually needs to shift.",
   Rebuild:     `${cap(PHASE_META.Sustain.durationLong)} of structured clinical support, built for complexity and designed so results hold when the phase ends.`,
   Sustain:     "A medically supervised gut phase with daily GI coach support, built to find the root cause of your symptoms with clinical precision.",
-  GI_Core:     "Dr. Pal's most clinically intensive gut phase. Direct supervision, weekly therapist sessions and a full clinical team working your case from day one.",
+  GI_Core:     "Dr. Pal's most clinically intensive gut phase. Direct supervision, weekly therapist sessions and a full clinical team working your case from day one.",
   GI_Advanced: "A medically supervised gut phase with daily GI coach support, built to find the root cause of your symptoms with clinical precision.",
 };
 
@@ -249,7 +249,7 @@ export const ASSURANCE: Record<string, string> = {
   Rebuild:     "Your body has been compensating long enough that it's learned to stay stuck. Addressing that takes a protocol built for what's actually happening, not a generic plan.",
   Sustain:     "Years of layered diagnoses require a different kind of care. Single-track fixes won't hold. Coordinated clinical care will.",
   GI_Core:     "Your gut health drives most of your symptoms. So your care plan treats both your gut and your metabolic health. You'll have a dedicated team working together, not in silos.",
-  GI_Advanced: "Your gut-brain axis has been under sustained pressure for years, the result of chronic symptoms, ongoing medication, and the compounding stress these conditions create. Treating this requires coordinated clinical care from a dedicated team, including a 1:1 mid-pathway consultation with Dr. Pal.",
+  GI_Advanced: "Your gut-brain axis has been under sustained pressure for years, the result of chronic symptoms, ongoing medication, and the compounding stress these conditions create. Treating this requires coordinated clinical care from a dedicated team, including a 1:1 mid-pathway consultation with Dr. Pal.",
 };
 
 export const ACTIONABLE_POINTS: Record<string, string[]> = {

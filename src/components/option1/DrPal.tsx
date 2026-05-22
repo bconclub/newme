@@ -115,7 +115,7 @@ export default function DrPal() {
           >
             {/* Eyebrow — shared component (matches every other section). */}
             <div className="self-start">
-              <EyebrowPill variant="dark">Meet Dr. Pal</EyebrowPill>
+              <EyebrowPill variant="dark">Meet Dr. Pal</EyebrowPill>
             </div>
 
             <h2
@@ -158,7 +158,7 @@ export default function DrPal() {
                   maxWidth: 883,
                 }}
               >
-                Dr. Pal is a US-based gastroenterologist whose clinical
+                Dr. Pal is a US-based gastroenterologist whose clinical
                 perspective is shaped not just by medical training, but by
                 personal experience.
               </p>
@@ -186,7 +186,7 @@ export default function DrPal() {
                   maxWidth: 883,
                 }}
               >
-                This realization became the foundation of NewME. Today, Dr. Pal
+                This realization became the foundation of NewME. Today, Dr. Pal
                 leads a system that focuses on restoring metabolic and gut
                 regulation through structured care, guided accountability, and
                 consistency over time, bringing together clinical insight and

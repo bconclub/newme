@@ -177,7 +177,7 @@ export default function WhatIsNewMe() {
           >
             NewME is a doctor-led system designed to restore metabolic and gut regulation
             through structured care and guided accountability. It has been built on the clinical
-            expertise of Dr. Palaniappan Manickam (Dr. Pal) and a multidisciplinary care team.
+            expertise of Dr. Palaniappan Manickam (Dr. Pal) and a multidisciplinary care team.
           </motion.p>
 
           <motion.p

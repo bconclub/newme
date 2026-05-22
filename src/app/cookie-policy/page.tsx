@@ -3,7 +3,7 @@ import Header from '@/components/option1/Header'
 import Footer from '@/components/option1/Footer'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy | Dr. Pal\'s NewME',
+  title: 'Cookie Policy | Dr. Pal\'s NewME',
   description: 'How NEWMEFIT LLC uses cookies and similar technologies on drpalsnewme.com.',
   robots: { index: true, follow: true },
 }

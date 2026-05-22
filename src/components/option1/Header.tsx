@@ -100,18 +100,18 @@ export default function Header() {
           }}
         >
           <div className="relative h-[62px] flex items-center justify-between gap-6">
-          <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
+          <Link href="/" className="flex items-center shrink-0" aria-label="Dr. Pal's NewME — home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/newme-logo.png"
-              alt="Dr. Pal's NewME"
+              alt="Dr. Pal's NewME"
               className="hidden md:block"
               style={{ height: 48, width: 'auto' }}
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/newme-logo.png"
-              alt="Dr. Pal's NewME"
+              alt="Dr. Pal's NewME"
               className="block md:hidden"
               style={{ height: 44, width: 'auto' }}
             />
