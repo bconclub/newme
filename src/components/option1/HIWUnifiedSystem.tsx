@@ -244,12 +244,17 @@ function UnifiedCard({ card, delay }: { card: Card; delay: number }) {
           : 'inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.05)',
       }}
     >
-      {/* Image — Figma: 215px wide on LEFT edge of card */}
+      {/* Image — Figma: 215px wide on LEFT edge of card.
+          Mobile floor bumped from 96 → 150 because at 96px the image was
+          a narrow vertical strip (~96×204) and landscape source photos
+          got cropped to just a center sliver where the subject often
+          wasn't visible. 150px makes the image area meaningfully wider
+          on phones so faces / activity in the photo are preserved. */}
       {card.image && (
         <div
           className="relative shrink-0 overflow-hidden"
           style={{
-            width: 'clamp(96px, calc(215 / 1920 * 100vw), 215px)',
+            width: 'clamp(150px, calc(215 / 1920 * 100vw), 215px)',
             margin: 'clamp(6px, calc(8 / 1920 * 100vw), 8px)',
             borderRadius: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)',
             background:

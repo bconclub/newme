@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-22 · URL map PDF (supersedes legacy redirects PDF) + mobile HIW image width
+
+- **`docs/url-map.pdf`** (new, ~14 KB) — single comprehensive reference document covering:
+  1. All 17 live canonical routes from `sitemap.ts` + dynamic blog posts + 3 intentional exclusions
+  2. Code-level redirects from `next.config.ts` (the Zoho payment forward + the new `/virtual-clinic` → `/virtual-consult` 308)
+  3. The 42 planned legacy WordPress migration redirects (tiered by priority; reflects `/virtual-consult` as the new destination for `/schedule-a-call/`)
+  4. Reference notes on Sanity-driven editorial redirects (managed in Studio)
+  Re-generatable any time URLs change via `node scripts/generate-url-map-pdf.mjs` (after `npm install --no-save pdfkit`).
+- **Removed**: `docs/legacy-redirects.pdf` and `scripts/generate-legacy-redirects-pdf.mjs` — superseded by the broader URL-map document above. Single source of truth instead of two overlapping PDFs.
+- **`src/components/option1/HIWUnifiedSystem.tsx`** — On mobile, the step-card image area was a narrow 96px-wide vertical strip; landscape source photos cropped to a center sliver where subjects often weren't visible (the Assessment card showed only a hand and a desk). Bumped mobile image width floor from 96px → 150px so the image area is closer to square and meaningful subject preservation works. Cost: text area drops ~30px to ~180px (still fits the step descriptions in 5–6 lines instead of 4).
+
 ## 2026-05-22 · Virtual Clinic → Virtual Consult full URL migration (route + redirect + internal links)
 
 - **Renamed route**: `src/app/virtual-clinic/` → `src/app/virtual-consult/` (3 files: page.tsx, VCSections.tsx, VCHeroCta.tsx). The new canonical URL is `/virtual-consult`.
