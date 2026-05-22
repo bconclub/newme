@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { trackEvent } from '@/lib/analytics'
 
 // ─── Replace this with your actual CRM/webhook endpoint ───────────────────────
 const NEWSLETTER_ENDPOINT = 'https://YOUR_CRM_ENDPOINT_HERE'
@@ -285,6 +286,7 @@ function NewsletterForm() {
     // Show success immediately (optimistic) — fire-and-forget to CRM
     setDone(true)
     setEmail('')
+    trackEvent('email_subscribed', { location: 'footer_newsletter' })
     if (NEWSLETTER_ENDPOINT && !NEWSLETTER_ENDPOINT.includes('YOUR_CRM')) {
       fetch(NEWSLETTER_ENDPOINT, {
         method: 'POST',

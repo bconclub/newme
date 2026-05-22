@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { trackEvent } from '@/lib/analytics'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -22,6 +23,8 @@ export default function ResearchEvidence() {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!email) return
+    trackEvent('email_subscribed', { location: 'research_evidence_notify' })
     // No backend wired yet — silent submit so the form remains interactive.
   }
 

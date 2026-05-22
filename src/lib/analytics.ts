@@ -44,6 +44,10 @@ export type EventName =
   // Share-results link clicked from the results page.
   | 'share_results_clicked'
 
+  // Newsletter / waitlist email subscribe submitted. Use `params.location`
+  // to disambiguate (footer / research_evidence / research_lab_waitlist).
+  | 'email_subscribed'
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void
