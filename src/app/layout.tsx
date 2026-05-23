@@ -71,10 +71,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  // Opened up at launch (2026-05-23) — was index: false / follow: false
+  // during pre-launch as one of the three indexing-block layers. The
+  // other two (X-Robots-Tag header in next.config.ts + robots.txt via
+  // the Sanity-driven route handler) were also flipped at the same time.
   robots: {
-    index: false,
-    follow: false,
-    googleBot: { index: false, follow: false },
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
   openGraph: {
     title: 'NewME | Doctor-Led Care, Personalized For Your Body',

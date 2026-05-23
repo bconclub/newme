@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-23 · 🚀 LAUNCH — opened indexing on all three noindex layers
+
+The site is live at https://drpalsnewme.com. All three pre-launch indexing-block layers flipped to allow crawlers:
+
+- **Layer 1 — `robots.txt` (Sanity-driven)**: updated the `site-robots-txt` singleton via `scripts/flip-robots-allow.mjs` (Sanity write API). Content changed from `Disallow: /` to `Allow: /` plus a `Sitemap: https://drpalsnewme.com/sitemap.xml` line so crawlers auto-discover the URL list. Propagates to `/robots.txt` within ~60s of the API write (Sanity → middleware cache).
+- **Layer 2 — `next.config.ts` X-Robots-Tag header**: removed the entire `headers()` block. Was sending `X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex` on every response. Now no robots header is forced — search engines respect the in-page `<meta name="robots">` instead.
+- **Layer 3 — `src/app/layout.tsx` metadata**: flipped `robots: { index: false, follow: false }` to `{ index: true, follow: true }` (both top-level and `googleBot` block).
+- Added one-shot launch script `scripts/flip-robots-allow.mjs` — already ran successfully against production, kept in the repo as a reusable utility / audit reference.
+- User-facing: search engines (Google, Bing, etc.) can now crawl and index every public page. Live site verified — `/robots.txt` will show `Allow: /` once the Sanity cache refreshes; `/sitemap.xml` already serves all 26 URLs cleanly under the apex domain.
+
 ## 2026-05-23 · Contact + Media banners refreshed, OG share image switched to homepage hero
 
 - **`src/app/contact/page.tsx`** — Contact hero photo swapped from `/contact/contact us opt1.webp` → `/contact/Contact Us.webp`, anchored `center top` to match the rest of the site's heroes (consistent crop behavior across pages).

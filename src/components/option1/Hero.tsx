@@ -96,11 +96,13 @@ export default function Hero() {
           <div
             className="relative z-10 flex flex-col"
             style={{
-              /* Mobile floor bumped 120 → 280 so the hero text sits lower
-                 in the card (closer to bottom-third) instead of starting at
-                 the top with a big empty space below. Desktop value stays
-                 anchored to the Figma 343px spec. */
-              paddingTop: 'clamp(280px, calc(343 / 1920 * 100vw), 343px)',
+              /* Mobile floor was 280px which pushed the heading into the
+                 bottom third of the card and left the upper green-washed
+                 area unused. Dropped to 200px so the heading lifts up into
+                 the green zone where the photo's bright subject isn't
+                 competing for attention. Desktop value stays anchored to
+                 the Figma 343px spec. */
+              paddingTop: 'clamp(200px, calc(343 / 1920 * 100vw), 343px)',
               /* Mobile floor 24px (was 40px) so the heading anchors to the
                  left edge of the card rather than reading as centered between
                  the card edge and the doctor portrait. Desktop spec stays at
@@ -124,11 +126,23 @@ export default function Hero() {
                 maxWidth: 'clamp(320px, calc(810 / 1920 * 100vw), 810px)',
               }}
             >
-              Doctor-Led Care,
-              <br />
-              Personalized For
-              <br />
-              Your Body
+              {/* Mobile (5 lines): each unit on its own line so the title
+                  reads compactly inside the tighter green-wash column.
+                  Hidden at md+ via Tailwind. */}
+              <span className="md:hidden">
+                Doctor-Led<br />
+                Care,<br />
+                Personalized<br />
+                For Your<br />
+                Body
+              </span>
+              {/* Desktop (3 lines): roomier line breaks matching the original
+                  Figma spec. Hidden below md. */}
+              <span className="hidden md:inline">
+                Doctor-Led Care,<br />
+                Personalized For<br />
+                Your Body
+              </span>
             </motion.h1>
 
             <motion.p
@@ -141,7 +155,13 @@ export default function Hero() {
                 fontSize: 'clamp(14px, calc(24 / 1920 * 100vw), 24px)',
                 lineHeight: 'clamp(18px, calc(30 / 1920 * 100vw), 30px)',
                 letterSpacing: 0,
-                maxWidth: 'clamp(280px, calc(640 / 1920 * 100vw), 640px)',
+                /* Mobile floor was 280px which extended past the gradient
+                   wash's right edge (mask fades out by ~62% viewport width
+                   on phones) — body text landed on the doctor's face/body
+                   where the bright photo killed readability. Tightened to
+                   220px so the text wraps into 4 lines but stays fully
+                   within the green-washed zone. Desktop spec unchanged. */
+                maxWidth: 'clamp(220px, calc(640 / 1920 * 100vw), 640px)',
                 marginTop: 'clamp(16px, calc(32 / 1920 * 100vw), 32px)',
               }}
             >

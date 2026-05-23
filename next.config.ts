@@ -38,19 +38,12 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "X-Robots-Tag",
-            value: "noindex, nofollow, noarchive, nosnippet, noimageindex",
-          },
-        ],
-      },
-    ];
-  },
+  // headers() removed at launch (2026-05-23) — used to send a global
+  // X-Robots-Tag: noindex, nofollow header on every response as one of
+  // the three pre-launch indexing-block layers. Now that the site is
+  // live and ready for SEO, search engines should be able to crawl.
+  // The other two layers (robots.txt via Sanity + robots metadata in
+  // src/app/layout.tsx) were also opened up at the same time.
 };
 
 export default nextConfig;
