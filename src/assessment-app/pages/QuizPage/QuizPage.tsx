@@ -127,7 +127,7 @@ export function QuizPage({
         // No CRM lead for this email — always create one, even if a stale
         // existingLeadId exists from a previous session with a different email.
         try {
-          const r = await createPreQuizLead(info.name, info.last, info.email);
+          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined);
           leadId = r.leadId ?? null;
         } catch {}
       }
