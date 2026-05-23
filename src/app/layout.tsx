@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, Urbanist, Poppins } from 'next/font/google'
 import Script from 'next/script'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import './option1.scss'
 import SmoothScroll from '@/components/layout/SmoothScroll'
@@ -135,6 +137,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}</Script>
         <SmoothScroll>{children}</SmoothScroll>
         <CookieBanner />
+        {/* Vercel Analytics — auto-tracks page views, bounce rate, geo,
+            referrers etc. Pro plan feature; data shows up in Vercel
+            dashboard → Analytics tab. Lightweight (~1KB script). */}
+        <Analytics />
+        {/* Vercel Speed Insights — real-user Core Web Vitals (LCP, CLS,
+            INP). Pro plan feature; data shows up in Vercel dashboard →
+            Speed Insights tab. Google uses CWV as a ranking factor so
+            this also doubles as SEO instrumentation. */}
+        <SpeedInsights />
       </body>
     </html>
   )

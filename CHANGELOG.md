@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-23 · Vercel Analytics + Speed Insights wired up
+
+- Installed `@vercel/analytics` and `@vercel/speed-insights` packages.
+- Mounted `<Analytics />` and `<SpeedInsights />` in `src/app/layout.tsx` just inside the closing `</body>` so they load on every page.
+- **Vercel Analytics**: real-user page-view tracking, bounce rate, geo, top pages, referrers. Shows up in Vercel Dashboard → Analytics tab. Lightweight ~1KB script.
+- **Vercel Speed Insights**: real-user Core Web Vitals (LCP, CLS, INP). Shows up in Vercel Dashboard → Speed Insights tab. Doubles as SEO instrumentation since Google uses CWV as a ranking factor.
+- Knocks the last remaining item off the Vercel production checklist (Enable Speed Insights).
+- User-facing: no visible change. New telemetry starts populating in the Vercel dashboard within ~30 seconds of any visitor hitting the live site post-deploy.
+
 ## 2026-05-23 · robots.txt cleaned to minimal directive-only content
 
 - **Live robots.txt** updated via the Sanity API — stripped the launch-day annotation comments. Now just the directive lines: `User-agent: *` / `Allow: /` / `Sitemap: https://drpalsnewme.com/sitemap.xml`. robots.txt is a directive file, not a place for explanatory commentary.
