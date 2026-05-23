@@ -95,6 +95,32 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
 
   useEffect(() => { containerRef.current?.scrollTo({ top: 0, behavior: "smooth" }); }, [step, screen, detailKey]);
 
+  // ─── Per-step funnel analytics ───────────────────────────────────────────
+  // Fires `assessment_step_completed` whenever the user advances FORWARD
+  // through the assessment. We only emit on increment (not on back-button
+  // navigation) so the funnel counts in GA reflect real progress, not
+  // back-and-forth movement. The step_index recorded is the step the user
+  // just FINISHED (so step 0 = profile, step 1+ = each quiz question).
+  //
+  // With this firing, GA can show the drop-off between any two consecutive
+  // step indices — e.g. "300 completed step 3 but only 240 completed step 4"
+  // identifies that question 4 is where users bail.
+  const prevStepRef = useRef<number>(step);
+  useEffect(() => {
+    if (screen !== "q") return;
+    const prev = prevStepRef.current;
+    if (step > prev) {
+      const completedIdx = prev;
+      const completedQ = completedIdx === 0 ? null : ALL_Q[completedIdx - 1];
+      trackEvent("assessment_step_completed", {
+        step_index: completedIdx,
+        step_id: completedIdx === 0 ? "profile" : completedQ?.id ?? `step_${completedIdx}`,
+        step_label: completedIdx === 0 ? "Profile" : completedQ?.q ?? `Step ${completedIdx}`,
+        total_steps: TOTAL,
+      });
+    }
+    prevStepRef.current = step;
+  }, [step, screen]);
 
   useEffect(() => {
     if (screen !== "results") return;

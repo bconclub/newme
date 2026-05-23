@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-23 · Per-step funnel tracking inside the assessment
+
+- **`src/assessment-app/AssessmentApp.tsx`** — added a `useEffect` that fires the existing `assessment_step_completed` analytics event every time the user advances forward through the quiz (back navigation is deliberately ignored so funnel counts in GA reflect real progress, not noise).
+- Each event carries: `step_index` (0 = profile, 1+ = each quiz question), `step_id` (matches the question id in `data/questions.ts` — e.g., `q1_aspiration`, `q2_food`, `r2_symptoms`), `step_label` (the question text), and `total_steps`.
+- With this firing, GA's "Explore → Funnel exploration" can now show the drop-off between any two consecutive step indices. E.g.: "300 completed step 3 (q3_sleep) but only 240 completed step 4 (q4_stress)" → tells you where to optimize the question wording or shorten the flow.
+- User-facing: no visible change. Analytics gets richer.
+
 ## 2026-05-23 · Vercel Analytics + Speed Insights wired up
 
 - Installed `@vercel/analytics` and `@vercel/speed-insights` packages.
