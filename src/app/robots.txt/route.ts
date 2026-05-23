@@ -15,12 +15,16 @@ import { NextResponse } from 'next/server'
  * can't read from Sanity at request time.
  */
 
+// Post-launch fallback — if Sanity is unreachable, serve a minimal
+// "allow + sitemap" response. We deliberately don't block crawlers as
+// the fallback anymore (was `Disallow: /` pre-launch) because the site
+// IS supposed to be indexed; a momentary Sanity outage shouldn't
+// accidentally noindex everything.
 const FALLBACK_BODY = [
-  '# Fallback — Sanity unreachable or robotsTxt singleton missing.',
-  '# Pre-launch default: block all crawlers.',
-  '',
   'User-agent: *',
-  'Disallow: /',
+  'Allow: /',
+  '',
+  'Sitemap: https://drpalsnewme.com/sitemap.xml',
   '',
 ].join('\n')
 

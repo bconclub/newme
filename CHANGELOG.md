@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-05-23 · robots.txt cleaned to minimal directive-only content
+
+- **Live robots.txt** updated via the Sanity API — stripped the launch-day annotation comments. Now just the directive lines: `User-agent: *` / `Allow: /` / `Sitemap: https://drpalsnewme.com/sitemap.xml`. robots.txt is a directive file, not a place for explanatory commentary.
+- **`sanity/schemas/robotsTxt.ts`** — schema's `initialValue` (used when a fresh dataset boots) updated from the verbose pre-launch placeholder to the new minimal allow + sitemap default. Doc comment updated to reflect post-launch reality.
+- **`scripts/seed-site-singletons.mjs`** — same minimal content baked in so any future seed produces the same clean output.
+- **`src/app/robots.txt/route.ts`** fallback body — flipped from defensive `Disallow: /` (safe pre-launch default) to minimal `Allow: /` + sitemap (post-launch default). Reasoning: the site is now public, so a momentary Sanity outage shouldn't accidentally noindex everything.
+- User-facing: `/robots.txt` now serves a clean 3-line response (4 with the blank line before Sitemap). No behavioral change for crawlers — both old verbose and new minimal versions allowed indexing.
+
 ## 2026-05-23 · 🚀 LAUNCH — opened indexing on all three noindex layers
 
 The site is live at https://drpalsnewme.com. All three pre-launch indexing-block layers flipped to allow crawlers:

@@ -37,15 +37,12 @@ const client = createClient({
   useCdn: false,
 })
 
-// ─── robots.txt content (current pre-launch default) ──────────────────────
+// ─── robots.txt content (post-launch — open to crawlers) ─────────────────
 const ROBOTS_TXT =
-  '# Pre-launch — all crawlers blocked.\n' +
-  "# To allow indexing at launch, replace 'Disallow: /' with 'Allow: /'\n" +
-  '# AND remove the X-Robots-Tag header from next.config.ts\n' +
-  '# AND set robots: { index: true, follow: true } in src/app/layout.tsx.\n' +
-  '\n' +
   'User-agent: *\n' +
-  'Disallow: /\n'
+  'Allow: /\n' +
+  '\n' +
+  'Sitemap: https://drpalsnewme.com/sitemap.xml\n'
 
 // ─── llms.txt content (mirrors what was at public/llms.txt) ──────────────
 const LLMS_TXT = `# Dr. Pal's NewME

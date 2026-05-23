@@ -6,8 +6,8 @@ import { defineField, defineType } from "sanity";
  * The Next.js route handler at `src/app/robots.txt/route.ts` fetches
  * this document on every request (cached ~60s) and serves the `content`
  * field as the response body. If the doc is missing or Sanity is
- * unreachable, the handler falls back to "User-agent: * / Disallow: /"
- * (safe default — keeps the site noindexed).
+ * unreachable, the handler falls back to a minimal `Allow: /` + sitemap
+ * line so a brief Sanity outage doesn't accidentally noindex the site.
  *
  * Singleton: there is exactly ONE document of this type, with the fixed
  * id `site-robots-txt`. The Studio structure (sanity/structure.ts) opens
@@ -15,10 +15,12 @@ import { defineField, defineType } from "sanity";
  * cannot create additional copies.
  *
  * Common edits:
- *   • Pre-launch: keep as `Disallow: /` to block all crawlers.
- *   • Launch day: change to `Allow: /` (and remember to also flip the
- *     X-Robots-Tag header in next.config.ts + the metadata robots in
- *     src/app/layout.tsx — three-layer block).
+ *   • Default (live site): `Allow: /` + Sitemap line so search engines
+ *     can crawl every public page.
+ *   • Block all crawlers: change to `Disallow: /` (e.g., if migrating
+ *     content to a new platform or taking the site offline). Also
+ *     remember to flip the metadata robots in src/app/layout.tsx for
+ *     consistency.
  */
 export default defineType({
   name: "robotsTxt",
@@ -32,15 +34,15 @@ export default defineType({
         "Raw text served at https://drpalsnewme.com/robots.txt. Standard robots.txt syntax — see https://www.robotstxt.org/robotstxt.html for the spec. Changes propagate to the live site within ~60 seconds (the route handler revalidates that often).",
       type: "text",
       rows: 12,
-      // Sensible pre-launch default: block everything.
+      // Minimal default — allow everything, link the sitemap. Editors
+      // can replace this entirely from Studio if they need to block
+      // crawlers (e.g., on a staging dataset). Kept short on purpose:
+      // robots.txt is a directive file, not a place for commentary.
       initialValue:
-        "# Pre-launch — all crawlers blocked.\n" +
-        "# To allow indexing at launch, replace 'Disallow: /' with 'Allow: /'\n" +
-        "# AND remove the X-Robots-Tag header from next.config.ts\n" +
-        "# AND set robots: { index: true, follow: true } in src/app/layout.tsx.\n" +
-        "\n" +
         "User-agent: *\n" +
-        "Disallow: /\n",
+        "Allow: /\n" +
+        "\n" +
+        "Sitemap: https://drpalsnewme.com/sitemap.xml\n",
       validation: (r) =>
         r.required().custom((value) => {
           if (!value || typeof value !== "string") return "Content is required";
