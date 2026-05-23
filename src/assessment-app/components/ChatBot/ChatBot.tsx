@@ -245,7 +245,7 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
     let idleTimer: ReturnType<typeof setTimeout>;
     function resetTimer() {
       clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => { setOpen(o => { if (!o) setPulse(false); return true; }); }, 60_000);
+      idleTimer = setTimeout(() => { setOpen(o => { if (!o) setPulse(false); return true; }); }, 20_000);
     }
     resetTimer();
     window.addEventListener("mousemove", resetTimer);
@@ -340,7 +340,7 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}
           >
-            Have any questions?
+          Talk to Care team
           </button>
         )}
 
