@@ -53,8 +53,8 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
   const [ans,         setAns]        = useState<Record<string, any>>(
     savedSession?.ans ?? { r2_symptoms: [], r3_diagnoses: [] }
   );
-  const [info,        setInfo]       = useState<{ name: string; last: string; email: string; phone: string }>(
-    savedSession?.info ?? { name: "", last: "", email: "", phone: "" }
+  const [info,        setInfo]       = useState<{ name: string; last: string; email: string; phone: string; country: string }>(
+    savedSession?.info ?? { name: "", last: "", email: "", phone: "", country: "" }
   );
   const [res,         setRes]        = useState<Record<string, any> | null>(
     canBootResults ? (savedSession?.res ?? null) : null
@@ -328,7 +328,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
   function handleStartOver() {
     try { sessionStorage.removeItem("newme_session"); } catch {}
     setAns({ r2_symptoms: [], r3_diagnoses: [] });
-    setInfo({ name: "", last: "", email: "", phone: "" });
+    setInfo({ name: "", last: "", email: "", phone: "", country: "" });
     setProfile({ dob: "", gender: "", phone: "" });
     setRes(null); setCrmLeadId(null); setAttemptsLeft(null); setStep(0); setScreen("q");
     trackEvent("assessment_started", { source: "intro_cta" });
