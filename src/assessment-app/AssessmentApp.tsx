@@ -240,6 +240,20 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
   }
 
   function startCalc(preQuizLeadId: string | null = null) {
+    // Fire the assessment_step_completed event for the LAST quiz question
+    // (r4_medication, step 10) before transitioning to calc. The useEffect
+    // that tracks step transitions can't see this one because step doesn't
+    // increment past TOTAL — it jumps directly to startCalc. Without this
+    // call the final question never registers in GA's funnel.
+    const lastQ = ALL_Q[TOTAL - 1];
+    if (lastQ) {
+      trackEvent("assessment_step_completed", {
+        step_index: TOTAL,
+        step_id: lastQ.id,
+        step_label: lastQ.q,
+        total_steps: TOTAL,
+      });
+    }
     const effectiveLeadId = preQuizLeadId ?? crmLeadId;
     if (effectiveLeadId) {
       setCrmLeadId(effectiveLeadId);
