@@ -198,7 +198,7 @@ Legend: ✅ Done · ⚠️ Action needed · 🔲 To verify · ❌ Not done
 | # | Check | Status | Notes |
 |---|-------|--------|-------|
 | 8.1 | Mixpanel — events firing on production | 🔲 | |
-| 8.2 | Microsoft Clarity — session recording active | 🔲 | |
+| 8.2 | Microsoft Clarity — session recording active | ✅ | Project id `wvk2hptfrl` |
 | 8.3 | Sentry — error capture connected | 🔲 | |
 | 8.4 | Better Stack / Site24x7 — uptime monitor set up | 🔲 | |
 | 8.5 | Firebase Crashlytics (App) | 🔲 | For mobile app if applicable |

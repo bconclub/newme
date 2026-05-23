@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-05-23 · Microsoft Clarity wired up (session recordings + heatmaps)
+
+- **`src/app/layout.tsx`** — Added the Clarity init snippet via `next/script` with `strategy="afterInteractive"` so it loads after the page becomes interactive and never blocks LCP. Project id `wvk2hptfrl` (dashboard: https://clarity.microsoft.com/projects/view/wvk2hptfrl).
+- **Privacy stance**: Clarity's default behavior masks all form inputs (`<input>`, `<select>`, `<textarea>`) and content marked sensitive. This means the assessment quiz answers, email addresses, phone numbers, and names are NOT visible in session recordings — only clicks, scrolls, hover patterns, and rage-tap behavior. To explicitly opt in to recording a specific element, an editor / dev can add `data-clarity-unmask`. Defaults are right for a clinical care site.
+- **What this unlocks**: session replays (watch real users navigate the site), heatmaps (where they click/scroll/rage-tap), "Insights" report (auto-detected UX issues like dead clicks, excessive scrolling, JavaScript errors). Useful alongside GA — GA tells you WHAT happens (events, funnels); Clarity tells you WHY (visually).
+- **Knocks off LAUNCH-CHECKLIST item 8.2** (Microsoft Clarity — session recording active).
+
 ## 2026-05-23 · Per-step funnel tracking inside the assessment
 
 - **`src/assessment-app/AssessmentApp.tsx`** — added a `useEffect` that fires the existing `assessment_step_completed` analytics event every time the user advances forward through the quiz (back navigation is deliberately ignored so funnel counts in GA reflect real progress, not noise).

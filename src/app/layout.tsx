@@ -135,6 +135,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-5ENFCY7VJ3');
         `}</Script>
+        {/* Microsoft Clarity — free session recordings + heatmaps + UX
+            insights. Project id wvk2hptfrl. Dashboard:
+            https://clarity.microsoft.com/projects/view/wvk2hptfrl
+            By default Clarity masks all form inputs (input/select/textarea)
+            and text content marked sensitive, so it does NOT record PII
+            from the assessment quiz — only clicks, scrolls, and rage-tap
+            patterns. To opt in to recording a specific element, add
+            data-clarity-unmask. Loads after page interactive so it never
+            blocks LCP. */}
+        <Script id="clarity-init" strategy="afterInteractive">{`
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "wvk2hptfrl");
+        `}</Script>
         <SmoothScroll>{children}</SmoothScroll>
         <CookieBanner />
         {/* Vercel Analytics — auto-tracks page views, bounce rate, geo,
