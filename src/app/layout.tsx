@@ -6,7 +6,40 @@ import './option1.scss'
 import SmoothScroll from '@/components/layout/SmoothScroll'
 import CookieBanner from '@/components/layout/CookieBanner'
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://drpalsnewme.com').replace(/\/$/, '')
+/**
+ * Resolves the canonical site URL used for OG images, sitemap entries,
+ * and other metadata that needs an absolute URL.
+ *
+ * Fallback chain (first match wins):
+ *   1. NEXT_PUBLIC_SITE_URL — explicit override (set this in Vercel env
+ *      to lock the canonical to the production domain at launch).
+ *   2. VERCEL_PROJECT_PRODUCTION_URL — Vercel's configured production
+ *      alias for the project (set automatically on production deploys
+ *      once a custom domain is attached).
+ *   3. VERCEL_URL — Vercel's per-deployment URL (e.g.
+ *      `newme-web.vercel.app`). Set automatically on every deploy,
+ *      including previews — so OG images on the preview URL
+ *      auto-resolve to the preview domain without manual config.
+ *   4. Hard-coded production fallback for local dev when none of the
+ *      above are set.
+ *
+ * Why this matters: WhatsApp / Facebook / Twitter scrapers fetch the
+ * absolute og:image URL. If metadataBase points at the wrong domain,
+ * the image 404s and link previews show no thumbnail.
+ */
+function resolveSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
+  }
+  if (process.env.VERCEL_ENV === 'production' && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  return 'https://drpalsnewme.com'
+}
+const siteUrl = resolveSiteUrl()
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],

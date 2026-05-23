@@ -8,7 +8,18 @@ import type { MetadataRoute } from 'next'
  * to your canonical domain — defaults to https://newme.health.
  */
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://drpalsnewme.com').replace(/\/$/, '')
+// Same fallback chain as src/app/layout.tsx — explicit env wins; falls
+// back to Vercel auto-set deployment URL so preview sitemaps point at the
+// actual preview domain instead of the (still WordPress) drpalsnewme.com.
+function resolveSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
+  if (process.env.VERCEL_ENV === 'production' && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  }
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  return 'https://drpalsnewme.com'
+}
+const SITE_URL = resolveSiteUrl()
 
 type StaticRoute = {
   path: string

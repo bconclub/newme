@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-23 · Fix OG image not showing in WhatsApp / FB / Twitter share previews
+
+- **`src/app/layout.tsx`** + **`src/app/sitemap.ts`** — `metadataBase` was falling back to `https://drpalsnewme.com` (because `NEXT_PUBLIC_SITE_URL` isn't set in Vercel env). That domain is currently still the OLD WordPress site, so the og:image relative URL `/media/Media Hero.webp` resolved to `https://drpalsnewme.com/media/Media Hero.webp` which 404s. WhatsApp scraper fetched that, got nothing, and rendered the link preview with no image.
+- **Fix**: extended the env fallback chain with Vercel's auto-set env vars:
+  1. `NEXT_PUBLIC_SITE_URL` (explicit override, set this at launch)
+  2. `VERCEL_PROJECT_PRODUCTION_URL` (Vercel's prod alias when a custom domain is attached)
+  3. `VERCEL_URL` (per-deployment URL — auto-set on every preview, e.g. `newme-web.vercel.app`)
+  4. Hard-coded `drpalsnewme.com` fallback for local dev
+- Result: on the Vercel preview deployment the og:image now resolves to `https://newme-web.vercel.app/media/Media Hero.webp` (a real file that returns 200) instead of the WordPress 404. At launch, set `NEXT_PUBLIC_SITE_URL=https://drpalsnewme.com` in Vercel and the chain skips straight to the explicit value.
+- User-facing: WhatsApp / Facebook / Twitter link previews of any NewME URL now show the OG image. **WhatsApp aggressively caches link previews** — to see the fix immediately, share the URL with a fresh path (`?v=1` query param) or wait ~24h for the cache to expire naturally. Facebook's Sharing Debugger (https://developers.facebook.com/tools/debug/) can also be used to force a re-scrape.
+
 ## 2026-05-22 · robots.txt and llms.txt now Sanity-driven (editable from Studio → Site)
 
 The SEO team can now edit both `/robots.txt` and `/llms.txt` content directly from Sanity Studio without a developer or deploy. Sits under Studio → Site, alongside Redirects.
