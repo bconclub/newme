@@ -84,9 +84,12 @@ export const metadata: Metadata = {
     siteName: "Dr. Pal's NewME",
     images: [
       {
-        url: '/media/Media Hero.webp',
-        width: 1880,
-        height: 694,
+        // Homepage hero photo. 2752×1536 ≈16:9 renders cleanly in WhatsApp /
+        // Facebook link previews — closer to FB's recommended 1200×630 than
+        // the previous 1880×694 (≈2.7:1) which got awkward letterboxing.
+        url: '/home/Homepage Hero.webp',
+        width: 2752,
+        height: 1536,
         alt: "Dr. Pal's NewME",
       },
     ],
@@ -97,7 +100,7 @@ export const metadata: Metadata = {
     title: 'NewME | Doctor-Led Care, Personalized For Your Body',
     description:
       'A doctor-led clinical system for metabolic and gut regulation by Dr. Palaniappan Manickam.',
-    images: ['/media/Media Hero.webp'],
+    images: ['/home/Homepage Hero.webp'],
   },
   icons: {
     icon: [

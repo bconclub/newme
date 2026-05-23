@@ -28,9 +28,9 @@ export default function ContactPage() {
 function ContactHero() {
   return (
     <PageHero
-      imageSrc="/contact/contact%20us%20opt1.webp"
-      imageAlt="NewME clinical team consultation"
-      imagePosition="65% center"
+      imageSrc="/contact/Contact%20Us.webp"
+      imageAlt="NewME contact us"
+      imagePosition="center top"
       heading={<>Get In Touch With<br />The NewME Team.</>}
       subheading="Connect with the NewME team any time you need guidance, support, or if you have questions about our structured care programs."
       headingMaxWidthPx={760}

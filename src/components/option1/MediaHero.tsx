@@ -8,9 +8,9 @@ import PageHero from './PageHero'
 export default function MediaHero() {
   return (
     <PageHero
-      imageSrc="/media/Media Hero.webp"
-      imageAlt="NewME team in clinical setting"
-      imagePosition="72% center"
+      imageSrc="/media/Media%20Page.webp"
+      imageAlt="NewME in the media"
+      imagePosition="center top"
       heading={
         <>
           Clinical Expertise,

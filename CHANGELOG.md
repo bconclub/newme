@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-23 · Contact + Media banners refreshed, OG share image switched to homepage hero
+
+- **`src/app/contact/page.tsx`** — Contact hero photo swapped from `/contact/contact us opt1.webp` → `/contact/Contact Us.webp`, anchored `center top` to match the rest of the site's heroes (consistent crop behavior across pages).
+- **`src/components/option1/MediaHero.tsx`** — /media page banner swapped from `/media/Media Hero.webp` → `/media/Media Page.webp`, also `center top` anchor. The old Media Hero.webp file stays on disk because it's still referenced as the fallback OG image below.
+- **`src/app/layout.tsx` (OG + Twitter card image)** — share-preview image switched from `/media/Media Hero.webp` (1880×694) to `/home/Homepage Hero.webp` (2752×1536). Reasons:
+  - Aspect closer to Facebook/WhatsApp's recommended 1200×630 (≈1.91:1) — old image was ≈2.7:1 which got awkwardly letterboxed in the rendered card; new image is ≈1.79:1 which renders cleanly.
+  - It's the same photo users see above the fold on the homepage, so the share preview matches what visitors actually land on — more consistent brand feel.
+  - File is well-sized (124KB) and well within FB's image-size limits.
+- Updated `width` / `height` to 2752×1536 to match the new image (Next.js writes these as `og:image:width` / `og:image:height` meta tags which help WhatsApp lay the card out without flickering).
+- User-facing: link previews on WhatsApp / Facebook / Twitter now use the homepage hero photo. **Cache-bust to see it**: append `?v=3` to the URL when sharing, or use Facebook's Sharing Debugger to force a re-scrape.
+
 ## 2026-05-23 · Fix OG image not showing in WhatsApp / FB / Twitter share previews
 
 - **`src/app/layout.tsx`** + **`src/app/sitemap.ts`** — `metadataBase` was falling back to `https://drpalsnewme.com` (because `NEXT_PUBLIC_SITE_URL` isn't set in Vercel env). That domain is currently still the OLD WordPress site, so the og:image relative URL `/media/Media Hero.webp` resolved to `https://drpalsnewme.com/media/Media Hero.webp` which 404s. WhatsApp scraper fetched that, got nothing, and rendered the link preview with no image.
