@@ -1,4 +1,27 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+
+const COUNTRIES = [
+  "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
+  "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
+  "Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia",
+  "Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica",
+  "Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt",
+  "El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon",
+  "Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana",
+  "Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel",
+  "Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos",
+  "Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi",
+  "Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova",
+  "Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands",
+  "New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau",
+  "Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania",
+  "Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal",
+  "Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea",
+  "South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan",
+  "Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
+  "Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Venezuela","Vietnam",
+  "Yemen","Zambia","Zimbabwe",
+];
 import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
 import { checkAssessmentLimit, verifyEmail } from "../../services/assessmentService";
@@ -44,6 +67,28 @@ export function QuizPage({
   const isMulti = q?.type === "m";
   const sel = isMulti ? (ans[qId] || []) : ans[qId];
   const canNext = isMulti ? (ans[q?.id] || []).length > 0 : true;
+
+  const [countryQuery,     setCountryQuery]     = useState("");
+  const [countryOpen,      setCountryOpen]      = useState(false);
+  const countryRef = useRef<HTMLDivElement>(null);
+  const filteredCountries = useMemo(() =>
+    countryQuery.trim().length === 0
+      ? COUNTRIES
+      : COUNTRIES.filter(c => c.toLowerCase().includes(countryQuery.toLowerCase())),
+    [countryQuery]
+  );
+
+  useEffect(() => {
+    if (!countryOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (countryRef.current && !countryRef.current.contains(e.target as Node)) {
+        setCountryOpen(false);
+        setCountryQuery("");
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [countryOpen]);
 
   const [limitChecking,    setLimitChecking]    = useState(false);
   const [limitBlocked,     setLimitBlocked]     = useState(false);
@@ -127,7 +172,7 @@ export function QuizPage({
         // No CRM lead for this email — always create one, even if a stale
         // existingLeadId exists from a previous session with a different email.
         try {
-          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined);
+          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined);
           leadId = r.leadId ?? null;
         } catch {}
       }
@@ -268,11 +313,11 @@ export function QuizPage({
                 </div>
                 <div>
                   <label style={labelStyle}>Gender</label>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
                     {[{ v: "female", l: "Female" }, { v: "male", l: "Male" }, { v: "prefer_not", l: "Prefer not to say" }].map(o => (
-                      <button key={o.v} className={`opt${profile.gender === o.v ? " s" : ""}`} onClick={() => setProfile((p: any) => ({ ...p, gender: o.v }))}>
-                        <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${profile.gender === o.v ? GOLD : "rgba(255,255,255,0.25)"}`, background: profile.gender === o.v ? "rgba(254,242,114,0.18)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          {profile.gender === o.v && <div style={{ width: 8, height: 8, borderRadius: "50%", background: GOLD }} />}
+                      <button key={o.v} className={`opt${profile.gender === o.v ? " s" : ""}`} onClick={() => setProfile((p: any) => ({ ...p, gender: o.v }))} style={{ flex: 1, justifyContent: "center", gap: 6, padding: "10px 8px" }}>
+                        <div style={{ width: 16, height: 16, borderRadius: "50%", border: `2px solid ${profile.gender === o.v ? GOLD : "rgba(255,255,255,0.25)"}`, background: profile.gender === o.v ? "rgba(254,242,114,0.18)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {profile.gender === o.v && <div style={{ width: 7, height: 7, borderRadius: "50%", background: GOLD }} />}
                         </div>{o.l}
                       </button>
                     ))}
@@ -288,6 +333,46 @@ export function QuizPage({
                   <p style={{ fontSize: 11, color: INK3, marginTop: 6, fontFamily: FONT_BODY }}>
                     We auto-pick a country code from your location — tap the flag if it&rsquo;s wrong.
                   </p>
+                </div>
+                <div ref={countryRef} style={{ position: "relative" }}>
+                  <label style={labelStyle}>Country of residence</label>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      className="inp"
+                      placeholder="Search country…"
+                      type="text"
+                      autoComplete="off"
+                      value={countryOpen ? countryQuery : (info.country || "")}
+                      onFocus={() => { setCountryOpen(true); setCountryQuery(""); }}
+                      onChange={e => setCountryQuery(e.target.value)}
+                      style={{ paddingRight: 28 }}
+                    />
+                    <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: "rgba(255,255,255,0.4)", pointerEvents: "none" }}>▾</span>
+                  </div>
+                  {countryOpen && (
+                    <div style={{
+                      position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
+                      background: "#0e2e28", border: "1.5px solid rgba(255,255,255,0.15)", borderRadius: 10,
+                      maxHeight: 220, overflowY: "auto", boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                    }}>
+                      {filteredCountries.length === 0
+                        ? <div style={{ padding: "12px 14px", fontSize: 13, color: "rgba(255,255,255,0.4)" }}>No results</div>
+                        : filteredCountries.map(c => (
+                          <div
+                            key={c}
+                            onMouseDown={() => { setInfo((p: any) => ({ ...p, country: c })); setCountryOpen(false); setCountryQuery(""); }}
+                            style={{
+                              padding: "10px 14px", fontSize: 14, color: info.country === c ? GOLD : "rgba(255,255,255,0.85)",
+                              background: info.country === c ? "rgba(254,242,114,0.08)" : "transparent",
+                              cursor: "pointer", fontFamily: FONT_BODY,
+                            }}
+                            onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+                            onMouseLeave={e => (e.currentTarget.style.background = info.country === c ? "rgba(254,242,114,0.08)" : "transparent")}
+                          >{c}</div>
+                        ))
+                      }
+                    </div>
+                  )}
                 </div>
               </div>
               <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 14 }}>

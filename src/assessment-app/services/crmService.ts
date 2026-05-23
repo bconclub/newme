@@ -77,11 +77,11 @@ export async function checkLeadByEmail(email: string): Promise<{ id: string; sta
   }
 }
 
-export async function createPreQuizLead(name: string, last: string, email: string, phone?: string): Promise<{ leadId?: string }> {
+export async function createPreQuizLead(name: string, last: string, email: string, phone?: string, country?: string): Promise<{ leadId?: string }> {
   const r = await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, last, email, phone: phone || undefined, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, leadSource: LEAD_SOURCE }),
   });
   return r.json();
 }
@@ -90,7 +90,7 @@ export async function updateLeadQuizData(leadId: string, payload: Record<string,
   await fetch(ENDPOINTS.CRM_LEAD_SUBMIT(leadId), {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ ...payload, leadSource: LEAD_SOURCE }),
   });
 }
 

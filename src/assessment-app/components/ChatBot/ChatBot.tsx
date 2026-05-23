@@ -432,15 +432,39 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
 
           {/* CTAs */}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "12px", background: "rgba(0,0,0,0.2)", overflowY: "auto", maxHeight: "min(280px, 42vh)", flexShrink: 0 }}>
-            {/* Reusable booking details card */}
-            {(() => { console.log("[ChatBot] apptDetails:", apptDetails, "alreadyBooked:", alreadyBooked); return null; })()}
+            {step === "welcome" && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {CATEGORIES.map(cat => <CtaButton key={cat.step} label={cat.label} onClick={() => handleCategory(cat)} />)}
+                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
+                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
+              </div>
+            )}
+            {isMenuStep(step) && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {currentMenuItems.map(item => <CtaButton key={item.label} label={item.label} onClick={() => handleQuestion(item, step)} />)}
+                <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
+              </div>
+            )}
+            {step === "answered" && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                <CtaButton label="Ask another question" onClick={() => setStep(prevMenu)} />
+                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
+                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
+                <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
+              </div>
+            )}
+            {(step === "talk" || step === "book") && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                <CtaButton label="Ask a question" onClick={reset} />
+                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
+              </div>
+            )}
+
+            {/* Scheduled call card — always at the bottom */}
             {alreadyBooked && (
-              <div style={{ background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 14, padding: "12px 14px", marginBottom: 7 }}>
+              <div style={{ background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 14, padding: "12px 14px", marginTop: 7 }}>
                 <p style={{ fontSize: 13, fontWeight: 700, color: "#4ade80", marginBottom: apptDetails ? 8 : 0 }}>✓ Call Scheduled</p>
-                {apptDetails?.startTime && 
-                
-                
-                (
+                {apptDetails?.startTime && (
                   <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", marginBottom: 8 }}>
                     {formatApptTime(apptDetails.startTime)}
                   </p>
@@ -475,33 +499,6 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
               </div>
             )}
 
-            {step === "welcome" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                {CATEGORIES.map(cat => <CtaButton key={cat.step} label={cat.label} onClick={() => handleCategory(cat)} />)}
-                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
-                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
-              </div>
-            )}
-            {isMenuStep(step) && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                {currentMenuItems.map(item => <CtaButton key={item.label} label={item.label} onClick={() => handleQuestion(item, step)} />)}
-                <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
-              </div>
-            )}
-            {step === "answered" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                <CtaButton label="Ask another question" onClick={() => setStep(prevMenu)} />
-                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
-                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
-                <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
-              </div>
-            )}
-            {(step === "talk" || step === "book") && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                <CtaButton label="Ask a question" onClick={reset} />
-                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
-              </div>
-            )}
             <p style={{ fontSize: 10, color: INK3, textAlign: "center", marginTop: 8 }}>Powered by NewME · support@drpalsnewme.com</p>
           </div>
         </div>
