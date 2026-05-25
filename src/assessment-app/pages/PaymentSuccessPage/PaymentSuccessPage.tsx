@@ -91,7 +91,7 @@ export function PaymentSuccessPage({ paidPhase }: PaymentSuccessPageProps) {
 
         {/* Support */}
         <p style={{ fontSize: 13, color: INK3, textAlign: "center", lineHeight: 1.6 }}>
-          Questions? Reach us at <strong style={{ color: INK }}>info@drpalsnewme.com</strong>
+          Questions? Reach us at <strong style={{ color: INK }}>support@drpalsnewme.com</strong>
         </p>
       </div>
     </div>

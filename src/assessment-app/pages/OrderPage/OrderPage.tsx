@@ -180,7 +180,7 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
 
         {/* Pay now */}
         <button className="btng" onClick={handlePay} style={{ width: "100%", fontSize: 16, padding: "16px", borderRadius: 50, fontFamily: FONT_BUTTON }}>
-          Pay now →
+          Start My Transformation →
         </button>
         <p style={{ fontSize: 12, color: INK3, textAlign: "center", marginTop: 12 }}>Secure payment · No hidden fees · Cancel anytime</p>
       </div>
