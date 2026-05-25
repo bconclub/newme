@@ -7,6 +7,7 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: true,
+  token: readToken,
   perspective: "published",
 });
 
