@@ -19,7 +19,8 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://drpalsnewme.com").
  *   /media (the listing) so they can confirm the card renders.
  * - `mediaOutlet` is a reference-only document; no public page.
  * - `post` opens at /blogs/{slug}.
- * - `teamMember` opens at /care-team/{slug} (route in progress).
+ * - `teamMember` opens at /team because the public site currently has
+ *   one team listing, not individual profile pages.
  */
 function pathForDocument(document?: { _type?: string; slug?: { current?: string } }) {
   if (!document) return undefined;
@@ -32,8 +33,8 @@ function pathForDocument(document?: { _type?: string; slug?: { current?: string 
     return `/blogs/${document.slug.current}`;
   }
 
-  if (document._type === "teamMember" && document.slug?.current) {
-    return `/care-team/${document.slug.current}`;
+  if (document._type === "teamMember") {
+    return "/team";
   }
 
   return undefined;

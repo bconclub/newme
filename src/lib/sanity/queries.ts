@@ -92,7 +92,9 @@ export const teamQuery = groq`
     "slug": slug.current,
     role,
     photo,
-    bio
+    linkedin,
+    bio,
+    "bioText": pt::text(bio)
   }
 `;
 
@@ -103,7 +105,9 @@ export const teamMemberBySlugQuery = groq`
     "slug": slug.current,
     role,
     photo,
-    bio
+    linkedin,
+    bio,
+    "bioText": pt::text(bio)
   }
 `;
 

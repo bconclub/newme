@@ -116,6 +116,7 @@ function TeamHero() {
 }
 
 function TeamGrid() {
+  const [members, setMembers] = useState<TeamMember[]>(TEAM)
   // Single-open behavior: only one card can be expanded at a time.
   // Tapping another card closes the previously open one. Tapping the
   // same card again closes it. Lifted from per-card state so cards can
@@ -123,6 +124,28 @@ function TeamGrid() {
   // tracks an independent hover state inside the card itself — see
   // TeamCard for the trigger model.
   const [openName, setOpenName] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadTeam() {
+      try {
+        const response = await fetch('/api/team')
+        if (!response.ok) return
+        const data = (await response.json()) as TeamMember[]
+        if (!cancelled && Array.isArray(data) && data.length > 0) {
+          setMembers(data)
+        }
+      } catch {
+        // Keep the local fallback roster if Sanity is unavailable.
+      }
+    }
+
+    loadTeam()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   return (
     <section
@@ -201,7 +224,7 @@ function TeamGrid() {
         className="team-grid grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         style={{ gap: 'clamp(12px, calc(20 / 1920 * 100vw), 20px)', maxWidth: 1800, margin: '0 auto' }}
       >
-        {TEAM.map((member, i) => (
+        {members.map((member, i) => (
           <TeamCard
             key={member.name}
             member={member}
@@ -501,4 +524,3 @@ function TeamCard({
     </motion.div>
   )
 }
-

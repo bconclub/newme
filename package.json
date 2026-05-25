@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "sanity:seed:team": "node scripts/seed-team-members.cjs",
+    "sanity:verify:team": "node scripts/seed-team-members.cjs --verify",
     "lint": "eslint"
   },
   "dependencies": {

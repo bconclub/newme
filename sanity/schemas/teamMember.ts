@@ -30,6 +30,11 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: "linkedin",
+      title: "LinkedIn URL",
+      type: "url",
+    }),
+    defineField({
       name: "bio",
       title: "Bio",
       type: "array",
