@@ -16,12 +16,12 @@ function softRequired(name: string, value: string | undefined): string {
 
 export const projectId = softRequired(
   "NEXT_PUBLIC_SANITY_PROJECT_ID",
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "sljf1wfa",
 );
 
 export const dataset = softRequired(
   "NEXT_PUBLIC_SANITY_DATASET",
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
+  process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
 );
 
 export const apiVersion = process.env.SANITY_API_VERSION || "2024-10-01";

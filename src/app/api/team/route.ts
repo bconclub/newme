@@ -12,16 +12,12 @@ type SanityTeamMember = {
   photo?: { asset?: { _ref?: string } } & Record<string, unknown>
 }
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-    return NextResponse.json([])
-  }
-
   try {
     const { client } = await import('@/lib/sanity/client')
-    const members = await client.fetch<SanityTeamMember[]>(teamQuery)
+    const members = await client.withConfig({ useCdn: false }).fetch<SanityTeamMember[]>(teamQuery)
 
     return NextResponse.json(
       (Array.isArray(members) ? members : [])
@@ -36,6 +32,11 @@ export async function GET() {
           linkedin: member.linkedin,
         }))
         .filter((member) => member.photo && member.bio),
+      {
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      },
     )
   } catch {
     return NextResponse.json([])
