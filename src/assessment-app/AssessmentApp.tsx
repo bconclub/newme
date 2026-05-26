@@ -220,8 +220,9 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
   }
 
   function pickSingle(v: string) {
-    setAns(a => ({ ...a, [q!.id]: v }));
-    setTimeout(() => { if (step < TOTAL) setStep(s => s + 1); else startCalc(crmLeadId); }, 210);
+    const newAns = { ...ans, [q!.id]: v };
+    setAns(newAns);
+    setTimeout(() => { if (step < TOTAL) setStep(s => s + 1); else startCalc(crmLeadId, newAns); }, 210);
   }
 
   function toggleMulti(v: string) {
@@ -239,7 +240,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     if (step < TOTAL) setStep(s => s + 1); else startCalc(crmLeadId);
   }
 
-  function startCalc(preQuizLeadId: string | null = null) {
+  function startCalc(preQuizLeadId: string | null = null, ansOverride?: Record<string, any>) {
     // Fire the assessment_step_completed event for the LAST quiz question
     // (r4_medication, step 10) before transitioning to calc. The useEffect
     // that tracks step transitions can't see this one because step doesn't
@@ -255,28 +256,29 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
       });
     }
     const effectiveLeadId = preQuizLeadId ?? crmLeadId;
+    const effectiveAns = ansOverride ?? ans;
     if (effectiveLeadId) {
       setCrmLeadId(effectiveLeadId);
     }
-    const recommended = routeAnswers(ans).pathway;
+    const recommended = routeAnswers(effectiveAns).pathway;
     const secondary = SEC[recommended];
     const infoWithPhone = { ...info, phone: profile.phone || info.phone };
     const profileWithIsoDob = { ...profile, dob: toIsoDob(profile.dob) };
     if (effectiveLeadId) {
-      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans, pathway: recommended, secondary }).catch(() => {});
+      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary }).catch(() => {});
     } else {
-      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans, pathway: recommended, secondary })
+      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary })
         .then(d => { if (d.leadId) setCrmLeadId(d.leadId); })
         .catch(() => {});
     }
     recordAssessmentAttempt(info.email, recommended).catch(() => {});
 
-    const msgs = getCalcMessages(ans);
+    const msgs = getCalcMessages(effectiveAns);
     setCalcMsgs(msgs); setCalcIdx(0); setCalcPct(0); setScreen("calc");
     msgs.forEach((_, i) => setTimeout(() => { setCalcIdx(i); setCalcPct(Math.round(((i + 1) / msgs.length) * 85)); }, i * 900));
     setTimeout(() => {
       setCalcPct(100);
-      const result = routeAnswers(ans);
+      const result = routeAnswers(effectiveAns);
       setRes(result);
       setScreen("results");
       trackEvent("assessment_completed", {
@@ -289,7 +291,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
         const secKey = SEC[result.pathway];
         attachResultsPDF(leadIdNow, {
           info: { ...info, phone: profile.phone || info.phone },
-          res: { ...result, ans },
+          res: { ...result, ans: effectiveAns },
           pw: { badge: PW[result.pathway].badge, bullets: PW[result.pathway].bullets },
           pricing: PRICING[result.pathway],
           secBadge: secKey ? PW[secKey]?.badge : null,
