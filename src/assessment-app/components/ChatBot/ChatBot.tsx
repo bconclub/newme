@@ -140,10 +140,12 @@ function saveApptToStorage(email: string, appt: AppointmentDetails) {
 
 function formatApptTime(iso: string): string {
   try {
-    return new Date(iso).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata", day: "numeric", month: "short",
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const tzAbbr = new Date(iso).toLocaleTimeString("en", { timeZone: tz, timeZoneName: "short" }).split(" ").pop() ?? "";
+    return new Date(iso).toLocaleString("en", {
+      timeZone: tz, day: "numeric", month: "short",
       year: "numeric", hour: "2-digit", minute: "2-digit",
-    }) + " IST";
+    }) + (tzAbbr ? ` ${tzAbbr}` : "");
   } catch { return iso; }
 }
 
