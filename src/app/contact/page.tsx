@@ -9,6 +9,7 @@ import PageHero from '@/components/option1/PageHero'
 import EyebrowPill from '@/components/option1/EyebrowPill'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 import { trackEvent } from '@/lib/analytics'
+import { PhoneInput } from '@/assessment-app/components/PhoneInput/PhoneInput'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -41,7 +42,7 @@ function ContactHero() {
 
 function ContactBody() {
   const router = useRouter()
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -56,7 +57,7 @@ function ContactBody() {
       const res = await fetch(ENDPOINTS.CRM_LEAD_CONTACT_US, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
+        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone || undefined, message: form.message }),
       })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       router.push('/contact/thank-you')
@@ -243,6 +244,20 @@ function ContactBody() {
               onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
               onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
             />
+
+            <div>
+              <p
+                className="font-[family-name:var(--font-urbanist)]"
+                style={{ fontSize: 'clamp(11px, calc(13 / 1920 * 100vw), 13px)', color: 'rgba(255,255,255,0.45)', fontWeight: 500, letterSpacing: '0.04em', marginBottom: 8 }}
+              >
+                WhatsApp number
+              </p>
+              <PhoneInput
+                value={form.phone}
+                onChange={v => setForm(f => ({ ...f, phone: v }))}
+                placeholder="9876543210"
+              />
+            </div>
 
             <textarea
               placeholder="Leave a message"
