@@ -3,6 +3,7 @@ import { saveCalendlyAppointment, AppointmentDetails } from "../../services/crmS
 import { GRN, INK2, INK3, GOLD, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { LogoMark } from "../Logo";
 import { trackEvent } from "@/lib/analytics";
+import { openCalendly } from "../../utils/calendly";
 
 type MessageFrom = "bot" | "user";
 interface Message { from: MessageFrom; text: string; }
@@ -69,29 +70,11 @@ const CATEGORIES: Category[] = [
 ];
 
 const WHATSAPP_NUMBER = "";
-const CALENDLY_URL    = "https://calendly.com/d/ct35-rpb-xkg/dr-pal-s-newme-program";
 
 function openWhatsApp(phaseName: string) {
   const msg = encodeURIComponent(`Hi, I'd like to know more about the ${phaseName} pathway.`);
   const url = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}` : `https://wa.me/?text=${msg}`;
   window.open(url, "_blank");
-}
-
-function openCalendly(prefill?: { name?: string; email?: string; phone?: string }) {
-  const url: string = CALENDLY_URL || "https://calendly.com";
-  const cal = (window as any).Calendly;
-  if (cal && CALENDLY_URL) {
-    cal.initPopupWidget({
-      url,
-      prefill: {
-        name:          prefill?.name  || "",
-        email:         prefill?.email || "",
-        customAnswers: { a1: prefill?.phone || "" },
-      },
-    });
-  } else {
-    window.open(url, "_blank");
-  }
 }
 
 /* ── Chat bubbles ── */
