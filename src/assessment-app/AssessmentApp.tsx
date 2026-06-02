@@ -208,7 +208,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     setProfile(p => ({ ...p, dob: formatted }));
     if (formatted.length === 10) {
       const a = calcAge(formatted);
-      setDobErr(a === null || a < 18 || a > 65 ? "Please enter a valid date of birth (age 18 to 65)." : "");
+      setDobErr(a === null || a < 18 || a > 70 ? "Please enter a valid date of birth (Applicable for age group between 18 - 70)." : "");
     } else {
       setDobErr("");
     }
@@ -216,7 +216,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
 
   function canAdvanceProfile() {
     if (!profile.dob || !profile.gender || !profile.phone?.trim()) return false;
-    const a = calcAge(profile.dob); return a !== null && a >= 18 && a <= 65;
+    const a = calcAge(profile.dob); return a !== null && a >= 18 && a <= 70;
   }
 
   function pickSingle(v: string) {

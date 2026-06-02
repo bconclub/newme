@@ -7,6 +7,7 @@ import { ChatBot } from "../../components/ChatBot/ChatBot";
 import type { AppointmentDetails } from "../../services/crmService";
 import { GI_BILLING } from "../../constants/zohoCheckout";
 import EyebrowPill from "../../../components/option1/EyebrowPill";
+import { openCalendly } from "../../utils/calendly";
 
 export type ResultsPageProps = {
   res: any;
@@ -51,6 +52,8 @@ export function ResultsPage({
   const isGIPathway = res.pathway === "GI_Core" || res.pathway === "GI_Advanced";
   const actionables = isGIPathway ? ACTIONABLE_POINTS.gi : ACTIONABLE_POINTS.metabolic;
 
+  const isInternational = !!(info.country && !info.country.toLowerCase().includes("india"));
+
   const giBilling = GI_BILLING[res.pathway] ?? null;
   const [billing, setBilling] = useState<"monthly" | "upfront">("upfront");
   const effectivePhase = giBilling
@@ -81,7 +84,7 @@ export function ResultsPage({
         <div className="sticky-cta">
           <div>
             <p style={{ fontSize: 14, fontWeight: 700, color: INK, lineHeight: 1, fontFamily: FONT_HEADING }}>{pw.badge.split(" · ")[0]}</p>
-            <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{priceMain} · {priceDay}</p>
+            <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{priceMain.includes("/") ? priceMain.replace(" /", " USD /") : `${priceMain} USD`} · {priceDay}</p>
           </div>
           <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}>
             Start now →
@@ -221,9 +224,7 @@ export function ResultsPage({
               </div>
             )}
 
-            {/* Pricing card — strongest visual weight on the page since
-                it's the primary action. Yellow border, stronger glass,
-                bigger price, more padding. */}
+            {/* Pricing card */}
             <div
               style={{
                 border: "2px solid rgba(254,242,114,0.45)",
@@ -236,7 +237,6 @@ export function ResultsPage({
               }}
               ref={!isGIPathway ? pricingRef : undefined}
             >
-              {/* Pathway name badge */}
               <div style={{ marginBottom: 16 }}>
                 <EyebrowPill
                   variant="gold"
@@ -260,7 +260,13 @@ export function ResultsPage({
               </div>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                  <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>{priceMain}</span>
+                  <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>
+                    {priceMain.includes("/") ? (
+                      <>{priceMain.split("/")[0].trim()} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span> / {priceMain.split("/").slice(1).join("/").trim()}</>
+                    ) : (
+                      <>{priceMain} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span></>
+                    )}
+                  </span>
                   <span style={{ fontSize: 13, color: INK3, marginLeft: 4 }}>{priceDay}</span>
                 </div>
                 <button
@@ -272,6 +278,62 @@ export function ResultsPage({
                 </button>
               </div>
             </div>
+
+            {/* Book a call CTA — shown for international users alongside the pricing card */}
+            {isInternational && (
+              <div
+                style={{
+                  border: "1.5px solid rgba(255,255,255,0.15)",
+                  borderRadius: 18,
+                  padding: "22px 24px",
+                  background: "rgba(255,255,255,0.05)",
+                  marginBottom: 28,
+                  backdropFilter: "blur(14px)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: 16,
+                }}
+              >
+                <div>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: INK, fontFamily: FONT_HEADING, marginBottom: 4 }}>
+                    Prefer to speak with a Care Expert?
+                  </p>
+                  <p style={{ fontSize: 13, color: INK2, lineHeight: 1.55 }}>
+                    Book a free 20-min consultation call with the NewME team.
+                  </p>
+                </div>
+                <button
+                  onClick={() => openCalendly({ name: name !== "You" ? name : undefined, email: info.email || undefined, phone: info.phone || undefined })}
+                  style={{
+                    padding: "12px 26px",
+                    fontSize: 14,
+                    fontFamily: FONT_BUTTON,
+                    flexShrink: 0,
+                    background: "transparent",
+                    border: "1.5px solid rgba(254,242,114,0.55)",
+                    borderRadius: 60,
+                    color: GOLD,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "background 0.2s, color 0.2s, border-color 0.2s",
+                  }}
+                  onMouseEnter={e => {
+                    const b = e.currentTarget;
+                    b.style.background = "rgba(254,242,114,0.12)";
+                    b.style.borderColor = GOLD;
+                  }}
+                  onMouseLeave={e => {
+                    const b = e.currentTarget;
+                    b.style.background = "transparent";
+                    b.style.borderColor = "rgba(254,242,114,0.55)";
+                  }}
+                >
+                  Book a call →
+                </button>
+              </div>
+            )}
 
             {/* What's included */}
             <div style={{ ...glassCard, marginBottom: 0 }}>

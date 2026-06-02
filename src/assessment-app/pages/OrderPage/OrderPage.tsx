@@ -120,7 +120,13 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
             <span style={{ fontSize: 15, fontWeight: 700, color: INK, fontFamily: FONT_HEADING }}>Total</span>
             <div style={{ textAlign: "right" }}>
-              <p style={{ fontSize: 24, fontWeight: 700, color: GOLD, lineHeight: 1, fontFamily: FONT_HEADING }}>{priceLabel}</p>
+              <p style={{ fontSize: 24, fontWeight: 700, color: GOLD, lineHeight: 1, fontFamily: FONT_HEADING }}>
+                {priceLabel.includes("/") ? (
+                  <>{priceLabel.split("/")[0].trim()} <span style={{ fontSize: 14, fontWeight: 600 }}>USD</span> / {priceLabel.split("/").slice(1).join("/").trim()}</>
+                ) : (
+                  <>{priceLabel} <span style={{ fontSize: 14, fontWeight: 600 }}>USD</span></>
+                )}
+              </p>
               <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{dayLabel}</p>
             </div>
           </div>
