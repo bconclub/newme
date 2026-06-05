@@ -128,6 +128,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${bricolage.variable} ${urbanist.variable} ${poppins.variable}`}
     >
       <body>
+        {/* ------------------------------------------------------------------
+            Scroll-reveal fallback for non-JS DOM reconstruction.
+
+            Our Framer Motion `whileInView` reveals render their *initial*
+            state (inline `opacity:0`, plus a translate/scale) into the SSR
+            HTML. Real browsers run the JS and reveal each element on scroll.
+            But tools that reconstruct the page from the serialized DOM
+            WITHOUT running its JS — Microsoft Clarity's session-replay and
+            heatmap renderer (sandboxed, scripts off), and non-JS SEO
+            crawlers — never fire those reveals, so every below-the-fold
+            heading/paragraph/card stays invisible. That's why Clarity
+            recordings/heatmaps looked "broken" (green panels, missing
+            content).
+
+            A <noscript> <style> applies ONLY when scripting is disabled —
+            exactly that reconstruction context. Real users (JS enabled)
+            never parse this block, so animations are 100% unchanged and it
+            adds zero JS / zero network cost. It forces the reveal elements
+            to their final visible state.
+
+            Selectors target the Framer reveal signature (`opacity:0` as a
+            full declaration) while deliberately NOT matching decorative
+            layers that rest at a fractional opacity (e.g. `opacity:0.22`
+            noise, `opacity:0.9` washes). Transform is reset only on
+            elements that ALSO carry `opacity:0`, so the scaled background
+            blob (`.newme-bg`, which has a transform but no opacity:0) is
+            left intact. ------------------------------------------------ */}
+        <noscript>
+          <style>{`
+            [style*="opacity:0;"],[style$="opacity:0"],
+            [style*="opacity: 0;"],[style$="opacity: 0"]{opacity:1!important;}
+            [style*="opacity:0;"][style*="transform"],
+            [style*="opacity: 0;"][style*="transform"]{transform:none!important;}
+          `}</style>
+        </noscript>
         {/* TODO: Replace with permanent GA setup before launch */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-5ENFCY7VJ3"
