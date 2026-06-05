@@ -154,6 +154,7 @@ export function QuizPage({
       !emailVerifying &&
       info.name?.trim().length > 0 &&
       info.last?.trim().length > 0 &&
+      info.country?.trim().length > 0 &&
       canAdvanceProfile()
     );
   }
