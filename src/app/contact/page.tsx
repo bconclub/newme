@@ -168,7 +168,7 @@ function ContactBody() {
                 className="font-[family-name:var(--font-bricolage)]"
                 style={{ fontSize: 'clamp(16px, calc(22 / 1920 * 100vw), 22px)', color: '#FEF272', fontWeight: 500, textDecoration: 'none' }}
               >
-                +91 93841 27006
+                +91 93840 27006
               </a>
             </div>
           </motion.div>

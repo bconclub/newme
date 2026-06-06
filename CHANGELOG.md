@@ -261,7 +261,7 @@ The SEO team can now edit both `/robots.txt` and `/llms.txt` content directly fr
   - `SocialIcons` now renders LinkedIn only — Facebook / X / Instagram icons removed per team card (team members keep professional presence on LinkedIn only)
 - **`src/components/option1/Testimonials.tsx`**: `RatingBlock` with `trustpilot` flag is now an `<a>` linking to `https://www.trustpilot.com/review/drpalsnewme.com` (target `_blank`, `rel="noopener noreferrer"`). The non-Trustpilot rating block remains plain text
 - **`src/assessment-app/pages/IntroPage/IntroPage.tsx`**: small Dr. Pal portrait chip now uses `/Dr Pal.webp` (the asset used on the home `DrPal` section) instead of `/dr-pal-portrait.png` — keeps the imagery consistent with the home page
-- **`src/app/virtual-clinic/VCSections.tsx`**: virtual-clinic WhatsApp button updated — display value `+91 97906 27006` and href `https://wa.me/919790627006` (was `93841 27006`)
+- **`src/app/virtual-clinic/VCSections.tsx`**: virtual-clinic WhatsApp button updated — display value `+91 97906 27006` and href `https://wa.me/919790627006` (was `93840 27006`)
 - **`src/components/option1/HIWHero.tsx`**: both the arrow link and the "Start Your Assessment" pill in the How It Works hero now point to `/assessment` (were going to `#hiw-comparison` and `/pathways` respectively)
 - **`src/components/option1/HIWCTA.tsx`**: bottom-of-page "Start Your Assessment" pill points to `/assessment` (was `/pathways`)
 - **`src/components/option1/Pillars.tsx`**: home-page section heading "The 8 Pillars of Health" → "Foundations of Good Health"
