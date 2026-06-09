@@ -47,8 +47,8 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
   // in this file don't pick up an implicit `any` from `savedSession?.step`
   // (which is typed as any because `savedSession` is JSON.parse output).
   const [step,        setStep]       = useState<number>(canBootResults ? (savedSession?.step ?? 0) : 0);
-  const [profile,     setProfile]    = useState<{ dob: string; gender: string; phone: string; dialCode?: string }>(
-    savedSession?.profile ?? { dob: "", gender: "", phone: "" }
+  const [profile,     setProfile]    = useState<{ dob: string; gender: string; phone: string; dialCode?: string; height?: string; weight?: string }>(
+    savedSession?.profile ?? { dob: "", gender: "", phone: "", height: "", weight: "" }
   );
   const [ans,         setAns]        = useState<Record<string, any>>(
     savedSession?.ans ?? { r2_symptoms: [], r3_diagnoses: [] }
@@ -240,6 +240,10 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     if (step < TOTAL) setStep(s => s + 1); else startCalc(crmLeadId);
   }
 
+  function setTextAns(id: string, value: string) {
+    setAns(a => ({ ...a, [id]: value }));
+  }
+
   function startCalc(preQuizLeadId: string | null = null, ansOverride?: Record<string, any>) {
     // Fire the assessment_step_completed event for the LAST quiz question
     // (r4_medication, step 10) before transitioning to calc. The useEffect
@@ -376,6 +380,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
         pickSingle={pickSingle}
         toggleMulti={toggleMulti}
         advanceMulti={advanceMulti}
+        setTextAns={setTextAns}
         existingLeadId={crmLeadId}
         goBack={() => setStep(s => s - 1)}
         onAdvanceProfile={(leadId) => {

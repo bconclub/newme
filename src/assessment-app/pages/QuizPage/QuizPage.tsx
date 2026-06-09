@@ -42,6 +42,7 @@ export type QuizPageProps = {
   pickSingle: (v: string) => void;
   toggleMulti: (v: string) => void;
   advanceMulti: () => void;
+  setTextAns: (id: string, value: string) => void;
   existingLeadId: string | null;
   goBack: () => void;
   onAdvanceProfile: (leadId: string | null) => void;
@@ -60,7 +61,7 @@ const labelStyle: React.CSSProperties = {
 export function QuizPage({
   step, profile, setProfile, ans, info, setInfo,
   q, dobErr, canAdvanceProfile, handleDOB, pickSingle, toggleMulti,
-  advanceMulti, existingLeadId, goBack, onAdvanceProfile, onLimitChecked, pct, total,
+  advanceMulti, setTextAns, existingLeadId, goBack, onAdvanceProfile, onLimitChecked, pct, total,
 }: QuizPageProps) {
   const isProfile = step === 0;
   const qId = q?.id ?? "";
@@ -155,6 +156,8 @@ export function QuizPage({
       info.name?.trim().length > 0 &&
       info.last?.trim().length > 0 &&
       info.country?.trim().length > 0 &&
+      profile.height?.toString().trim().length > 0 &&
+      profile.weight?.toString().trim().length > 0 &&
       canAdvanceProfile()
     );
   }
@@ -173,7 +176,7 @@ export function QuizPage({
         // No CRM lead for this email — always create one, even if a stale
         // existingLeadId exists from a previous session with a different email.
         try {
-          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined);
+          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined, profile.height || undefined, profile.weight || undefined);
           leadId = r.leadId ?? null;
         } catch {}
       }
@@ -312,6 +315,16 @@ export function QuizPage({
                   />
                   {dobErr && <p style={{ fontSize: 12, color: "#ff7b6b", marginTop: 6, fontFamily: FONT_BODY }}>{dobErr}</p>}
                 </div>
+                <div style={{ display: "flex", gap: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={labelStyle}>Height (cm)</label>
+                    <input className="inp" placeholder="e.g. 165" type="number" inputMode="numeric" min={100} max={250} value={profile.height || ""} onChange={e => setProfile((p: any) => ({ ...p, height: e.target.value }))} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={labelStyle}>Weight (kg)</label>
+                    <input className="inp" placeholder="e.g. 70" type="number" inputMode="numeric" min={30} max={300} value={profile.weight || ""} onChange={e => setProfile((p: any) => ({ ...p, weight: e.target.value }))} />
+                  </div>
+                </div>
                 <div>
                   <label style={labelStyle}>Gender</label>
                   <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
@@ -392,21 +405,38 @@ export function QuizPage({
             <p style={{ fontSize: 11, color: GRN, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 10, fontFamily: FONT_BUTTON }}>{q.hl}</p>
             <h2 style={{ fontSize: "clamp(20px,3.5vw,28px)", fontWeight: 600, lineHeight: 1.25, marginBottom: q.sub ? 8 : 22, color: INK, letterSpacing: "-0.015em", fontFamily: FONT_HEADING }}>{q.q}</h2>
             {q.sub && <p style={{ fontSize: 13, color: INK3, marginBottom: 18, fontFamily: FONT_BODY }}>{q.sub}</p>}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, pointerEvents: transitioning ? "none" : "auto" }}>
-              {q.opts.map((o: any) => {
-                const isSel = isMulti ? (sel || []).includes(o.v) : sel === o.v;
-                return (
-                  <button key={o.v} className={`opt${isSel ? " s" : ""}`} onClick={() => isMulti ? toggleMulti(o.v) : handlePickSingle(o.v)}>
-                    <div style={{ width: 18, height: 18, borderRadius: isMulti ? "4px" : "50%", border: `2px solid ${isSel ? GOLD : "rgba(255,255,255,0.25)"}`, background: isSel ? "rgba(254,242,114,0.18)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }}>
-                      {isSel && <div style={{ width: 8, height: 8, borderRadius: isMulti ? 0 : "50%", background: GOLD }} />}
-                    </div>{o.l}
-                  </button>
-                );
-              })}
-            </div>
+            {q.type === "t" ? (
+              <>
+                <textarea
+                  className="inp"
+                  placeholder="Type your answer here…"
+                  value={ans[q.id] || ""}
+                  onChange={e => setTextAns(q.id, e.target.value.slice(0, 2000))}
+                  maxLength={2000}
+                  rows={5}
+                  style={{ resize: "vertical", width: "100%", minHeight: 120, fontFamily: FONT_BODY }}
+                />
+                <p style={{ fontSize: 11, color: (ans[q.id]?.length ?? 0) >= 2000 ? "#ff7b6b" : INK3, textAlign: "right", marginTop: 4, fontFamily: FONT_BODY }}>
+                  {ans[q.id]?.length ?? 0}/2000
+                </p>
+              </>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, pointerEvents: transitioning ? "none" : "auto" }}>
+                {q.opts.map((o: any) => {
+                  const isSel = isMulti ? (sel || []).includes(o.v) : sel === o.v;
+                  return (
+                    <button key={o.v} className={`opt${isSel ? " s" : ""}`} onClick={() => isMulti ? toggleMulti(o.v) : handlePickSingle(o.v)}>
+                      <div style={{ width: 18, height: 18, borderRadius: isMulti ? "4px" : "50%", border: `2px solid ${isSel ? GOLD : "rgba(255,255,255,0.25)"}`, background: isSel ? "rgba(254,242,114,0.18)" : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .15s" }}>
+                        {isSel && <div style={{ width: 8, height: 8, borderRadius: isMulti ? 0 : "50%", background: GOLD }} />}
+                      </div>{o.l}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
             <div style={{ marginTop: 20, display: "flex", gap: 10, alignItems: "center" }}>
               <button className="btnout" onClick={goBack}>← Back</button>
-              {isMulti && <button className="btng" disabled={!canNext} onClick={advanceMulti} style={{ fontFamily: FONT_BUTTON }}>Continue →</button>}
+              {(isMulti || q.type === "t") && <button className="btng" disabled={!canNext} onClick={advanceMulti} style={{ fontFamily: FONT_BUTTON }}>Continue →</button>}
             </div>
           </div>
         )}
