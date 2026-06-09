@@ -78,6 +78,7 @@ export const ROUTING = [
     {v:"was_on",l:"I was, but I'm not anymore"},
     {v:"none",l:"No medication"},
   ]},
+  {id:"q_note",type:"t",hl:"Almost done.",q:"Before we share your results, is there anything else about your health we should know?",sub:"Optional — your own words help us personalise your care."},
 ];
 
 export const ALL_Q = [...PERSONALISATION, ...ROUTING];
