@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { trackEvent } from '@/lib/analytics'
+import { getUtm } from '@/lib/utm'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 
 // Figma "Group 139" (1:2834) at y=9054, 1920×490. Quick Links + Resources
@@ -290,7 +291,7 @@ function NewsletterForm() {
     fetch(ENDPOINTS.CRM_LEAD_NEWSLETTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, utm: getUtm() }),
     }).catch((err) => console.error('[Newsletter]', err))
   }
 

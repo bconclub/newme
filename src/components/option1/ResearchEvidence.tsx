@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { trackEvent } from '@/lib/analytics'
+import { getUtm } from '@/lib/utm'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -35,7 +36,7 @@ export default function ResearchEvidence() {
     fetch(ENDPOINTS.CRM_LEAD_NEWSLETTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, utm: getUtm() }),
     }).catch((err) => console.error('[ResearchEvidence Notify]', err))
   }
 

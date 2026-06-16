@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { Bricolage_Grotesque, Urbanist, Poppins } from 'next/font/google'
 import Script from 'next/script'
+import UtmCapture from '@/components/analytics/UtmCapture'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
@@ -190,6 +192,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           })(window, document, "clarity", "script", "wvk2hptfrl");
         `}</Script>
+        {/* First-touch UTM / attribution capture. Mounted high so it runs on
+            the very first paint; Suspense satisfies useSearchParams' CSR
+            bailout requirement without blocking the rest of the tree. */}
+        <Suspense fallback={null}>
+          <UtmCapture />
+        </Suspense>
         <SmoothScroll>{children}</SmoothScroll>
         <CookieBanner />
         {/* Vercel Analytics — auto-tracks page views, bounce rate, geo,

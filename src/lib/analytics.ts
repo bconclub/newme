@@ -14,6 +14,8 @@
  * The GA tag itself is mounted globally in `src/app/layout.tsx`.
  */
 
+import { getUtm } from './utm'
+
 export type EventName =
   // Page-level CTA clicks across marketing pages. Use `params.location` +
   // `params.label` to disambiguate (e.g. header / hero / pathways / how-it-works).
@@ -68,7 +70,12 @@ export function trackEvent(name: EventName, params?: Record<string, unknown>): v
   if (typeof window === 'undefined') return
   if (typeof window.gtag !== 'function') return
   try {
-    window.gtag('event', name, params ?? {})
+    // Merge first-touch attribution into every event so GA can segment any
+    // conversion (cta_click → payment_completed) by campaign, even though the
+    // UTM left the URL many navigations ago. Explicit event params win over
+    // the stored UTM if a caller ever passes its own utm_* key.
+    const merged = { ...getUtm(), ...(params ?? {}) }
+    window.gtag('event', name, merged)
   } catch {
     // Never let analytics break the app.
   }

@@ -1,6 +1,15 @@
 import { ENDPOINTS } from "../constants/urlConstants";
+import { getUtm } from "@/lib/utm";
 
 const LEAD_SOURCE: string = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_LEAD_SOURCE) || "";
+
+// Merge first-touch UTM/attribution into a CRM payload under a single `utm`
+// object. Keeps the lead body shape stable for the backend (one nested key
+// rather than utm_* sprinkled at the top level) and is a no-op (utm: {}) when
+// the visitor arrived with no attribution.
+function withUtm<T extends Record<string, unknown>>(payload: T): T & { utm: Record<string, unknown> } {
+  return { ...payload, utm: getUtm() };
+}
 
 export function toIsoDob(dob?: string): string | undefined {
   if (!dob) return dob;
@@ -23,7 +32,7 @@ export async function createLeadFromProfile(payload: {
   const r = await fetch(ENDPOINTS.CRM_LEAD_PROFILE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, dob: toIsoDob(payload.dob), leadSource: "" }),
+    body: JSON.stringify(withUtm({ ...payload, dob: toIsoDob(payload.dob), leadSource: "" })),
   });
   return r.json();
 }
@@ -81,7 +90,7 @@ export async function createPreQuizLead(name: string, last: string, email: strin
   const r = await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify(withUtm({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE })),
   });
   return r.json();
 }
@@ -90,7 +99,7 @@ export async function updateLeadQuizData(leadId: string, payload: Record<string,
   await fetch(ENDPOINTS.CRM_LEAD_SUBMIT(leadId), {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify(withUtm({ ...payload, leadSource: LEAD_SOURCE })),
   });
 }
 
@@ -98,7 +107,7 @@ export async function createLead(payload: Record<string, any>): Promise<{ leadId
   const r = await fetch(ENDPOINTS.CRM_LEAD, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify(withUtm({ ...payload, leadSource: LEAD_SOURCE })),
   });
   return r.json();
 }
