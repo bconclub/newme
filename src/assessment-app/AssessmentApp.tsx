@@ -268,10 +268,11 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     const secondary = SEC[recommended];
     const infoWithPhone = { ...info, phone: profile.phone || info.phone };
     const profileWithIsoDob = { ...profile, dob: toIsoDob(profile.dob) };
+    const utm = (() => { try { const r = localStorage.getItem("newme_utm"); return r ? JSON.parse(r) : undefined; } catch { return undefined; } })();
     if (effectiveLeadId) {
-      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary }).catch(() => {});
+      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary, utm }).catch(() => {});
     } else {
-      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary })
+      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary, utm })
         .then(d => { if (d.leadId) setCrmLeadId(d.leadId); })
         .catch(() => {});
     }

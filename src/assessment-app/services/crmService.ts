@@ -2,6 +2,15 @@ import { ENDPOINTS } from "../constants/urlConstants";
 
 const LEAD_SOURCE: string = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_LEAD_SOURCE) || "";
 
+function getUtm(): Record<string, string> | undefined {
+  try {
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem("newme_utm") : null;
+    return raw ? JSON.parse(raw) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export function toIsoDob(dob?: string): string | undefined {
   if (!dob) return dob;
   // Already ISO (YYYY-MM-DD)
@@ -81,7 +90,7 @@ export async function createPreQuizLead(name: string, last: string, email: strin
   const r = await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE, utm: getUtm() }),
   });
   return r.json();
 }
