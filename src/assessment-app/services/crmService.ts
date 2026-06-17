@@ -3,13 +3,9 @@ import { getUtm } from "@/lib/utm";
 
 const LEAD_SOURCE: string = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_LEAD_SOURCE) || "";
 
-function getUtm(): Record<string, string> | undefined {
-  try {
-    const raw = typeof localStorage !== "undefined" ? localStorage.getItem("newme_utm") : null;
-    return raw ? JSON.parse(raw) : undefined;
-  } catch {
-    return undefined;
-  }
+function withUtm<T extends Record<string, unknown>>(payload: T): T & { utm?: Record<string, string> } {
+  const utm = getUtm();
+  return Object.keys(utm).length > 0 ? { ...payload, utm } : payload;
 }
 
 export function toIsoDob(dob?: string): string | undefined {

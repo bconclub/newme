@@ -6,6 +6,7 @@ import { routeAnswers, getCalcMessages } from "./utils/routing";
 import { createLead, updateLeadQuizData, selectPhase, convertLead, attachResultsPDF, toIsoDob } from "./services/crmService";
 import { recordAssessmentAttempt } from "./services/assessmentService";
 import { trackEvent } from "@/lib/analytics";
+import { captureUtm } from "@/lib/utm";
 import { IntroPage } from "./pages/IntroPage/IntroPage";
 import { QuizPage } from "./pages/QuizPage/QuizPage";
 import { CalcPage } from "./pages/CalcPage/CalcPage";
@@ -85,22 +86,7 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     return () => el.remove();
   }, []);
 
-  // Capture UTM params from URL into localStorage on first load
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "fbclid"];
-    const captured: Record<string, string> = {};
-    for (const key of UTM_KEYS) {
-      const val = params.get(key);
-      if (val) captured[key] = val;
-    }
-    if (Object.keys(captured).length > 0) {
-      captured.first_seen = new Date().toISOString();
-      captured.landing_page = window.location.pathname;
-      captured.referrer = document.referrer || "";
-      try { localStorage.setItem("newme_utm", JSON.stringify(captured)); } catch {}
-    }
-  }, []);
+  useEffect(() => { captureUtm(); }, []);
 
   // Persist session to sessionStorage (survives refresh, clears on tab close)
   useEffect(() => {
@@ -285,11 +271,10 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     const secondary = SEC[recommended];
     const infoWithPhone = { ...info, phone: profile.phone || info.phone };
     const profileWithIsoDob = { ...profile, dob: toIsoDob(profile.dob) };
-    const utm = (() => { try { const r = localStorage.getItem("newme_utm"); return r ? JSON.parse(r) : undefined; } catch { return undefined; } })();
     if (effectiveLeadId) {
-      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary, utm }).catch(() => {});
+      updateLeadQuizData(effectiveLeadId, { info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary }).catch(() => {});
     } else {
-      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary, utm })
+      createLead({ info: infoWithPhone, profile: profileWithIsoDob, ans: effectiveAns, pathway: recommended, secondary })
         .then(d => { if (d.leadId) setCrmLeadId(d.leadId); })
         .catch(() => {});
     }
