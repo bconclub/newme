@@ -9,6 +9,7 @@ import PageHero from '@/components/option1/PageHero'
 import EyebrowPill from '@/components/option1/EyebrowPill'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 import { trackEvent } from '@/lib/analytics'
+import { getUtm } from '@/lib/utm'
 import { PhoneInput } from '@/assessment-app/components/PhoneInput/PhoneInput'
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -57,7 +58,7 @@ function ContactBody() {
       const res = await fetch(ENDPOINTS.CRM_LEAD_CONTACT_US, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone || undefined, message: form.message }),
+        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone || undefined, message: form.message, utm: getUtm() }),
       })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       router.push('/contact/thank-you')

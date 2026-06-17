@@ -1,4 +1,5 @@
 import { ENDPOINTS } from "../constants/urlConstants";
+import { getUtm } from "@/lib/utm";
 
 const LEAD_SOURCE: string = (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_LEAD_SOURCE) || "";
 
@@ -32,7 +33,7 @@ export async function createLeadFromProfile(payload: {
   const r = await fetch(ENDPOINTS.CRM_LEAD_PROFILE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, dob: toIsoDob(payload.dob), leadSource: "" }),
+    body: JSON.stringify(withUtm({ ...payload, dob: toIsoDob(payload.dob), leadSource: "" })),
   });
   return r.json();
 }
@@ -99,7 +100,7 @@ export async function updateLeadQuizData(leadId: string, payload: Record<string,
   await fetch(ENDPOINTS.CRM_LEAD_SUBMIT(leadId), {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify(withUtm({ ...payload, leadSource: LEAD_SOURCE })),
   });
 }
 
@@ -107,7 +108,7 @@ export async function createLead(payload: Record<string, any>): Promise<{ leadId
   const r = await fetch(ENDPOINTS.CRM_LEAD, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, leadSource: LEAD_SOURCE }),
+    body: JSON.stringify(withUtm({ ...payload, leadSource: LEAD_SOURCE })),
   });
   return r.json();
 }

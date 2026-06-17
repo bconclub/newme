@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-06-16 16:18 IST · Persist first-touch UTM attribution across all pages + pushes
+
+- **New `src/lib/utm.ts`** — captures `utm_source/medium/campaign/term/content` + `gclid` (Google Ads) + `fbclid` (Meta) + referrer + landing page on the FIRST page that carries them, stores in `localStorage` under `newme_utm`. First-touch wins: once recorded, a later UTM never overwrites it. Exposes `captureUtm()`, `getUtm()`, `hasUtm()`, `appendUtmToUrl()`.
+- **New `src/components/analytics/UtmCapture.tsx`** — `'use client'` no-render component mounted at the layout root (inside a `<Suspense>` for `useSearchParams`). Runs capture on first paint and on every client navigation, so a UTM that only appears on a deep-linked internal page is still recorded. Mirrors the stored object onto `window.__newmeUtm` in dev for testing.
+- **`src/app/layout.tsx`** — mounts `<UtmCapture>` (Suspense-wrapped) high in `<body>`.
+- **`src/lib/analytics.ts`** — `trackEvent()` now merges `getUtm()` into every GA event payload, so any conversion (`cta_click` → `payment_completed`) is attributable to the original campaign even though the UTM left the URL many navigations ago. Explicit event params win over stored UTM.
+- **`src/assessment-app/services/crmService.ts`** — new `withUtm()` helper nests the attribution under a single `utm` key on every lead-creating body: `createLeadFromProfile`, `createPreQuizLead` (alongside the new height/weight fields), `createLead`, `updateLeadQuizData`.
+- **Newsletter + contact** — `Footer.tsx`, `ResearchEvidence.tsx`, and `contact/page.tsx` now send `utm` in the POST body.
+- **`src/assessment-app/pages/OrderPage/OrderPage.tsx`** — the Zoho checkout redirect URL is passed through `appendUtmToUrl()` so attribution survives the external payment round-trip.
+- **Backend dependency**: the CRM/API must read + persist the new nested `utm` object on the lead record for attribution to land in the CRM. Frontend now sends it everywhere; backend mapping is API-side.
+- Verified: live dev test (capture, first-touch immutability, GA merge, CRM body, Zoho URL all confirmed), `tsc --noEmit` clean, `npm run build` green (all 30 routes prerender; `/how-it-works` + `/contact` stay static).
+
 ## 2026-05-23 · Microsoft Clarity wired up (session recordings + heatmaps)
 
 - **`src/app/layout.tsx`** — Added the Clarity init snippet via `next/script` with `strategy="afterInteractive"` so it loads after the page becomes interactive and never blocks LCP. Project id `wvk2hptfrl` (dashboard: https://clarity.microsoft.com/projects/view/wvk2hptfrl).

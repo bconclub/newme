@@ -4,6 +4,7 @@ import { Header } from "../../components/Header/Header";
 import { LogoMark } from "../../components/Logo";
 import { PRICING, PHASE_META, PW } from "../../data/pathways";
 import { GI_BILLING, getZohoCheckoutUrl } from "../../constants/zohoCheckout";
+import { appendUtmToUrl } from "@/lib/utm";
 
 export type OrderPageProps = {
   phase: string;
@@ -56,11 +57,14 @@ export function OrderPage({ phase, info, onBack }: OrderPageProps) {
     : "One-time";
 
   function handlePay() {
-    const url = getZohoCheckoutUrl(effectivePhase);
-    if (!url) {
+    const baseUrl = getZohoCheckoutUrl(effectivePhase);
+    if (!baseUrl) {
       alert("Checkout is not yet configured for this plan. Please contact support.");
       return;
     }
+    // Carry first-touch UTM across the external Zoho redirect so the payment
+    // can be attributed to the original campaign in Zoho / GA.
+    const url = appendUtmToUrl(baseUrl);
     try { sessionStorage.setItem("newme_pending_phase", effectivePhase); } catch {}
     window.location.href = url;
   }
