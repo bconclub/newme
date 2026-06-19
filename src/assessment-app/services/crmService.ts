@@ -92,6 +92,16 @@ export async function createPreQuizLead(name: string, last: string, email: strin
   return r.json();
 }
 
+export async function updatePreQuizLead(leadId: string, name: string, last: string, email: string, phone?: string, country?: string, height?: string, weight?: string): Promise<void> {
+  try {
+    await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ_UPDATE(leadId), {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE, utm: getUtm() }),
+    });
+  } catch { /* fire-and-forget */ }
+}
+
 export async function updateLeadQuizData(leadId: string, payload: Record<string, any>): Promise<void> {
   await fetch(ENDPOINTS.CRM_LEAD_SUBMIT(leadId), {
     method: "PATCH",

@@ -25,7 +25,7 @@ const COUNTRIES = [
 import { GRN, INK, INK2, INK3, GOLD, FONT_HEADING, FONT_BODY, FONT_BUTTON } from "../../constants/theme";
 import { Header } from "../../components/Header/Header";
 import { checkAssessmentLimit, verifyEmail } from "../../services/assessmentService";
-import { createPreQuizLead, checkLeadByEmail, deleteLeadById } from "../../services/crmService";
+import { createPreQuizLead, updatePreQuizLead, checkLeadByEmail, deleteLeadById } from "../../services/crmService";
 import { PhoneInput } from "../../components/PhoneInput/PhoneInput";
 
 export type QuizPageProps = {
@@ -169,9 +169,11 @@ export function QuizPage({
       // start the quiz even if the limit-check later fails.
       let leadId: string | null = null;
       if (foundCrmLead) {
-        // Existing CRM lead for this email — reuse it, clean up any orphan
+        // Existing CRM lead for this email — reuse it, clean up any orphan,
+        // and update the lead's profile fields with the freshly entered data.
         if (existingLeadId && existingLeadId !== foundCrmLead.id) deleteLeadById(existingLeadId);
         leadId = foundCrmLead.id;
+        updatePreQuizLead(leadId, info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined, profile.height || undefined, profile.weight || undefined);
       } else {
         // No CRM lead for this email — always create one, even if a stale
         // existingLeadId exists from a previous session with a different email.
