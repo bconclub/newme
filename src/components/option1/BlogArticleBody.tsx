@@ -8,8 +8,9 @@ function hasAsset(img: unknown): img is { asset: { _ref: string }; [k: string]: 
 }
 
 type Span = { _type: 'span'; text: string; marks?: string[]; _key?: string }
+type TableRow = { _type: 'tableRow'; _key?: string; cells: string[] }
 type PtBlock = {
-  _type: 'block' | 'image'
+  _type: 'block' | 'image' | 'table'
   style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'blockquote'
   listItem?: 'bullet' | 'number'
   level?: number
@@ -20,6 +21,8 @@ type PtBlock = {
   asset?: { _ref?: string; _id?: string }
   alt?: string
   caption?: string
+  // table fields
+  rows?: TableRow[]
 }
 
 export function slugifyHeading(text: string) {
@@ -88,6 +91,7 @@ function renderSpans(spans: Span[] | undefined, markDefs: PtBlock['markDefs']) {
 type Group =
   | { kind: 'block'; block: PtBlock }
   | { kind: 'image'; block: PtBlock }
+  | { kind: 'table'; block: PtBlock }
   | { kind: 'ul'; items: PtBlock[] }
   | { kind: 'ol'; items: PtBlock[] }
 
@@ -98,6 +102,9 @@ function groupBlocks(blocks: PtBlock[]): Group[] {
     const b = blocks[i]
     if (b._type === 'image') {
       groups.push({ kind: 'image', block: b })
+      i++
+    } else if (b._type === 'table') {
+      groups.push({ kind: 'table', block: b })
       i++
     } else if (b.listItem === 'bullet') {
       const items: PtBlock[] = []
@@ -185,6 +192,66 @@ function PortableText({ value }: { value: unknown[] }) {
                 </figcaption>
               )}
             </figure>
+          )
+        }
+
+        /* ── Table ── */
+        if (g.kind === 'table') {
+          const rows = g.block.rows ?? []
+          if (rows.length === 0) return null
+          const [header, ...body] = rows
+          return (
+            <div
+              key={g.block._key ?? `tbl-${gi}`}
+              style={{ margin: '36px 0', overflowX: 'auto', borderRadius: 12, border: '1px solid rgba(255,255,255,0.14)' }}
+            >
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 360 }}>
+                {header && (
+                  <thead>
+                    <tr style={{ background: 'rgba(255,255,255,0.07)' }}>
+                      {header.cells.map((cell, ci) => (
+                        <th
+                          key={ci}
+                          className={`${HEAD_FONT} text-white`}
+                          style={{
+                            padding: '12px 18px', textAlign: 'left',
+                            fontSize: 'clamp(13px, calc(15 / 1920 * 100vw), 15px)',
+                            fontWeight: 600, letterSpacing: '.03em',
+                            borderBottom: '1px solid rgba(255,255,255,0.14)',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {cell}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                )}
+                <tbody>
+                  {body.map((row, ri) => (
+                    <tr
+                      key={row._key ?? `row-${ri}`}
+                      style={{ background: ri % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.03)' }}
+                    >
+                      {row.cells.map((cell, ci) => (
+                        <td
+                          key={ci}
+                          className={`${BODY_FONT} text-white/80`}
+                          style={{
+                            padding: '11px 18px',
+                            fontSize: 'clamp(14px, calc(16 / 1920 * 100vw), 16px)',
+                            lineHeight: 1.55,
+                            borderBottom: ri < body.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+                          }}
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )
         }
 

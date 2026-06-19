@@ -1,6 +1,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import { table } from "@sanity/table";
 
 import { schemaTypes } from "./sanity/schemas";
 import { customStructure } from "./sanity/structure";
@@ -60,6 +61,7 @@ export default defineConfig({
   plugins: [
     structureTool({ structure: customStructure }),
     visionTool({ defaultApiVersion: apiVersion }),
+    table(),
   ],
   document: {
     productionUrl: async (prev, { document }) => {

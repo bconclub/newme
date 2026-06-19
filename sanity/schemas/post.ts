@@ -191,6 +191,7 @@ export default defineType({
             }),
           ],
         },
+        { type: "table" },
       ],
     }),
     defineField({
