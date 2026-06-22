@@ -42,6 +42,21 @@ export function extractTOCHeadings(body: unknown[]): TOCEntry[] {
     .filter((e) => e.text.trim())
 }
 
+/* Lightweight inline-markdown for table cells (which @sanity/table stores as
+   plain strings, so they carry no Portable Text marks). Supports **bold** and
+   *italic*. Bold is matched first so **x** doesn't get eaten by the italic rule. */
+function renderCellMarkdown(text: string): React.ReactNode {
+  if (!text) return text
+  const tokens = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g)
+  return tokens.map((tok, i) => {
+    if (tok.startsWith('**') && tok.endsWith('**') && tok.length > 4)
+      return <strong key={i} style={{ fontWeight: 700, color: 'rgba(255,255,255,0.97)' }}>{tok.slice(2, -2)}</strong>
+    if (tok.startsWith('*') && tok.endsWith('*') && tok.length > 2)
+      return <em key={i}>{tok.slice(1, -1)}</em>
+    return tok
+  })
+}
+
 function renderSpans(spans: Span[] | undefined, markDefs: PtBlock['markDefs']) {
   if (!spans) return null
   return spans.map((span, i) => {
@@ -221,7 +236,7 @@ function PortableText({ value }: { value: unknown[] }) {
                             whiteSpace: 'nowrap',
                           }}
                         >
-                          {cell}
+                          {renderCellMarkdown(cell)}
                         </th>
                       ))}
                     </tr>
@@ -244,7 +259,7 @@ function PortableText({ value }: { value: unknown[] }) {
                             borderBottom: ri < body.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
                           }}
                         >
-                          {cell}
+                          {renderCellMarkdown(cell)}
                         </td>
                       ))}
                     </tr>
