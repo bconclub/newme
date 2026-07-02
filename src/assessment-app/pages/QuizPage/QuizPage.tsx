@@ -306,7 +306,7 @@ export function QuizPage({
                 <div>
                   <label style={labelStyle}>Date of birth</label>
                   <input
-                    type="text"
+                    type="date"
                     inputMode="numeric"
                     autoComplete="bday"
                     placeholder="DD/MM/YYYY"
