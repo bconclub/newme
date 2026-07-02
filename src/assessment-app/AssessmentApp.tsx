@@ -201,16 +201,11 @@ export default function App({ initialScreen }: AssessmentAppProps = {}) {
     return age;
   }
 
-  /** Auto-format text DOB as DD/MM/YYYY while typing */
+  /** Handle date input (type="date") — value is always YYYY-MM-DD */
   function handleDOB(v: string) {
-    // Strip non-digits, then re-insert slashes
-    const digits = v.replace(/\D/g, "").slice(0, 8);
-    let formatted = digits;
-    if (digits.length > 4)      formatted = `${digits.slice(0,2)}/${digits.slice(2,4)}/${digits.slice(4)}`;
-    else if (digits.length > 2) formatted = `${digits.slice(0,2)}/${digits.slice(2)}`;
-    setProfile(p => ({ ...p, dob: formatted }));
-    if (formatted.length === 10) {
-      const a = calcAge(formatted);
+    setProfile(p => ({ ...p, dob: v }));
+    if (v && v.length === 10) {
+      const a = calcAge(v);
       setDobErr(a === null || a < 18 || a > 70 ? "Please enter a valid date of birth (Applicable for age group between 18 - 70)." : "");
     } else {
       setDobErr("");
