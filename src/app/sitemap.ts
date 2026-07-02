@@ -61,6 +61,7 @@ const staticRoutes: StaticRoute[] = [
   { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
   { path: '/privacy-policy', changeFrequency: 'yearly', priority: 0.3 },
   { path: '/cookie-policy', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/delete-account', changeFrequency: 'yearly', priority: 0.3 },
 ]
 
 type SanityPost = { slug: string; publishedAt?: string; _updatedAt?: string }
