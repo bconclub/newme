@@ -34,6 +34,7 @@ export const globalCss = [
   `.inp::placeholder{color:rgba(255,255,255,0.35)}`,
   `.inp:focus{border-color:rgba(98,150,117,0.8)}`,
   `.inp option{background:#013E37;color:#ffffff}`,
+  `.inp::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.7;cursor:pointer}`,
 
   // Card — dark glass
   `.ccard{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:6px;transition:all .2s;backdrop-filter:blur(10px)}`,

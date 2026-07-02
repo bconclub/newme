@@ -306,14 +306,13 @@ export function QuizPage({
                 <div>
                   <label style={labelStyle}>Date of birth</label>
                   <input
-                    type="text"
-                    inputMode="numeric"
+                    type="date"
                     autoComplete="bday"
-                    placeholder="DD/MM/YYYY"
+                    min="1900-01-01"
+                    max={`${new Date().getFullYear() - 18}-12-31`}
                     value={profile.dob || ""}
                     onChange={e => handleDOB(e.target.value)}
                     className="inp"
-                    maxLength={10}
                   />
                   {dobErr && <p style={{ fontSize: 12, color: "#ff7b6b", marginTop: 6, fontFamily: FONT_BODY }}>{dobErr}</p>}
                 </div>
