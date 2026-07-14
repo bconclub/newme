@@ -295,12 +295,12 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
   }
 
   function handlePrimaryCta() {
-    if (isInternational) { handleAction("Book a call", "book"); return; }
+    if (isInternational && !alreadyBooked) { handleAction("Book a call", "book"); return; }
     onStartNow();
     setOpen(false);
   }
 
-  const primaryCtaLabel = isInternational ? "Book a Call →" : "Start now →";
+  const primaryCtaLabel = isInternational && !alreadyBooked ? "Book a Call →" : "Start now →";
 
   function reset() {
     setMessages([]);
@@ -313,6 +313,9 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
 
   const categories = getCategories(!!isInternational);
   const currentMenuItems = isMenuStep(step) ? (categories.find(c => c.step === step)?.items ?? []) : [];
+  // Once an international client has a call booked, the primary CTA has nothing
+  // left to do — the "Call Scheduled" card below already covers next steps.
+  const showPrimaryCta = !(isInternational && alreadyBooked);
 
   return (
     <>
@@ -451,7 +454,7 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 {categories.map(cat => <CtaButton key={cat.step} label={cat.label} onClick={() => handleCategory(cat)} />)}
                 {!alreadyBooked && !isInternational && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
-                <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />
+                {showPrimaryCta && <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />}
               </div>
             )}
             {isMenuStep(step) && (
@@ -464,14 +467,14 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 <CtaButton label="Ask another question" onClick={() => setStep(prevMenu)} />
                 {!alreadyBooked && !isInternational && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
-                <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />
+                {showPrimaryCta && <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />}
                 <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
               </div>
             )}
             {(step === "talk" || step === "book") && (
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 <CtaButton label="Ask a question" onClick={reset} />
-                <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />
+                {showPrimaryCta && <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />}
               </div>
             )}
 
