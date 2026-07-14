@@ -95,7 +95,7 @@ export function ResultsPage({
               className="btng"
               style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}
             >
-              Get Started →
+              Talk to Care Advisor →
             </button>
           ) : (
             <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}>
@@ -105,7 +105,7 @@ export function ResultsPage({
         </div>
       )}
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "36px 20px 100px" }}>
+      <div style={{ maxWidth: 840, margin: "0 auto", padding: "36px 20px 100px" }}>
         <div className="fu">
 
           {/* Clinical Report — uses the site's EyebrowPill */}
@@ -250,63 +250,76 @@ export function ResultsPage({
               }}
               ref={!isGIPathway ? pricingRef : undefined}
             >
-              <div style={{ marginBottom: 16 }}>
-                <EyebrowPill
-                  variant="gold"
-                  style={{
-                    height: 'auto',
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                    paddingTop: 10,
-                    paddingBottom: 10,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    letterSpacing: ".10em",
-                    fontFamily: FONT_BUTTON,
-                    lineHeight: 1.4,
-                    whiteSpace: 'normal',
-                    textAlign: 'left',
-                  }}
-                >
-                  {displayBadge}
-                </EyebrowPill>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-                {!isInternational && (
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>
-                      {priceMain.includes("/") ? (
-                        <>{priceMain.split("/")[0].trim()} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span> / {priceMain.split("/").slice(1).join("/").trim()}</>
-                      ) : (
-                        <>{priceMain} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span></>
-                      )}
-                    </span>
-                    <span style={{ fontSize: 13, color: INK3, marginLeft: 4 }}>{priceDay}</span>
-                  </div>
-                )}
-                {isInternational ? (
-                  <>
-                    <p style={{ fontSize: 13, color: INK2, lineHeight: 1.5, margin: 0, flex: "1 1 320px", minWidth: 260 }}>
+              {isInternational ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+                  <div>
+                    <p style={{
+                      fontSize: "clamp(20px, calc(26 / 1920 * 100vw), 26px)",
+                      fontWeight: 700,
+                      color: GOLD,
+                      fontFamily: FONT_HEADING,
+                      letterSpacing: "-0.01em",
+                      lineHeight: 1.2,
+                      margin: "0 0 6px",
+                    }}>
+                      {displayBadge}
+                    </p>
+                    <p style={{ fontSize: 13, color: INK2, lineHeight: 1.5, margin: 0,marginTop:4 }}>
                       Book a free 20-minute consultation with a member of the NewME Health Care team.
                     </p>
-                    <button
-                      onClick={() => openCalendly({ name: name !== "You" ? name : undefined, email: info.email || undefined, phone: info.phone || undefined })}
-                      className="btng"
-                      style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON, flexShrink: 0 }}
-                    >
-                      Get Started →
-                    </button>
-                  </>
-                ) : (
+                  </div>
                   <button
-                    onClick={() => onSelectPhase(effectivePhase)}
+                    onClick={() => openCalendly({ name: name !== "You" ? name : undefined, email: info.email || undefined, phone: info.phone || undefined })}
                     className="btng"
-                    style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON }}
+                    style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON, flexShrink: 0 }}
                   >
-                    Start now →
+                    Talk to Care Advisor →
                   </button>
-                )}
-              </div>
+                </div>
+              ) : (
+                <>
+                  <div style={{ marginBottom: 16 }}>
+                    <EyebrowPill
+                      variant="gold"
+                      style={{
+                        height: 'auto',
+                        paddingLeft: 16,
+                        paddingRight: 16,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        letterSpacing: ".10em",
+                        fontFamily: FONT_BUTTON,
+                        lineHeight: 1.4,
+                        whiteSpace: 'normal',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {displayBadge}
+                    </EyebrowPill>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                      <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>
+                        {priceMain.includes("/") ? (
+                          <>{priceMain.split("/")[0].trim()} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span> / {priceMain.split("/").slice(1).join("/").trim()}</>
+                        ) : (
+                          <>{priceMain} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span></>
+                        )}
+                      </span>
+                      <span style={{ fontSize: 13, color: INK3, marginLeft: 4 }}>{priceDay}</span>
+                    </div>
+                    <button
+                      onClick={() => onSelectPhase(effectivePhase)}
+                      className="btng"
+                      style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON }}
+                    >
+                      Start now →
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* What's included */}
