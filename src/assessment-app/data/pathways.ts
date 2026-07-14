@@ -50,7 +50,7 @@ export const DUR: Record<string, string> = {
 
 export const PW: Record<string, any> = {
   Reset: {
-    badge: `Reset · ${PHASE_META.Reset.duration} Clinical Pathway`,
+    badge: `Reset · 1 Month Clinical Pathway`,
     headline: "You're early. This is when change is easiest.",
     //severityStatement: "Based on your assessment, your gut-brain axis dysfunction is at risk.",
       severityStatement: "Based on our assessment, your symptoms point to gut-brain axis dysfunction.",
@@ -76,7 +76,7 @@ export const PW: Record<string, any> = {
     tags: ["Habits first", "Daily coach access", "Clinically reviewed"],
   },
   Rebuild: {
-    badge: `Rebuild · ${PHASE_META.Rebuild.duration} Clinical Pathway`,
+    badge: `Rebuild - 3 Months Clinical Pathway`,
     headline: "Time and the right protocol. That's what your body needs.",
     //severityStatement: "Based on your assessment, your gut-brain axis dysfunction is mild.",
      severityStatement: "Based on our assessment, your symptoms point to gut-brain axis dysfunction.",
@@ -101,7 +101,7 @@ export const PW: Record<string, any> = {
     tags: ["Built around your diagnosis", "12 weeks of targeted correction", "Progress you can measure"],
   },
   Sustain: {
-    badge: `Sustain · ${PHASE_META.Sustain.duration} Clinical Pathway`,
+    badge: `Sustain - 6 Months Clinical Pathway`,
     headline: "Multiple layers, one coordinated plan. That's what makes change hold.",
     // severityStatement: "Based on your assessment, your gut-brain axis dysfunction is moderate.",
     severityStatement: "Based on our assessment, your symptoms point to gut-brain axis dysfunction.",
@@ -122,7 +122,7 @@ export const PW: Record<string, any> = {
     tags: ["24 weeks of structure", "Relapse prevention built in", "Results that hold"],
   },
   GI_Core: {
-    badge: `GI Core · ${PHASE_META.GI_Core.duration} Clinical Pathway`,
+    badge: `GI Core - ${PHASE_META.GI_Core.duration} Clinical Pathway`,
     headline: "Start with your gut. The rest of your body follows.",
     severityStatement: "Based on your assessment, your gut-brain axis dysfunction is severe.",
     isGI: true,
@@ -144,7 +144,7 @@ export const PW: Record<string, any> = {
     tags: ["Medically overseen", "Triggers identified precisely", "Daily GI coach support"],
   },
   GI_Advanced: {
-    badge: `GI Advanced · ${PHASE_META.GI_Advanced.duration} Clinical Pathway`,
+    badge: `GI Advanced - ${PHASE_META.GI_Advanced.duration} Clinical Pathway`,
     headline: "You've worked around your gut for years. Let's work with it.",
     // severityStatement: "Based on your assessment, your gut-brain axis dysfunction is very severe.",
     severityStatement: "Based on our assessment, your symptoms point to gut-brain axis dysfunction.",
