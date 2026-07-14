@@ -53,6 +53,7 @@ export function ResultsPage({
   const actionables = isGIPathway ? ACTIONABLE_POINTS.gi : ACTIONABLE_POINTS.metabolic;
 
   const isInternational = !!(info.country && !info.country.toLowerCase().includes("india"));
+  const programName = pw.badge.split(" · ")[0];
 
   const giBilling = GI_BILLING[res.pathway] ?? null;
   const [billing, setBilling] = useState<"monthly" | "upfront">("upfront");
@@ -84,15 +85,27 @@ export function ResultsPage({
         <div className="sticky-cta">
           <div>
             <p style={{ fontSize: 14, fontWeight: 700, color: INK, lineHeight: 1, fontFamily: FONT_HEADING }}>{pw.badge.split(" · ")[0]}</p>
-            <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{priceMain.includes("/") ? priceMain.replace(" /", " USD /") : `${priceMain} USD`} · {priceDay}</p>
+            {!isInternational && (
+              <p style={{ fontSize: 12, color: INK3, marginTop: 3 }}>{priceMain.includes("/") ? priceMain.replace(" /", " USD /") : `${priceMain} USD`} · {priceDay}</p>
+            )}
           </div>
-          <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}>
-            Start now →
-          </button>
+          {isInternational ? (
+            <button
+              onClick={() => openCalendly({ name: name !== "You" ? name : undefined, email: info.email || undefined, phone: info.phone || undefined })}
+              className="btng"
+              style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}
+            >
+              Get Started →
+            </button>
+          ) : (
+            <button onClick={() => onSelectPhase(effectivePhase)} className="btng" style={{ padding: "12px 24px", fontSize: 14, fontFamily: FONT_BUTTON }}>
+              Start now →
+            </button>
+          )}
         </div>
       )}
 
-      <div style={{ maxWidth: 640, margin: "0 auto", padding: "36px 20px 100px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "36px 20px 100px" }}>
         <div className="fu">
 
           {/* Clinical Report — uses the site's EyebrowPill */}
@@ -212,8 +225,8 @@ export function ResultsPage({
               <p style={{ fontSize: 14, color: INK, fontWeight: 600, fontFamily: FONT_BODY, textAlign: "center" }}>{BRIDGE_SENTENCE}</p>
             </div>
 
-            {/* GI billing toggle */}
-            {isGIPathway && giBilling && (
+            {/* GI billing toggle — hidden for international since it surfaces $ savings */}
+            {isGIPathway && giBilling && !isInternational && (
               <div style={{ display: "flex", gap: 8, marginBottom: 12 }} ref={pricingRef}>
                 <button className={`toggle-btn${billing === "upfront" ? " active" : ""}`} onClick={() => setBilling("upfront")} style={{ fontFamily: FONT_BUTTON }}>
                   3 months · Save ${giBilling.upfront.savings}
@@ -258,82 +271,43 @@ export function ResultsPage({
                   {displayBadge}
                 </EyebrowPill>
               </div>
-              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                  <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>
-                    {priceMain.includes("/") ? (
-                      <>{priceMain.split("/")[0].trim()} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span> / {priceMain.split("/").slice(1).join("/").trim()}</>
-                    ) : (
-                      <>{priceMain} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span></>
-                    )}
-                  </span>
-                  <span style={{ fontSize: 13, color: INK3, marginLeft: 4 }}>{priceDay}</span>
-                </div>
-                <button
-                  onClick={() => onSelectPhase(effectivePhase)}
-                  className="btng"
-                  style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON }}
-                >
-                  Start now →
-                </button>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+                {!isInternational && (
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 28, fontWeight: 700, color: GOLD, fontFamily: FONT_HEADING, letterSpacing: "-0.02em", lineHeight: 1 }}>
+                      {priceMain.includes("/") ? (
+                        <>{priceMain.split("/")[0].trim()} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span> / {priceMain.split("/").slice(1).join("/").trim()}</>
+                      ) : (
+                        <>{priceMain} <span style={{ fontSize: 16, fontWeight: 600 }}>USD</span></>
+                      )}
+                    </span>
+                    <span style={{ fontSize: 13, color: INK3, marginLeft: 4 }}>{priceDay}</span>
+                  </div>
+                )}
+                {isInternational ? (
+                  <>
+                    <p style={{ fontSize: 12, color: INK2, lineHeight: 1.5, margin: 0, flex: "1 1 320px", minWidth: 260 }}>
+                      Book a free 20-minute consultation with a member of the NewME Health Care team.
+                    </p>
+                    <button
+                      onClick={() => openCalendly({ name: name !== "You" ? name : undefined, email: info.email || undefined, phone: info.phone || undefined })}
+                      className="btng"
+                      style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON, flexShrink: 0 }}
+                    >
+                      Get Started →
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => onSelectPhase(effectivePhase)}
+                    className="btng"
+                    style={{ padding: "12px 26px", fontSize: 14, fontFamily: FONT_BUTTON }}
+                  >
+                    Start now →
+                  </button>
+                )}
               </div>
             </div>
-
-            {/* Book a call CTA — shown for international users alongside the pricing card */}
-            {isInternational && (
-              <div
-                style={{
-                  border: "1.5px solid rgba(255,255,255,0.15)",
-                  borderRadius: 18,
-                  padding: "22px 24px",
-                  background: "rgba(255,255,255,0.05)",
-                  marginBottom: 28,
-                  backdropFilter: "blur(14px)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: 16,
-                }}
-              >
-                <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: INK, fontFamily: FONT_HEADING, marginBottom: 4 }}>
-                    Prefer to speak with a Care Expert?
-                  </p>
-                  <p style={{ fontSize: 13, color: INK2, lineHeight: 1.55 }}>
-                    Book a free 20-min consultation call with the NewME team.
-                  </p>
-                </div>
-                <button
-                  onClick={() => openCalendly({ name: name !== "You" ? name : undefined, email: info.email || undefined, phone: info.phone || undefined })}
-                  style={{
-                    padding: "12px 26px",
-                    fontSize: 14,
-                    fontFamily: FONT_BUTTON,
-                    flexShrink: 0,
-                    background: "transparent",
-                    border: "1.5px solid rgba(254,242,114,0.55)",
-                    borderRadius: 60,
-                    color: GOLD,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "background 0.2s, color 0.2s, border-color 0.2s",
-                  }}
-                  onMouseEnter={e => {
-                    const b = e.currentTarget;
-                    b.style.background = "rgba(254,242,114,0.12)";
-                    b.style.borderColor = GOLD;
-                  }}
-                  onMouseLeave={e => {
-                    const b = e.currentTarget;
-                    b.style.background = "transparent";
-                    b.style.borderColor = "rgba(254,242,114,0.55)";
-                  }}
-                >
-                  Book a call →
-                </button>
-              </div>
-            )}
 
             {/* What's included */}
             <div style={{ ...glassCard, marginBottom: 0 }}>
@@ -379,6 +353,7 @@ export function ResultsPage({
         userPhone={profile?.phone || info.phone || ""}
         hasBooked={hasBooked}
         appointmentDetails={appointmentDetails}
+        isInternational={isInternational}
       />
     </div>
   );

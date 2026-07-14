@@ -23,6 +23,7 @@ export interface ChatBotProps {
   userPhone?: string;
   hasBooked?: boolean;
   appointmentDetails?: AppointmentDetails | null;
+  isInternational?: boolean;
 }
 
 interface QAItem { label: string; answer: string[]; }
@@ -68,6 +69,21 @@ const CATEGORIES: Category[] = [
     ],
   },
 ];
+
+// International clients don't get self-serve checkout — pricing and payment
+// are handled by a Care Advisor on the booked call, so this category swaps
+// to a consultation-first framing instead of the direct-checkout answers.
+const INTERNATIONAL_PAYMENTS_ITEMS: QAItem[] = [
+  { label: "When will I know the pricing?", answer: ["Your Care Advisor will explain the pricing for your recommended clinical pathway during your consultation.", "You'll have all the information you need before making a decision."] },
+  { label: "Are there any payment options available?", answer: ["Your Care Advisor will discuss the available payment options during your consultation and help you choose the option that's right for you."] },
+];
+
+function getCategories(isInternational: boolean): Category[] {
+  if (!isInternational) return CATEGORIES;
+  return CATEGORIES.map(cat =>
+    cat.step === "payments_menu" ? { ...cat, items: INTERNATIONAL_PAYMENTS_ITEMS } : cat
+  );
+}
 
 const WHATSAPP_NUMBER = "";
 
@@ -132,7 +148,7 @@ function formatApptTime(iso: string): string {
   } catch { return iso; }
 }
 
-export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, userPhone, hasBooked, appointmentDetails }: ChatBotProps) {
+export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, userPhone, hasBooked, appointmentDetails, isInternational }: ChatBotProps) {
   const [open,         setOpen]         = useState(false);
   const [pulse,        setPulse]        = useState(false);
   const [messages,     setMessages]     = useState<Message[]>([]);
@@ -278,6 +294,14 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
     }
   }
 
+  function handlePrimaryCta() {
+    if (isInternational) { handleAction("Book a call", "book"); return; }
+    onStartNow();
+    setOpen(false);
+  }
+
+  const primaryCtaLabel = isInternational ? "Book a Call →" : "Start now →";
+
   function reset() {
     setMessages([]);
     setStep("welcome");
@@ -287,7 +311,8 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
   const isMenuStep = (s: Step): s is MenuStep =>
     ["about_menu", "payments_menu", "schedule_menu", "coaching_menu", "health_menu"].includes(s);
 
-  const currentMenuItems = isMenuStep(step) ? (CATEGORIES.find(c => c.step === step)?.items ?? []) : [];
+  const categories = getCategories(!!isInternational);
+  const currentMenuItems = isMenuStep(step) ? (categories.find(c => c.step === step)?.items ?? []) : [];
 
   return (
     <>
@@ -424,9 +449,9 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "12px", background: "rgba(0,0,0,0.2)", overflowY: "auto", maxHeight: "min(280px, 42vh)", flexShrink: 0 }}>
             {step === "welcome" && (
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                {CATEGORIES.map(cat => <CtaButton key={cat.step} label={cat.label} onClick={() => handleCategory(cat)} />)}
-                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
-                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
+                {categories.map(cat => <CtaButton key={cat.step} label={cat.label} onClick={() => handleCategory(cat)} />)}
+                {!alreadyBooked && !isInternational && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
+                <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />
               </div>
             )}
             {isMenuStep(step) && (
@@ -438,15 +463,15 @@ export function ChatBot({ userName, phaseName, onStartNow, leadId, userEmail, us
             {step === "answered" && (
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 <CtaButton label="Ask another question" onClick={() => setStep(prevMenu)} />
-                {!alreadyBooked && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
-                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
+                {!alreadyBooked && !isInternational && <CtaButton label="📅  Book a call" onClick={() => handleAction("Book a call", "book")} />}
+                <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />
                 <button onClick={reset} style={{ background: GOLD, border: "none", color: "#013E37", borderRadius: 50, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, textAlign: "center", width: "100%", marginTop: 2 }}>← Back to topics</button>
               </div>
             )}
             {(step === "talk" || step === "book") && (
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 <CtaButton label="Ask a question" onClick={reset} />
-                <CtaButton label="Start now →" variant="green" onClick={() => { onStartNow(); setOpen(false); }} />
+                <CtaButton label={primaryCtaLabel} variant="green" onClick={handlePrimaryCta} />
               </div>
             )}
 
