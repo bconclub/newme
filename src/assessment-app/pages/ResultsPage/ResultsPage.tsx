@@ -286,7 +286,7 @@ export function ResultsPage({
                 )}
                 {isInternational ? (
                   <>
-                    <p style={{ fontSize: 12, color: INK2, lineHeight: 1.5, margin: 0, flex: "1 1 320px", minWidth: 260 }}>
+                    <p style={{ fontSize: 13, color: INK2, lineHeight: 1.5, margin: 0, flex: "1 1 320px", minWidth: 260 }}>
                       Book a free 20-minute consultation with a member of the NewME Health Care team.
                     </p>
                     <button
