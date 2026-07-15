@@ -57,7 +57,7 @@ export function PaymentSuccessPage({ paidPhase }: PaymentSuccessPageProps) {
         </h1>
 
         {/* Pathway pill */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
+        {/* <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)",
@@ -67,7 +67,7 @@ export function PaymentSuccessPage({ paidPhase }: PaymentSuccessPageProps) {
             <LogoMark size={16} color={GRN} />
             Clinical Pathway · {phaseName}
           </span>
-        </div>
+        </div> */}
 
         {/* Steps */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
