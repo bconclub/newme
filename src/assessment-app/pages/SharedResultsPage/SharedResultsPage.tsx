@@ -47,6 +47,7 @@ export function SharedResultsPage() {
     fetch(ENDPOINTS.CRM_LEAD_RESULTS(email))
       .then(r => { if (!r.ok) throw new Error("not_found"); return r.json(); })
       .then(d => {
+        console.log("result d",d)
         setData(d);
         if (d.status === "Converted") {
           setPaidPhase(d.paidPhase);
