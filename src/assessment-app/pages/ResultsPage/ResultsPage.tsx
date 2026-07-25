@@ -52,7 +52,14 @@ export function ResultsPage({
   const isGIPathway = res.pathway === "GI_Core" || res.pathway === "GI_Advanced";
   const actionables = isGIPathway ? ACTIONABLE_POINTS.gi : ACTIONABLE_POINTS.metabolic;
 
-  const isInternational = !!(info.country && !info.country.toLowerCase().includes("india"));
+  // Shared-link results (fetched by email from the CRM) don't always carry
+  // info.country, since some leads were created before that field existed
+  // or the backend lookup omits it. Fall back to the phone's dial code
+  // (+91 = India) so the country-specific CTA still shows correctly.
+  const phoneForCountry = profile?.phone || info.phone || "";
+  const isInternational = info.country
+    ? !info.country.toLowerCase().includes("india")
+    : phoneForCountry.trim() ? !phoneForCountry.trim().startsWith("+91") : false;
   const programName = pw.badge.split(" · ")[0];
 
   const giBilling = GI_BILLING[res.pathway] ?? null;
