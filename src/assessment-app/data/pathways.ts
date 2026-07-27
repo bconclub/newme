@@ -134,12 +134,13 @@ export const PW: Record<string, any> = {
       return null;
     },
     bullets: [
-      "Initial consultation with a Senior Doctor from Dr. Pal's team",
+      "Initial consultation with a GI Dietitian",
+      "Consultation with a Senior Doctor from Dr. Pal's team",
       "Weekly consultations with a GI dietitian, daily text-based check-ins",
       "Physiotherapist evaluation at baseline with exercise routine recommendations",
       "Monthly 1:1 gut-brain focused behavioural therapist evaluation and counselling",
-      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
-      "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga, Strength, Zumba and Tabata.",
+      "Weekly virtual health education sessions with Dr. Pal and his team of doctors",
+      "Unlimited fitness sessions. Login anytime, anywhere. 180+ live virtual sessions per week across Yoga and Tabata.",
     ],
     tags: ["Medically overseen", "Triggers identified precisely", "Daily GI coach support"],
   },

@@ -273,7 +273,73 @@ export default function PrivacyPolicyPage() {
             The safety and security of your information also depends on you. Where you have chosen a password for the use of our Website or App, you are responsible for keeping this password confidential. We ask you not to share your password with anyone. Unfortunately, the transmission of information via the Internet is not completely secure. Although we work diligently to try and protect your Personal Information, we cannot guarantee the security of your Personal Information transmitted to our Website or on or through our App. Any transmission of Personal Information is at your own risk.
           </P>
 
-          <SectionHeading n={9}>Privacy Rights and Information for Residents of Certain States</SectionHeading>
+          <SectionHeading n={9}>Data Retention</SectionHeading>
+          <P>
+            We retain your Personal Information only for as long as necessary to fulfil the purposes for which it was collected, and in line with our contractual and legal obligations. The retention periods below apply to the categories of data we collect through our Website and App:
+          </P>
+
+          <div style={{ overflowX: 'auto', marginBottom: 12 }}>
+            <table
+              className="font-[family-name:var(--font-urbanist)]"
+              style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'clamp(12px,calc(13/1920*100vw),13px)' }}
+            >
+              <thead>
+                <tr style={{ background: 'var(--color-pine-teal)' }}>
+                  {['Data Type', 'Retention Period', 'Basis for Retention'].map(h => (
+                    <th key={h} style={{ color: '#fff', fontWeight: 600, padding: '10px 14px', textAlign: 'left' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Meal logs, food photos, calorie data', 'Active enrolment + 180-day cooling period', 'Coaching purposes; DPDP Act & GDPR purpose limitations'],
+                  ['Sleep and eating window data', 'Active enrolment + 180-day cooling period', 'Coaching purposes; DPDP Act & GDPR purpose limitations'],
+                  ['Height, weight, age', 'Active enrolment + 180-day cooling period', 'Coaching purposes'],
+                  ['Health conditions & user goals', 'Active enrolment + 180-day cooling period', 'Sensitive personal data; explicit consent required'],
+                  ['Voice / audio input', 'Zero retention — deleted immediately after transcription', 'DPDP Act transient-data rule'],
+                  ['Text transcriptions (from voice)', 'Same schedule as meal log data', 'Coaching purposes'],
+                  ['Account & identity data', 'Until your deletion request is fulfilled', 'Consumer protection law'],
+                  ['Anonymized / aggregated insights', 'Indefinite, where irreversibly de-identified', 'Research and coaching improvement'],
+                ].map(([type, period, basis], i) => (
+                  <tr key={i} style={{ background: i % 2 === 0 ? '#f9fafb' : '#fff', borderBottom: '1px solid #e5e7eb' }}>
+                    <td style={{ padding: '10px 14px', color: '#374151', verticalAlign: 'top', fontWeight: 600 }}>{type}</td>
+                    <td style={{ padding: '10px 14px', color: '#374151', verticalAlign: 'top' }}>{period}</td>
+                    <td style={{ padding: '10px 14px', color: '#374151', verticalAlign: 'top' }}>{basis}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <SubHeading>Cross-Border Data Storage and Transfers</SubHeading>
+          <P>
+            All user data is stored and processed on servers located in the United States. Where a cross-border transfer of your Personal Information is required, we will: seek your explicit consent at the time of onboarding if you are governed by India&apos;s Digital Personal Data Protection Act, 2023 (&ldquo;DPDP Act&rdquo;); execute Standard Contractual Clauses (SCCs) if you are governed by the EU General Data Protection Regulation (&ldquo;GDPR&rdquo;); and list every country in which your data is held &ldquo;at rest&rdquo; in an annexure to this Privacy Policy.
+          </P>
+
+          <SubHeading>Program Completion and Account Inactivity</SubHeading>
+          <P>
+            Upon completion of your program, or in the event of account inactivity, we will notify you and give you 180 days to re-enrol before your Personal Information is permanently deleted.
+          </P>
+
+          <SubHeading>Extended Retention</SubHeading>
+          <P>
+            We may retain data beyond the periods described above only where: a legal dispute or active litigation involving your data is pending; we receive a lawful request from law enforcement or a competent regulator, including India&apos;s CERT-In; or we are subject to a statutory obligation under Indian or US tax or financial record-keeping laws.
+          </P>
+          <P>
+            Where statutory, contractual, and organizational retention requirements conflict, we apply them in the following order of priority: (1) statutory, regulatory, or legislative requirements; (2) contractual requirements; and (3) our internal organizational policy.
+          </P>
+
+          <SubHeading>Your Right to Erasure</SubHeading>
+          <P>
+            You may request deletion of your data at any time using the &ldquo;Delete My Account&rdquo; feature in the App. Once you make this request, we will permanently purge your Personal Information from our US servers within 30 days and provide you with written confirmation once deletion is complete. If you are governed by the DPDP Act, 2023 in India, the &ldquo;Delete My Account&rdquo; feature also lets you nominate a representative to manage or request deletion of your data in the event of your death or incapacity.
+          </P>
+
+          <SubHeading>Backups, Archives, and Disposal</SubHeading>
+          <P>
+            The retention periods described above apply equally to backup and archival copies of your data. At the end of the applicable retention period, or upon a valid deletion request, we securely destroy or dispose of both electronic and non-electronic records using secure destruction methods, and we retain records of that destruction or disposal for audit purposes.
+          </P>
+
+          <SectionHeading n={10}>Privacy Rights and Information for Residents of Certain States</SectionHeading>
           <P>
             The states described below provide their residents with certain additional privacy rights. The information and rights described below supplement the other information contained in our Privacy Policy and apply solely to visitors, users, and others who reside in those states. Please note that these laws expressly exclude information regulated as PHI, as described above.
           </P>
@@ -296,7 +362,7 @@ export default function PrivacyPolicyPage() {
             Additionally, the California Consumer Privacy Act (CCPA) defines a &ldquo;sale&rdquo; as disclosing or making available to a third-party Personal Information in exchange for monetary or other valuable consideration, and &ldquo;sharing&rdquo; broadly includes disclosing Personal Information or making it available to a third party for purposes of cross-context behavioural advertising. While we do not disclose Personal Information to third parties in exchange for monetary compensation, we may &ldquo;share&rdquo; or &ldquo;sell&rdquo; (as defined by the CCPA) identifiers and internet and electronic network activity information to third parties to improve and evaluate our advertising campaigns and better reach customers and prospective customers with more relevant ads and content. We do not have actual knowledge that we sell or share any Personal Information about individuals who are under sixteen (16) years old.
           </P>
 
-          <SectionHeading n={10}>California Privacy Rights</SectionHeading>
+          <SectionHeading n={11}>California Privacy Rights</SectionHeading>
           <P>To the extent you are a California resident, you may have the following rights regarding your Personal Information:</P>
           <Ul>
             <Li><strong>Right to Access:</strong> With respect to the Personal Information we have collected about you in the prior 12 months, you have the right to request (up to twice per year and subject to certain exemptions): (i) categories of Personal Information we have collected; (ii) the sources from which we have collected it; (iii) our business or commercial purposes for collecting, selling, or disclosing it; (iv) the categories of third parties to whom we have disclosed it; and (v) a copy of the specific pieces of your Personal Information we have collected.</Li>
@@ -307,10 +373,10 @@ export default function PrivacyPolicyPage() {
             <Li><strong>Authorized Agent:</strong> You may designate someone as an authorized agent to submit requests and act on your behalf. To do so, you must provide us with written permission to allow the authorized agent to act on your behalf.</Li>
           </Ul>
           <P>
-            To make a request for the rights described above, please contact us via the contact details in Section 13. You must provide us with the following information: (1) first and last name; (2) email address; (3) physical address; and (4) date of birth. We will take steps to verify your request by matching the information provided by you with the information we have in our records.
+            To make a request for the rights described above, please contact us via the contact details in Section 14. You must provide us with the following information: (1) first and last name; (2) email address; (3) physical address; and (4) date of birth. We will take steps to verify your request by matching the information provided by you with the information we have in our records.
           </P>
 
-          <SectionHeading n={11}>Rights for Residents of Colorado, Connecticut, Delaware, and Other States</SectionHeading>
+          <SectionHeading n={12}>Rights for Residents of Colorado, Connecticut, Delaware, and Other States</SectionHeading>
           <P>
             The following rights are available under the Colorado Privacy Act, Connecticut Data Protection Act, Delaware Personal Data Privacy Act, Iowa Consumer Data Protection Act, Maryland Online Data Privacy Act, Minnesota Consumer Data Privacy Act, Montana Consumer Data Privacy Act, Nebraska Data Privacy Act, New Hampshire Data Privacy Act, New Jersey Data Protection Act, Oregon Consumer Privacy Act, Texas Data Privacy and Security Act, Tennessee Information Privacy Act, the Utah Consumer Privacy Act, and the Virginia Consumer Data Protection Act:
           </P>
@@ -323,10 +389,10 @@ export default function PrivacyPolicyPage() {
             <Li><strong>Right to Appeal:</strong> If we decline to take action regarding your request, you have the right to appeal. We will notify you providing our reasons and instructions for how you can appeal the decision.</Li>
           </Ul>
           <P>
-            To make a request for the rights described above, please contact us via the contact details in Section 13. You must provide us with the following information: (1) first and last name; (2) email address; (3) physical address; and (4) date of birth.
+            To make a request for the rights described above, please contact us via the contact details in Section 14. You must provide us with the following information: (1) first and last name; (2) email address; (3) physical address; and (4) date of birth.
           </P>
 
-          <SectionHeading n={12}>Changes to Our Privacy Policy</SectionHeading>
+          <SectionHeading n={13}>Changes to Our Privacy Policy</SectionHeading>
           <P>
             We will post any changes to our Privacy Policy on our Website. If we make material changes to our Privacy Policy, we may notify you of such changes through your contact information and invite you to review (and accept, if necessary) the changes. The date this Privacy Policy was last revised is identified at the top of the page.
           </P>
@@ -334,7 +400,7 @@ export default function PrivacyPolicyPage() {
             You are responsible for ensuring we have an up-to-date active and deliverable email address for you, and for periodically accessing the App or visiting our Website and reviewing this Privacy Policy to check for any changes.
           </P>
 
-          <SectionHeading n={13}>Contact Information</SectionHeading>
+          <SectionHeading n={14}>Contact Information</SectionHeading>
           <P>
             If you have any questions, concerns, complaints or suggestions regarding our Privacy Policy or otherwise need to contact us, you may contact us through the &ldquo;Contact Us&rdquo; page on our Website or in the App, or by writing to us at:
           </P>
