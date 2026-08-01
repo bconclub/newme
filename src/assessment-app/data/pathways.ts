@@ -135,7 +135,7 @@ export const PW: Record<string, any> = {
     },
     bullets: [
       "Initial consultation with a GI Dietitian",
-      "Consultation with a Senior Doctor from Dr. Pal's team",
+      "Consultation with a Senior Doctor from Dr. Pal's team, with follow-up consultations every 6 weeks",
       "Weekly consultations with a GI dietitian, daily text-based check-ins",
       "Physiotherapist evaluation at baseline with exercise routine recommendations",
       "Monthly 1:1 gut-brain focused behavioural therapist evaluation and counselling",
