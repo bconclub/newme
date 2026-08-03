@@ -185,9 +185,16 @@ export default function ResearchEvidence() {
             >
               Notify me
             </motion.button>
-            <Turnstile onToken={(t) => { turnstileToken.current = t }} action="newsletter" />
           </form>
         </motion.div>
+
+        {/* Rendered outside the glass pill — if the widget ever shows visible
+            UI (Managed mode escalating for risky traffic), it can't distort
+            the pill's fixed height/rounded shape. Token capture via the ref
+            callback doesn't depend on DOM nesting inside the <form>. */}
+        <div className="mx-auto flex justify-center" style={{ maxWidth: 1100 }}>
+          <Turnstile onToken={(t) => { turnstileToken.current = t }} action="newsletter" />
+        </div>
       </div>
     </section>
   )
