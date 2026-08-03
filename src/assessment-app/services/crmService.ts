@@ -83,21 +83,21 @@ export async function checkLeadByEmail(email: string): Promise<{ id: string; sta
   }
 }
 
-export async function createPreQuizLead(name: string, last: string, email: string, phone?: string, country?: string, height?: string, weight?: string): Promise<{ leadId?: string }> {
+export async function createPreQuizLead(name: string, last: string, email: string, phone?: string, country?: string, height?: string, weight?: string, turnstileToken?: string): Promise<{ leadId?: string }> {
   const r = await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE, utm: getUtm() }),
+    body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, turnstileToken, leadSource: LEAD_SOURCE, utm: getUtm() }),
   });
   return r.json();
 }
 
-export async function updatePreQuizLead(leadId: string, name: string, last: string, email: string, phone?: string, country?: string, height?: string, weight?: string): Promise<void> {
+export async function updatePreQuizLead(leadId: string, name: string, last: string, email: string, phone?: string, country?: string, height?: string, weight?: string, turnstileToken?: string): Promise<void> {
   try {
     await fetch(ENDPOINTS.CRM_LEAD_PRE_QUIZ_UPDATE(leadId), {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, leadSource: LEAD_SOURCE, utm: getUtm() }),
+      body: JSON.stringify({ name, last, email, phone: phone || undefined, country: country || undefined, height: height || undefined, weight: weight || undefined, turnstileToken, leadSource: LEAD_SOURCE, utm: getUtm() }),
     });
   } catch { /* fire-and-forget */ }
 }

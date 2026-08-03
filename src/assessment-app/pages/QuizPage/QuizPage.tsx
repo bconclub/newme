@@ -27,6 +27,7 @@ import { Header } from "../../components/Header/Header";
 import { checkAssessmentLimit, verifyEmail } from "../../services/assessmentService";
 import { createPreQuizLead, updatePreQuizLead, checkLeadByEmail, deleteLeadById } from "../../services/crmService";
 import { PhoneInput } from "../../components/PhoneInput/PhoneInput";
+import { Turnstile } from "../../../components/Turnstile";
 
 export type QuizPageProps = {
   step: number;
@@ -91,6 +92,7 @@ export function QuizPage({
     return () => document.removeEventListener("mousedown", handleClick);
   }, [countryOpen]);
 
+  const [turnstileToken,   setTurnstileToken]   = useState("");
   const [limitChecking,    setLimitChecking]    = useState(false);
   const [limitBlocked,     setLimitBlocked]     = useState(false);
   const [enrolledBlocked,  setEnrolledBlocked]  = useState(false);
@@ -173,12 +175,12 @@ export function QuizPage({
         // and update the lead's profile fields with the freshly entered data.
         if (existingLeadId && existingLeadId !== foundCrmLead.id) deleteLeadById(existingLeadId);
         leadId = foundCrmLead.id;
-        updatePreQuizLead(leadId, info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined, profile.height || undefined, profile.weight || undefined);
+        updatePreQuizLead(leadId, info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined, profile.height || undefined, profile.weight || undefined, turnstileToken);
       } else {
         // No CRM lead for this email — always create one, even if a stale
         // existingLeadId exists from a previous session with a different email.
         try {
-          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined, profile.height || undefined, profile.weight || undefined);
+          const r = await createPreQuizLead(info.name, info.last, info.email, profile.phone || info.phone || undefined, info.country || undefined, profile.height || undefined, profile.weight || undefined, turnstileToken);
           leadId = r.leadId ?? null;
         } catch {}
       }
@@ -390,6 +392,7 @@ export function QuizPage({
                   )}
                 </div>
               </div>
+              <Turnstile onToken={setTurnstileToken} action="pre-quiz" />
               <div style={{ marginTop: 24, display: "flex", alignItems: "center", gap: 14 }}>
                 <button className="btng" disabled={!canAdvanceProfileFull() || limitChecking} onClick={handleProfileAdvance} style={{ fontFamily: FONT_BUTTON }}>
                   {limitChecking ? "Checking…" : "Continue →"}
