@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
+console.log('Turnstile site key:', SITE_KEY)
 const SCRIPT_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
 
 declare global {
@@ -79,7 +80,6 @@ export const Turnstile = forwardRef<TurnstileHandle, TurnstileProps>(function Tu
       if (cancelled || !window.turnstile || !containerRef.current || widgetIdRef.current) return
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: SITE_KEY,
-        size: 'invisible',
         action,
         callback: (token: string) => onToken(token),
         'expired-callback': () => onToken(''),
