@@ -2,10 +2,11 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { trackEvent } from '@/lib/analytics'
 import { getUtm } from '@/lib/utm'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
+import { Turnstile } from '@/components/Turnstile'
 
 // Figma "Group 139" (1:2834) at y=9054, 1920×490. Quick Links + Resources
 // columns are trimmed from the original Figma list — "Your Phase of Care"
@@ -277,6 +278,7 @@ export default function Footer() {
 function NewsletterForm() {
   const [email, setEmail] = useState('')
   const [done, setDone] = useState(false)
+  const turnstileToken = useRef('')
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -291,7 +293,7 @@ function NewsletterForm() {
     fetch(ENDPOINTS.CRM_LEAD_NEWSLETTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, utm: getUtm() }),
+      body: JSON.stringify({ email, turnstileToken: turnstileToken.current, utm: getUtm() }),
     }).catch((err) => console.error('[Newsletter]', err))
   }
 
@@ -364,6 +366,7 @@ function NewsletterForm() {
       >
         Subscribe
       </button>
+      <Turnstile onToken={(t) => { turnstileToken.current = t }} action="newsletter" />
     </form>
   )
 }

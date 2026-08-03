@@ -30,6 +30,12 @@ Sanity dataset name.
 - **Read by:** Same as `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - **What breaks if missing:** Same as above.
 
+### `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+Cloudflare Turnstile site key, pairs with the backend's `TURNSTILE_SECRET_KEY`. Get both from `dash.cloudflare.com` → Turnstile → your widget — **the site key and secret key are two different values shown on the same screen; don't paste the same one twice.**
+- **Example:** `0x4AAAAAAA...`
+- **Read by:** `src/components/Turnstile.tsx`
+- **What breaks if missing:** The widget renders nothing and forms submit without a token — harmless (backend fails open when its secret isn't set either), but no bot protection.
+
 ---
 
 ## Optional

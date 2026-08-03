@@ -11,6 +11,7 @@ import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
 import { trackEvent } from '@/lib/analytics'
 import { getUtm } from '@/lib/utm'
 import { PhoneInput } from '@/assessment-app/components/PhoneInput/PhoneInput'
+import { Turnstile } from '@/components/Turnstile'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -46,6 +47,7 @@ function ContactBody() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -58,7 +60,7 @@ function ContactBody() {
       const res = await fetch(ENDPOINTS.CRM_LEAD_CONTACT_US, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone || undefined, message: form.message, utm: getUtm() }),
+        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone || undefined, message: form.message, turnstileToken, utm: getUtm() }),
       })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       router.push('/contact/thank-you')
@@ -277,6 +279,8 @@ function ContactBody() {
               onFocus={e => (e.target.style.borderBottomColor = 'rgba(254,242,114,0.7)')}
               onBlur={e => (e.target.style.borderBottomColor = 'rgba(255,255,255,0.30)')}
             />
+
+            <Turnstile onToken={setTurnstileToken} action="contact" />
 
             {error && (
               <p

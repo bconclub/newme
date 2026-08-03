@@ -1,10 +1,11 @@
 ﻿'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { trackEvent } from '@/lib/analytics'
 import { getUtm } from '@/lib/utm'
 import { ENDPOINTS } from '@/assessment-app/constants/urlConstants'
+import { Turnstile } from '@/components/Turnstile'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -22,6 +23,7 @@ const EASE = [0.22, 1, 0.36, 1] as const
  */
 export default function ResearchEvidence() {
   const [email, setEmail] = useState('')
+  const turnstileToken = useRef('')
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,7 +38,7 @@ export default function ResearchEvidence() {
     fetch(ENDPOINTS.CRM_LEAD_NEWSLETTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, utm: getUtm() }),
+      body: JSON.stringify({ email, turnstileToken: turnstileToken.current, utm: getUtm() }),
     }).catch((err) => console.error('[ResearchEvidence Notify]', err))
   }
 
@@ -183,6 +185,7 @@ export default function ResearchEvidence() {
             >
               Notify me
             </motion.button>
+            <Turnstile onToken={(t) => { turnstileToken.current = t }} action="newsletter" />
           </form>
         </motion.div>
       </div>
