@@ -332,40 +332,45 @@ function NewsletterForm() {
   // ── Idle state ───────────────────────────────────────────────────────────
   return (
     <form
-      className="mt-5 flex flex-row items-center"
+      className="mt-5 flex flex-col gap-3"
       onSubmit={handleSubmit}
       style={{ maxWidth: 417 }}
     >
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter your email address"
-        className="flex-1 min-w-0 text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none"
-        style={{
-          fontSize: 14,
-          background: '#629675',
-          borderRadius: 9999,
-          height: 52,
-          paddingLeft: 20,
-          paddingRight: 20,
-        }}
-      />
-      <button
-        type="submit"
-        className="shrink-0 -ml-10 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors"
-        style={{
-          height: 52,
-          paddingLeft: 24,
-          paddingRight: 24,
-          borderRadius: 9999,
-          fontSize: 14,
-          fontWeight: 500,
-        }}
-      >
-        Subscribe
-      </button>
+      <div className="flex flex-row items-center">
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email address"
+          className="flex-1 min-w-0 text-white placeholder:text-white/80 font-[family-name:var(--font-poppins)] focus:outline-none"
+          style={{
+            fontSize: 14,
+            background: '#629675',
+            borderRadius: 9999,
+            height: 52,
+            paddingLeft: 20,
+            paddingRight: 20,
+          }}
+        />
+        <button
+          type="submit"
+          className="shrink-0 -ml-10 bg-white text-[#173B39] font-medium font-[family-name:var(--font-bricolage)] hover:bg-white/95 transition-colors"
+          style={{
+            height: 52,
+            paddingLeft: 24,
+            paddingRight: 24,
+            borderRadius: 9999,
+            fontSize: 14,
+            fontWeight: 500,
+          }}
+        >
+          Subscribe
+        </button>
+      </div>
+      {/* Own row below the pill — if the widget ever renders visible UI
+          (Managed mode escalating for risky traffic), it doesn't get
+          squeezed into the tight input+button row and clipped/overlapped. */}
       <Turnstile onToken={(t) => { turnstileToken.current = t }} action="newsletter" />
     </form>
   )
