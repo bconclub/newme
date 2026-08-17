@@ -25,8 +25,8 @@ export const ZOHO_PLAN_URLS: Record<string, string> = {
   Sustain:            "https://zohosecurepay.com/checkout/xfeizzh-1i9wyz5h6nt55x/NewMESustain",
   GI_Core:            "https://zohosecurepay.com/checkout/9vh488g-tjd8k5py37qcvu/NewMEGICORE", // 3-month upfront page
   GI_Core_monthly:    "https://zohosecurepay.com/checkout/f5uo22n-uk3s9rgejh4nt4/NewMEGICOREMonthly", // ensure Zoho page priced at $399/month
-  GI_Advanced:        "https://zohosecurepay.com/checkout/10zp55l-u106qfh7kbxl5k/NewMEGIAdvance3M", // 3-month upfront page
-  GI_Advanced_monthly: "https://zohosecurepay.com/checkout/925hpp9-oe4hpsrwbcn8gw/GIAdvancedMonthly", // ensure Zoho page priced at $699/month
+  GI_Advanced:        "https://zohosecurepay.com/checkout/q1uz77a-gqykrc5mopwb7y/NMS---Dr-Pals-NewME-GI-Advanced--3-Months-Plan", // 3-month upfront page
+  GI_Advanced_monthly: "https://zohosecurepay.com/checkout/w0cu11i-xgrykblfomzloi/NMS---Dr-Pals-NewME-GI-Advanced--1-Month-Plan", // ensure Zoho page priced at $699/month
 };
 
 /**
