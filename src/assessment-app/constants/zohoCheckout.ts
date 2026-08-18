@@ -53,14 +53,14 @@ export const GI_BILLING: Record<string, {
   GI_Advanced: {
     monthly: {
       key:      "GI_Advanced_monthly",
-      label:    "$699 / month",
-      dayLabel: "$23.30 / day",
+      label:    "$549 / month",
+      dayLabel: "$18.30 / day",
     },
     upfront: {
       key:      "GI_Advanced",
-      label:    "$1,999 / 3 months",
-      dayLabel: "$22.21 / day",
-      savings:   98,   // 3 × $699 − $1,999
+      label:    "$1,549 / 3 months",
+      dayLabel: "$17.21 / day",
+      savings:   98,   // 3 × $549 − $1,549
     },
   },
 };
