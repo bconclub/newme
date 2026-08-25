@@ -21,7 +21,7 @@ export const PRICING_CENTS: Record<string, number> = {
   Rebuild:     69900,  // $699 for 12 weeks
   Sustain:     99900,  // $999 for 24 weeks
   GI_Core:     39900,  // $399 / month (3-month upfront: $1099 — see GI_BILLING)
-  GI_Advanced: 69900,  // $699 / month (3-month upfront: $1999 — see GI_BILLING)
+  GI_Advanced: 54900,  // $549 / month (3-month upfront: $1647 — see GI_BILLING)
 };
 
 export const PRICING: Record<string, { main: string; sub: string; day: string }> = {
@@ -29,7 +29,7 @@ export const PRICING: Record<string, { main: string; sub: string; day: string }>
   Rebuild:     { main: "$699 / 3 months", sub: `${PHASE_META.Rebuild.duration} clinical pathway`,     day: "$7.77 / day" },
   Sustain:     { main: "$999 / 6 months", sub: `${PHASE_META.Sustain.duration} clinical pathway`,     day: "$5.55 / day" },
   GI_Core:     { main: "$399 / month",    sub: `${PHASE_META.GI_Core.duration} clinical pathway`,     day: "$13.30 / day" },
-  GI_Advanced: { main: "$699 / month",    sub: `${PHASE_META.GI_Advanced.duration} clinical pathway`, day: "$23.30 / day" },
+  GI_Advanced: { main: "$549 / month",    sub: `${PHASE_META.GI_Advanced.duration} clinical pathway`, day: "$18.30 / day" },
 };
 
 export const SEC: Record<string, string> = {
